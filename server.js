@@ -15,11 +15,15 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Paths for history (persistent volume on Railway)
+const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
+
 // Ensure directories exist
 ['briefing', 'wip', 'done'].forEach(dir => {
     const dirPath = path.join(MARKETING_ROOT, dir);
     if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
 });
+if (!fs.existsSync(HISTORY_ROOT)) fs.mkdirSync(HISTORY_ROOT, { recursive: true });
 
 // Simple API Key auth middleware
 const authMiddleware = (req, res, next) => {
@@ -116,6 +120,37 @@ app.post('/api/briefing/clear', authMiddleware, (req, res) => {
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
         res.json({ success: true });
+    } else {
+        res.status(404).json({ error: 'File not found' });
+    }
+});
+
+// API: Get history
+app.get('/api/history', (req, res) => {
+    if (!fs.existsSync(HISTORY_ROOT)) {
+        return res.json({ history: [] });
+    }
+    const files = fs.readdirSync(HISTORY_ROOT).filter(f => !f.startsWith('.')).map(f => ({
+        name: f,
+        content: fs.readFileSync(path.join(HISTORY_ROOT, f), 'utf-8'),
+        mtime: fs.statSync(path.join(HISTORY_ROOT, f)).mtime.toISOString()
+    }));
+    // Sort by date descending
+    files.sort((a, b) => new Date(b.mtime) - new Date(a.mtime));
+    res.json({ history: files });
+});
+
+// API: Archive to history (move from done to history)
+app.post('/api/archive', authMiddleware, (req, res) => {
+    const { filename } = req.body;
+    const src = path.join(MARKETING_ROOT, 'done', filename);
+    const timestamp = new Date().toISOString().split('T')[0];
+    const destFilename = `${timestamp}_${filename}`;
+    const dest = path.join(HISTORY_ROOT, destFilename);
+    
+    if (fs.existsSync(src)) {
+        fs.renameSync(src, dest);
+        res.json({ success: true, archived: destFilename });
     } else {
         res.status(404).json({ error: 'File not found' });
     }

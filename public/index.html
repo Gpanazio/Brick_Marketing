@@ -29,8 +29,14 @@
         </button>
     </header>
 
+    <!-- Tabs -->
+    <div class="flex gap-4 mb-6 border-b border-gray-800 pb-2">
+        <button id="tab-board" onclick="showTab('board')" class="text-white font-bold border-b-2 border-green-500 pb-2">SQUAD BOARD</button>
+        <button id="tab-history" onclick="showTab('history')" class="text-gray-500 hover:text-white pb-2">HISTÓRICO</button>
+    </div>
+
     <!-- Board -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div id="view-board" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         <!-- Column 1: Briefing -->
         <div class="column p-4 rounded">
@@ -52,6 +58,14 @@
             <div id="col-done" class="space-y-4">Loading...</div>
         </div>
 
+    </div>
+
+    <!-- History View -->
+    <div id="view-history" class="hidden">
+        <div class="column p-6 rounded">
+            <h2 class="text-xl font-bold mb-4 text-purple-400 border-b border-purple-900 pb-2">📚 HISTÓRICO DE CAMPANHAS</h2>
+            <div id="history-list" class="space-y-4">Loading...</div>
+        </div>
     </div>
 
     <!-- Modal: New Briefing -->
@@ -83,6 +97,58 @@
 
     <script>
         const API_URL = '/api';
+
+        // Tab switching
+        function showTab(tab) {
+            document.getElementById('view-board').classList.toggle('hidden', tab !== 'board');
+            document.getElementById('view-history').classList.toggle('hidden', tab !== 'history');
+            document.getElementById('tab-board').classList.toggle('border-green-500', tab === 'board');
+            document.getElementById('tab-board').classList.toggle('text-white', tab === 'board');
+            document.getElementById('tab-board').classList.toggle('text-gray-500', tab !== 'board');
+            document.getElementById('tab-history').classList.toggle('border-purple-500', tab === 'history');
+            document.getElementById('tab-history').classList.toggle('text-white', tab === 'history');
+            document.getElementById('tab-history').classList.toggle('text-gray-500', tab !== 'history');
+            if (tab === 'history') fetchHistory();
+        }
+
+        // Fetch history
+        async function fetchHistory() {
+            try {
+                const res = await fetch(`${API_URL}/history`);
+                const data = await res.json();
+                renderHistory(data.history);
+            } catch (e) {
+                console.error("Error fetching history", e);
+            }
+        }
+
+        function renderHistory(files) {
+            const container = document.getElementById('history-list');
+            if (files.length === 0) {
+                container.innerHTML = `<div class="text-gray-700 text-center italic mt-10">Nenhum histórico ainda...</div>`;
+                return;
+            }
+            container.innerHTML = files.map(file => `
+                <div class="card p-4 mb-3 cursor-pointer hover:bg-gray-900" onclick="viewHistoryFile('${file.name}')">
+                    <h3 class="font-bold text-sm text-purple-300 truncate">${file.name}</h3>
+                    <p class="text-xs text-gray-600 mt-1">${new Date(file.mtime).toLocaleString('pt-BR')}</p>
+                    <p class="text-xs text-gray-600 mt-2">${file.content.substring(0, 100)}...</p>
+                </div>
+            `).join('');
+        }
+
+        let historyCache = {};
+        async function viewHistoryFile(filename) {
+            const res = await fetch(`${API_URL}/history`);
+            const data = await res.json();
+            const file = data.history.find(f => f.name === filename);
+            if (!file) return;
+
+            document.getElementById('viewer-title').innerText = filename;
+            document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
+            document.getElementById('viewer-actions').innerHTML = `<span class="text-purple-400">📚 Arquivo do Histórico</span>`;
+            openModal('viewer');
+        }
 
         async function fetchState() {
             try {
@@ -132,6 +198,7 @@
                 actions.innerHTML = `<span class="text-yellow-500 animate-pulse">AGENTS WORKING...</span>`;
             } else if (category === 'done') {
                 actions.innerHTML = `<button onclick="deleteFile()" class="text-red-500 text-sm mr-auto">DISCARD</button>
+                                     <button onclick="archiveFile()" class="bg-purple-600 text-white px-4 py-2 font-bold mr-2">ARQUIVAR</button>
                                      <button onclick="alert('Published! (Simulated)')" class="bg-green-600 text-white px-4 py-2 font-bold">PUBLISH</button>`;
             }
 
@@ -161,6 +228,17 @@
             });
             closeModal('viewer');
             fetchState();
+        }
+
+        async function archiveFile() {
+            await fetch(`${API_URL}/archive`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: currentFile.filename })
+            });
+            closeModal('viewer');
+            fetchState();
+            alert('Arquivado com sucesso!');
         }
 
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
