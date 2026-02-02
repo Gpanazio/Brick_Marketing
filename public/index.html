@@ -143,10 +143,15 @@
                 const data = await res.json();
                 const content = data.content || 'Arquivo não encontrado.';
                 
-                // Render raw markdown inside a styled <pre> to preserve ASCII diagrams
+                // Render as markdown to get colors/formatting, but with a custom container for the diagram
+                const htmlContent = marked.parse(content);
                 document.getElementById('architecture-content').innerHTML = `
-                    <div class="bg-black p-6 border border-gray-800 overflow-x-auto shadow-inner">
-                        <pre class="text-green-500/80 font-mono leading-tight whitespace-pre">${content}</pre>
+                    <div class="prose prose-invert max-w-none text-sm font-mono text-gray-400
+                        prose-headings:text-white prose-headings:font-bold prose-headings:border-b prose-headings:border-gray-800 prose-headings:pb-2 prose-headings:mt-8
+                        prose-strong:text-green-500 prose-code:text-green-300 prose-code:bg-black
+                        prose-pre:bg-black prose-pre:border prose-pre:border-gray-800 prose-pre:text-green-500
+                        prose-table:border prose-table:border-gray-800 prose-th:bg-[#111] prose-td:border-gray-900">
+                        ${htmlContent}
                     </div>
                 `;
             } catch (e) {
