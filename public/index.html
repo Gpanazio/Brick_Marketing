@@ -234,47 +234,29 @@ BRIEFING
                 const data = await res.json();
                 const content = data.content || 'Arquivo não encontrado.';
                 
-                // Brick AI Style: Clean, Mono, High-End
-                const sections = content.split('---');
-                
-                let html = `
+                const html = `
                     <style>
-                        .brick-section { border-left: 2px solid #333; padding-left: 2rem; margin-bottom: 4rem; transition: border-color 0.3s; }
-                        .brick-section:hover { border-left-color: #DC2626; }
-                        .brick-title { font-family: 'Courier New', monospace; font-size: 1.25rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; margin-bottom: 1rem; text-transform: uppercase; }
-                        .brick-label { font-family: 'Courier New', monospace; font-size: 0.7rem; color: #DC2626; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
-                        .brick-text { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9CA3AF; line-height: 1.6; }
-                        .brick-text pre { background: #080808; padding: 1.5rem; border: 1px solid #1a1a1a; color: #22c55e; font-size: 0.75rem; overflow-x: auto; margin: 1.5rem 0; white-space: pre; font-family: 'Courier New', Consolas, monospace; line-height: 1.4; }
-                        .brick-text code { background: #1a1a1a; color: #22c55e; padding: 0.2rem 0.4rem; font-size: 0.85em; border-radius: 3px; }
-                        .brick-text pre code { background: none; padding: 0; font-size: inherit; }
-                        .brick-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.8rem; }
-                        .brick-table th { text-align: left; padding: 0.75rem; border-bottom: 1px solid #333; color: #fff; text-transform: uppercase; letter-spacing: 0.1em; }
-                        .brick-table td { padding: 0.75rem; border-bottom: 1px solid #111; color: #9CA3AF; }
-                        .brick-tag { background: #1a1a1a; color: #fff; padding: 0.2rem 0.5rem; font-size: 0.7rem; margin-right: 0.5rem; border: 1px solid #333; }
+                        .arch-content { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9CA3AF; line-height: 1.8; }
+                        .arch-content h1 { color: #fff; font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+                        .arch-content h2 { color: #DC2626; font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+                        .arch-content pre { background: #080808; padding: 1rem; border: 1px solid #1a1a1a; color: #22c55e; font-size: 0.7rem; overflow-x: auto; margin: 1rem 0; white-space: pre; line-height: 1.3; }
+                        .arch-content code { background: #1a1a1a; color: #22c55e; padding: 0.15rem 0.3rem; font-size: 0.85em; border-radius: 2px; }
+                        .arch-content pre code { background: none; padding: 0; }
+                        .arch-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.8rem; }
+                        .arch-content th { text-align: left; padding: 0.5rem; border-bottom: 1px solid #333; color: #fff; }
+                        .arch-content td { padding: 0.5rem; border-bottom: 1px solid #111; }
+                        .arch-content strong { color: #fff; }
+                        .arch-content hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
+                        .arch-content ul, .arch-content ol { margin-left: 1.5rem; }
+                        .arch-content li { margin-bottom: 0.3rem; }
                     </style>
+                    <div class="arch-content">${marked.parse(content)}</div>
                 `;
-
-                // Render other sections
-                sections.slice(1).forEach(section => {
-                    const lines = section.trim().split('\n');
-                    const titleLine = lines.find(l => l.startsWith('## '));
-                    if (!titleLine) return;
-
-                    const title = titleLine.replace('## ', '').trim();
-                    const body = section.replace(titleLine, '').trim();
-                    
-                    html += `
-                        <div class="brick-section">
-                            <span class="brick-label">Module // Active</span>
-                            <h3 class="brick-title">${title}</h3>
-                            <div class="brick-text">${marked.parse(body).replace(/<table>/g, '<table class="brick-table">').replace(/<th>/g, '<th class="brick-th">')}</div>
-                        </div>
-                    `;
-                });
 
                 document.getElementById('architecture-content').innerHTML = html;
             } catch (e) {
-                document.getElementById('architecture-content').innerHTML = '<div class="text-gray-500 text-center py-20">Erro ao carregar protocolos.</div>';
+                console.error('Erro ao carregar arquitetura:', e);
+                document.getElementById('architecture-content').innerHTML = '<div class="text-red-500 text-center py-20">Erro ao carregar protocolos: ' + e.message + '</div>';
             }
         }
 
