@@ -33,6 +33,7 @@
     <div class="flex gap-4 mb-6 border-b border-gray-800 pb-2">
         <button id="tab-board" onclick="showTab('board')" class="text-white font-bold border-b-2 border-green-500 pb-2">SQUAD BOARD</button>
         <button id="tab-history" onclick="showTab('history')" class="text-gray-500 hover:text-white pb-2">HISTÓRICO</button>
+        <button id="tab-architecture" onclick="showTab('architecture')" class="text-gray-500 hover:text-white pb-2">ARQUITETURA</button>
     </div>
 
     <!-- Board -->
@@ -65,6 +66,95 @@
         <div class="column p-6 rounded">
             <h2 class="text-xl font-bold mb-4 text-purple-400 border-b border-purple-900 pb-2">📚 HISTÓRICO DE CAMPANHAS</h2>
             <div id="history-list" class="space-y-4">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Architecture View -->
+    <div id="view-architecture" class="hidden">
+        <div class="column p-6 rounded">
+            <h2 class="text-xl font-bold mb-4 text-green-400 border-b border-green-900 pb-2">⚙️ ARQUITETURA DO SQUAD</h2>
+            <div class="space-y-6 text-sm leading-relaxed">
+                <div class="bg-[#0d0d0d] border border-gray-800 p-4">
+<pre class="text-gray-300">
+BRIEFING
+    │
+    ▼
+BRIEF VALIDATOR (Gemini Flash)
+    │
+    ▼
+AUDIENCE ANALYST  ⇄  TOPIC RESEARCHER (paralelo)
+    │
+    ▼
+COPYWRITER (Claude Sonnet 4)
+    │
+    ▼
+BRAND GUARDIAN → CRITIC (Claude Opus)
+    │
+    ▼
+APROVADO ≥80% → OUTPUT
+REPROVADO → LOOP (max 3x) → ESCALA HUMANO
+</pre>
+                </div>
+
+                <div>
+                    <h3 class="text-green-400 font-bold mb-2">1. AUDIENCE ANALYST (Gemini Flash)</h3>
+                    <ul class="list-disc ml-6 text-gray-400">
+                        <li>Dores do comprador: prazo, custo, briefing</li>
+                        <li>Processo de decisão: como escolhem produtoras</li>
+                        <li>Objeções sobre IA: artificial, profissional?</li>
+                        <li>LinkedIn: experiências reais de contratação</li>
+                        <li>Reddit/Comunidades: feedback direto</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-green-400 font-bold mb-2">2. TOPIC RESEARCHER (Gemini Flash)</h3>
+                    <ul class="list-disc ml-6 text-gray-400">
+                        <li>Tendências do mercado B2B</li>
+                        <li>Dados de credibilidade (ROI, conversão)</li>
+                        <li>Concorrência: prazos, tickets, argumentos</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-green-400 font-bold mb-2">3. COPYWRITER (Claude Sonnet 4)</h3>
+                    <div class="grid grid-cols-2 gap-2 text-gray-400">
+                        <div class="bg-[#111] p-2 border border-gray-800">NÃO ESCREVER</div>
+                        <div class="bg-[#111] p-2 border border-gray-800">ESCREVER</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Usamos IA de ponta”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Entregamos em dias, não semanas”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Tecnologia revolucionária”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“A mesma qualidade. Novo modelo.”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Vídeos gerados por IA”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Produção profissional sob demanda”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Ferramenta inovadora”</div>
+                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“10 anos de narrativa. Agora mais ágil.”</div>
+                    </div>
+                    <div class="mt-3 text-gray-400">
+                        <strong>Estrutura:</strong> Gancho → Ponte → Prova → Oferta → CTA
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-green-400 font-bold mb-2">4. BRAND GUARDIAN (Gemini Flash)</h3>
+                    <ul class="list-disc ml-6 text-gray-400">
+                        <li>IA como meio, não diferencial principal</li>
+                        <li>Experiência da produtora (10 anos)</li>
+                        <li>Tom confiante, sem hype</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-green-400 font-bold mb-2">5. CRITIC (Claude Opus)</h3>
+                    <ul class="list-disc ml-6 text-gray-400">
+                        <li>Clareza (25%)</li>
+                        <li>Credibilidade (25%)</li>
+                        <li>Diferenciação (20%)</li>
+                        <li>Ação (15%)</li>
+                        <li>Tom (15%)</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -102,12 +192,20 @@
         function showTab(tab) {
             document.getElementById('view-board').classList.toggle('hidden', tab !== 'board');
             document.getElementById('view-history').classList.toggle('hidden', tab !== 'history');
+            document.getElementById('view-architecture').classList.toggle('hidden', tab !== 'architecture');
+
             document.getElementById('tab-board').classList.toggle('border-green-500', tab === 'board');
             document.getElementById('tab-board').classList.toggle('text-white', tab === 'board');
             document.getElementById('tab-board').classList.toggle('text-gray-500', tab !== 'board');
+
             document.getElementById('tab-history').classList.toggle('border-purple-500', tab === 'history');
             document.getElementById('tab-history').classList.toggle('text-white', tab === 'history');
             document.getElementById('tab-history').classList.toggle('text-gray-500', tab !== 'history');
+
+            document.getElementById('tab-architecture').classList.toggle('border-green-500', tab === 'architecture');
+            document.getElementById('tab-architecture').classList.toggle('text-white', tab === 'architecture');
+            document.getElementById('tab-architecture').classList.toggle('text-gray-500', tab !== 'architecture');
+
             if (tab === 'history') fetchHistory();
         }
 
