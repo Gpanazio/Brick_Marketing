@@ -396,14 +396,21 @@ BRIEFING
         }
 
         async function archiveFile() {
-            await fetch(`${API_URL}/archive`, {
+            const res = await fetch(`${API_URL}/archive`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'brick-squad-2026'
+                },
                 body: JSON.stringify({ filename: currentFile.filename })
             });
-            closeModal('viewer');
-            fetchState();
-            alert('Arquivado com sucesso!');
+            if (res.ok) {
+                closeModal('viewer');
+                fetchState();
+                alert('Arquivado com sucesso!');
+            } else {
+                alert('Erro ao arquivar');
+            }
         }
 
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
