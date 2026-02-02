@@ -146,7 +146,13 @@ BRIEFING
     <!-- History View -->
     <div id="view-history" class="hidden">
         <div class="column p-6 rounded">
-            <h2 class="text-xl font-bold mb-4 text-purple-400 border-b border-purple-900 pb-2">📚 HISTÓRICO DE CAMPANHAS</h2>
+            <div class="flex justify-between items-center mb-4 border-b border-purple-900 pb-2">
+                <h2 class="text-xl font-bold text-purple-400">📚 HISTÓRICO DE CAMPANHAS</h2>
+                <div class="flex gap-2">
+                    <button id="history-mode-list" onclick="setHistoryMode('list')" class="text-xs px-3 py-1 border border-purple-800 text-purple-400 rounded">Lista</button>
+                    <button id="history-mode-board" onclick="setHistoryMode('board')" class="text-xs px-3 py-1 border border-gray-700 text-gray-500 rounded">Board</button>
+                </div>
+            </div>
             <div id="history-list" class="space-y-4">Loading...</div>
         </div>
     </div>
@@ -405,33 +411,103 @@ BRIEFING
             }
         }
 
+        let historyMode = 'list';
+        let historyData = [];
+        
+        function setHistoryMode(mode) {
+            historyMode = mode;
+            document.getElementById('history-mode-list').className = mode === 'list' 
+                ? 'text-xs px-3 py-1 border border-purple-500 text-purple-400 bg-purple-900/30 rounded' 
+                : 'text-xs px-3 py-1 border border-gray-700 text-gray-500 rounded';
+            document.getElementById('history-mode-board').className = mode === 'board' 
+                ? 'text-xs px-3 py-1 border border-purple-500 text-purple-400 bg-purple-900/30 rounded' 
+                : 'text-xs px-3 py-1 border border-gray-700 text-gray-500 rounded';
+            renderHistory(historyData);
+        }
+
         function renderHistory(files) {
+            historyData = files;
             const container = document.getElementById('history-list');
             if (files.length === 0) {
                 container.innerHTML = `<div class="text-gray-700 text-center italic mt-10">Nenhum histórico ainda...</div>`;
                 return;
             }
-            container.innerHTML = files.map(file => `
-                <div class="card p-4 mb-3 cursor-pointer hover:bg-gray-900" onclick="viewHistoryFile('${file.name}')">
-                    <h3 class="font-bold text-sm text-purple-300 truncate">${file.name}</h3>
-                    <p class="text-xs text-gray-600 mt-1">${new Date(file.mtime).toLocaleString('pt-BR')}</p>
-                    <p class="text-xs text-gray-600 mt-2">${file.content.substring(0, 100)}...</p>
-                </div>
-            `).join('');
+            
+            // Agrupa por briefing
+            const groups = {};
+            files.forEach(file => {
+                const nameParts = file.name.replace(/^\d{4}-\d{2}-\d{2}_/, '').split('__');
+                const briefingId = nameParts.length > 1 ? nameParts[0] : file.name.split('_').slice(0, -1).join('_') || 'outros';
+                if (!groups[briefingId]) groups[briefingId] = [];
+                groups[briefingId].push(file);
+            });
+            
+            if (historyMode === 'board') {
+                // Modo Board - igual ao game board
+                const agents = ['01', '02', '03', '04', '05', '06', '07', '08'];
+                let html = '<div class="space-y-4">';
+                Object.keys(groups).forEach(briefingId => {
+                    const groupFiles = groups[briefingId];
+                    const completedSteps = groupFiles.length;
+                    html += `<div class="border border-purple-900/50 rounded p-4 cursor-pointer hover:border-purple-500" onclick="viewBriefingFull('${briefingId}')">`;
+                    html += `<div class="flex justify-between items-center mb-2">`;
+                    html += `<span class="font-bold text-purple-300">${briefingId.replace(/_/g, ' ')}</span>`;
+                    html += `<span class="text-xs text-gray-500">${completedSteps} arquivos</span>`;
+                    html += `</div>`;
+                    html += '<div class="font-mono text-[10px]">';
+                    html += '<span class="text-gray-600">[</span>';
+                    agents.forEach((num) => {
+                        if (groupFiles.some(f => f.name.includes('__' + num) || f.name.includes('_' + num))) {
+                            html += '<span class="text-green-500">█</span>';
+                        } else {
+                            html += '<span class="text-gray-700">░</span>';
+                        }
+                    });
+                    html += '<span class="text-gray-600">]</span>';
+                    html += '</div></div>';
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } else {
+                // Modo Lista - agrupado
+                let html = '<div class="space-y-4">';
+                Object.keys(groups).forEach(briefingId => {
+                    const groupFiles = groups[briefingId];
+                    html += `<div class="border border-gray-800 rounded overflow-hidden">`;
+                    html += `<div class="p-3 bg-purple-900/20 cursor-pointer flex justify-between items-center" onclick="viewBriefingFull('${briefingId}')">`;
+                    html += `<span class="font-bold text-sm text-purple-300">${briefingId.replace(/_/g, ' ')}</span>`;
+                    html += `<span class="text-xs text-gray-500">${groupFiles.length} etapas</span>`;
+                    html += `</div></div>`;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            }
+        }
+
+        async function viewBriefingFull(briefingId) {
+            const res = await fetch(`${API_URL}/history`);
+            const data = await res.json();
+            const files = data.history.filter(f => f.name.includes(briefingId) || f.name.replace(/^\d{4}-\d{2}-\d{2}_/, '').startsWith(briefingId));
+            
+            if (files.length === 0) return;
+            
+            // Ordena por nome (etapa)
+            files.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Junta todo o conteúdo
+            let fullContent = `# 📋 ${briefingId.replace(/_/g, ' ').toUpperCase()}\n\n---\n\n`;
+            files.forEach(file => {
+                const stepName = file.name.split('__').pop() || file.name;
+                fullContent += file.content + '\n\n---\n\n';
+            });
+            
+            document.getElementById('viewer-title').innerText = briefingId.replace(/_/g, ' ');
+            document.getElementById('viewer-content').innerHTML = marked.parse(fullContent);
+            document.getElementById('viewer-actions').innerHTML = `<span class="text-purple-400">📚 Job Completo (${files.length} etapas)</span>`;
+            openModal('viewer');
         }
 
         let historyCache = {};
-        async function viewHistoryFile(filename) {
-            const res = await fetch(`${API_URL}/history`);
-            const data = await res.json();
-            const file = data.history.find(f => f.name === filename);
-            if (!file) return;
-
-            document.getElementById('viewer-title').innerText = filename;
-            document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
-            document.getElementById('viewer-actions').innerHTML = `<span class="text-purple-400">📚 Arquivo do Histórico</span>`;
-            openModal('viewer');
-        }
 
         async function fetchState() {
             try {
