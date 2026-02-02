@@ -46,51 +46,47 @@ BRIEFING
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  BRIEF VALIDATOR                              Gemini Flash  │
-│  ├─ Gerador de lacunas (FAIL informativo)                   │
-│  ├─ Perguntas acionáveis ao humano                          │
-│  └─ assumptions_if_silent (previne ping-pong)               │
+│  01. BRIEF VALIDATOR                          Gemini Flash  │
+│  ├─ Gerador de lacunas (não binário)                        │
+│  ├─ questions_to_human (perguntas acionáveis)               │
+│  └─ assumptions_if_silent (assume e segue)                  │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────┐     ┌─────────────────────┐
-│  AUDIENCE ANALYST   │     │  TOPIC RESEARCHER   │
-│  Gemini Flash       │ ══► │  Gemini Flash       │
-│  (paralelo)         │     │  (paralelo)         │
+│  02. AUDIENCE       │     │  03. TOPIC          │
+│  ANALYST            │ ══► │  RESEARCHER         │
+│  Gemini Flash       │     │  Gemini Flash       │
 └─────────────────────┘     └─────────────────────┘
     │                             │
     └──────────────┬──────────────┘
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  CLAIMS CHECKER                               Gemini Flash  │
+│  04. CLAIMS CHECKER                           Gemini Flash  │
 │  ├─ Valida dados (mantém se tiver fonte)                    │
-│  └─ Higieniza para Autoridade Segura (anti-hype)            │
+│  ├─ Marca [NEEDS SOURCE] ou reescreve                       │
+│  └─ Higieniza para Autoridade Segura                        │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  COPYWRITER                              Claude Sonnet 4    │
-│  (refação: Gemini 3 Pro - mais barato)                      │
+│  05. COPYWRITER                          Claude Sonnet 4    │
+│  ├─ Criatividade pura                                       │
+│  └─ Fallback: Gemini 3 Pro (após 2 falhas)                  │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  BRAND GUARDIANS (Split)                      Gemini Flash  │
+│  06. BRAND GUARDIANS (Split)                  Gemini Flash  │
 │  ├─ STYLE GUARDIAN (Tom, Voz, Proibições)                   │
-│  └─ POSITIONING GUARDIAN (Lógica Comercial)                 │
+│  └─ POSITIONING GUARDIAN (Oferta Clara, Lógica Comercial)   │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
 ┌─────────────────────┐     ┌─────────────────────┐
-│  CRITIC LITE (65%)  │ ──► │  CRITIC OPUS        │
-│  Gemini Flash       │     │  Claude Opus        │
+│  07. CRITIC LITE    │ ──► │  08. CRITIC OPUS    │
+│  Gemini Flash (65%) │     │  Claude Opus        │
 └─────────────────────┘     └─────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  CONTENT ASSEMBLER                            Gemini Flash  │
-│  └─ Padronização por Canal (LinkedIn, Email, Landing)       │
-└─────────────────────────────────────────────────────────────┘
                    │
                    ▼
         ┌──────────────────┐
@@ -100,7 +96,7 @@ BRIEFING
                    │ REPROVADO
                    ▼
         ┌──────────────────┐
-        │  LOOP (max 3x)   │──────────────► COPYWRITER
+        │  LOOP (max 3x)   │──► COPYWRITER (3ª vez = Gemini)
         └──────────────────┘
                    │
                    │ 3 FALHAS
