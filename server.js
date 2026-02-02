@@ -16,7 +16,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Paths for history (persistent volume on Railway)
-const HISTORY_ROOT = process.env.HISTORY_PATH || '/history';
+const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
 
 // Ensure directories exist
 ['briefing', 'wip', 'done'].forEach(dir => {
