@@ -331,145 +331,179 @@ BRIEFING
             };
 
             const getColor = (status) => {
-                if (status === 'done') return '#5a8a6a';
-                if (status === 'running') return '#c73030';
-                return '#4a4a4a';
+                if (status === 'done') return '#4a7a5a';
+                if (status === 'running') return '#b83030';
+                return '#3a3a3a';
             };
 
             const getTextColor = (status) => {
-                if (status === 'done') return '#8fbc8f';
+                if (status === 'done') return '#7fbf8f';
                 if (status === 'running') return '#ff6b6b';
-                return '#6a6a6a';
+                return '#5a5a5a';
+            };
+
+            const getGlow = (status) => {
+                if (status === 'done') return 'drop-shadow(0 0 6px rgba(127, 191, 143, 0.4))';
+                if (status === 'running') return 'drop-shadow(0 0 8px rgba(255, 107, 107, 0.6))';
+                return 'none';
             };
 
             let html = `
+            <style>
+                @keyframes dashFlow {
+                    from { stroke-dashoffset: 16; }
+                    to { stroke-dashoffset: 0; }
+                }
+                @keyframes corePulse {
+                    0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(199, 48, 48, 0.6)); }
+                    50% { opacity: 0.85; filter: drop-shadow(0 0 20px rgba(199, 48, 48, 0.9)); }
+                }
+                @keyframes nodeGlow {
+                    0%, 100% { filter: drop-shadow(0 0 4px rgba(127, 191, 143, 0.3)); }
+                    50% { filter: drop-shadow(0 0 8px rgba(127, 191, 143, 0.6)); }
+                }
+                @keyframes runningPulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.6; }
+                }
+                .dash-flow { animation: dashFlow 0.8s linear infinite; }
+                .core-pulse { animation: corePulse 3s ease-in-out infinite; }
+                .node-done { animation: nodeGlow 2s ease-in-out infinite; }
+                .node-running { animation: runningPulse 1s ease-in-out infinite; }
+            </style>
+            
             <div style="background: #000; padding: 40px 20px; min-height: 80vh; font-family: 'Courier New', monospace;">
-                <svg viewBox="0 0 500 850" class="w-full max-w-lg mx-auto" style="max-height: 75vh;">
+                <svg viewBox="0 0 500 880" class="w-full max-w-lg mx-auto" style="max-height: 78vh;">
                     
-                    <!-- Title -->
-                    <text x="250" y="30" text-anchor="middle" fill="#e8e4d9" font-size="16" letter-spacing="0.4em" font-weight="300">BRICK AI</text>
-                    <line x1="100" y1="45" x2="400" y2="45" stroke="#3a3a3a" stroke-width="1"/>
-                    <text x="250" y="70" text-anchor="middle" fill="#a0a0a0" font-size="11" letter-spacing="0.25em">SQUAD ARCHITECTURE</text>
+                    <!-- Title with subtle glow -->
+                    <text x="250" y="30" text-anchor="middle" fill="#e8e4d9" font-size="15" letter-spacing="0.5em" font-weight="300" style="filter: drop-shadow(0 0 10px rgba(232, 228, 217, 0.2));">BRICK AI</text>
+                    <line x1="120" y1="48" x2="380" y2="48" stroke="#2a2a2a" stroke-width="1"/>
+                    <text x="250" y="70" text-anchor="middle" fill="#707070" font-size="10" letter-spacing="0.3em">SQUAD ARCHITECTURE</text>
                     
                     <!-- BRIEFING INPUT -->
-                    <g transform="translate(250, 110)">
-                        <rect x="-80" y="-18" width="160" height="36" fill="none" stroke="#e8e4d9" stroke-width="1" rx="4"/>
-                        <text x="0" y="5" text-anchor="middle" fill="#e8e4d9" font-size="10" letter-spacing="0.15em">BRIEFING INPUT</text>
+                    <g transform="translate(250, 115)">
+                        <rect x="-85" y="-20" width="170" height="40" fill="#0a0a0a" stroke="#505050" stroke-width="1" rx="4"/>
+                        <text x="0" y="6" text-anchor="middle" fill="#909090" font-size="10" letter-spacing="0.12em">BRIEFING INPUT</text>
                     </g>
                     
-                    <!-- Dashed line down -->
-                    <line x1="250" y1="128" x2="250" y2="165" stroke="#e8e4d9" stroke-width="1" stroke-dasharray="4 4"/>
-                    <polygon points="250,175 245,165 255,165" fill="#e8e4d9"/>
+                    <!-- Dashed line down - animated -->
+                    <line x1="250" y1="135" x2="250" y2="175" stroke="#606060" stroke-width="1.5" stroke-dasharray="4 4" class="dash-flow"/>
+                    <polygon points="250,182 246,172 254,172" fill="#606060"/>
                     
-                    <!-- MASON CORE (HAL 9000 equivalent) -->
-                    <g transform="translate(250, 220)">
-                        <rect x="-100" y="-35" width="200" height="70" fill="none" stroke="#c73030" stroke-width="2" rx="4" stroke-dasharray="6 3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="#c73030" font-size="14" font-weight="bold" letter-spacing="0.1em">MASON CORE</text>
-                        <text x="0" y="10" text-anchor="middle" fill="#a08080" font-size="9">Central Orchestrator</text>
-                        <text x="0" y="25" text-anchor="middle" fill="#706060" font-size="8">(Routing / Context / Memory)</text>
+                    <!-- MASON CORE (HAL 9000) - with pulse animation -->
+                    <g transform="translate(250, 230)" class="core-pulse">
+                        <rect x="-110" y="-40" width="220" height="80" fill="#0a0505" stroke="#c73030" stroke-width="2" rx="5" stroke-dasharray="8 4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="#c73030" font-size="16" font-weight="bold" letter-spacing="0.15em">MASON CORE</text>
+                        <text x="0" y="10" text-anchor="middle" fill="#805050" font-size="9" letter-spacing="0.05em">Central Orchestrator</text>
+                        <text x="0" y="28" text-anchor="middle" fill="#604040" font-size="8">(Routing / Context / Memory)</text>
                     </g>
                     
-                    <!-- Dashed lines splitting to 3 -->
-                    <line x1="250" y1="255" x2="250" y2="280" stroke="#e8e4d9" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="280" x2="100" y2="300" stroke="#e8e4d9" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="280" x2="250" y2="300" stroke="#e8e4d9" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="280" x2="400" y2="300" stroke="#e8e4d9" stroke-width="1" stroke-dasharray="4 4"/>
-                    <polygon points="100,310 95,300 105,300" fill="${getColor(mockJob.steps.validator)}"/>
-                    <polygon points="250,310 245,300 255,300" fill="${getColor(mockJob.steps.audience)}"/>
-                    <polygon points="400,310 395,300 405,300" fill="${getColor(mockJob.steps.research)}"/>
+                    <!-- Lines splitting - animated flow -->
+                    <g stroke="#606060" stroke-width="1.5" stroke-dasharray="4 4" class="dash-flow" fill="none">
+                        <line x1="250" y1="270" x2="250" y2="295"/>
+                        <path d="M 250 295 Q 250 310 100 320"/>
+                        <line x1="250" y1="295" x2="250" y2="320"/>
+                        <path d="M 250 295 Q 250 310 400 320"/>
+                    </g>
+                    <polygon points="100,328 96,318 104,318" fill="${getColor(mockJob.steps.validator)}"/>
+                    <polygon points="250,328 246,318 254,318" fill="${getColor(mockJob.steps.audience)}"/>
+                    <polygon points="400,328 396,318 404,318" fill="${getColor(mockJob.steps.research)}"/>
                     
-                    <!-- Analysis Layer: VALIDATOR | AUDIENCE | RESEARCH -->
-                    <g transform="translate(100, 350)">
-                        <rect x="-55" y="-30" width="110" height="60" fill="none" stroke="${getColor(mockJob.steps.validator)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${getTextColor(mockJob.steps.validator)}" font-size="9" font-weight="bold">VALIDATOR</text>
-                        <text x="0" y="8" text-anchor="middle" fill="#707070" font-size="7">(Brief Check)</text>
-                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.validator)}" font-size="8">${mockJob.steps.validator === 'done' ? '✓ PASS' : '...'}</text>
+                    <!-- Analysis Layer -->
+                    <g transform="translate(100, 370)" class="${mockJob.steps.validator === 'done' ? 'node-done' : ''}" style="filter: ${getGlow(mockJob.steps.validator)}">
+                        <rect x="-58" y="-32" width="116" height="64" fill="#050a05" stroke="${getColor(mockJob.steps.validator)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="${getTextColor(mockJob.steps.validator)}" font-size="9" font-weight="bold" letter-spacing="0.08em">VALIDATOR</text>
+                        <text x="0" y="6" text-anchor="middle" fill="#505050" font-size="7">(Brief Check)</text>
+                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.validator)}" font-size="9">${mockJob.steps.validator === 'done' ? '✓ PASS' : '...'}</text>
                     </g>
                     
-                    <g transform="translate(250, 350)">
-                        <rect x="-55" y="-30" width="110" height="60" fill="none" stroke="${getColor(mockJob.steps.audience)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${getTextColor(mockJob.steps.audience)}" font-size="9" font-weight="bold">AUDIENCE</text>
-                        <text x="0" y="8" text-anchor="middle" fill="#707070" font-size="7">(Target Analysis)</text>
-                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.audience)}" font-size="8">${mockJob.steps.audience === 'done' ? '✓ Mapped' : '...'}</text>
+                    <g transform="translate(250, 370)" class="${mockJob.steps.audience === 'done' ? 'node-done' : ''}" style="filter: ${getGlow(mockJob.steps.audience)}">
+                        <rect x="-58" y="-32" width="116" height="64" fill="#050a05" stroke="${getColor(mockJob.steps.audience)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="${getTextColor(mockJob.steps.audience)}" font-size="9" font-weight="bold" letter-spacing="0.08em">AUDIENCE</text>
+                        <text x="0" y="6" text-anchor="middle" fill="#505050" font-size="7">(Target Analysis)</text>
+                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.audience)}" font-size="9">${mockJob.steps.audience === 'done' ? '✓ Mapped' : '...'}</text>
                     </g>
                     
-                    <g transform="translate(400, 350)">
-                        <rect x="-55" y="-30" width="110" height="60" fill="none" stroke="${getColor(mockJob.steps.research)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${getTextColor(mockJob.steps.research)}" font-size="9" font-weight="bold">RESEARCH</text>
-                        <text x="0" y="8" text-anchor="middle" fill="#707070" font-size="7">(Context Map)</text>
-                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.research)}" font-size="8">${mockJob.steps.research === 'done' ? '✓ 7 insights' : '...'}</text>
+                    <g transform="translate(400, 370)" class="${mockJob.steps.research === 'done' ? 'node-done' : ''}" style="filter: ${getGlow(mockJob.steps.research)}">
+                        <rect x="-58" y="-32" width="116" height="64" fill="#050a05" stroke="${getColor(mockJob.steps.research)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="${getTextColor(mockJob.steps.research)}" font-size="9" font-weight="bold" letter-spacing="0.08em">RESEARCH</text>
+                        <text x="0" y="6" text-anchor="middle" fill="#505050" font-size="7">(Context Map)</text>
+                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.research)}" font-size="9">${mockJob.steps.research === 'done' ? '✓ 7 insights' : '...'}</text>
                     </g>
                     
-                    <!-- Lines merging to CLAIMS -->
-                    <line x1="100" y1="380" x2="100" y2="410" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="380" x2="250" y2="410" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="400" y1="380" x2="400" y2="410" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="100" y1="410" x2="250" y2="430" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="400" y1="410" x2="250" y2="430" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <polygon points="250,440 245,430 255,430" fill="${getColor(mockJob.steps.claims)}"/>
+                    <!-- Merge lines to CLAIMS -->
+                    <g stroke="${getColor(mockJob.steps.claims)}" stroke-width="1.5" stroke-dasharray="4 4" class="dash-flow" fill="none">
+                        <line x1="100" y1="402" x2="100" y2="430"/>
+                        <line x1="250" y1="402" x2="250" y2="430"/>
+                        <line x1="400" y1="402" x2="400" y2="430"/>
+                        <path d="M 100 430 Q 100 450 250 460"/>
+                        <path d="M 400 430 Q 400 450 250 460"/>
+                    </g>
+                    <polygon points="250,468 246,458 254,458" fill="${getColor(mockJob.steps.claims)}"/>
                     
-                    <!-- CLAIMS CHECKER (like Agent Bus) -->
-                    <g transform="translate(250, 475)">
-                        <rect x="-90" y="-25" width="180" height="50" fill="none" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-5" text-anchor="middle" fill="${getTextColor(mockJob.steps.claims)}" font-size="10" font-weight="bold">CLAIMS CHECKER</text>
-                        <text x="0" y="12" text-anchor="middle" fill="#707070" font-size="7">(Fact Verification / Quality Gate)</text>
-                        <text x="0" y="26" text-anchor="middle" fill="${getTextColor(mockJob.steps.claims)}" font-size="8">${mockJob.steps.claims === 'done' ? '✓ Verified' : '...'}</text>
+                    <!-- CLAIMS CHECKER -->
+                    <g transform="translate(250, 505)" class="${mockJob.steps.claims === 'done' ? 'node-done' : ''}" style="filter: ${getGlow(mockJob.steps.claims)}">
+                        <rect x="-95" y="-28" width="190" height="56" fill="#050a05" stroke="${getColor(mockJob.steps.claims)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-6" text-anchor="middle" fill="${getTextColor(mockJob.steps.claims)}" font-size="10" font-weight="bold" letter-spacing="0.1em">CLAIMS CHECKER</text>
+                        <text x="0" y="12" text-anchor="middle" fill="#505050" font-size="7">(Fact Verification / Quality Gate)</text>
+                        <text x="0" y="28" text-anchor="middle" fill="${getTextColor(mockJob.steps.claims)}" font-size="9">${mockJob.steps.claims === 'done' ? '✓ Verified' : '...'}</text>
                     </g>
                     
-                    <!-- Lines splitting to creation layer -->
-                    <line x1="250" y1="500" x2="250" y2="520" stroke="${getColor(mockJob.steps.copy)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="520" x2="100" y2="540" stroke="${getColor(mockJob.steps.copy)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="520" x2="250" y2="540" stroke="${getColor(mockJob.steps.brand)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="520" x2="400" y2="540" stroke="${getColor(mockJob.steps.critic)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <polygon points="100,550 95,540 105,540" fill="${getColor(mockJob.steps.copy)}"/>
-                    <polygon points="250,550 245,540 255,540" fill="${getColor(mockJob.steps.brand)}"/>
-                    <polygon points="400,550 395,540 405,540" fill="${getColor(mockJob.steps.critic)}"/>
+                    <!-- Split to creation layer -->
+                    <g stroke="#505050" stroke-width="1.5" stroke-dasharray="4 4" class="dash-flow" fill="none">
+                        <line x1="250" y1="533" x2="250" y2="555"/>
+                        <path d="M 250 555 Q 250 570 100 580"/>
+                        <line x1="250" y1="555" x2="250" y2="580"/>
+                        <path d="M 250 555 Q 250 570 400 580"/>
+                    </g>
+                    <polygon points="100,588 96,578 104,578" fill="${getColor(mockJob.steps.copy)}"/>
+                    <polygon points="250,588 246,578 254,578" fill="${getColor(mockJob.steps.brand)}"/>
+                    <polygon points="400,588 396,578 404,578" fill="${getColor(mockJob.steps.critic)}"/>
                     
-                    <!-- Creation Layer: COPY | BRAND | CRITIC -->
-                    <g transform="translate(100, 590)">
-                        <rect x="-55" y="-30" width="110" height="60" fill="none" stroke="${getColor(mockJob.steps.copy)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${getTextColor(mockJob.steps.copy)}" font-size="9" font-weight="bold">COPYWRITER</text>
-                        <text x="0" y="8" text-anchor="middle" fill="#707070" font-size="7">(Content Gen)</text>
-                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.copy)}" font-size="8">${mockJob.steps.copy === 'running' ? '● Writing...' : (mockJob.steps.copy === 'done' ? '✓ Done' : '...')}</text>
+                    <!-- Creation Layer -->
+                    <g transform="translate(100, 628)" class="${mockJob.steps.copy === 'running' ? 'node-running' : ''}" style="filter: ${getGlow(mockJob.steps.copy)}">
+                        <rect x="-58" y="-32" width="116" height="64" fill="${mockJob.steps.copy === 'running' ? '#0a0505' : '#050505'}" stroke="${getColor(mockJob.steps.copy)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="${getTextColor(mockJob.steps.copy)}" font-size="9" font-weight="bold" letter-spacing="0.08em">COPYWRITER</text>
+                        <text x="0" y="6" text-anchor="middle" fill="#505050" font-size="7">(Content Gen)</text>
+                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.copy)}" font-size="9">${mockJob.steps.copy === 'running' ? '● Writing...' : '...'}</text>
                     </g>
                     
-                    <g transform="translate(250, 590)">
-                        <rect x="-55" y="-30" width="110" height="60" fill="none" stroke="${getColor(mockJob.steps.brand)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${getTextColor(mockJob.steps.brand)}" font-size="9" font-weight="bold">BRAND</text>
-                        <text x="0" y="8" text-anchor="middle" fill="#707070" font-size="7">(Voice Guard)</text>
-                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.brand)}" font-size="8">...</text>
+                    <g transform="translate(250, 628)">
+                        <rect x="-58" y="-32" width="116" height="64" fill="#050505" stroke="${getColor(mockJob.steps.brand)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="${getTextColor(mockJob.steps.brand)}" font-size="9" font-weight="bold" letter-spacing="0.08em">BRAND</text>
+                        <text x="0" y="6" text-anchor="middle" fill="#505050" font-size="7">(Voice Guard)</text>
+                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.brand)}" font-size="9">...</text>
                     </g>
                     
-                    <g transform="translate(400, 590)">
-                        <rect x="-55" y="-30" width="110" height="60" fill="none" stroke="${getColor(mockJob.steps.critic)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${getTextColor(mockJob.steps.critic)}" font-size="9" font-weight="bold">CRITIC LITE</text>
-                        <text x="0" y="8" text-anchor="middle" fill="#707070" font-size="7">(Quick Eval)</text>
-                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.critic)}" font-size="8">...</text>
+                    <g transform="translate(400, 628)">
+                        <rect x="-58" y="-32" width="116" height="64" fill="#050505" stroke="${getColor(mockJob.steps.critic)}" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-10" text-anchor="middle" fill="${getTextColor(mockJob.steps.critic)}" font-size="9" font-weight="bold" letter-spacing="0.08em">CRITIC LITE</text>
+                        <text x="0" y="6" text-anchor="middle" fill="#505050" font-size="7">(Quick Eval)</text>
+                        <text x="0" y="22" text-anchor="middle" fill="${getTextColor(mockJob.steps.critic)}" font-size="9">...</text>
                     </g>
                     
-                    <!-- Lines merging to OPUS -->
-                    <line x1="100" y1="620" x2="100" y2="650" stroke="${getColor(mockJob.steps.opus)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="250" y1="620" x2="250" y2="650" stroke="${getColor(mockJob.steps.opus)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="400" y1="620" x2="400" y2="650" stroke="${getColor(mockJob.steps.opus)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="100" y1="650" x2="250" y2="670" stroke="${getColor(mockJob.steps.opus)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <line x1="400" y1="650" x2="250" y2="670" stroke="${getColor(mockJob.steps.opus)}" stroke-width="1" stroke-dasharray="4 4"/>
-                    <polygon points="250,680 245,670 255,670" fill="${getColor(mockJob.steps.opus)}"/>
+                    <!-- Merge to OPUS -->
+                    <g stroke="#3a3a3a" stroke-width="1.5" stroke-dasharray="4 4" fill="none">
+                        <line x1="100" y1="660" x2="100" y2="690"/>
+                        <line x1="250" y1="660" x2="250" y2="690"/>
+                        <line x1="400" y1="660" x2="400" y2="690"/>
+                        <path d="M 100 690 Q 100 710 250 720"/>
+                        <path d="M 400 690 Q 400 710 250 720"/>
+                    </g>
+                    <polygon points="250,728 246,718 254,718" fill="#3a3a3a"/>
                     
-                    <!-- OPUS (Final Judge - like Output Lock) -->
-                    <g transform="translate(250, 715)">
-                        <rect x="-90" y="-25" width="180" height="50" fill="none" stroke="${getColor(mockJob.steps.opus)}" stroke-width="1.5" rx="3"/>
-                        <text x="0" y="-5" text-anchor="middle" fill="${getTextColor(mockJob.steps.opus)}" font-size="10" font-weight="bold">CRITIC OPUS</text>
-                        <text x="0" y="12" text-anchor="middle" fill="#707070" font-size="7">(Final Judgment / Approval)</text>
+                    <!-- OPUS -->
+                    <g transform="translate(250, 765)">
+                        <rect x="-95" y="-28" width="190" height="56" fill="#050505" stroke="#3a3a3a" stroke-width="1.5" rx="4"/>
+                        <text x="0" y="-6" text-anchor="middle" fill="#5a5a5a" font-size="10" font-weight="bold" letter-spacing="0.1em">CRITIC OPUS</text>
+                        <text x="0" y="12" text-anchor="middle" fill="#404040" font-size="7">(Final Judgment / Approval)</text>
                     </g>
                     
-                    <!-- Final arrow to output -->
-                    <line x1="250" y1="740" x2="250" y2="775" stroke="#4a4a4a" stroke-width="1" stroke-dasharray="4 4"/>
-                    <polygon points="250,785 245,775 255,775" fill="#4a4a4a"/>
+                    <!-- Final output -->
+                    <line x1="250" y1="793" x2="250" y2="830" stroke="#3a3a3a" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <polygon points="250,838 246,828 254,828" fill="#3a3a3a"/>
                     
-                    <!-- ACTION EXECUTED -->
-                    <g transform="translate(250, 815)">
-                        <text x="0" y="0" text-anchor="middle" fill="#e8e4d9" font-size="10" letter-spacing="0.2em">[ CONTENT READY ]</text>
-                    </g>
+                    <text x="250" y="865" text-anchor="middle" fill="#606060" font-size="10" letter-spacing="0.25em">[ CONTENT READY ]</text>
                     
                 </svg>
             </div>
@@ -478,6 +512,15 @@ BRIEFING
             document.getElementById('gameboard-svg').innerHTML = html;
             document.getElementById('gameboard-missions').innerHTML = '';
         }
+
+        function selectAgent(agentId) {
+            console.log('Selected agent:', agentId);
+        }
+
+        function showBriefingDetail(briefingId) {
+            showTab('board');
+        }
+
 
         function selectAgent(agentId) {
             console.log('Selected agent:', agentId);
