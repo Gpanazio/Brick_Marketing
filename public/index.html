@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK AI // WAR ROOM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <style>
+        body { background-color: #050505; color: #e0e0e0; font-family: 'Courier New', Courier, monospace; }
+        .column { min-height: 80vh; background: #0a0a0a; border: 1px solid #333; }
+        .card { background: #111; border-left: 4px solid #333; transition: all 0.2s; }
+        .card:hover { border-left-color: #00ff00; transform: translateX(5px); }
+        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
+        .glitch-text { text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
+        .modal-bg { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+    </style>
+</head>
+<body class="p-6">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tighter text-white">BRICK AI <span class="text-green-500 text-sm align-top">WAR ROOM</span></h1>
+            <p class="text-xs text-gray-500 mt-1">SQUAD STATUS: <span class="text-green-500">ONLINE</span> // MODEL: GEMINI 3</p>
+        </div>
+        <button onclick="openModal('newBriefing')" class="bg-white text-black px-4 py-2 font-bold hover:bg-gray-200">
+            + NEW BRIEFING
+        </button>
+    </header>
+
+    <!-- Board -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Column 1: Briefing -->
+        <div class="column p-4 rounded">
+            <h2 class="text-xl font-bold mb-4 text-gray-400 border-b border-gray-800 pb-2">01. BRIEFING (INPUT)</h2>
+            <div id="col-briefing" class="space-y-4">Loading...</div>
+        </div>
+
+        <!-- Column 2: WIP -->
+        <div class="column p-4 rounded relative">
+            <h2 class="text-xl font-bold mb-4 text-yellow-500 border-b border-yellow-900 pb-2">
+                <span class="animate-pulse">●</span> 02. WORKING (AGENTS)
+            </h2>
+            <div id="col-wip" class="space-y-4">Loading...</div>
+        </div>
+
+        <!-- Column 3: Done -->
+        <div class="column p-4 rounded">
+            <h2 class="text-xl font-bold mb-4 text-green-500 border-b border-green-900 pb-2">03. REVIEW / DONE</h2>
+            <div id="col-done" class="space-y-4">Loading...</div>
+        </div>
+
+    </div>
+
+    <!-- Modal: New Briefing -->
+    <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
+        <div class="bg-black border border-gray-700 p-8 w-full max-w-2xl shadow-2xl rounded">
+            <h2 class="text-2xl font-bold mb-4 text-white">NOVO BRIEFING</h2>
+            <input id="briefing-title" type="text" placeholder="Título (ex: Campanha Carnaval)" class="w-full bg-gray-900 border border-gray-700 p-3 text-white mb-4 focus:outline-none focus:border-green-500">
+            <textarea id="briefing-content" rows="6" placeholder="O que o squad deve fazer?" class="w-full bg-gray-900 border border-gray-700 p-3 text-white mb-4 focus:outline-none focus:border-green-500"></textarea>
+            <div class="flex justify-end gap-4">
+                <button onclick="closeModal('newBriefing')" class="text-gray-400 hover:text-white">CANCELAR</button>
+                <button onclick="submitBriefing()" class="bg-green-600 text-white px-6 py-2 font-bold hover:bg-green-500">ENVIAR PARA AGENTES</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: File Viewer -->
+    <div id="modal-viewer" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
+        <div class="bg-black border border-gray-700 w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl rounded">
+            <div class="flex justify-between items-center p-4 border-b border-gray-800 bg-gray-900">
+                <h2 id="viewer-title" class="text-xl font-bold text-white">FILENAME</h2>
+                <button onclick="closeModal('viewer')" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <div id="viewer-content" class="p-6 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0d0d0d]"></div>
+            <div id="viewer-actions" class="p-4 border-t border-gray-800 bg-gray-900 flex justify-end gap-4">
+                <!-- Buttons injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+
+        async function fetchState() {
+            try {
+                const res = await fetch(`${API_URL}/state`);
+                const data = await res.json();
+                renderColumn('briefing', data.briefing);
+                renderColumn('wip', data.wip);
+                renderColumn('done', data.done);
+            } catch (e) {
+                console.error("Connection lost", e);
+            }
+        }
+
+        function renderColumn(id, files) {
+            const container = document.getElementById(`col-${id}`);
+            if (files.length === 0) {
+                container.innerHTML = `<div class="text-gray-700 text-center italic mt-10">System Idle...</div>`;
+                return;
+            }
+            container.innerHTML = files.map(file => `
+                <div class="card p-4 mb-3 cursor-pointer hover:bg-gray-900" onclick="viewFile('${id}', '${file.name}')">
+                    <h3 class="font-bold text-sm text-gray-300 truncate">${file.name}</h3>
+                    <p class="text-xs text-gray-600 mt-2">${file.content.substring(0, 80)}...</p>
+                </div>
+            `).join('');
+        }
+
+        let currentFile = null;
+
+        async function viewFile(category, filename) {
+            const res = await fetch(`${API_URL}/state`); // lazy fetch to get content
+            const data = await res.json();
+            const file = data[category].find(f => f.name === filename);
+            if (!file) return;
+
+            currentFile = { category, filename };
+            document.getElementById('viewer-title').innerText = filename;
+            document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
+            
+            const actions = document.getElementById('viewer-actions');
+            actions.innerHTML = '';
+
+            if (category === 'briefing') {
+                actions.innerHTML = `<button onclick="deleteFile()" class="text-red-500 text-sm mr-auto">DELETE</button>
+                                     <button class="text-gray-500 cursor-not-allowed">AGENTS WILL PICK THIS UP</button>`;
+            } else if (category === 'wip') {
+                actions.innerHTML = `<span class="text-yellow-500 animate-pulse">AGENTS WORKING...</span>`;
+            } else if (category === 'done') {
+                actions.innerHTML = `<button onclick="deleteFile()" class="text-red-500 text-sm mr-auto">DISCARD</button>
+                                     <button onclick="alert('Published! (Simulated)')" class="bg-green-600 text-white px-4 py-2 font-bold">PUBLISH</button>`;
+            }
+
+            openModal('viewer');
+        }
+
+        async function submitBriefing() {
+            const title = document.getElementById('briefing-title').value;
+            const content = document.getElementById('briefing-content').value;
+            if (!title || !content) return alert('Preencha tudo.');
+
+            await fetch(`${API_URL}/briefing`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content })
+            });
+            closeModal('newBriefing');
+            fetchState();
+        }
+
+        async function deleteFile() {
+            if (!confirm('Tem certeza?')) return;
+            await fetch(`${API_URL}/file`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(currentFile)
+            });
+            closeModal('viewer');
+            fetchState();
+        }
+
+        function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
+
+        // Poll every 2 seconds
+        setInterval(fetchState, 2000);
+        fetchState();
+    </script>
+</body>
+</html>
