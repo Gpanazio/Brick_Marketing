@@ -113,6 +113,7 @@ BRIEFING
     <!-- Tabs -->
     <div class="flex gap-4 mb-6 border-b border-gray-800 pb-2">
         <button id="tab-board" onclick="showTab('board')" class="text-white font-bold border-b-2 border-green-500 pb-2">SQUAD BOARD</button>
+        <button id="tab-gameboard" onclick="showTab('gameboard')" class="text-gray-500 hover:text-white pb-2">GAME BOARD</button>
         <button id="tab-history" onclick="showTab('history')" class="text-gray-500 hover:text-white pb-2">HISTÓRICO</button>
         <button id="tab-architecture" onclick="showTab('architecture')" class="text-gray-500 hover:text-white pb-2">ARQUITETURA</button>
     </div>
@@ -147,6 +148,27 @@ BRIEFING
         <div class="column p-6 rounded">
             <h2 class="text-xl font-bold mb-4 text-purple-400 border-b border-purple-900 pb-2">📚 HISTÓRICO DE CAMPANHAS</h2>
             <div id="history-list" class="space-y-4">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Game Board View -->
+    <div id="view-gameboard" class="hidden">
+        <div class="column p-6 rounded bg-[#030303]">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
+                <h2 class="text-xl font-bold text-cyan-400">GAME BOARD // PIPELINE VIEW</h2>
+                <span class="text-xs text-gray-500">Click em qualquer agente para detalhes</span>
+            </div>
+            <div id="gameboard-content" class="font-mono text-xs overflow-x-auto">
+                <div class="flex items-center justify-center py-20">
+                    <span class="text-gray-600 animate-pulse">Carregando pipeline...</span>
+                </div>
+            </div>
+            <div id="gameboard-legend" class="mt-6 pt-4 border-t border-gray-800 flex gap-6 text-xs">
+                <span><span class="text-gray-500">○</span> Aguardando</span>
+                <span><span class="text-yellow-500">◉</span> Processando</span>
+                <span><span class="text-green-500">●</span> Completo</span>
+                <span><span class="text-red-500">✕</span> Erro</span>
+            </div>
         </div>
     </div>
 
@@ -205,12 +227,17 @@ BRIEFING
         // Tab switching
         function showTab(tab) {
             document.getElementById('view-board').classList.toggle('hidden', tab !== 'board');
+            document.getElementById('view-gameboard').classList.toggle('hidden', tab !== 'gameboard');
             document.getElementById('view-history').classList.toggle('hidden', tab !== 'history');
             document.getElementById('view-architecture').classList.toggle('hidden', tab !== 'architecture');
 
             document.getElementById('tab-board').classList.toggle('border-green-500', tab === 'board');
             document.getElementById('tab-board').classList.toggle('text-white', tab === 'board');
             document.getElementById('tab-board').classList.toggle('text-gray-500', tab !== 'board');
+
+            document.getElementById('tab-gameboard').classList.toggle('border-cyan-500', tab === 'gameboard');
+            document.getElementById('tab-gameboard').classList.toggle('text-white', tab === 'gameboard');
+            document.getElementById('tab-gameboard').classList.toggle('text-gray-500', tab !== 'gameboard');
 
             document.getElementById('tab-history').classList.toggle('border-purple-500', tab === 'history');
             document.getElementById('tab-history').classList.toggle('text-white', tab === 'history');
@@ -222,6 +249,7 @@ BRIEFING
 
             if (tab === 'history') fetchHistory();
             if (tab === 'architecture') fetchArchitecture();
+            if (tab === 'gameboard') fetchGameBoard();
         }
 
         async function fetchArchitecture() {
@@ -254,6 +282,116 @@ BRIEFING
                 console.error('Erro ao carregar arquitetura:', e);
                 document.getElementById('architecture-content').innerHTML = '<div class="text-red-500 text-center py-20">Erro ao carregar protocolos: ' + e.message + '</div>';
             }
+        }
+
+        // Game Board
+        async function fetchGameBoard() {
+            try {
+                const res = await fetch(`${API_URL}/state`);
+                const data = await res.json();
+                renderGameBoard(data);
+            } catch (e) {
+                console.error('Erro game board:', e);
+            }
+        }
+
+        function renderGameBoard(data) {
+            const agents = ['01_BRIEF_VALIDATOR', '02_AUDIENCE_ANALYST', '03_TOPIC_RESEARCHER', '04_CLAIMS_CHECKER', '05_COPYWRITER', '06_BRAND_GUARDIANS', '07_CRITIC_LITE', '08_CRITIC_OPUS'];
+            
+            // Agrupa WIP por briefing
+            const briefings = {};
+            data.wip.forEach(file => {
+                const parts = file.name.split('__');
+                if (parts.length > 1) {
+                    const briefingId = parts[0];
+                    const step = parts[1].replace('.md', '');
+                    if (!briefings[briefingId]) briefings[briefingId] = { steps: [], files: [] };
+                    briefings[briefingId].steps.push(step);
+                    briefings[briefingId].files.push(file);
+                }
+            });
+
+            // Adiciona briefings pendentes
+            data.briefing.forEach(file => {
+                const id = file.name.replace('.md', '');
+                if (!briefings[id]) briefings[id] = { steps: [], files: [], pending: true };
+            });
+
+            let html = '<div class="space-y-8">';
+            
+            // Header do mapa
+            html += '<div class="text-center mb-6">';
+            html += '<pre class="text-cyan-500 inline-block text-left">';
+            html += '╔══════════════════════════════════════════════════════════════════════════════╗\n';
+            html += '║                         B R I C K   A I   P I P E L I N E                    ║\n';
+            html += '╚══════════════════════════════════════════════════════════════════════════════╝</pre>';
+            html += '</div>';
+
+            // Pipeline visual
+            html += '<div class="overflow-x-auto"><pre class="text-[10px] leading-relaxed">';
+            html += '<span class="text-gray-500">INPUT</span>        ';
+            agents.forEach((agent, i) => {
+                const num = agent.split('_')[0];
+                html += `<span class="text-gray-600">${num}</span>`;
+                if (i < agents.length - 1) html += '<span class="text-gray-700">───</span>';
+            });
+            html += '        <span class="text-green-500">OUTPUT</span>\n';
+            
+            // Linha de agentes
+            html += '  <span class="text-cyan-600">▼</span>          ';
+            agents.forEach((agent, i) => {
+                html += '<span class="text-cyan-600">◆</span>';
+                if (i < agents.length - 1) html += '<span class="text-gray-800">───</span>';
+            });
+            html += '          <span class="text-green-600">▼</span>\n';
+            html += '</pre></div>';
+
+            // Lista de briefings com progresso
+            html += '<div class="mt-8 space-y-3">';
+            
+            if (Object.keys(briefings).length === 0) {
+                html += '<div class="text-gray-600 text-center py-8">Nenhum briefing em andamento</div>';
+            } else {
+                Object.keys(briefings).forEach(briefingId => {
+                    const b = briefings[briefingId];
+                    const completedSteps = b.steps.length;
+                    const progress = Math.round((completedSteps / agents.length) * 100);
+                    const currentStep = completedSteps > 0 ? completedSteps : 0;
+                    const statusColor = b.pending ? 'text-gray-500' : (completedSteps >= agents.length ? 'text-green-500' : 'text-yellow-500');
+                    
+                    html += `<div class="border border-gray-800 rounded p-4 hover:border-cyan-900 cursor-pointer" onclick="showBriefingDetail('${briefingId}')">`;
+                    html += `<div class="flex justify-between items-center mb-2">`;
+                    html += `<span class="font-bold ${statusColor}">${briefingId.replace(/_/g, ' ')}</span>`;
+                    html += `<span class="text-xs text-gray-500">${progress}%</span>`;
+                    html += `</div>`;
+                    
+                    // Barra de progresso ASCII
+                    html += '<div class="font-mono text-[10px]">';
+                    html += '<span class="text-gray-600">[</span>';
+                    agents.forEach((agent, i) => {
+                        if (b.steps.some(s => s.startsWith(agent.split('_')[0]))) {
+                            html += '<span class="text-green-500">█</span>';
+                        } else if (i === completedSteps && !b.pending) {
+                            html += '<span class="text-yellow-500 animate-pulse">▓</span>';
+                        } else {
+                            html += '<span class="text-gray-700">░</span>';
+                        }
+                    });
+                    html += '<span class="text-gray-600">]</span>';
+                    html += ` <span class="text-gray-500">${completedSteps}/${agents.length}</span>`;
+                    html += '</div>';
+                    
+                    html += '</div>';
+                });
+            }
+            
+            html += '</div></div>';
+            
+            document.getElementById('gameboard-content').innerHTML = html;
+        }
+
+        function showBriefingDetail(briefingId) {
+            alert('Briefing: ' + briefingId + '\\n\\nClique nos arquivos do SQUAD BOARD para ver detalhes.');
         }
 
         // Fetch history
