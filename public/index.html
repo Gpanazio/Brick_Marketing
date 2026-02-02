@@ -314,18 +314,18 @@ BRIEFING
         function renderGameBoard(data) {
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
             
-            // MOCK DATA - simula um job em andamento
+            // MOCK DATA
             const mockJob = {
                 id: 'quem_nao_sabe_ensina',
                 title: 'Quem não sabe, ensina',
                 startedAt: '19:45',
                 currentStep: 5,
                 steps: {
-                    '01': { status: 'done', duration: '12s', output: 'PASS - 3 assumptions' },
-                    '02': { status: 'done', duration: '18s', output: 'Diretores criativos 35-50' },
-                    '03': { status: 'done', duration: '24s', output: '7 insights coletados' },
-                    '04': { status: 'done', duration: '8s', output: '2 claims ajustados' },
-                    '05': { status: 'running', duration: '...', output: 'Gerando copy...' },
+                    '01': { status: 'done', duration: '12s', output: 'PASS' },
+                    '02': { status: 'done', duration: '18s', output: 'Mapped' },
+                    '03': { status: 'done', duration: '24s', output: '7 insights' },
+                    '04': { status: 'done', duration: '8s', output: 'Checked' },
+                    '05': { status: 'running', duration: '...', output: 'Writing...' },
                     '06': { status: 'pending', duration: '-', output: '-' },
                     '07': { status: 'pending', duration: '-', output: '-' },
                     '08': { status: 'pending', duration: '-', output: '-' }
@@ -333,166 +333,195 @@ BRIEFING
             };
 
             const agents = [
-                { id: '01', name: 'VALIDATOR', desc: 'Valida entrada' },
-                { id: '02', name: 'AUDIENCE', desc: 'Analisa público' },
-                { id: '03', name: 'RESEARCH', desc: 'Pesquisa contexto' },
-                { id: '04', name: 'CLAIMS', desc: 'Checa fatos' },
-                { id: '05', name: 'COPY', desc: 'Gera texto' },
-                { id: '06', name: 'BRAND', desc: 'Guarda voz' },
-                { id: '07', name: 'CRITIC', desc: 'Avalia rápido' },
-                { id: '08', name: 'OPUS', desc: 'Julga final' }
+                { id: '01', name: 'VALIDATOR' },
+                { id: '02', name: 'AUDIENCE' },
+                { id: '03', name: 'RESEARCH' },
+                { id: '04', name: 'CLAIMS' },
+                { id: '05', name: 'COPYWRITER' },
+                { id: '06', name: 'BRAND' },
+                { id: '07', name: 'CRITIC' },
+                { id: '08', name: 'OPUS' }
             ];
 
-            let html = `
-            <div class="w-full max-w-6xl mx-auto">
-                <!-- Header com info do Job -->
-                <div class="bg-slate-900/50 border border-blue-900/50 rounded-lg p-4 mb-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <div class="text-[10px] text-blue-500 font-mono tracking-wider mb-1">JOB EM EXECUÇÃO</div>
-                            <h2 class="text-xl text-white font-bold">${mockJob.title}</h2>
-                            <div class="text-xs text-gray-500 mt-1">ID: ${mockJob.id} • Iniciado: ${mockJob.startedAt}</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-3xl font-bold text-blue-400">${mockJob.currentStep}<span class="text-lg text-gray-600">/8</span></div>
-                            <div class="text-[10px] text-gray-500">ETAPA ATUAL</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Progress bar geral -->
-                    <div class="mt-4">
-                        <div class="flex gap-1 h-2">
-                            ${agents.map((a, i) => {
-                                const step = mockJob.steps[a.id];
-                                let bg = 'bg-slate-700';
-                                if (step.status === 'done') bg = 'bg-green-500';
-                                if (step.status === 'running') bg = 'bg-amber-400 animate-pulse';
-                                return `<div class="flex-1 ${bg} rounded-sm" title="${a.name}"></div>`;
-                            }).join('')}
-                        </div>
-                        <div class="flex justify-between mt-1 text-[8px] text-gray-600 font-mono">
-                            <span>INPUT</span>
-                            <span>OUTPUT</span>
-                        </div>
-                    </div>
-                </div>
+            // Cores da ref: azul marinho escuro, vermelho para ativo/core
+            const colors = {
+                bg: '#0a0e17',
+                bgLight: '#0f1520',
+                border: '#1a2744',
+                borderLight: '#243352',
+                text: '#4a6fa5',
+                textDim: '#2a4a75',
+                done: '#1a4a3a',
+                doneBorder: '#2d7a5a',
+                doneText: '#5cb88a',
+                active: '#6b2020',
+                activeBorder: '#c73030',
+                activeText: '#ff6b6b',
+                pending: '#151c2a',
+                pendingBorder: '#1a2744',
+                pendingText: '#3a5a85'
+            };
 
-                <!-- Pipeline visual -->
-                <div class="grid grid-cols-4 gap-3 mb-4">
+            let html = `
+            <div class="w-full" style="background: ${colors.bg}; font-family: 'Courier New', monospace;">
+                
+                <!-- SVG Pipeline Map -->
+                <svg viewBox="0 0 900 500" class="w-full" style="max-height: 65vh;">
+                    <defs>
+                        <pattern id="gridBg" width="30" height="30" patternUnits="userSpaceOnUse">
+                            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="${colors.border}" stroke-width="0.3" opacity="0.4"/>
+                        </pattern>
+                        <marker id="arrowDone" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="${colors.doneBorder}"/>
+                        </marker>
+                        <marker id="arrowActive" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="${colors.activeBorder}"/>
+                        </marker>
+                        <marker id="arrowPending" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L8,3 z" fill="${colors.borderLight}"/>
+                        </marker>
+                    </defs>
+                    
+                    <!-- Background -->
+                    <rect width="900" height="500" fill="${colors.bg}"/>
+                    <rect width="900" height="500" fill="url(#gridBg)"/>
+                    
+                    <!-- Title -->
+                    <text x="450" y="30" text-anchor="middle" fill="${colors.text}" font-size="11" letter-spacing="0.3em">BRICK AI PRODUCTION PIPELINE</text>
+                    
+                    <!-- INPUT Node -->
+                    <g transform="translate(50, 130)">
+                        <rect x="0" y="0" width="70" height="50" fill="${colors.bgLight}" stroke="${colors.borderLight}" stroke-width="2" rx="3"/>
+                        <text x="35" y="22" text-anchor="middle" fill="${colors.textDim}" font-size="8">BRIEFING</text>
+                        <text x="35" y="38" text-anchor="middle" fill="${colors.text}" font-size="10" font-weight="bold">INPUT</text>
+                    </g>
+                    
+                    <!-- Flow line from INPUT to 01 -->
+                    <line x1="120" y1="155" x2="160" y2="155" stroke="${colors.doneBorder}" stroke-width="2" marker-end="url(#arrowDone)"/>
+                    
+                    <!-- Agent nodes - Row 1 -->
                     ${agents.slice(0, 4).map((agent, i) => {
                         const step = mockJob.steps[agent.id];
-                        const isRunning = step.status === 'running';
+                        const x = 170 + i * 170;
+                        const y = 100;
                         const isDone = step.status === 'done';
-                        const borderColor = isDone ? 'border-green-500/50' : (isRunning ? 'border-amber-400' : 'border-slate-700');
-                        const bgColor = isDone ? 'bg-green-950/30' : (isRunning ? 'bg-amber-950/30' : 'bg-slate-900/30');
+                        const isActive = step.status === 'running';
+                        const bgColor = isDone ? colors.done : (isActive ? colors.active : colors.pending);
+                        const borderColor = isDone ? colors.doneBorder : (isActive ? colors.activeBorder : colors.pendingBorder);
+                        const textColor = isDone ? colors.doneText : (isActive ? colors.activeText : colors.pendingText);
+                        const arrowType = isDone ? 'arrowDone' : (isActive ? 'arrowActive' : 'arrowPending');
+                        const nextArrowType = i < 3 ? (mockJob.steps[agents[i+1].id].status === 'done' ? 'arrowDone' : (mockJob.steps[agents[i+1].id].status === 'running' ? 'arrowActive' : 'arrowPending')) : 'arrowPending';
+                        const nextLineColor = i < 3 ? (mockJob.steps[agents[i+1].id].status === 'done' ? colors.doneBorder : (mockJob.steps[agents[i+1].id].status === 'running' ? colors.activeBorder : colors.borderLight)) : colors.borderLight;
                         
                         return `
-                        <div class="${bgColor} border ${borderColor} rounded-lg p-3 relative ${isRunning ? 'ring-1 ring-amber-400/30' : ''}">
-                            <!-- Status indicator -->
-                            <div class="absolute top-2 right-2">
-                                ${isDone ? '<div class="w-2 h-2 bg-green-500 rounded-full"></div>' : ''}
-                                ${isRunning ? '<div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>' : ''}
-                                ${step.status === 'pending' ? '<div class="w-2 h-2 bg-slate-600 rounded-full"></div>' : ''}
-                            </div>
+                        <g>
+                            <!-- Node -->
+                            <rect x="${x}" y="${y}" width="130" height="110" fill="${bgColor}" stroke="${borderColor}" stroke-width="2" rx="3"/>
                             
                             <!-- Header -->
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="text-xs font-bold ${isDone ? 'text-green-400' : (isRunning ? 'text-amber-400' : 'text-slate-500')}">${agent.id}</span>
-                                <span class="text-[10px] text-gray-400">${agent.name}</span>
-                            </div>
+                            <rect x="${x}" y="${y}" width="130" height="24" fill="${borderColor}" opacity="0.3" rx="3"/>
+                            <text x="${x + 10}" y="${y + 16}" fill="${textColor}" font-size="10" font-weight="bold">${agent.id}</text>
+                            <text x="${x + 35}" y="${y + 16}" fill="${textColor}" font-size="9" opacity="0.8">${agent.name}</text>
                             
-                            <!-- Output/Status -->
-                            <div class="text-[10px] ${isDone ? 'text-green-300/70' : (isRunning ? 'text-amber-300/70' : 'text-slate-600')} mb-2 h-8">
-                                ${step.output}
-                            </div>
+                            <!-- Status indicator -->
+                            <circle cx="${x + 118}" cy="${y + 12}" r="5" fill="${borderColor}">
+                                ${isActive ? '<animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>' : ''}
+                            </circle>
                             
-                            <!-- Duration -->
-                            <div class="text-[9px] text-gray-600 font-mono">
-                                ${step.duration}
-                            </div>
+                            <!-- Content -->
+                            <text x="${x + 65}" y="${y + 55}" text-anchor="middle" fill="${textColor}" font-size="11">${step.output}</text>
+                            <text x="${x + 65}" y="${y + 80}" text-anchor="middle" fill="${textColor}" font-size="9" opacity="0.6">${step.duration}</text>
                             
-                            <!-- Arrow to next (except last) -->
-                            ${i < 3 ? '<div class="absolute -right-2 top-1/2 -translate-y-1/2 text-slate-600">→</div>' : ''}
-                        </div>
+                            <!-- Status label -->
+                            <text x="${x + 65}" y="${y + 100}" text-anchor="middle" fill="${textColor}" font-size="8" opacity="0.5">
+                                ${isDone ? 'COMPLETE' : (isActive ? 'RUNNING' : 'PENDING')}
+                            </text>
+                            
+                            <!-- Connection to next -->
+                            ${i < 3 ? `<line x1="${x + 130}" y1="${y + 55}" x2="${x + 160}" y2="${y + 55}" stroke="${nextLineColor}" stroke-width="2" marker-end="url(#${nextArrowType})"/>` : ''}
+                        </g>
                         `;
                     }).join('')}
-                </div>
-                
-                <!-- Row 2 - reverse order visually but correct data -->
-                <div class="grid grid-cols-4 gap-3 mb-6">
-                    ${agents.slice(4, 8).map((agent, i) => {
+                    
+                    <!-- Vertical connection from 04 to 05 -->
+                    <path d="M 765 210 L 765 260 L 765 290" stroke="${colors.activeBorder}" stroke-width="2" fill="none" marker-end="url(#arrowActive)"/>
+                    
+                    <!-- Agent nodes - Row 2 (reversed visual order) -->
+                    ${agents.slice(4, 8).reverse().map((agent, i) => {
                         const step = mockJob.steps[agent.id];
-                        const isRunning = step.status === 'running';
+                        const x = 170 + i * 170;
+                        const y = 300;
                         const isDone = step.status === 'done';
-                        const borderColor = isDone ? 'border-green-500/50' : (isRunning ? 'border-amber-400' : 'border-slate-700');
-                        const bgColor = isDone ? 'bg-green-950/30' : (isRunning ? 'bg-amber-950/30' : 'bg-slate-900/30');
+                        const isActive = step.status === 'running';
+                        const bgColor = isDone ? colors.done : (isActive ? colors.active : colors.pending);
+                        const borderColor = isDone ? colors.doneBorder : (isActive ? colors.activeBorder : colors.pendingBorder);
+                        const textColor = isDone ? colors.doneText : (isActive ? colors.activeText : colors.pendingText);
+                        
+                        // Determine previous arrow (going right to left in display)
+                        const prevLineColor = i > 0 ? colors.borderLight : (isActive ? colors.activeBorder : colors.borderLight);
+                        const prevArrowType = i > 0 ? 'arrowPending' : (isActive ? 'arrowActive' : 'arrowPending');
                         
                         return `
-                        <div class="${bgColor} border ${borderColor} rounded-lg p-3 relative ${isRunning ? 'ring-1 ring-amber-400/30' : ''}">
-                            <div class="absolute top-2 right-2">
-                                ${isDone ? '<div class="w-2 h-2 bg-green-500 rounded-full"></div>' : ''}
-                                ${isRunning ? '<div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>' : ''}
-                                ${step.status === 'pending' ? '<div class="w-2 h-2 bg-slate-600 rounded-full"></div>' : ''}
-                            </div>
+                        <g>
+                            <rect x="${x}" y="${y}" width="130" height="110" fill="${bgColor}" stroke="${borderColor}" stroke-width="2" rx="3"/>
                             
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="text-xs font-bold ${isDone ? 'text-green-400' : (isRunning ? 'text-amber-400' : 'text-slate-500')}">${agent.id}</span>
-                                <span class="text-[10px] text-gray-400">${agent.name}</span>
-                            </div>
+                            <rect x="${x}" y="${y}" width="130" height="24" fill="${borderColor}" opacity="0.3" rx="3"/>
+                            <text x="${x + 10}" y="${y + 16}" fill="${textColor}" font-size="10" font-weight="bold">${agent.id}</text>
+                            <text x="${x + 35}" y="${y + 16}" fill="${textColor}" font-size="9" opacity="0.8">${agent.name}</text>
                             
-                            <div class="text-[10px] ${isDone ? 'text-green-300/70' : (isRunning ? 'text-amber-300/70' : 'text-slate-600')} mb-2 h-8">
-                                ${step.output}
-                            </div>
+                            <circle cx="${x + 118}" cy="${y + 12}" r="5" fill="${borderColor}">
+                                ${isActive ? '<animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>' : ''}
+                            </circle>
                             
-                            <div class="text-[9px] text-gray-600 font-mono">
-                                ${step.duration}
-                            </div>
-                        </div>
+                            <text x="${x + 65}" y="${y + 55}" text-anchor="middle" fill="${textColor}" font-size="11">${step.output}</text>
+                            <text x="${x + 65}" y="${y + 80}" text-anchor="middle" fill="${textColor}" font-size="9" opacity="0.6">${step.duration}</text>
+                            <text x="${x + 65}" y="${y + 100}" text-anchor="middle" fill="${textColor}" font-size="8" opacity="0.5">
+                                ${isDone ? 'COMPLETE' : (isActive ? 'RUNNING' : 'PENDING')}
+                            </text>
+                            
+                            <!-- Connection to previous (going left) -->
+                            ${i > 0 ? `<line x1="${x}" y1="${y + 55}" x2="${x - 30}" y2="${y + 55}" stroke="${prevLineColor}" stroke-width="2" marker-end="url(#${prevArrowType})"/>` : ''}
+                        </g>
                         `;
                     }).join('')}
-                </div>
+                    
+                    <!-- OUTPUT Node -->
+                    <g transform="translate(50, 330)">
+                        <line x1="170" y1="25" x2="120" y2="25" stroke="${colors.borderLight}" stroke-width="2" marker-end="url(#arrowPending)"/>
+                        <rect x="0" y="0" width="70" height="50" fill="${colors.bgLight}" stroke="${colors.borderLight}" stroke-width="2" rx="3"/>
+                        <text x="35" y="22" text-anchor="middle" fill="${colors.textDim}" font-size="8">REVIEW</text>
+                        <text x="35" y="38" text-anchor="middle" fill="${colors.text}" font-size="10" font-weight="bold">OUTPUT</text>
+                    </g>
+                    
+                    <!-- Job info panel -->
+                    <g transform="translate(720, 440)">
+                        <rect x="0" y="0" width="160" height="50" fill="${colors.bgLight}" stroke="${colors.border}" stroke-width="1" rx="2"/>
+                        <text x="80" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="7" letter-spacing="0.1em">CURRENT JOB</text>
+                        <text x="80" y="38" text-anchor="middle" fill="${colors.text}" font-size="9">${mockJob.title}</text>
+                    </g>
+                    
+                    <!-- Progress indicator -->
+                    <g transform="translate(20, 440)">
+                        <rect x="0" y="0" width="120" height="50" fill="${colors.bgLight}" stroke="${colors.border}" stroke-width="1" rx="2"/>
+                        <text x="60" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="7" letter-spacing="0.1em">PROGRESS</text>
+                        <text x="60" y="40" text-anchor="middle" fill="${colors.activeText}" font-size="16" font-weight="bold">${mockJob.currentStep}/8</text>
+                    </g>
+                    
+                    <!-- Tech labels -->
+                    <text x="20" y="490" fill="${colors.textDim}" font-size="7" opacity="0.5">BRICK PROTOCOL v3.1 // MASON SYSTEM</text>
+                    <text x="880" y="490" text-anchor="end" fill="${colors.textDim}" font-size="7" opacity="0.5">${new Date().toLocaleDateString('pt-BR')}</text>
+                </svg>
                 
-                <!-- Log/Timeline -->
-                <div class="bg-slate-900/30 border border-slate-800 rounded-lg p-4">
-                    <div class="text-[10px] text-gray-500 font-mono mb-3 tracking-wider">EXECUTION LOG</div>
-                    <div class="space-y-2 font-mono text-xs">
-                        <div class="flex gap-3 text-green-400/70">
-                            <span class="text-gray-600">19:45:00</span>
-                            <span class="text-green-500">✓</span>
-                            <span>[01] VALIDATOR</span>
-                            <span class="text-gray-500">→ PASS - 3 assumptions aplicados</span>
-                        </div>
-                        <div class="flex gap-3 text-green-400/70">
-                            <span class="text-gray-600">19:45:12</span>
-                            <span class="text-green-500">✓</span>
-                            <span>[02] AUDIENCE</span>
-                            <span class="text-gray-500">→ Diretores criativos identificados</span>
-                        </div>
-                        <div class="flex gap-3 text-green-400/70">
-                            <span class="text-gray-600">19:45:30</span>
-                            <span class="text-green-500">✓</span>
-                            <span>[03] RESEARCH</span>
-                            <span class="text-gray-500">→ 7 insights mapeados</span>
-                        </div>
-                        <div class="flex gap-3 text-green-400/70">
-                            <span class="text-gray-600">19:45:54</span>
-                            <span class="text-green-500">✓</span>
-                            <span>[04] CLAIMS</span>
-                            <span class="text-gray-500">→ 2 claims reescritos</span>
-                        </div>
-                        <div class="flex gap-3 text-amber-400">
-                            <span class="text-gray-600">19:46:02</span>
-                            <span class="animate-pulse">●</span>
-                            <span>[05] COPY</span>
-                            <span class="text-amber-300/70">→ Gerando com Claude Sonnet 4...</span>
-                        </div>
+                <!-- Log section -->
+                <div style="background: ${colors.bgLight}; border: 1px solid ${colors.border}; border-radius: 4px; padding: 12px; margin-top: 8px;">
+                    <div style="color: ${colors.textDim}; font-size: 9px; letter-spacing: 0.15em; margin-bottom: 8px;">EXECUTION LOG</div>
+                    <div style="font-size: 11px; line-height: 1.8;">
+                        <div style="color: ${colors.doneText};">19:45:00 [01] VALIDATOR → PASS</div>
+                        <div style="color: ${colors.doneText};">19:45:12 [02] AUDIENCE → Mapped</div>
+                        <div style="color: ${colors.doneText};">19:45:30 [03] RESEARCH → 7 insights</div>
+                        <div style="color: ${colors.doneText};">19:45:54 [04] CLAIMS → Checked</div>
+                        <div style="color: ${colors.activeText};">19:46:02 [05] COPYWRITER → Writing... <span style="animation: pulse 1s infinite;">●</span></div>
                     </div>
-                </div>
-                
-                <!-- Múltiplos jobs (se existirem) -->
-                <div class="mt-6 border-t border-slate-800 pt-4">
-                    <div class="text-[10px] text-gray-500 font-mono mb-3 tracking-wider">OUTROS JOBS NA FILA</div>
-                    <div class="text-sm text-gray-600 italic">Nenhum outro job no momento</div>
                 </div>
             </div>
             `;
@@ -500,6 +529,15 @@ BRIEFING
             document.getElementById('gameboard-svg').innerHTML = html;
             document.getElementById('gameboard-missions').innerHTML = '';
         }
+
+        function selectAgent(agentId) {
+            console.log('Selected agent:', agentId);
+        }
+
+        function showBriefingDetail(briefingId) {
+            showTab('board');
+        }
+
 
         function selectAgent(agentId) {
             console.log('Selected agent:', agentId);
