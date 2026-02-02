@@ -234,15 +234,6 @@ BRIEFING
                     </style>
                 `;
 
-                // Render first section (Flow) specially
-                const flow = sections[0];
-                html += `
-                    <div class="brick-section">
-                        <span class="brick-label">Pipeline // Protocol</span>
-                        <div class="brick-pre"><pre>${flow.split('## FLUXO DE PRODUÇÃO')[1] || flow}</pre></div>
-                    </div>
-                `;
-
                 // Render other sections
                 sections.slice(1).forEach(section => {
                     const lines = section.trim().split('\n');
