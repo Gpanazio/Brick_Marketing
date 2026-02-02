@@ -312,21 +312,19 @@ BRIEFING
         }
 
         function renderGameBoard(data) {
-            // Update time
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
             
             const agents = [
-                { id: '01', name: 'VALIDATOR', short: 'VAL', angle: 0 },
-                { id: '02', name: 'AUDIENCE', short: 'AUD', angle: 45 },
-                { id: '03', name: 'RESEARCH', short: 'RES', angle: 90 },
-                { id: '04', name: 'CLAIMS', short: 'CLM', angle: 135 },
-                { id: '05', name: 'COPYWRITER', short: 'CPY', angle: 180 },
-                { id: '06', name: 'BRAND', short: 'BRD', angle: 225 },
-                { id: '07', name: 'CRITIC', short: 'CRT', angle: 270 },
-                { id: '08', name: 'OPUS', short: 'OPS', angle: 315 }
+                { id: '01', name: 'BRIEF VALIDATOR', short: 'VALIDATOR', desc: 'Validacao de entrada' },
+                { id: '02', name: 'AUDIENCE ANALYST', short: 'AUDIENCE', desc: 'Analise de publico' },
+                { id: '03', name: 'TOPIC RESEARCHER', short: 'RESEARCH', desc: 'Pesquisa de contexto' },
+                { id: '04', name: 'CLAIMS CHECKER', short: 'CLAIMS', desc: 'Verificacao de dados' },
+                { id: '05', name: 'COPYWRITER', short: 'COPY', desc: 'Geracao de texto' },
+                { id: '06', name: 'BRAND GUARDIAN', short: 'BRAND', desc: 'Protecao de marca' },
+                { id: '07', name: 'CRITIC LITE', short: 'CRITIC', desc: 'Avaliacao rapida' },
+                { id: '08', name: 'CRITIC OPUS', short: 'OPUS', desc: 'Avaliacao final' }
             ];
             
-            // Agrupa WIP por briefing
             const briefings = {};
             data.wip.forEach(file => {
                 const parts = file.name.split('__');
@@ -344,85 +342,153 @@ BRIEFING
                 if (!briefings[id]) briefings[id] = { steps: [], files: [], pending: true };
             });
 
-            const cx = 300, cy = 300, radius = 180, nodeRadius = 45;
-            
-            let svg = `<svg viewBox="0 0 600 600" class="w-full max-w-[600px]" style="filter: drop-shadow(0 0 40px rgba(59,130,246,0.1));">
-                <defs>
-                    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" style="stop-color:#dc2626;stop-opacity:0.8"/>
-                        <stop offset="50%" style="stop-color:#991b1b;stop-opacity:0.4"/>
-                        <stop offset="100%" style="stop-color:#450a0a;stop-opacity:0"/>
-                    </radialGradient>
-                    <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" style="stop-color:#1e40af;stop-opacity:0.6"/>
-                        <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:0"/>
-                    </radialGradient>
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                </defs>
-                
-                <!-- Outer ring -->
-                <circle cx="${cx}" cy="${cy}" r="${radius + 60}" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.3"/>
-                <circle cx="${cx}" cy="${cy}" r="${radius + 40}" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.2"/>
-                
-                <!-- Connection lines to center -->
-                ${agents.map(a => {
-                    const rad = (a.angle * Math.PI) / 180;
-                    const x = cx + radius * Math.cos(rad);
-                    const y = cy + radius * Math.sin(rad);
-                    return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1e3a8a" stroke-width="2" opacity="0.4"/>`;
-                }).join('')}
-                
-                <!-- Center core (HAL style) -->
-                <circle cx="${cx}" cy="${cy}" r="80" fill="url(#coreGlow)"/>
-                <circle cx="${cx}" cy="${cy}" r="50" fill="#0a0a0a" stroke="#dc2626" stroke-width="2"/>
-                <circle cx="${cx}" cy="${cy}" r="35" fill="#0a0a0a" stroke="#991b1b" stroke-width="1"/>
-                <circle cx="${cx}" cy="${cy}" r="20" fill="#dc2626" opacity="0.8">
-                    <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="${cx}" cy="${cy}" r="8" fill="#fca5a5"/>
-                
-                <!-- Core label -->
-                <text x="${cx}" y="${cy + 70}" text-anchor="middle" fill="#dc2626" font-size="8" font-family="monospace" letter-spacing="0.2em">MASON CORE</text>
-                
-                <!-- Agent nodes -->
-                ${agents.map(a => {
-                    const rad = (a.angle * Math.PI) / 180;
-                    const x = cx + radius * Math.cos(rad);
-                    const y = cy + radius * Math.sin(rad);
-                    const hasActive = Object.values(briefings).some(b => b.steps.some(s => s.startsWith(a.id)));
-                    const fillColor = hasActive ? '#166534' : '#1e3a8a';
-                    const strokeColor = hasActive ? '#22c55e' : '#3b82f6';
-                    return `
-                        <g class="cursor-pointer" onclick="highlightAgent('${a.id}')">
-                            <circle cx="${x}" cy="${y}" r="${nodeRadius + 10}" fill="url(#nodeGlow)" opacity="0.5"/>
-                            <circle cx="${x}" cy="${y}" r="${nodeRadius}" fill="#0a0a12" stroke="${strokeColor}" stroke-width="2"/>
-                            <circle cx="${x}" cy="${y}" r="${nodeRadius - 8}" fill="${fillColor}" opacity="0.3"/>
-                            <text x="${x}" y="${y - 8}" text-anchor="middle" fill="${strokeColor}" font-size="11" font-family="monospace" font-weight="bold">${a.id}</text>
-                            <text x="${x}" y="${y + 8}" text-anchor="middle" fill="#9ca3af" font-size="8" font-family="monospace">${a.short}</text>
-                            ${hasActive ? `<circle cx="${x + 25}" cy="${y - 25}" r="6" fill="#22c55e"><animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/></circle>` : ''}
-                        </g>
-                    `;
-                }).join('')}
-                
-                <!-- Corner labels -->
-                <text x="20" y="30" fill="#3b82f6" font-size="8" font-family="monospace" opacity="0.5">SECTOR: ALPHA</text>
-                <text x="20" y="45" fill="#6b7280" font-size="7" font-family="monospace" opacity="0.4">LAT: -22.9068</text>
-                <text x="580" y="30" text-anchor="end" fill="#3b82f6" font-size="8" font-family="monospace" opacity="0.5">BRICK PROTOCOL v3.1</text>
-                <text x="580" y="580" text-anchor="end" fill="#6b7280" font-size="7" font-family="monospace" opacity="0.4">DISCOVERY ONE // IO SYSTEM</text>
-                <text x="20" y="580" fill="#6b7280" font-size="7" font-family="monospace" opacity="0.4">${Object.keys(briefings).length} MISSOES ATIVAS</text>
-            </svg>`;
-            
-            document.getElementById('gameboard-svg').innerHTML = svg;
+            // Count active per agent
+            const agentActivity = {};
+            agents.forEach(a => {
+                agentActivity[a.id] = Object.values(briefings).filter(b => 
+                    b.steps.some(s => s.startsWith(a.id))
+                ).length;
+            });
 
-            // Render missions
+            let html = `
+            <div class="w-full">
+                <!-- Main Station Layout -->
+                <svg viewBox="0 0 1000 700" class="w-full" style="max-height: 70vh;">
+                    <defs>
+                        <linearGradient id="sectorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#020617;stop-opacity:1"/>
+                        </linearGradient>
+                        <linearGradient id="activeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#14532d;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#052e16;stop-opacity:1"/>
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                        <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e3a8a" stroke-width="0.3" opacity="0.3"/>
+                        </pattern>
+                    </defs>
+                    
+                    <!-- Background -->
+                    <rect width="1000" height="700" fill="#030712"/>
+                    <rect width="1000" height="700" fill="url(#gridPattern)"/>
+                    
+                    <!-- Title -->
+                    <text x="500" y="35" text-anchor="middle" fill="#3b82f6" font-size="14" font-family="monospace" letter-spacing="0.3em">AGENT ARCHITECTURE MAP - BRICK PROTOCOL</text>
+                    <text x="500" y="52" text-anchor="middle" fill="#1e40af" font-size="9" font-family="monospace" letter-spacing="0.2em">MASON SYSTEM // DISCOVERY ONE</text>
+                    
+                    <!-- Central Core -->
+                    <g transform="translate(500, 350)">
+                        <!-- Core rings -->
+                        <circle r="90" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.3"/>
+                        <circle r="70" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.4"/>
+                        <circle r="50" fill="#0a0a0a" stroke="#dc2626" stroke-width="2"/>
+                        <circle r="35" fill="#0a0a0a" stroke="#991b1b" stroke-width="1"/>
+                        <circle r="22" fill="#dc2626" opacity="0.9">
+                            <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle r="10" fill="#fca5a5"/>
+                        <text y="75" text-anchor="middle" fill="#dc2626" font-size="8" font-family="monospace" letter-spacing="0.15em">MASON CORE</text>
+                    </g>
+                    
+                    <!-- Connection corridors -->
+                    <g stroke="#1e3a8a" stroke-width="3" fill="none" opacity="0.5">
+                        <!-- Top row connections -->
+                        <path d="M 160 160 L 160 280 L 420 280 L 420 300"/>
+                        <path d="M 360 160 L 360 250 L 450 250 L 450 300"/>
+                        <path d="M 640 160 L 640 250 L 550 250 L 550 300"/>
+                        <path d="M 840 160 L 840 280 L 580 280 L 580 300"/>
+                        
+                        <!-- Bottom row connections -->
+                        <path d="M 160 540 L 160 420 L 420 420 L 420 400"/>
+                        <path d="M 360 540 L 360 450 L 450 450 L 450 400"/>
+                        <path d="M 640 540 L 640 450 L 550 450 L 550 400"/>
+                        <path d="M 840 540 L 840 420 L 580 420 L 580 400"/>
+                    </g>
+                    
+                    <!-- Agent Sectors - Top Row -->
+                    ${agents.slice(0, 4).map((agent, i) => {
+                        const x = 60 + i * 200;
+                        const y = 70;
+                        const isActive = agentActivity[agent.id] > 0;
+                        const fillGrad = isActive ? 'url(#activeGradient)' : 'url(#sectorGradient)';
+                        const borderColor = isActive ? '#22c55e' : '#1e40af';
+                        return `
+                        <g class="cursor-pointer" onclick="selectAgent('${agent.id}')">
+                            <!-- Sector box -->
+                            <rect x="${x}" y="${y}" width="180" height="90" rx="3" fill="${fillGrad}" stroke="${borderColor}" stroke-width="2"/>
+                            
+                            <!-- Internal details -->
+                            <rect x="${x + 10}" y="${y + 10}" width="40" height="30" rx="2" fill="#0a0a0a" stroke="#334155" stroke-width="1"/>
+                            <text x="${x + 30}" y="${y + 30}" text-anchor="middle" fill="${borderColor}" font-size="14" font-family="monospace" font-weight="bold">${agent.id}</text>
+                            
+                            <!-- Status lights -->
+                            <circle cx="${x + 165}" cy="${y + 15}" r="4" fill="${isActive ? '#22c55e' : '#334155'}">
+                                ${isActive ? '<animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>' : ''}
+                            </circle>
+                            
+                            <!-- Agent name -->
+                            <text x="${x + 60}" y="${y + 25}" fill="#94a3b8" font-size="8" font-family="monospace" letter-spacing="0.1em">${agent.short}</text>
+                            <text x="${x + 60}" y="${y + 40}" fill="#475569" font-size="7" font-family="monospace">${agent.desc}</text>
+                            
+                            <!-- Activity counter -->
+                            <rect x="${x + 10}" y="${y + 55}" width="160" height="25" rx="2" fill="#0a0a0a" stroke="#1e293b" stroke-width="1"/>
+                            <text x="${x + 20}" y="${y + 72}" fill="#64748b" font-size="8" font-family="monospace">ATIVO:</text>
+                            <text x="${x + 70}" y="${y + 72}" fill="${isActive ? '#22c55e' : '#475569'}" font-size="9" font-family="monospace">${agentActivity[agent.id]} briefing${agentActivity[agent.id] !== 1 ? 's' : ''}</text>
+                        </g>
+                        `;
+                    }).join('')}
+                    
+                    <!-- Agent Sectors - Bottom Row -->
+                    ${agents.slice(4, 8).map((agent, i) => {
+                        const x = 60 + i * 200;
+                        const y = 540;
+                        const isActive = agentActivity[agent.id] > 0;
+                        const fillGrad = isActive ? 'url(#activeGradient)' : 'url(#sectorGradient)';
+                        const borderColor = isActive ? '#22c55e' : '#1e40af';
+                        return `
+                        <g class="cursor-pointer" onclick="selectAgent('${agent.id}')">
+                            <!-- Sector box -->
+                            <rect x="${x}" y="${y}" width="180" height="90" rx="3" fill="${fillGrad}" stroke="${borderColor}" stroke-width="2"/>
+                            
+                            <!-- Internal details -->
+                            <rect x="${x + 10}" y="${y + 10}" width="40" height="30" rx="2" fill="#0a0a0a" stroke="#334155" stroke-width="1"/>
+                            <text x="${x + 30}" y="${y + 30}" text-anchor="middle" fill="${borderColor}" font-size="14" font-family="monospace" font-weight="bold">${agent.id}</text>
+                            
+                            <!-- Status lights -->
+                            <circle cx="${x + 165}" cy="${y + 15}" r="4" fill="${isActive ? '#22c55e' : '#334155'}">
+                                ${isActive ? '<animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>' : ''}
+                            </circle>
+                            
+                            <!-- Agent name -->
+                            <text x="${x + 60}" y="${y + 25}" fill="#94a3b8" font-size="8" font-family="monospace" letter-spacing="0.1em">${agent.short}</text>
+                            <text x="${x + 60}" y="${y + 40}" fill="#475569" font-size="7" font-family="monospace">${agent.desc}</text>
+                            
+                            <!-- Activity counter -->
+                            <rect x="${x + 10}" y="${y + 55}" width="160" height="25" rx="2" fill="#0a0a0a" stroke="#1e293b" stroke-width="1"/>
+                            <text x="${x + 20}" y="${y + 72}" fill="#64748b" font-size="8" font-family="monospace">ATIVO:</text>
+                            <text x="${x + 70}" y="${y + 72}" fill="${isActive ? '#22c55e' : '#475569'}" font-size="9" font-family="monospace">${agentActivity[agent.id]} briefing${agentActivity[agent.id] !== 1 ? 's' : ''}</text>
+                        </g>
+                        `;
+                    }).join('')}
+                    
+                    <!-- Corner data -->
+                    <text x="20" y="690" fill="#334155" font-size="7" font-family="monospace">BRICK AI // SQUAD ARCHITECTURE v3.1</text>
+                    <text x="980" y="690" text-anchor="end" fill="#334155" font-size="7" font-family="monospace">${Object.keys(briefings).length} MISSOES // ${new Date().toLocaleDateString('pt-BR')}</text>
+                </svg>
+            </div>`;
+            
+            document.getElementById('gameboard-svg').innerHTML = html;
+
+            // Missions panel
             let missionsHtml = '';
             if (Object.keys(briefings).length > 0) {
-                missionsHtml = '<div class="border-t border-blue-900/30 pt-6 mt-4">';
-                missionsHtml += '<h3 class="text-blue-400 font-mono text-[10px] mb-4 tracking-[0.3em]">MISSOES EM PROGRESSO</h3>';
-                missionsHtml += '<div class="grid gap-3 md:grid-cols-2">';
+                missionsHtml = '<div class="border-t border-blue-900/30 pt-6">';
+                missionsHtml += '<h3 class="text-blue-400 font-mono text-[10px] mb-4 tracking-[0.3em]">MISSOES EM TRANSITO</h3>';
+                missionsHtml += '<div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">';
                 
                 Object.keys(briefings).forEach(briefingId => {
                     const b = briefings[briefingId];
@@ -432,22 +498,19 @@ BRIEFING
                     const currentAgent = agents[completedSteps] || agents[agents.length - 1];
                     
                     missionsHtml += `
-                        <div class="bg-blue-950/20 border border-blue-900/40 p-4 cursor-pointer hover:border-blue-500/50 transition-all" onclick="showBriefingDetail('${briefingId}')">
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="text-[10px] text-blue-500 font-mono tracking-wider">MISSAO #${briefingId.substring(0, 8)}</div>
-                                <div class="text-[10px] font-mono ${isComplete ? 'text-green-400' : 'text-yellow-500'}">${progress}%</div>
+                        <div class="bg-slate-950/50 border border-blue-900/40 p-3 cursor-pointer hover:border-blue-500/50 transition-all" onclick="showBriefingDetail('${briefingId}')">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-[10px] text-blue-500 font-mono">#${briefingId.substring(0, 6)}</span>
+                                <span class="text-[10px] font-mono ${isComplete ? 'text-green-400' : 'text-yellow-500'}">${progress}%</span>
                             </div>
-                            <div class="text-sm text-white font-medium mb-3">${briefingId.replace(/_/g, ' ')}</div>
-                            <div class="flex gap-1 mb-2">
+                            <div class="text-xs text-white mb-2 truncate">${briefingId.replace(/_/g, ' ')}</div>
+                            <div class="flex gap-0.5">
                                 ${agents.map((a, i) => {
                                     const done = b.steps.some(s => s.startsWith(a.id));
                                     const current = i === completedSteps && !isComplete;
-                                    const color = done ? 'bg-green-500' : (current ? 'bg-yellow-500 animate-pulse' : 'bg-gray-700');
-                                    return `<div class="h-1.5 flex-1 ${color} rounded-full"></div>`;
+                                    const bg = done ? 'bg-green-500' : (current ? 'bg-yellow-500' : 'bg-slate-700');
+                                    return `<div class="h-1 flex-1 ${bg} ${current ? 'animate-pulse' : ''}"></div>`;
                                 }).join('')}
-                            </div>
-                            <div class="text-[10px] text-gray-500 font-mono">
-                                ${isComplete ? '> COMPLETO' : `> ETAPA ${completedSteps + 1}: ${currentAgent.name}`}
                             </div>
                         </div>
                     `;
@@ -458,6 +521,23 @@ BRIEFING
             
             document.getElementById('gameboard-missions').innerHTML = missionsHtml;
         }
+
+        function selectAgent(agentId) {
+            console.log('Selected agent:', agentId);
+        }
+
+        function showBriefingDetail(briefingId) {
+            showTab('board');
+            setTimeout(() => {
+                const groups = document.querySelectorAll('.wip-group');
+                groups.forEach(g => {
+                    if (g.textContent.includes(briefingId)) {
+                        g.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }, 100);
+        }
+
 
         function highlightAgent(agentId) {
             console.log('Agent clicked:', agentId);
