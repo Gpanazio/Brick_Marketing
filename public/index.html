@@ -47,11 +47,9 @@ BRIEFING
     ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  BRIEF VALIDATOR                              Gemini Flash  │
-│  ├─ Objetivo claro?                                         │
-│  ├─ Público definido?                                       │
-│  ├─ Formato especificado?                                   │
-│  └─ Prazo/contexto?                                         │
-│  Output: PASSA → continua | FALHA → pede mais info          │
+│  ├─ Gerador de lacunas (FAIL informativo)                   │
+│  ├─ Perguntas acionáveis ao humano                          │
+│  └─ assumptions_if_silent (previne ping-pong)               │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
@@ -64,15 +62,35 @@ BRIEFING
     └──────────────┬──────────────┘
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
+│  CLAIMS CHECKER                               Gemini Flash  │
+│  ├─ Valida dados (mantém se tiver fonte)                    │
+│  └─ Higieniza para Autoridade Segura (anti-hype)            │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
 │  COPYWRITER                              Claude Sonnet 4    │
 │  (refação: Gemini 3 Pro - mais barato)                      │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  BRAND GUARDIANS (Split)                      Gemini Flash  │
+│  ├─ STYLE GUARDIAN (Tom, Voz, Proibições)                   │
+│  └─ POSITIONING GUARDIAN (Lógica Comercial)                 │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
 ┌─────────────────────┐     ┌─────────────────────┐
-│  BRAND GUARDIAN     │ ──► │  CRITIC             │
+│  CRITIC LITE (65%)  │ ──► │  CRITIC OPUS        │
 │  Gemini Flash       │     │  Claude Opus        │
 └─────────────────────┘     └─────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  CONTENT ASSEMBLER                            Gemini Flash  │
+│  └─ Padronização por Canal (LinkedIn, Email, Landing)       │
+└─────────────────────────────────────────────────────────────┘
                    │
                    ▼
         ┌──────────────────┐
@@ -144,7 +162,7 @@ BRIEFING
                     <div class="h-8 w-1 bg-red-600"></div>
                     <div>
                         <h2 class="text-3xl font-brick text-white tracking-tighter">SQUAD ARCHITECTURE</h2>
-                        <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em] mt-1">Status: Neural Protocols Loaded // v3.0</p>
+                        <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em] mt-1">Status: Neural Protocols Loaded // v3.1 (A Blindada)</p>
                     </div>
                 </div>
 
