@@ -30,11 +30,11 @@ SOCIAL LISTENING (Manual/Scraping)
 ├── web_search("site:linkedin.com/posts {cargo} {tema}")
 └── web_fetch(grupo_facebook_publico)
 
-REVIEWS / RECLAMAÇÕES
-├── web_search("site:reclameaqui.com.br {concorrente}")
-├── web_fetch(google_maps_reviews_url)
-├── web_search("site:glassdoor.com.br {empresa}")
-└── web_search("{produto} review site:amazon.com.br")
+REVIEWS / PERCEPÇÃO DE MERCADO (B2B)
+├── web_search("site:glassdoor.com.br {agencia/produtora}") → cultura interna
+├── web_search("site:linkedin.com/company/{concorrente}/posts")
+├── web_search("{produtora} + review + trabalhar")
+└── web_search("{agencia} + case + depoimento cliente")
 
 DADOS INTERNOS
 ├── read(file) → Google Drive / pasta local com feedbacks
