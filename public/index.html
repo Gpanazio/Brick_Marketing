@@ -22,7 +22,7 @@
     <header class="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tighter text-white">BRICK AI <span class="text-green-500 text-sm align-top">WAR ROOM</span></h1>
-            <p class="text-xs text-gray-500 mt-1">SQUAD STATUS: <span class="text-green-500">ONLINE</span> // MODEL: GEMINI 3</p>
+            <p class="text-xs text-gray-500 mt-1">SQUAD STATUS: <span id="connection-status" class="text-yellow-500">CONNECTING...</span> // MODEL: GEMINI 3 FLASH + CLAUDE 4.5</p>
         </div>
         <button onclick="openModal('newBriefing')" class="bg-white text-black px-4 py-2 font-bold hover:bg-gray-200">
             + NEW BRIEFING
@@ -166,9 +166,25 @@
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
 
+        // Check connection status
+        async function checkConnection() {
+            try {
+                const res = await fetch(`${API_URL}/health`);
+                if (res.ok) {
+                    document.getElementById('connection-status').innerText = 'ONLINE';
+                    document.getElementById('connection-status').className = 'text-green-500';
+                }
+            } catch (e) {
+                document.getElementById('connection-status').innerText = 'OFFLINE';
+                document.getElementById('connection-status').className = 'text-red-500';
+            }
+        }
+
         // Poll every 2 seconds
         setInterval(fetchState, 2000);
+        setInterval(checkConnection, 5000);
         fetchState();
+        checkConnection();
     </script>
 </body>
 </html>
