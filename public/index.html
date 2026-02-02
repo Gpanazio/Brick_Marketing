@@ -73,88 +73,7 @@
     <div id="view-architecture" class="hidden">
         <div class="column p-6 rounded">
             <h2 class="text-xl font-bold mb-4 text-green-400 border-b border-green-900 pb-2">⚙️ ARQUITETURA DO SQUAD</h2>
-            <div class="space-y-6 text-sm leading-relaxed">
-                <div class="bg-[#0d0d0d] border border-gray-800 p-4">
-<pre class="text-gray-300">
-BRIEFING
-    │
-    ▼
-BRIEF VALIDATOR (Gemini Flash)
-    │
-    ▼
-AUDIENCE ANALYST  ⇄  TOPIC RESEARCHER (paralelo)
-    │
-    ▼
-COPYWRITER (Claude Sonnet 4)
-    │
-    ▼
-BRAND GUARDIAN → CRITIC (Claude Opus)
-    │
-    ▼
-APROVADO ≥80% → OUTPUT
-REPROVADO → LOOP (max 3x) → ESCALA HUMANO
-</pre>
-                </div>
-
-                <div>
-                    <h3 class="text-green-400 font-bold mb-2">1. AUDIENCE ANALYST (Gemini Flash)</h3>
-                    <ul class="list-disc ml-6 text-gray-400">
-                        <li>Dores do comprador: prazo, custo, briefing</li>
-                        <li>Processo de decisão: como escolhem produtoras</li>
-                        <li>Objeções sobre IA: artificial, profissional?</li>
-                        <li>LinkedIn: experiências reais de contratação</li>
-                        <li>Reddit/Comunidades: feedback direto</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-green-400 font-bold mb-2">2. TOPIC RESEARCHER (Gemini Flash)</h3>
-                    <ul class="list-disc ml-6 text-gray-400">
-                        <li>Tendências do mercado B2B</li>
-                        <li>Dados de credibilidade (ROI, conversão)</li>
-                        <li>Concorrência: prazos, tickets, argumentos</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-green-400 font-bold mb-2">3. COPYWRITER (Claude Sonnet 4)</h3>
-                    <div class="grid grid-cols-2 gap-2 text-gray-400">
-                        <div class="bg-[#111] p-2 border border-gray-800">NÃO ESCREVER</div>
-                        <div class="bg-[#111] p-2 border border-gray-800">ESCREVER</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Usamos IA de ponta”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Entregamos em dias, não semanas”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Tecnologia revolucionária”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“A mesma qualidade. Novo modelo.”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Vídeos gerados por IA”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Produção profissional sob demanda”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“Ferramenta inovadora”</div>
-                        <div class="bg-[#0a0a0a] p-2 border border-gray-800">“10 anos de narrativa. Agora mais ágil.”</div>
-                    </div>
-                    <div class="mt-3 text-gray-400">
-                        <strong>Estrutura:</strong> Gancho → Ponte → Prova → Oferta → CTA
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-green-400 font-bold mb-2">4. BRAND GUARDIAN (Gemini Flash)</h3>
-                    <ul class="list-disc ml-6 text-gray-400">
-                        <li>IA como meio, não diferencial principal</li>
-                        <li>Experiência da produtora (10 anos)</li>
-                        <li>Tom confiante, sem hype</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-green-400 font-bold mb-2">5. CRITIC (Claude Opus)</h3>
-                    <ul class="list-disc ml-6 text-gray-400">
-                        <li>Clareza (25%)</li>
-                        <li>Credibilidade (25%)</li>
-                        <li>Diferenciação (20%)</li>
-                        <li>Ação (15%)</li>
-                        <li>Tom (15%)</li>
-                    </ul>
-                </div>
-            </div>
+            <div id="architecture-content" class="prose prose-invert max-w-none text-sm leading-relaxed">Carregando...</div>
         </div>
     </div>
 
@@ -207,6 +126,18 @@ REPROVADO → LOOP (max 3x) → ESCALA HUMANO
             document.getElementById('tab-architecture').classList.toggle('text-gray-500', tab !== 'architecture');
 
             if (tab === 'history') fetchHistory();
+            if (tab === 'architecture') fetchArchitecture();
+        }
+
+        async function fetchArchitecture() {
+            try {
+                const res = await fetch(`${API_URL}/architecture`);
+                const data = await res.json();
+                const content = data.content || 'Arquivo não encontrado.';
+                document.getElementById('architecture-content').innerHTML = marked.parse(content);
+            } catch (e) {
+                document.getElementById('architecture-content').innerHTML = '<div class="text-gray-500">Erro ao carregar arquitetura.</div>';
+            }
         }
 
         // Fetch history

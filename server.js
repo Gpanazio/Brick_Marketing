@@ -161,6 +161,16 @@ app.get('/api/history', (req, res) => {
     res.json({ history: files });
 });
 
+// API: Squad Architecture (read-only)
+app.get('/api/architecture', (req, res) => {
+    const filePath = path.join(__dirname, 'SQUAD_ARCHITECTURE.md');
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'SQUAD_ARCHITECTURE.md not found' });
+    }
+    const content = fs.readFileSync(filePath, 'utf-8');
+    res.json({ content });
+});
+
 // API: Archive to history (move from done to history)
 app.post('/api/archive', authMiddleware, (req, res) => {
     const { filename } = req.body;
