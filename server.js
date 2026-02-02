@@ -66,14 +66,35 @@ app.get('/api/pending', (req, res) => {
     res.json({ briefings: getFiles('briefing') });
 });
 
+// Telegram notification (optional - set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in env)
+async function notifyTelegram(message) {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    if (!token || !chatId) return;
+    
+    try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+        });
+    } catch (e) {
+        console.error('Telegram notification failed:', e.message);
+    }
+}
+
 // API: Create Briefing (from dashboard)
-app.post('/api/briefing', (req, res) => {
+app.post('/api/briefing', async (req, res) => {
     const { title, content } = req.body;
     const filename = `${Date.now()}_${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.md`;
     const filePath = path.join(MARKETING_ROOT, 'briefing', filename);
     
     const fileContent = `# BRIEFING: ${title}\n**Date:** ${new Date().toISOString()}\n**Status:** PENDING\n\n${content}`;
     fs.writeFileSync(filePath, fileContent);
+    
+    // Notify Douglas via Telegram
+    await notifyTelegram(`🚨 *NOVO BRIEFING NO WAR ROOM*\n\n*Título:* ${title}\n\n_Douglas, aciona o squad!_`);
+    
     res.json({ success: true, filename });
 });
 
