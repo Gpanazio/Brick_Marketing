@@ -352,6 +352,7 @@ BRIEFING
                     `;
                 });
                 container.innerHTML = html || `<div class="text-gray-700 text-center italic mt-10">System Idle...</div>`;
+                restoreExpandedGroups();
                 return;
             }
             
@@ -364,9 +365,24 @@ BRIEFING
             `).join('');
         }
         
+        const expandedGroups = new Set();
+        
         function toggleGroup(groupId) {
             const el = document.getElementById('group-' + groupId);
-            el.classList.toggle('hidden');
+            if (expandedGroups.has(groupId)) {
+                expandedGroups.delete(groupId);
+                el.classList.add('hidden');
+            } else {
+                expandedGroups.add(groupId);
+                el.classList.remove('hidden');
+            }
+        }
+        
+        function restoreExpandedGroups() {
+            expandedGroups.forEach(groupId => {
+                const el = document.getElementById('group-' + groupId);
+                if (el) el.classList.remove('hidden');
+            });
         }
 
         let currentFile = null;
