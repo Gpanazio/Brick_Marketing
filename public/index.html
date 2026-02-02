@@ -313,12 +313,60 @@ BRIEFING
                 container.innerHTML = `<div class="text-gray-700 text-center italic mt-10">System Idle...</div>`;
                 return;
             }
+            
+            // Para WIP: agrupa por briefing (prefixo antes de __)
+            if (id === 'wip') {
+                const groups = {};
+                files.forEach(file => {
+                    const parts = file.name.split('__');
+                    const briefingId = parts.length > 1 ? parts[0] : 'outros';
+                    if (!groups[briefingId]) groups[briefingId] = [];
+                    groups[briefingId].push(file);
+                });
+                
+                let html = '';
+                Object.keys(groups).sort().reverse().forEach(briefingId => {
+                    const groupFiles = groups[briefingId];
+                    const briefingName = briefingId === 'outros' ? 'Outros' : briefingId.replace(/_/g, ' ');
+                    const stepCount = groupFiles.length;
+                    const lastStep = groupFiles.sort((a,b) => a.name.localeCompare(b.name)).pop();
+                    
+                    html += `
+                        <div class="mb-4 border border-gray-800 rounded">
+                            <div class="p-3 bg-gray-900 cursor-pointer flex justify-between items-center" onclick="toggleGroup('${briefingId}')">
+                                <div>
+                                    <span class="text-yellow-500 text-xs">▶</span>
+                                    <span class="font-bold text-sm text-gray-300 ml-2">${briefingName}</span>
+                                </div>
+                                <span class="text-xs text-gray-500">${stepCount} etapas</span>
+                            </div>
+                            <div id="group-${briefingId}" class="hidden">
+                                ${groups[briefingId].sort((a,b) => a.name.localeCompare(b.name)).map(file => `
+                                    <div class="p-3 border-t border-gray-800 cursor-pointer hover:bg-gray-900" onclick="viewFile('wip', '${file.name}')">
+                                        <span class="text-xs text-green-500">└─</span>
+                                        <span class="text-xs text-gray-400 ml-1">${file.name.split('__').pop() || file.name}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html || `<div class="text-gray-700 text-center italic mt-10">System Idle...</div>`;
+                return;
+            }
+            
+            // Default para outras colunas
             container.innerHTML = files.map(file => `
                 <div class="card p-4 mb-3 cursor-pointer hover:bg-gray-900" onclick="viewFile('${id}', '${file.name}')">
                     <h3 class="font-bold text-sm text-gray-300 truncate">${file.name}</h3>
                     <p class="text-xs text-gray-600 mt-2">${file.content.substring(0, 80)}...</p>
                 </div>
             `).join('');
+        }
+        
+        function toggleGroup(groupId) {
+            const el = document.getElementById('group-' + groupId);
+            el.classList.toggle('hidden');
         }
 
         let currentFile = null;
