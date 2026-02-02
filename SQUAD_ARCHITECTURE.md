@@ -1,5 +1,7 @@
 # BRICK AI SQUAD - ARCHITECTURE v3.2
 
+---
+
 ## FLUXO DE PRODUÇÃO
 
 ```
@@ -56,9 +58,8 @@ BRIEFING
 
 ---
 
-## CONTRATOS DE CADA AGENTE
+## 01. BRIEF VALIDATOR
 
-### 01. BRIEF VALIDATOR
 **Modelo:** Gemini Flash  
 **Função:** Gerador de lacunas, não binário.
 
@@ -83,7 +84,8 @@ BRIEFING
 
 ---
 
-### 02. AUDIENCE ANALYST
+## 02. AUDIENCE ANALYST
+
 **Modelo:** Gemini Flash  
 **Função:** Perfil detalhado do público.
 
@@ -101,7 +103,8 @@ BRIEFING
 
 ---
 
-### 03. TOPIC RESEARCHER
+## 03. TOPIC RESEARCHER
+
 **Modelo:** Gemini Flash  
 **Função:** Contexto de mercado e referências.
 
@@ -117,7 +120,8 @@ BRIEFING
 
 ---
 
-### 04. CLAIMS CHECKER
+## 04. CLAIMS CHECKER
+
 **Modelo:** Gemini Flash  
 **Função:** Higieniza estatísticas inventadas.
 
@@ -139,7 +143,8 @@ BRIEFING
 
 ---
 
-### 05. COPYWRITER
+## 05. COPYWRITER
+
 **Modelo:** Claude Sonnet 4  
 **Função:** Criatividade pura.
 
@@ -154,17 +159,16 @@ BRIEFING
 
 ---
 
-### 06. BRAND GUARDIANS (Split)
+## 06A. STYLE GUARDIAN
 
-#### 06A. STYLE GUARDIAN
 **Modelo:** Gemini Flash  
 **Função:** Tom, vocabulário, proibições.
 
 **Checklist:**
-- [ ] Não soa startup IA
-- [ ] Sem hype ("revolucionário", "game-changing")
-- [ ] Sem jargão tech desnecessário
-- [ ] Voz de diretor, não de marketer
+- Não soa startup IA
+- Sem hype ("revolucionário", "game-changing")
+- Sem jargão tech desnecessário
+- Voz de diretor, não de marketer
 
 **Output:**
 ```json
@@ -175,15 +179,18 @@ BRIEFING
 }
 ```
 
-#### 06B. POSITIONING GUARDIAN
+---
+
+## 06B. POSITIONING GUARDIAN
+
 **Modelo:** Gemini Flash  
 **Função:** Proposta e lógica comercial.
 
 **Checklist:**
-- [ ] Transformação clara (tempo, risco, previsibilidade)
-- [ ] IA como meio, não fim
-- [ ] Clareza de oferta (o que o cliente compra?)
-- [ ] Evita "texto bonito que não vende nada"
+- Transformação clara (tempo, risco, previsibilidade)
+- IA como meio, não fim
+- Clareza de oferta (o que o cliente compra?)
+- Evita "texto bonito que não vende nada"
 
 **Output:**
 ```json
@@ -197,12 +204,14 @@ BRIEFING
 
 ---
 
-### 07. CRITIC LITE
+## 07. CRITIC LITE
+
 **Modelo:** Gemini Flash  
 **Threshold:** 65%  
 **Função:** Triagem barata.
 
 **Rubrica:**
+
 | Critério | Peso |
 |----------|------|
 | Clareza da Oferta | 25% |
@@ -214,11 +223,7 @@ BRIEFING
 **Output:**
 ```json
 {
-  "scores": {
-    "v1": 82,
-    "v2": 90,
-    "v3": 87
-  },
+  "scores": { "v1": 82, "v2": 90, "v3": 87 },
   "recomendacao": "V2 é a mais forte",
   "liberado_para_opus": true
 }
@@ -226,7 +231,8 @@ BRIEFING
 
 ---
 
-### 08. CRITIC OPUS
+## 08. CRITIC OPUS
+
 **Modelo:** Claude Opus  
 **Função:** Juiz supremo.
 
@@ -246,6 +252,7 @@ BRIEFING
 ---
 
 ## MÉTRICAS DE OURO
+
 - **Tempo até aprovação (minutos)**
 - **Taxa de FAIL por briefing**
 - **Fator Previsibilidade** (quanto a cópia enfatiza Prazo, Revisões, Risco Zero)
