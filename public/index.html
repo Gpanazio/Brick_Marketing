@@ -79,12 +79,7 @@
                     <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">System Protocols Active</span>
                 </div>
             </div>
-            <div id="architecture-content" class="prose prose-invert max-w-none text-sm leading-relaxed font-mono text-gray-400
-                prose-headings:text-green-500 prose-headings:font-bold prose-headings:tracking-tighter prose-headings:uppercase
-                prose-h1:text-2xl prose-h2:text-lg prose-h2:border-l-4 prose-h2:border-green-800 prose-h2:pl-4 prose-h2:mt-8
-                prose-strong:text-white prose-code:text-green-300 prose-code:bg-black prose-code:px-1
-                prose-ul:list-none prose-ul:pl-0 prose-li:border-l prose-li:border-gray-800 prose-li:pl-4 prose-li:mb-2
-                prose-table:border prose-table:border-gray-800 prose-th:bg-[#111] prose-th:p-2 prose-td:p-2 prose-td:border-t prose-td:border-gray-900">
+            <div id="architecture-content" class="text-sm leading-relaxed font-mono text-gray-400">
                 Carregando protocolos...
             </div>
         </div>
@@ -147,7 +142,13 @@
                 const res = await fetch(`${API_URL}/architecture`);
                 const data = await res.json();
                 const content = data.content || 'Arquivo não encontrado.';
-                document.getElementById('architecture-content').innerHTML = marked.parse(content);
+                
+                // Render raw markdown inside a styled <pre> to preserve ASCII diagrams
+                document.getElementById('architecture-content').innerHTML = `
+                    <div class="bg-black p-6 border border-gray-800 overflow-x-auto shadow-inner">
+                        <pre class="text-green-500/80 font-mono leading-tight whitespace-pre">${content}</pre>
+                    </div>
+                `;
             } catch (e) {
                 document.getElementById('architecture-content').innerHTML = '<div class="text-gray-500">Erro ao carregar arquitetura.</div>';
             }
