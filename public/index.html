@@ -315,14 +315,14 @@ BRIEFING
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
             
             const agents = [
-                { id: '01', name: 'BRIEF VALIDATOR', short: 'VALIDATOR', desc: 'Validacao de entrada' },
-                { id: '02', name: 'AUDIENCE ANALYST', short: 'AUDIENCE', desc: 'Analise de publico' },
-                { id: '03', name: 'TOPIC RESEARCHER', short: 'RESEARCH', desc: 'Pesquisa de contexto' },
-                { id: '04', name: 'CLAIMS CHECKER', short: 'CLAIMS', desc: 'Verificacao de dados' },
-                { id: '05', name: 'COPYWRITER', short: 'COPY', desc: 'Geracao de texto' },
-                { id: '06', name: 'BRAND GUARDIAN', short: 'BRAND', desc: 'Protecao de marca' },
-                { id: '07', name: 'CRITIC LITE', short: 'CRITIC', desc: 'Avaliacao rapida' },
-                { id: '08', name: 'CRITIC OPUS', short: 'OPUS', desc: 'Avaliacao final' }
+                { id: '01', name: 'VALIDATOR', full: 'BRIEF VALIDATOR', desc: 'Input validation' },
+                { id: '02', name: 'AUDIENCE', full: 'AUDIENCE ANALYST', desc: 'Target analysis' },
+                { id: '03', name: 'RESEARCH', full: 'TOPIC RESEARCH', desc: 'Context mapping' },
+                { id: '04', name: 'CLAIMS', full: 'CLAIMS CHECKER', desc: 'Fact verification' },
+                { id: '05', name: 'COPY', full: 'COPYWRITER', desc: 'Content generation' },
+                { id: '06', name: 'BRAND', full: 'BRAND GUARDIAN', desc: 'Voice protection' },
+                { id: '07', name: 'CRITIC', full: 'CRITIC LITE', desc: 'Quick evaluation' },
+                { id: '08', name: 'OPUS', full: 'CRITIC OPUS', desc: 'Final judgment' }
             ];
             
             const briefings = {};
@@ -342,175 +342,231 @@ BRIEFING
                 if (!briefings[id]) briefings[id] = { steps: [], files: [], pending: true };
             });
 
-            // Count active per agent
             const agentActivity = {};
             agents.forEach(a => {
                 agentActivity[a.id] = Object.values(briefings).filter(b => 
                     b.steps.some(s => s.startsWith(a.id))
                 ).length;
             });
-
-            let html = `
-            <div class="w-full">
-                <!-- Main Station Layout -->
-                <svg viewBox="0 0 1000 700" class="w-full" style="max-height: 70vh;">
-                    <defs>
-                        <linearGradient id="sectorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1"/>
-                            <stop offset="100%" style="stop-color:#020617;stop-opacity:1"/>
-                        </linearGradient>
-                        <linearGradient id="activeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#14532d;stop-opacity:1"/>
-                            <stop offset="100%" style="stop-color:#052e16;stop-opacity:1"/>
-                        </linearGradient>
-                        <filter id="glow">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                        </filter>
-                        <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
-                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e3a8a" stroke-width="0.3" opacity="0.3"/>
-                        </pattern>
-                    </defs>
-                    
-                    <!-- Background -->
-                    <rect width="1000" height="700" fill="#030712"/>
-                    <rect width="1000" height="700" fill="url(#gridPattern)"/>
-                    
-                    <!-- Title -->
-                    <text x="500" y="35" text-anchor="middle" fill="#3b82f6" font-size="14" font-family="monospace" letter-spacing="0.3em">AGENT ARCHITECTURE MAP - BRICK PROTOCOL</text>
-                    <text x="500" y="52" text-anchor="middle" fill="#1e40af" font-size="9" font-family="monospace" letter-spacing="0.2em">MASON SYSTEM // DISCOVERY ONE</text>
-                    
-                    <!-- Central Core -->
-                    <g transform="translate(500, 350)">
-                        <!-- Core rings -->
-                        <circle r="90" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.3"/>
-                        <circle r="70" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.4"/>
-                        <circle r="50" fill="#0a0a0a" stroke="#dc2626" stroke-width="2"/>
-                        <circle r="35" fill="#0a0a0a" stroke="#991b1b" stroke-width="1"/>
-                        <circle r="22" fill="#dc2626" opacity="0.9">
-                            <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle r="10" fill="#fca5a5"/>
-                        <text y="75" text-anchor="middle" fill="#dc2626" font-size="8" font-family="monospace" letter-spacing="0.15em">MASON CORE</text>
-                    </g>
-                    
-                    <!-- Connection corridors -->
-                    <g stroke="#1e3a8a" stroke-width="3" fill="none" opacity="0.5">
-                        <!-- Top row connections -->
-                        <path d="M 160 160 L 160 280 L 420 280 L 420 300"/>
-                        <path d="M 360 160 L 360 250 L 450 250 L 450 300"/>
-                        <path d="M 640 160 L 640 250 L 550 250 L 550 300"/>
-                        <path d="M 840 160 L 840 280 L 580 280 L 580 300"/>
-                        
-                        <!-- Bottom row connections -->
-                        <path d="M 160 540 L 160 420 L 420 420 L 420 400"/>
-                        <path d="M 360 540 L 360 450 L 450 450 L 450 400"/>
-                        <path d="M 640 540 L 640 450 L 550 450 L 550 400"/>
-                        <path d="M 840 540 L 840 420 L 580 420 L 580 400"/>
-                    </g>
-                    
-                    <!-- Agent Sectors - Top Row -->
-                    ${agents.slice(0, 4).map((agent, i) => {
-                        const x = 60 + i * 200;
-                        const y = 70;
-                        const isActive = agentActivity[agent.id] > 0;
-                        const fillGrad = isActive ? 'url(#activeGradient)' : 'url(#sectorGradient)';
-                        const borderColor = isActive ? '#22c55e' : '#1e40af';
-                        return `
-                        <g class="cursor-pointer" onclick="selectAgent('${agent.id}')">
-                            <!-- Sector box -->
-                            <rect x="${x}" y="${y}" width="180" height="90" rx="3" fill="${fillGrad}" stroke="${borderColor}" stroke-width="2"/>
-                            
-                            <!-- Internal details -->
-                            <rect x="${x + 10}" y="${y + 10}" width="40" height="30" rx="2" fill="#0a0a0a" stroke="#334155" stroke-width="1"/>
-                            <text x="${x + 30}" y="${y + 30}" text-anchor="middle" fill="${borderColor}" font-size="14" font-family="monospace" font-weight="bold">${agent.id}</text>
-                            
-                            <!-- Status lights -->
-                            <circle cx="${x + 165}" cy="${y + 15}" r="4" fill="${isActive ? '#22c55e' : '#334155'}">
-                                ${isActive ? '<animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>' : ''}
-                            </circle>
-                            
-                            <!-- Agent name -->
-                            <text x="${x + 60}" y="${y + 25}" fill="#94a3b8" font-size="8" font-family="monospace" letter-spacing="0.1em">${agent.short}</text>
-                            <text x="${x + 60}" y="${y + 40}" fill="#475569" font-size="7" font-family="monospace">${agent.desc}</text>
-                            
-                            <!-- Activity counter -->
-                            <rect x="${x + 10}" y="${y + 55}" width="160" height="25" rx="2" fill="#0a0a0a" stroke="#1e293b" stroke-width="1"/>
-                            <text x="${x + 20}" y="${y + 72}" fill="#64748b" font-size="8" font-family="monospace">ATIVO:</text>
-                            <text x="${x + 70}" y="${y + 72}" fill="${isActive ? '#22c55e' : '#475569'}" font-size="9" font-family="monospace">${agentActivity[agent.id]} briefing${agentActivity[agent.id] !== 1 ? 's' : ''}</text>
-                        </g>
-                        `;
-                    }).join('')}
-                    
-                    <!-- Agent Sectors - Bottom Row -->
-                    ${agents.slice(4, 8).map((agent, i) => {
-                        const x = 60 + i * 200;
-                        const y = 540;
-                        const isActive = agentActivity[agent.id] > 0;
-                        const fillGrad = isActive ? 'url(#activeGradient)' : 'url(#sectorGradient)';
-                        const borderColor = isActive ? '#22c55e' : '#1e40af';
-                        return `
-                        <g class="cursor-pointer" onclick="selectAgent('${agent.id}')">
-                            <!-- Sector box -->
-                            <rect x="${x}" y="${y}" width="180" height="90" rx="3" fill="${fillGrad}" stroke="${borderColor}" stroke-width="2"/>
-                            
-                            <!-- Internal details -->
-                            <rect x="${x + 10}" y="${y + 10}" width="40" height="30" rx="2" fill="#0a0a0a" stroke="#334155" stroke-width="1"/>
-                            <text x="${x + 30}" y="${y + 30}" text-anchor="middle" fill="${borderColor}" font-size="14" font-family="monospace" font-weight="bold">${agent.id}</text>
-                            
-                            <!-- Status lights -->
-                            <circle cx="${x + 165}" cy="${y + 15}" r="4" fill="${isActive ? '#22c55e' : '#334155'}">
-                                ${isActive ? '<animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>' : ''}
-                            </circle>
-                            
-                            <!-- Agent name -->
-                            <text x="${x + 60}" y="${y + 25}" fill="#94a3b8" font-size="8" font-family="monospace" letter-spacing="0.1em">${agent.short}</text>
-                            <text x="${x + 60}" y="${y + 40}" fill="#475569" font-size="7" font-family="monospace">${agent.desc}</text>
-                            
-                            <!-- Activity counter -->
-                            <rect x="${x + 10}" y="${y + 55}" width="160" height="25" rx="2" fill="#0a0a0a" stroke="#1e293b" stroke-width="1"/>
-                            <text x="${x + 20}" y="${y + 72}" fill="#64748b" font-size="8" font-family="monospace">ATIVO:</text>
-                            <text x="${x + 70}" y="${y + 72}" fill="${isActive ? '#22c55e' : '#475569'}" font-size="9" font-family="monospace">${agentActivity[agent.id]} briefing${agentActivity[agent.id] !== 1 ? 's' : ''}</text>
-                        </g>
-                        `;
-                    }).join('')}
-                    
-                    <!-- Corner data -->
-                    <text x="20" y="690" fill="#334155" font-size="7" font-family="monospace">BRICK AI // SQUAD ARCHITECTURE v3.1</text>
-                    <text x="980" y="690" text-anchor="end" fill="#334155" font-size="7" font-family="monospace">${Object.keys(briefings).length} MISSOES // ${new Date().toLocaleDateString('pt-BR')}</text>
-                </svg>
-            </div>`;
             
-            document.getElementById('gameboard-svg').innerHTML = html;
+            const totalMissions = Object.keys(briefings).length;
+
+            // Sector positions - octagonal layout around center
+            const positions = [
+                { x: 200, y: 100 },   // 01 - top left
+                { x: 450, y: 60 },    // 02 - top center
+                { x: 700, y: 100 },   // 03 - top right
+                { x: 820, y: 300 },   // 04 - right
+                { x: 700, y: 500 },   // 05 - bottom right
+                { x: 450, y: 540 },   // 06 - bottom center
+                { x: 200, y: 500 },   // 07 - bottom left
+                { x: 80, y: 300 }     // 08 - left
+            ];
+
+            const cx = 450, cy = 300; // Center
+
+            let svg = `
+            <svg viewBox="0 0 900 620" class="w-full" style="max-height: 75vh; font-family: 'Courier New', monospace;">
+                <defs>
+                    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0c1222"/>
+                        <stop offset="50%" style="stop-color:#0a0f1a"/>
+                        <stop offset="100%" style="stop-color:#080c14"/>
+                    </linearGradient>
+                    <linearGradient id="sectorBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#111827"/>
+                        <stop offset="100%" style="stop-color:#0a0f1a"/>
+                    </linearGradient>
+                    <linearGradient id="activeSector" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#14532d"/>
+                        <stop offset="100%" style="stop-color:#052e16"/>
+                    </linearGradient>
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                        <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1e3a8a" stroke-width="0.3" opacity="0.15"/>
+                    </pattern>
+                    <pattern id="dots" width="15" height="15" patternUnits="userSpaceOnUse">
+                        <circle cx="1" cy="1" r="0.5" fill="#1e3a8a" opacity="0.2"/>
+                    </pattern>
+                </defs>
+                
+                <!-- Background layers -->
+                <rect width="900" height="620" fill="url(#bgGrad)"/>
+                <rect width="900" height="620" fill="url(#grid)"/>
+                <rect width="900" height="620" fill="url(#dots)"/>
+                
+                <!-- Outer frame -->
+                <rect x="10" y="10" width="880" height="600" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.3"/>
+                <rect x="15" y="15" width="870" height="590" fill="none" stroke="#1e3a8a" stroke-width="0.5" opacity="0.2"/>
+                
+                <!-- Title bar -->
+                <rect x="250" y="5" width="400" height="25" fill="#0a0f1a" stroke="#1e40af" stroke-width="1"/>
+                <text x="450" y="22" text-anchor="middle" fill="#3b82f6" font-size="11" letter-spacing="0.25em">BRICK AI // SQUAD ARCHITECTURE MAP</text>
+                
+                <!-- Corner decorations -->
+                <g fill="none" stroke="#1e40af" stroke-width="1" opacity="0.4">
+                    <path d="M 10 40 L 10 10 L 40 10"/>
+                    <path d="M 860 10 L 890 10 L 890 40"/>
+                    <path d="M 890 580 L 890 610 L 860 610"/>
+                    <path d="M 40 610 L 10 610 L 10 580"/>
+                </g>
+                
+                <!-- Technical data corners -->
+                <g fill="#334155" font-size="7" opacity="0.6">
+                    <text x="25" y="590">SYS.ID: MASON-7</text>
+                    <text x="25" y="600">REV: 3.1.0</text>
+                    <text x="800" y="590">LAT: -22.9068</text>
+                    <text x="800" y="600">SECTOR: RIO-ALPHA</text>
+                </g>
+                
+                <!-- Connection lines from sectors to center -->
+                <g stroke="#1e3a8a" fill="none" opacity="0.4">
+                    ${positions.map((pos, i) => {
+                        const mx = (pos.x + cx) / 2;
+                        const my = (pos.y + cy) / 2;
+                        return `<path d="M ${pos.x + 60} ${pos.y + 40} Q ${mx} ${my} ${cx} ${cy}" stroke-width="2" stroke-dasharray="4 2"/>`;
+                    }).join('')}
+                </g>
+                
+                <!-- Center MASON Core -->
+                <g transform="translate(${cx}, ${cy})">
+                    <!-- Outer rings -->
+                    <circle r="95" fill="none" stroke="#1e3a8a" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 4"/>
+                    <circle r="80" fill="none" stroke="#1e3a8a" stroke-width="1" opacity="0.4"/>
+                    <circle r="65" fill="#0a0a0a" stroke="#374151" stroke-width="1"/>
+                    
+                    <!-- Inner core -->
+                    <circle r="50" fill="#0f0f0f" stroke="#dc2626" stroke-width="2"/>
+                    <circle r="38" fill="none" stroke="#991b1b" stroke-width="1"/>
+                    <circle r="25" fill="#7f1d1d"/>
+                    <circle r="18" fill="#dc2626" opacity="0.9">
+                        <animate attributeName="r" values="18;20;18" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="8" fill="#fca5a5"/>
+                    <circle r="3" fill="#fff" opacity="0.8"/>
+                    
+                    <!-- Core labels -->
+                    <text y="-60" text-anchor="middle" fill="#dc2626" font-size="7" letter-spacing="0.2em">CORE SYSTEM</text>
+                    <text y="75" text-anchor="middle" fill="#64748b" font-size="6" letter-spacing="0.15em">MASON ORCHESTRATOR</text>
+                    
+                    <!-- Status indicators around core -->
+                    <g fill="#22c55e" font-size="6">
+                        <circle cx="-45" cy="-45" r="3"><animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/></circle>
+                        <circle cx="45" cy="-45" r="3"><animate attributeName="opacity" values="1;0.3;1" dur="1.8s" repeatCount="indefinite"/></circle>
+                        <circle cx="45" cy="45" r="3"><animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/></circle>
+                        <circle cx="-45" cy="45" r="3"><animate attributeName="opacity" values="1;0.3;1" dur="1.3s" repeatCount="indefinite"/></circle>
+                    </g>
+                </g>
+                
+                <!-- Agent Sectors -->
+                ${agents.map((agent, i) => {
+                    const pos = positions[i];
+                    const isActive = agentActivity[agent.id] > 0;
+                    const sectorFill = isActive ? 'url(#activeSector)' : 'url(#sectorBg)';
+                    const borderColor = isActive ? '#22c55e' : '#1e40af';
+                    const textColor = isActive ? '#4ade80' : '#60a5fa';
+                    
+                    return `
+                    <g class="cursor-pointer sector-hover" onclick="selectAgent('${agent.id}')" data-agent="${agent.id}">
+                        <!-- Sector container -->
+                        <rect x="${pos.x}" y="${pos.y}" width="120" height="80" rx="2" fill="${sectorFill}" stroke="${borderColor}" stroke-width="1.5"/>
+                        
+                        <!-- Top bar -->
+                        <rect x="${pos.x}" y="${pos.y}" width="120" height="16" rx="2" fill="${borderColor}" opacity="0.3"/>
+                        <text x="${pos.x + 8}" y="${pos.y + 11}" fill="${textColor}" font-size="8" font-weight="bold">${agent.id}</text>
+                        <text x="${pos.x + 30}" y="${pos.y + 11}" fill="#94a3b8" font-size="7">${agent.name}</text>
+                        
+                        <!-- Status light -->
+                        <circle cx="${pos.x + 110}" cy="${pos.y + 8}" r="4" fill="${isActive ? '#22c55e' : '#374151'}" stroke="${isActive ? '#4ade80' : '#4b5563'}" stroke-width="1">
+                            ${isActive ? `<animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>` : ''}
+                        </circle>
+                        
+                        <!-- Internal details -->
+                        <rect x="${pos.x + 8}" y="${pos.y + 22}" width="45" height="25" fill="#0a0a0a" stroke="#334155" stroke-width="0.5" rx="1"/>
+                        <text x="${pos.x + 30}" y="${pos.y + 38}" text-anchor="middle" fill="${textColor}" font-size="10">${isActive ? agentActivity[agent.id] : '0'}</text>
+                        <text x="${pos.x + 30}" y="${pos.y + 45}" text-anchor="middle" fill="#4b5563" font-size="5">ACTIVE</text>
+                        
+                        <!-- Mini graph/indicator -->
+                        <g transform="translate(${pos.x + 60}, ${pos.y + 24})">
+                            <rect width="50" height="22" fill="#0a0a0a" stroke="#334155" stroke-width="0.5" rx="1"/>
+                            <text x="25" y="10" text-anchor="middle" fill="#4b5563" font-size="5">${agent.desc}</text>
+                            <!-- Mini bars -->
+                            <rect x="5" y="14" width="8" height="4" fill="${isActive ? '#22c55e' : '#1e3a8a'}" opacity="0.6"/>
+                            <rect x="15" y="14" width="8" height="4" fill="${isActive ? '#22c55e' : '#1e3a8a'}" opacity="0.4"/>
+                            <rect x="25" y="14" width="8" height="4" fill="${isActive ? '#22c55e' : '#1e3a8a'}" opacity="0.3"/>
+                            <rect x="35" y="14" width="8" height="4" fill="${isActive ? '#22c55e' : '#1e3a8a'}" opacity="0.2"/>
+                        </g>
+                        
+                        <!-- Bottom status bar -->
+                        <rect x="${pos.x + 8}" y="${pos.y + 55}" width="104" height="18" fill="#050505" stroke="#1e293b" stroke-width="0.5" rx="1"/>
+                        <text x="${pos.x + 14}" y="${pos.y + 67}" fill="#475569" font-size="6">STATUS:</text>
+                        <text x="${pos.x + 50}" y="${pos.y + 67}" fill="${isActive ? '#4ade80' : '#64748b'}" font-size="6">${isActive ? 'PROCESSING' : 'STANDBY'}</text>
+                        
+                        <!-- Decorative corners -->
+                        <path d="M ${pos.x + 2} ${pos.y + 6} L ${pos.x + 2} ${pos.y + 2} L ${pos.x + 6} ${pos.y + 2}" fill="none" stroke="${borderColor}" stroke-width="1" opacity="0.6"/>
+                        <path d="M ${pos.x + 114} ${pos.y + 2} L ${pos.x + 118} ${pos.y + 2} L ${pos.x + 118} ${pos.y + 6}" fill="none" stroke="${borderColor}" stroke-width="1" opacity="0.6"/>
+                    </g>
+                    `;
+                }).join('')}
+                
+                <!-- Mission count display -->
+                <g transform="translate(810, 50)">
+                    <rect x="0" y="0" width="70" height="45" fill="#0a0f1a" stroke="#1e40af" stroke-width="1" rx="2"/>
+                    <text x="35" y="15" text-anchor="middle" fill="#64748b" font-size="6" letter-spacing="0.1em">MISSIONS</text>
+                    <text x="35" y="35" text-anchor="middle" fill="#3b82f6" font-size="18" font-weight="bold">${totalMissions}</text>
+                </g>
+                
+                <!-- System status -->
+                <g transform="translate(20, 50)">
+                    <rect x="0" y="0" width="70" height="45" fill="#0a0f1a" stroke="#22c55e" stroke-width="1" rx="2" opacity="0.8"/>
+                    <text x="35" y="15" text-anchor="middle" fill="#64748b" font-size="6" letter-spacing="0.1em">SYSTEM</text>
+                    <text x="35" y="35" text-anchor="middle" fill="#22c55e" font-size="10">ONLINE</text>
+                </g>
+            </svg>`;
+            
+            document.getElementById('gameboard-svg').innerHTML = svg;
 
             // Missions panel
             let missionsHtml = '';
-            if (Object.keys(briefings).length > 0) {
-                missionsHtml = '<div class="border-t border-blue-900/30 pt-6">';
-                missionsHtml += '<h3 class="text-blue-400 font-mono text-[10px] mb-4 tracking-[0.3em]">MISSOES EM TRANSITO</h3>';
-                missionsHtml += '<div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">';
+            const briefingKeys = Object.keys(briefings);
+            if (briefingKeys.length > 0) {
+                missionsHtml = `
+                <div class="border-t border-blue-900/30 pt-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-blue-400 font-mono text-[10px] tracking-[0.3em]">ACTIVE MISSIONS</h3>
+                        <span class="text-[10px] text-gray-600 font-mono">${briefingKeys.length} em transito</span>
+                    </div>
+                    <div class="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                `;
                 
-                Object.keys(briefings).forEach(briefingId => {
+                briefingKeys.forEach(briefingId => {
                     const b = briefings[briefingId];
                     const completedSteps = b.steps.length;
                     const progress = Math.round((completedSteps / agents.length) * 100);
                     const isComplete = completedSteps >= agents.length;
-                    const currentAgent = agents[completedSteps] || agents[agents.length - 1];
+                    const currentAgent = agents[Math.min(completedSteps, agents.length - 1)];
                     
                     missionsHtml += `
-                        <div class="bg-slate-950/50 border border-blue-900/40 p-3 cursor-pointer hover:border-blue-500/50 transition-all" onclick="showBriefingDetail('${briefingId}')">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-[10px] text-blue-500 font-mono">#${briefingId.substring(0, 6)}</span>
-                                <span class="text-[10px] font-mono ${isComplete ? 'text-green-400' : 'text-yellow-500'}">${progress}%</span>
+                        <div class="bg-slate-900/30 border border-slate-800 p-3 cursor-pointer hover:border-blue-500/50 transition-all group" onclick="showBriefingDetail('${briefingId}')">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[9px] text-blue-500/70 font-mono">#${briefingId.substring(0, 8)}</span>
+                                <span class="text-[9px] font-mono ${isComplete ? 'text-green-400' : 'text-amber-400'}">${progress}%</span>
                             </div>
-                            <div class="text-xs text-white mb-2 truncate">${briefingId.replace(/_/g, ' ')}</div>
-                            <div class="flex gap-0.5">
+                            <div class="text-[11px] text-gray-300 mb-2 truncate group-hover:text-white">${briefingId.replace(/_/g, ' ')}</div>
+                            <div class="flex gap-px">
                                 ${agents.map((a, i) => {
                                     const done = b.steps.some(s => s.startsWith(a.id));
                                     const current = i === completedSteps && !isComplete;
-                                    const bg = done ? 'bg-green-500' : (current ? 'bg-yellow-500' : 'bg-slate-700');
-                                    return `<div class="h-1 flex-1 ${bg} ${current ? 'animate-pulse' : ''}"></div>`;
+                                    const bg = done ? 'bg-green-500' : (current ? 'bg-amber-400' : 'bg-slate-700');
+                                    return `<div class="h-1 flex-1 ${bg} ${current ? 'animate-pulse' : ''}" title="${a.name}"></div>`;
                                 }).join('')}
+                            </div>
+                            <div class="text-[8px] text-gray-600 mt-1 font-mono">
+                                ${isComplete ? 'COMPLETE' : `> ${currentAgent.name}`}
                             </div>
                         </div>
                     `;
@@ -521,6 +577,24 @@ BRIEFING
             
             document.getElementById('gameboard-missions').innerHTML = missionsHtml;
         }
+
+        function selectAgent(agentId) {
+            // Could open a detail panel or highlight related missions
+            console.log('Selected agent:', agentId);
+        }
+
+        function showBriefingDetail(briefingId) {
+            showTab('board');
+            setTimeout(() => {
+                const groups = document.querySelectorAll('[data-group]');
+                groups.forEach(g => {
+                    if (g.dataset.group && g.dataset.group.includes(briefingId.split('_')[0])) {
+                        g.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }, 100);
+        }
+
 
         function selectAgent(agentId) {
             console.log('Selected agent:', agentId);
