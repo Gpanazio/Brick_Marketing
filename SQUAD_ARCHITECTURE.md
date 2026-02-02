@@ -145,15 +145,22 @@ BRIEFING
 
 ## 05. COPYWRITER
 
-**Modelo:** Claude Sonnet 4  
+**Modelo Principal:** Claude Sonnet 4  
+**Fallback (após 2 falhas):** Gemini 3 Pro  
 **Função:** Criatividade pura.
+
+**Regra de Fallback:**
+- Tentativa 1-2: Claude Sonnet 4
+- Tentativa 3+: Gemini 3 Pro (mais barato, menos criativo)
 
 **Output:**
 ```json
 {
   "variacao_1": { "tipo": "curta", "texto": "..." },
   "variacao_2": { "tipo": "media", "texto": "..." },
-  "variacao_3": { "tipo": "storytelling", "texto": "..." }
+  "variacao_3": { "tipo": "storytelling", "texto": "..." },
+  "modelo_usado": "claude-sonnet-4 | gemini-3-pro",
+  "tentativa": 1
 }
 ```
 
