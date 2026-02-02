@@ -71,16 +71,22 @@
 
     <!-- Architecture View -->
     <div id="view-architecture" class="hidden">
-        <div class="column p-6 rounded bg-[#080808]">
-            <div class="flex items-center justify-between mb-6 border-b border-green-900 pb-4">
-                <h2 class="text-xl font-bold text-green-400">⚙️ SQUAD ARCHITECTURE <span class="text-xs font-mono text-gray-600 ml-2">v3.0</span></h2>
-                <div class="flex items-center gap-2">
-                    <span class="status-dot bg-green-500 animate-pulse"></span>
-                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">System Protocols Active</span>
+        <div class="column p-10 rounded bg-[#050505] border-white/5">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center gap-4 mb-16 border-b border-white/10 pb-6">
+                    <div class="h-8 w-1 bg-red-600"></div>
+                    <div>
+                        <h2 class="text-3xl font-brick text-white tracking-tighter">SQUAD ARCHITECTURE</h2>
+                        <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em] mt-1">Status: Neural Protocols Loaded // v3.0</p>
+                    </div>
                 </div>
-            </div>
-            <div id="architecture-content" class="text-sm leading-relaxed font-mono text-gray-400">
-                Carregando protocolos...
+
+                <div id="architecture-content" class="space-y-12">
+                    <!-- Content will be injected here with custom styling -->
+                    <div class="flex items-center justify-center py-20">
+                        <span class="text-xs font-mono text-gray-600 animate-pulse uppercase tracking-widest">Acessando Banco de Dados...</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -143,28 +149,54 @@
                 const data = await res.json();
                 const content = data.content || 'Arquivo não encontrado.';
                 
-                // Professional, centered, non-techy rendering
-                const htmlContent = marked.parse(content);
-                document.getElementById('architecture-content').innerHTML = `
-                    <div class="max-w-4xl mx-auto py-10 px-6 font-sans">
-                        <div class="prose prose-invert max-w-none 
-                            prose-headings:text-white prose-headings:font-bold prose-headings:tracking-tighter prose-headings:uppercase prose-headings:text-center
-                            prose-h1:text-4xl prose-h1:mb-12 prose-h1:text-green-500
-                            prose-h2:text-xl prose-h2:mt-16 prose-h2:border-b prose-h2:border-gray-800 prose-h2:pb-4
-                            prose-p:text-gray-400 prose-p:text-lg prose-p:leading-relaxed prose-p:text-center
-                            prose-strong:text-white prose-strong:font-bold
-                            prose-ul:list-none prose-ul:pl-0 prose-ul:text-center
-                            prose-li:text-gray-300 prose-li:text-base prose-li:mb-3
-                            prose-pre:bg-[#0a0a0a] prose-pre:border prose-pre:border-gray-800 prose-pre:p-8 prose-pre:rounded-lg prose-pre:mx-auto prose-pre:max-w-fit
-                            prose-table:mx-auto prose-table:border-collapse prose-table:my-12
-                            prose-th:bg-[#111] prose-th:text-white prose-th:p-4 prose-th:border prose-th:border-gray-800
-                            prose-td:p-4 prose-td:border prose-td:border-gray-800 prose-td:text-gray-400">
-                            ${htmlContent}
-                        </div>
+                // Brick AI Style: Clean, Mono, High-End
+                const sections = content.split('---');
+                
+                let html = `
+                    <style>
+                        .brick-section { border-left: 2px solid #333; padding-left: 2rem; margin-bottom: 4rem; transition: border-color 0.3s; }
+                        .brick-section:hover { border-left-color: #DC2626; }
+                        .brick-title { font-family: 'Courier New', monospace; font-size: 1.25rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; margin-bottom: 1rem; text-transform: uppercase; }
+                        .brick-label { font-family: 'Courier New', monospace; font-size: 0.7rem; color: #DC2626; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+                        .brick-text { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9CA3AF; line-height: 1.6; }
+                        .brick-pre { background: #080808; padding: 1.5rem; border: 1px solid #1a1a1a; color: #DC2626; font-size: 0.8rem; overflow-x: auto; margin: 2rem 0; }
+                        .brick-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.8rem; }
+                        .brick-table th { text-align: left; padding: 0.75rem; border-bottom: 1px solid #333; color: #fff; text-transform: uppercase; letter-spacing: 0.1em; }
+                        .brick-table td { padding: 0.75rem; border-bottom: 1px solid #111; color: #9CA3AF; }
+                        .brick-tag { background: #1a1a1a; color: #fff; padding: 0.2rem 0.5rem; font-size: 0.7rem; margin-right: 0.5rem; border: 1px solid #333; }
+                    </style>
+                `;
+
+                // Render first section (Flow) specially
+                const flow = sections[0];
+                html += `
+                    <div class="brick-section">
+                        <span class="brick-label">Pipeline // Protocol</span>
+                        <div class="brick-pre"><pre>${flow.split('## FLUXO DE PRODUÇÃO')[1] || flow}</pre></div>
                     </div>
                 `;
+
+                // Render other sections
+                sections.slice(1).forEach(section => {
+                    const lines = section.trim().split('\n');
+                    const titleLine = lines.find(l => l.startsWith('## '));
+                    if (!titleLine) return;
+
+                    const title = titleLine.replace('## ', '').trim();
+                    const body = section.replace(titleLine, '').trim();
+                    
+                    html += `
+                        <div class="brick-section">
+                            <span class="brick-label">Module // Active</span>
+                            <h3 class="brick-title">${title}</h3>
+                            <div class="brick-text">${marked.parse(body).replace(/<table>/g, '<table class="brick-table">').replace(/<th>/g, '<th class="brick-th">')}</div>
+                        </div>
+                    `;
+                });
+
+                document.getElementById('architecture-content').innerHTML = html;
             } catch (e) {
-                document.getElementById('architecture-content').innerHTML = '<div class="text-gray-500 text-center py-20">Erro ao carregar protocolos de arquitetura.</div>';
+                document.getElementById('architecture-content').innerHTML = '<div class="text-gray-500 text-center py-20">Erro ao carregar protocolos.</div>';
             }
         }
 
