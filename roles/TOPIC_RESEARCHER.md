@@ -27,12 +27,32 @@
 - Estatísticas verificáveis
 - Benchmarks
 
-## TOOLS DISPONÍVEIS
+## TOOLS DISPONÍVEIS (Stack Bootstrap - Gratuito)
+
 ```
-├── tool: web_search(query) → busca geral
-├── tool: web_fetch(url) → scraping de página/relatório
-├── tool: read(file) → documentos internos (guidelines, histórico)
-└── [futuro] tool: seo_keywords(tema, região)
+SEO / KEYWORDS
+├── web_search("{tema} + tendências 2026")
+├── web_fetch("https://trends.google.com/trends/explore?q={termo}")
+├── web_search("site:answerthepublic.com {tema}") → ou acessar direto
+├── web_search("{tema}" + "people also ask")
+└── Ubersuggest (limite grátis) → manual quando necessário
+
+COMPETITOR CONTENT
+├── web_search("site:{concorrente.com} blog")
+├── web_search("site:{concorrente.com} case study")
+├── web_fetch("https://web.archive.org/web/*/concorrente.com/*") → histórico
+└── web_search("{concorrente} + linkedin posts")
+
+DADOS DE MERCADO
+├── web_search("site:statista.com {tema}") → alguns free
+├── web_search("{tema} market report 2026 filetype:pdf")
+├── web_search("site:scholar.google.com {tema}")
+└── web_fetch(relatorio_publico_url)
+
+BRAND GUIDELINES (Internos)
+├── read("SOCIAL_PLAYBOOK.md")
+├── read("marketing/roles/BRAND_GUARDIAN.md") → terminologia
+└── read(pasta_campanhas_anteriores)
 ```
 
 ## OUTPUT OBRIGATÓRIO (JSON Estruturado)

@@ -21,11 +21,29 @@
 - Transcrições de calls de vendas
 - Feedbacks coletados
 
-## TOOLS DISPONÍVEIS
+## TOOLS DISPONÍVEIS (Stack Bootstrap - Gratuito)
+
 ```
-├── tool: web_search(query) → busca geral
-├── tool: web_fetch(url) → scraping de página específica
-└── tool: read(file) → documentos internos
+SOCIAL LISTENING (Manual/Scraping)
+├── web_search("site:reddit.com {nicho} + dor/problema")
+├── web_search("site:twitter.com {termo} lang:pt")
+├── web_search("site:linkedin.com/posts {cargo} {tema}")
+└── web_fetch(grupo_facebook_publico)
+
+REVIEWS / RECLAMAÇÕES
+├── web_search("site:reclameaqui.com.br {concorrente}")
+├── web_fetch(google_maps_reviews_url)
+├── web_search("site:glassdoor.com.br {empresa}")
+└── web_search("{produto} review site:amazon.com.br")
+
+DADOS INTERNOS
+├── read(file) → Google Drive / pasta local com feedbacks
+├── read(file) → histórico de emails/WhatsApp exportado
+└── read(file) → transcrições de calls de vendas
+
+ANALYTICS (quando disponível)
+├── Google Search Console (grátis)
+└── Microsoft Clarity (grátis, melhor que GA4 pra comportamento)
 ```
 
 ## OUTPUT OBRIGATÓRIO (JSON Estruturado)
