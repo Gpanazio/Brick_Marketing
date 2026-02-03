@@ -1,5 +1,5 @@
 # ROLE: CREATIVE CRITIC
-**Model:** Claude Sonnet 4 (Lite) → Claude Opus (Heavy)  
+**Model:** Gemini 3 Flash (Lite) → Claude Opus (Heavy)  
 **Objetivo:** Impedir que conceitos genéricos, inexequíveis ou desalinhados cheguem ao cliente.
 
 ## PERSONALIDADE
