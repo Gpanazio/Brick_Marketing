@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --brick-black: #050505;
@@ -16,86 +19,150 @@
             --brick-gray: #9CA3AF;
             --brick-white: #E5E5E5;
         }
-        body { 
-            background-color: var(--brick-black); 
-            color: var(--brick-white); 
+
+        body {
+            background-color: var(--brick-black);
+            color: var(--brick-white);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
-        .font-brick { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.04em; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        .column { min-height: 80vh; background: #0a0a0a; border: 1px solid #1a1a1a; }
-        .card { 
-            background: #0a0a0a; 
-            border: 1px solid #333; 
-            transition: all 0.2s; 
+
+        .font-brick {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .column {
+            min-height: 80vh;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+        }
+
+        .card {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
         }
+
         .card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 2px; height: 100%;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
             background: #333;
             transition: background 0.2s;
         }
-        .card:hover { border-color: var(--brick-red); }
-        .card:hover::before { background: var(--brick-red); }
-        
-        .modal-bg { background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); }
-        
+
+        .card:hover {
+            border-color: var(--brick-red);
+        }
+
+        .card:hover::before {
+            background: var(--brick-red);
+        }
+
+        .modal-bg {
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
         /* Noise Texture */
         .noise-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0; opacity: 0.03;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--brick-red); }
 
-        .animate-blink { animation: blink 1s step-end infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brick-red);
+        }
+
+        .animate-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
+
 <body class="p-6">
     <div class="noise-overlay"></div>
     <div class="relative z-10">
 
-    <!-- Header -->
-    <header class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
-        <div>
-            <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
-                BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
-            </h1>
-            <div class="flex items-center gap-3 mt-2 font-mono text-[10px] tracking-[0.2em] text-[#9CA3AF]">
-                <span id="connection-status" class="text-[#DC2626]">CONNECTING...</span>
-                <span class="text-[#333]">|</span>
-                <span>SYS.VER 3.3 (LOBBY)</span>
+        <!-- Header -->
+        <header class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
+            <div>
+                <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
+                    BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
+                </h1>
+                <div class="flex items-center gap-3 mt-2 font-mono text-[10px] tracking-[0.2em] text-[#9CA3AF]">
+                    <span id="connection-status" class="text-[#DC2626]">CONNECTING...</span>
+                    <span class="text-[#333]">|</span>
+                    <span>SYS.VER 3.3 (LOBBY)</span>
+                </div>
             </div>
-        </div>
-        <div class="flex items-center gap-6">
-            <button onclick="openModal('architectureDiagram')" class="text-[10px] font-mono text-[#9CA3AF] hover:text-white border-b border-transparent hover:border-[#DC2626] transition-colors uppercase tracking-widest pb-1">
-                View Protocols
-            </button>
-            <button onclick="openModal('newBriefing')" class="bg-[#DC2626] text-white px-6 py-2 font-brick text-sm tracking-wide hover:bg-red-700 transition-colors">
-                + NEW BRIEFING
-            </button>
-        </div>
-    </header>
+            <div class="flex items-center gap-6">
+                <button onclick="openModal('architectureDiagram')"
+                    class="text-[10px] font-mono text-[#9CA3AF] hover:text-white border-b border-transparent hover:border-[#DC2626] transition-colors uppercase tracking-widest pb-1">
+                    View Protocols
+                </button>
+                <button onclick="openModal('newBriefing')"
+                    class="bg-[#DC2626] text-white px-6 py-2 font-brick text-sm tracking-wide hover:bg-red-700 transition-colors">
+                    + NEW BRIEFING
+                </button>
+            </div>
+        </header>
 
-    <!-- Modal: Architecture Diagram -->
-    <div id="modal-architectureDiagram" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-[60] p-4">
-        <div class="bg-[#0a0a0a] border border-[#DC2626]/30 p-8 w-full max-w-5xl max-h-[90vh] shadow-[0_0_50px_rgba(220,38,38,0.1)] overflow-auto relative">
-            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                <h2 class="text-xl font-brick text-white uppercase tracking-tighter">System Architecture <span class="text-[#DC2626]">//</span> Flow</h2>
-                <button onclick="closeModal('architectureDiagram')" class="text-[#9CA3AF] hover:text-[#DC2626] text-2xl">&times;</button>
-            </div>
-            <pre class="text-[#9CA3AF] font-mono text-[11px] md:text-xs leading-tight whitespace-pre select-all">
+        <!-- Modal: Architecture Diagram -->
+        <div id="modal-architectureDiagram"
+            class="fixed inset-0 modal-bg hidden flex items-center justify-center z-[60] p-4">
+            <div
+                class="bg-[#0a0a0a] border border-[#DC2626]/30 p-8 w-full max-w-5xl max-h-[90vh] shadow-[0_0_50px_rgba(220,38,38,0.1)] overflow-auto relative">
+                <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                    <h2 class="text-xl font-brick text-white uppercase tracking-tighter">System Architecture <span
+                            class="text-[#DC2626]">//</span> Flow</h2>
+                    <button onclick="closeModal('architectureDiagram')"
+                        class="text-[#9CA3AF] hover:text-[#DC2626] text-2xl">&times;</button>
+                </div>
+                <pre class="text-[#9CA3AF] font-mono text-[11px] md:text-xs leading-tight whitespace-pre select-all">
 BRIEFING
     │
     ▼
@@ -144,156 +211,187 @@ BRIEFING
         │  APROVADO ≥80%   │──────────────► OUTPUT
         └──────────────────┘
             </pre>
-        </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="flex gap-8 mb-8 border-b border-white/10 pb-0">
-        <button id="tab-board" onclick="showTab('board')" class="text-white font-brick text-sm tracking-widest border-b-2 border-[#DC2626] pb-4 px-2 transition-colors">SQUAD BOARD</button>
-        <button id="tab-gameboard" onclick="showTab('gameboard')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">GAME BOARD</button>
-        <button id="tab-approved" onclick="showTab('approved')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">APROVADOS</button>
-        <button id="tab-history" onclick="showTab('history')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">HISTORY</button>
-        <button id="tab-architecture" onclick="showTab('architecture')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">ARCH</button>
-    </div>
-
-    <!-- Board -->
-    <div id="view-board" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        <!-- Column 1: Briefing -->
-        <div class="column p-6">
-            <h2 class="text-xs font-mono text-[#9CA3AF] border-b border-white/10 pb-4 mb-6 tracking-[0.2em]">01 // INPUT</h2>
-            <div id="col-briefing" class="space-y-4">Loading...</div>
+            </div>
         </div>
 
-        <!-- Column 2: WIP -->
-        <div class="column p-6 relative">
-            <h2 class="text-xs font-mono text-[#DC2626] border-b border-white/10 pb-4 mb-6 tracking-[0.2em] flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-[#DC2626] rounded-full animate-blink"></span> 02 // PROCESSING
-            </h2>
-            <div id="col-wip" class="space-y-4">Loading...</div>
+        <!-- Tabs -->
+        <div class="flex gap-8 mb-8 border-b border-white/10 pb-0">
+            <button id="tab-board" onclick="showTab('board')"
+                class="text-white font-brick text-sm tracking-widest border-b-2 border-[#DC2626] pb-4 px-2 transition-colors">SQUAD
+                BOARD</button>
+            <button id="tab-gameboard" onclick="showTab('gameboard')"
+                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">GAME
+                BOARD</button>
+            <button id="tab-approved" onclick="showTab('approved')"
+                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">APROVADOS</button>
+            <button id="tab-history" onclick="showTab('history')"
+                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">HISTORY</button>
+            <button id="tab-architecture" onclick="showTab('architecture')"
+                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">ARCH</button>
         </div>
 
-        <!-- Column 3: Done -->
-        <div class="column p-6">
-            <h2 class="text-xs font-mono text-white border-b border-white/10 pb-4 mb-6 tracking-[0.2em]">03 // OUTPUT</h2>
-            <div id="col-done" class="space-y-4">Loading...</div>
+        <!-- Board -->
+        <div id="view-board" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Column 1: Briefing -->
+            <div class="column p-6">
+                <h2 class="text-xs font-mono text-[#9CA3AF] border-b border-white/10 pb-4 mb-6 tracking-[0.2em]">01 //
+                    INPUT</h2>
+                <div id="col-briefing" class="space-y-4">Loading...</div>
+            </div>
+
+            <!-- Column 2: WIP -->
+            <div class="column p-6 relative">
+                <h2
+                    class="text-xs font-mono text-[#DC2626] border-b border-white/10 pb-4 mb-6 tracking-[0.2em] flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-[#DC2626] rounded-full animate-blink"></span> 02 // PROCESSING
+                </h2>
+                <div id="col-wip" class="space-y-4">Loading...</div>
+            </div>
+
+            <!-- Column 3: Done -->
+            <div class="column p-6">
+                <h2 class="text-xs font-mono text-white border-b border-white/10 pb-4 mb-6 tracking-[0.2em]">03 //
+                    OUTPUT</h2>
+                <div id="col-done" class="space-y-4">Loading...</div>
+            </div>
+
         </div>
 
-    </div>
+        <!-- Game Board View (Lobby & Map) -->
+        <div id="view-gameboard" class="hidden border border-white/10 bg-[#0a0a0a]">
+            <div class="min-h-[90vh] relative overflow-hidden flex flex-col">
+                <!-- Grid overlay -->
+                <div class="absolute inset-0 pointer-events-none opacity-10"
+                    style="background-image: linear-gradient(rgba(220,38,38,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.1) 1px, transparent 1px); background-size: 40px 40px;">
+                </div>
 
-    <!-- Game Board View (Lobby & Map) -->
-    <div id="view-gameboard" class="hidden border border-white/10 bg-[#0a0a0a]">
-        <div class="min-h-[90vh] relative overflow-hidden flex flex-col">
-            <!-- Grid overlay -->
-            <div class="absolute inset-0 pointer-events-none opacity-10" style="background-image: linear-gradient(rgba(220,38,38,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
-            
-            <!-- Header -->
-            <div class="relative z-10 p-6 border-b border-white/10 flex justify-between items-center bg-[#050505]/80 backdrop-blur">
-                <div class="flex items-center gap-4">
-                    <button id="back-to-lobby" onclick="showGameLobby()" class="hidden text-xs font-mono text-[#9CA3AF] hover:text-[#DC2626] transition-colors border border-[#333] px-3 py-1 uppercase tracking-widest">
-                        &lt; BACK TO LOBBY
-                    </button>
-                    <div>
-                        <h1 class="text-lg font-mono text-white tracking-widest">SYSTEM ARCHITECTURE MAP</h1>
-                        <p class="text-[9px] text-[#9CA3AF] font-mono tracking-[0.3em] mt-1">MASON PROTOCOL v3.2</p>
+                <!-- Header -->
+                <div
+                    class="relative z-10 p-6 border-b border-white/10 flex justify-between items-center bg-[#050505]/80 backdrop-blur">
+                    <div class="flex items-center gap-4">
+                        <button id="back-to-lobby" onclick="showGameLobby()"
+                            class="hidden text-xs font-mono text-[#9CA3AF] hover:text-[#DC2626] transition-colors border border-[#333] px-3 py-1 uppercase tracking-widest">
+                            &lt; BACK TO LOBBY
+                        </button>
+                        <div>
+                            <h1 class="text-lg font-mono text-white tracking-widest">SYSTEM ARCHITECTURE MAP</h1>
+                            <p class="text-[9px] text-[#9CA3AF] font-mono tracking-[0.3em] mt-1">MASON PROTOCOL v3.2</p>
+                        </div>
+                    </div>
+                    <div class="text-right font-mono text-[9px] text-[#555]">
+                        <div id="gameboard-time">--:--:--</div>
                     </div>
                 </div>
-                <div class="text-right font-mono text-[9px] text-[#555]">
-                    <div id="gameboard-time">--:--:--</div>
-                </div>
-            </div>
-            
-            <!-- Lobby (List of Briefings) -->
-            <div id="gameboard-lobby" class="relative z-10 flex-1 p-12 overflow-y-auto">
-                <h3 class="text-xs font-mono text-[#555] uppercase tracking-[0.2em] mb-8">Select Briefing Sequence</h3>
-                <div id="lobby-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Injected by JS -->
-                </div>
-            </div>
 
-            <!-- Main SVG Board (Hidden by default) -->
-            <div id="gameboard-svg" class="relative z-10 flex-1 hidden flex justify-center items-center py-12">
-                <div class="text-[#DC2626] animate-blink font-mono text-xs tracking-widest">[ LOADING SCHEMATIC... ]</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Approved View -->
-    <div id="view-approved" class="hidden">
-        <div class="column p-12 border-white/10 bg-[#050505]">
-            <div class="max-w-5xl mx-auto">
-                <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-6">
-                    <h2 class="text-3xl font-brick text-white tracking-tighter">APPROVED ASSETS</h2>
-                    <span class="text-[10px] font-mono text-[#555] uppercase tracking-[0.2em]">Ready for Publication</span>
-                </div>
-                <div id="approved-list" class="space-y-8">
-                    <!-- Output cards -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- History View -->
-    <div id="view-history" class="hidden">
-        <div class="column p-8 border-white/10">
-            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                <h2 class="text-2xl font-brick text-white tracking-tight">CAMPAIGN LOGS</h2>
-            </div>
-            <div id="history-list" class="space-y-4">Loading...</div>
-        </div>
-    </div>
-
-    <!-- Architecture View -->
-    <div id="view-architecture" class="hidden">
-        <div class="column p-12 border-white/10 bg-[#050505]">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex items-center gap-6 mb-16 border-b border-white/10 pb-8">
-                    <div class="h-12 w-1 bg-[#DC2626]"></div>
-                    <div>
-                        <h2 class="text-4xl font-brick text-white tracking-tighter">SQUAD PROTOCOLS</h2>
-                        <p class="text-[10px] font-mono text-[#555] uppercase tracking-[0.4em] mt-2">Classified // Internal Use Only</p>
+                <!-- Lobby (List of Briefings) -->
+                <div id="gameboard-lobby" class="relative z-10 flex-1 p-12 overflow-y-auto">
+                    <h3 class="text-xs font-mono text-[#555] uppercase tracking-[0.2em] mb-8">Select Briefing Sequence
+                    </h3>
+                    <div id="lobby-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Injected by JS -->
                     </div>
                 </div>
-                <div id="architecture-content" class="space-y-12"></div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modals (New Briefing / Viewer) -->
-    <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-        <div class="bg-[#0a0a0a] border border-white/10 p-8 w-full max-w-2xl shadow-2xl relative">
-            <h2 class="text-2xl font-brick text-white mb-6 tracking-tight">NEW MISSION BRIEF</h2>
-            <input id="briefing-title" type="text" placeholder="Mission Codename" class="w-full bg-[#111] border border-[#333] p-4 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]">
-            <textarea id="briefing-content" rows="8" placeholder="Objectives, Targets, Constraints..." class="w-full bg-[#111] border border-[#333] p-4 text-white mb-6 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]"></textarea>
-            <div class="flex justify-end gap-6">
-                <button onclick="closeModal('newBriefing')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest">ABORT</button>
-                <button onclick="submitBriefing()" class="bg-white text-black px-8 py-3 font-brick text-sm hover:bg-[#DC2626] hover:text-white transition-colors tracking-wide">INITIATE SEQUENCE</button>
+                <!-- Main SVG Board (Hidden by default) -->
+                <div id="gameboard-svg" class="relative z-10 flex-1 hidden flex justify-center items-center py-12">
+                    <div class="text-[#DC2626] animate-blink font-mono text-xs tracking-widest">[ LOADING SCHEMATIC... ]
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="modal-viewer" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-        <div class="bg-[#0a0a0a] border border-white/10 w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
-            <div class="flex justify-between items-center p-6 border-b border-white/10 bg-[#050505]">
-                <h2 id="viewer-title" class="text-lg font-mono text-white tracking-widest uppercase">FILENAME</h2>
-                <button onclick="closeModal('viewer')" class="text-[#555] hover:text-[#DC2626] text-2xl">&times;</button>
+        <!-- Approved View -->
+        <div id="view-approved" class="hidden">
+            <div class="column p-12 border-white/10 bg-[#050505]">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-6">
+                        <h2 class="text-3xl font-brick text-white tracking-tighter">APPROVED ASSETS</h2>
+                        <span class="text-[10px] font-mono text-[#555] uppercase tracking-[0.2em]">Ready for
+                            Publication</span>
+                    </div>
+                    <div id="approved-list" class="space-y-8">
+                        <!-- Output cards -->
+                    </div>
+                </div>
             </div>
-            <div id="viewer-content" class="p-8 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0a0a0a] font-mono text-sm leading-relaxed text-[#ccc]"></div>
-            <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505] flex justify-end gap-4"></div>
         </div>
-    </div>
+
+        <!-- History View -->
+        <div id="view-history" class="hidden">
+            <div class="column p-8 border-white/10">
+                <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                    <h2 class="text-2xl font-brick text-white tracking-tight">CAMPAIGN LOGS</h2>
+                </div>
+                <div id="history-list" class="space-y-4">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Architecture View -->
+        <div id="view-architecture" class="hidden">
+            <div class="column p-12 border-white/10 bg-[#050505]">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center gap-6 mb-16 border-b border-white/10 pb-8">
+                        <div class="h-12 w-1 bg-[#DC2626]"></div>
+                        <div>
+                            <h2 class="text-4xl font-brick text-white tracking-tighter">SQUAD PROTOCOLS</h2>
+                            <p class="text-[10px] font-mono text-[#555] uppercase tracking-[0.4em] mt-2">Classified //
+                                Internal Use Only</p>
+                        </div>
+                    </div>
+                    <div id="architecture-content" class="space-y-12"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals (New Briefing / Viewer) -->
+        <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
+            <div class="bg-[#0a0a0a] border border-white/10 p-8 w-full max-w-2xl shadow-2xl relative">
+                <h2 class="text-2xl font-brick text-white mb-6 tracking-tight">NEW MISSION BRIEF</h2>
+                <input id="briefing-title" type="text" placeholder="Mission Codename"
+                    class="w-full bg-[#111] border border-[#333] p-4 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]">
+                <textarea id="briefing-content" rows="8" placeholder="Objectives, Targets, Constraints..."
+                    class="w-full bg-[#111] border border-[#333] p-4 text-white mb-6 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]"></textarea>
+                <div class="flex justify-end gap-6">
+                    <button onclick="closeModal('newBriefing')"
+                        class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest">ABORT</button>
+                    <button onclick="submitBriefing()"
+                        class="bg-white text-black px-8 py-3 font-brick text-sm hover:bg-[#DC2626] hover:text-white transition-colors tracking-wide">INITIATE
+                        SEQUENCE</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-viewer" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
+            <div
+                class="bg-[#0a0a0a] border border-white/10 w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
+                <div class="flex justify-between items-center p-6 border-b border-white/10 bg-[#050505]">
+                    <h2 id="viewer-title" class="text-lg font-mono text-white tracking-widest uppercase">FILENAME</h2>
+                    <button onclick="closeModal('viewer')"
+                        class="text-[#555] hover:text-[#DC2626] text-2xl">&times;</button>
+                </div>
+                <div id="viewer-content"
+                    class="p-8 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0a0a0a] font-mono text-sm leading-relaxed text-[#ccc]">
+                </div>
+                <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505] flex justify-end gap-4"></div>
+            </div>
+        </div>
     </div>
 
     <!-- DETAILS PANEL -->
-    <div id="node-details-panel" class="fixed top-24 right-0 w-full md:w-[600px] h-[calc(100vh-6rem)] bg-[#050505]/95 border-l border-white/10 p-10 overflow-y-auto shadow-2xl z-[100] transform translate-x-full transition-transform duration-300">
+    <div id="node-details-panel"
+        class="fixed top-24 right-0 w-full md:w-[600px] h-[calc(100vh-6rem)] bg-[#050505]/95 border-l border-white/10 p-10 overflow-y-auto shadow-2xl z-[100] transform translate-x-full transition-transform duration-300">
         <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
             <div>
-                <h3 id="detail-title" class="text-3xl font-brick text-white uppercase tracking-tighter">NODE DETAILS</h3>
+                <h3 id="detail-title" class="text-3xl font-brick text-white uppercase tracking-tighter">NODE DETAILS
+                </h3>
                 <div class="h-1 w-20 bg-[#DC2626] mt-4"></div>
             </div>
-            <button onclick="closeNodeDetails()" class="text-[#555] hover:text-white transition-colors text-2xl">&times;</button>
+            <button onclick="closeNodeDetails()"
+                class="text-[#555] hover:text-white transition-colors text-2xl">&times;</button>
         </div>
-        <div id="detail-content" class="prose prose-invert prose-p:text-[#ccc] prose-headings:font-brick prose-headings:text-white prose-pre:bg-[#111] prose-pre:border prose-pre:border-white/10 max-w-none font-mono text-sm leading-relaxed">
+        <div id="detail-content"
+            class="prose prose-invert prose-p:text-[#ccc] prose-headings:font-brick prose-headings:text-white prose-pre:bg-[#111] prose-pre:border prose-pre:border-white/10 max-w-none font-mono text-sm leading-relaxed">
             <p class="text-[#555] italic">Select a system node to view logs.</p>
         </div>
     </div>
@@ -307,111 +405,267 @@ BRIEFING
 
         function renderGameBoard(job) {
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-            const c = { text: '#ccc', dim: '#666', border: '#2a2a2a', line: '#1a1a1a', red: '#DC2626', bg: '#0c0c0c', done: '#888' };
-            const stepColor = (k) => job.steps?.[k]?.status === 'done' ? c.done : (job.steps?.[k] ? c.red : c.border);
-            
-            // Compact Layout (+20%)
-            const W=1080, cx=W/2, colL=cx-240, colR=cx+240, bw=168, bwLg=264;
-            const y = { mission:60, core:144, val:240, research:336, claims:432, copy:528, review:624, opus:744, out:840 };
-            const gap = 36;
+
+            // Enhanced color palette - WHITE and RED only
+            const c = {
+                text: '#f0f0f0',      // Brighter white
+                dim: '#888888',       // Lighter gray for subtitles
+                border: '#3a3a3a',    // Lighter borders
+                line: '#333333',      // Visible lines
+                red: '#ef4444',       // Brighter red
+                redGlow: 'rgba(239,68,68,0.4)',
+                bg: '#0c0c0c',
+                done: '#ffffff',      // White for completed
+                doneGlow: 'rgba(255,255,255,0.3)',
+                pending: '#555555'
+            };
+
+            const stepStatus = (k) => {
+                if (job.steps?.[k]?.status === 'done') return 'done';
+                if (job.steps?.[k]) return 'active';
+                return 'pending';
+            };
+            const stepColor = (k) => {
+                const status = stepStatus(k);
+                if (status === 'done') return c.done;
+                if (status === 'active') return c.red;
+                return c.border;
+            };
+            const stepGlow = (k) => {
+                const status = stepStatus(k);
+                if (status === 'done') return c.doneGlow;
+                if (status === 'active') return c.redGlow;
+                return 'transparent';
+            };
+
+            // LARGER Layout for better readability
+            const W = 1200, H = 1050;
+            const cx = W / 2;
+            const colL = cx - 280, colR = cx + 280;
+            const bw = 200, bh = 64;        // Bigger boxes
+            const bwLg = 320, bhLg = 80;    // Even bigger for main nodes
+            const gap = 50;
+
+            // More vertical spacing
+            const y = {
+                mission: 80,
+                core: 180,
+                val: 300,
+                research: 420,
+                claims: 540,
+                copy: 660,
+                review: 780,
+                opus: 920,
+                out: 1020
+            };
 
             const html = `
             <style>
-                .node{cursor:pointer;transition:all 0.2s ease}
-                .node:hover .box{stroke:${c.red};stroke-opacity:0.8}
-                .node:hover text{fill:#fff}
-                .box{transition:all 0.2s}
-                .line{stroke:${c.line};stroke-width:1}
-                .flow{stroke-dasharray:3 3;animation:dash 0.8s linear infinite}
-                @keyframes dash{to{stroke-dashoffset:-6}}
+                .gb-node { cursor: pointer; }
+                .gb-node:hover .gb-box { stroke: ${c.red}; stroke-width: 2; }
+                .gb-node:hover .gb-title { fill: #ffffff; }
+                .gb-box { transition: stroke 0.2s, stroke-width 0.2s; }
+                .gb-line { stroke: ${c.line}; stroke-width: 2; }
+                .gb-flow { stroke-dasharray: 8 4; }
             </style>
-            <svg viewBox="0 0 ${W} 888" style="width:100%;max-width:1080px;height:auto">
-                <defs><linearGradient id="grd" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#151515"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs>
+            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto">
+                <defs>
+                    <!-- Enhanced gradients -->
+                    <linearGradient id="gbGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#1a1a1a"/>
+                        <stop offset="100%" stop-color="#0d0d0d"/>
+                    </linearGradient>
+                    <linearGradient id="gbGradientCore" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#1f1f1f"/>
+                        <stop offset="100%" stop-color="#0a0a0a"/>
+                    </linearGradient>
+                    <linearGradient id="gbGradientRed" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="rgba(239,68,68,0.15)"/>
+                        <stop offset="100%" stop-color="rgba(239,68,68,0.05)"/>
+                    </linearGradient>
+                    <!-- Glow filters -->
+                    <filter id="gbGlowRed" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="4" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <filter id="gbGlowGreen" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
                 
-                <!-- Mission -->
-                <g class="node" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
-                    <rect class="box" x="${-bwLg/2}" y="-18" width="${bwLg}" height="36" rx="2" fill="${c.bg}" stroke="${c.border}"/>
-                    <text x="0" y="5" text-anchor="middle" fill="${c.dim}" font-size="10" font-family="Inter">${(job.title||'SELECT JOB').substring(0,28).toUpperCase()}</text>
-                </g>
-                <line class="line" x1="${cx}" y1="${y.mission+18}" x2="${cx}" y2="${y.core-gap}"/>
+                <!-- Background grid pattern -->
+                <pattern id="gbGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <path d="M60 0L0 0 0 60" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#gbGrid)"/>
                 
-                <!-- Douglas Core -->
-                <g class="node" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.core})">
-                    <rect class="box" x="${-bwLg/2}" y="-28" width="${bwLg}" height="56" rx="3" fill="#080808" stroke="${c.red}" stroke-opacity="0.6"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${c.red}" font-size="13" font-weight="700" font-family="Inter" letter-spacing="0.1em">DOUGLAS</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">ORCHESTRATOR</text>
+                <!-- ====== MISSION HEADER ====== -->
+                <g class="gb-node" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
+                    <rect class="gb-box" x="${-bwLg / 2}" y="-28" width="${bwLg}" height="56" rx="4" 
+                          fill="url(#gbGradient)" stroke="${c.border}" stroke-width="1.5"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" 
+                          font-size="16" font-weight="900" font-family="Inter" letter-spacing="-0.05em">
+                        ${(job.title || 'SELECT MISSION').substring(0, 26).toUpperCase()}
+                    </text>
+                    <text x="0" y="16" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono" letter-spacing="0.2em">BRIEFING</text>
                 </g>
-                <line class="line flow" x1="${cx}" y1="${y.core+28}" x2="${cx}" y2="${y.val-gap}"/>
+                <line class="gb-line" x1="${cx}" y1="${y.mission + 28}" x2="${cx}" y2="${y.core - bhLg / 2}"/>
                 
-                <!-- Validator -->
-                <g class="node" onclick="showNodeDetails('validator')" transform="translate(${cx},${y.val})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('validator')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">VALIDATOR</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">gatekeeper</text>
+                <!-- ====== DOUGLAS CORE (Main orchestrator) ====== -->
+                <g class="gb-node" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.core})">
+                    <!-- Outer glow ring -->
+                    <rect x="${-bwLg / 2 - 4}" y="${-bhLg / 2 - 4}" width="${bwLg + 8}" height="${bhLg + 8}" rx="8" 
+                          fill="none" stroke="${c.red}" stroke-opacity="0.2" stroke-width="1"/>
+                    <!-- Main box -->
+                    <rect class="gb-box" x="${-bwLg / 2}" y="${-bhLg / 2}" width="${bwLg}" height="${bhLg}" rx="6" 
+                          fill="url(#gbGradientRed)" stroke="${c.red}" stroke-width="2" filter="url(#gbGlowRed)"/>
+                    <text class="gb-title" x="0" y="-8" text-anchor="middle" fill="${c.red}" 
+                          font-size="24" font-weight="900" font-family="Inter" letter-spacing="-0.05em">DOUGLAS</text>
+                    <text x="0" y="18" text-anchor="middle" fill="${c.dim}" 
+                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.25em">ORCHESTRATOR</text>
                 </g>
-                <path class="line flow" d="M${cx} ${y.val+24} L${cx} ${y.val+40} L${colL} ${y.val+40} L${colL} ${y.research-gap}" fill="none"/>
-                <path class="line flow" d="M${cx} ${y.val+24} L${cx} ${y.val+40} L${colR} ${y.val+40} L${colR} ${y.research-gap}" fill="none"/>
+                <line class="gb-line gb-flow" x1="${cx}" y1="${y.core + bhLg / 2}" x2="${cx}" y2="${y.val - bh / 2}"/>
                 
-                <!-- Audience + Research (parallel) -->
-                <g class="node" onclick="showNodeDetails('audience')" transform="translate(${colL},${y.research})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('audience')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">AUDIENCE</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">psychographics</text>
+                <!-- ====== VALIDATOR ====== -->
+                <g class="gb-node" onclick="showNodeDetails('validator')" transform="translate(${cx},${y.val})">
+                    ${stepStatus('validator') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('validator')}" stroke-width="1.5"
+                          ${stepStatus('validator') !== 'pending' ? 'filter="url(#gbGlowGreen)"' : ''}/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">VALIDATOR</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">GATEKEEPER</text>
+                    ${stepStatus('validator') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <g class="node" onclick="showNodeDetails('research')" transform="translate(${colR},${y.research})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('research')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">RESEARCH</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">context</text>
-                </g>
-                <path class="line flow" d="M${colL} ${y.research+24} L${colL} ${y.research+40} L${cx} ${y.research+40} L${cx} ${y.claims-gap}" fill="none"/>
-                <path class="line flow" d="M${colR} ${y.research+24} L${colR} ${y.research+40} L${cx} ${y.research+40}" fill="none"/>
+                <!-- Split to parallel nodes -->
+                <path class="gb-line gb-flow" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colL} ${y.val + bh / 2 + 25} L${colL} ${y.research - bh / 2}" fill="none"/>
+                <path class="gb-line gb-flow" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colR} ${y.val + bh / 2 + 25} L${colR} ${y.research - bh / 2}" fill="none"/>
                 
-                <!-- Claims -->
-                <g class="node" onclick="showNodeDetails('claims')" transform="translate(${cx},${y.claims})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('claims')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">CLAIMS</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">truth filter</text>
+                <!-- ====== AUDIENCE (Left) ====== -->
+                <g class="gb-node" onclick="showNodeDetails('audience')" transform="translate(${colL},${y.research})">
+                    ${stepStatus('audience') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('audience')}" stroke-width="1.5"/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">AUDIENCE</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">PSYCHOGRAPHICS</text>
+                    ${stepStatus('audience') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <line class="line flow" x1="${cx}" y1="${y.claims+24}" x2="${cx}" y2="${y.copy-gap}"/>
                 
-                <!-- Copy -->
-                <g class="node" onclick="showNodeDetails('copy')" transform="translate(${cx},${y.copy})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('copy')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">COPYWRITER</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">creation</text>
+                <!-- ====== RESEARCH (Right) ====== -->
+                <g class="gb-node" onclick="showNodeDetails('research')" transform="translate(${colR},${y.research})">
+                    ${stepStatus('research') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('research')}" stroke-width="1.5"/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">RESEARCH</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">CONTEXT</text>
+                    ${stepStatus('research') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <path class="line flow" d="M${cx} ${y.copy+24} L${cx} ${y.copy+40} L${colL} ${y.copy+40} L${colL} ${y.review-gap}" fill="none"/>
-                <path class="line flow" d="M${cx} ${y.copy+24} L${cx} ${y.copy+40} L${colR} ${y.copy+40} L${colR} ${y.review-gap}" fill="none"/>
+                <!-- Merge lines -->
+                <path class="gb-line gb-flow" d="M${colL} ${y.research + bh / 2} L${colL} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25} L${cx} ${y.claims - bh / 2}" fill="none"/>
+                <path class="gb-line gb-flow" d="M${colR} ${y.research + bh / 2} L${colR} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25}" fill="none"/>
                 
-                <!-- Brand + Critic (parallel) -->
-                <g class="node" onclick="showNodeDetails('brand')" transform="translate(${colL},${y.review})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('brand')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">BRAND</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">guardian</text>
+                <!-- ====== CLAIMS ====== -->
+                <g class="gb-node" onclick="showNodeDetails('claims')" transform="translate(${cx},${y.claims})">
+                    ${stepStatus('claims') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('claims')}" stroke-width="1.5"/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CLAIMS</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">TRUTH FILTER</text>
+                    ${stepStatus('claims') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <g class="node" onclick="showNodeDetails('critic')" transform="translate(${colR},${y.review})">
-                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('critic')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">CRITIC</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">pre-check</text>
-                </g>
-                <path class="line flow" d="M${colL} ${y.review+24} L${colL} ${y.review+40} L${cx} ${y.review+40} L${cx} ${y.opus-gap}" fill="none"/>
-                <path class="line flow" d="M${colR} ${y.review+24} L${colR} ${y.review+40} L${cx} ${y.review+40}" fill="none"/>
+                <line class="gb-line gb-flow" x1="${cx}" y1="${y.claims + bh / 2}" x2="${cx}" y2="${y.copy - bh / 2}"/>
                 
-                <!-- Opus -->
-                <g class="node" onclick="showNodeDetails('opus')" transform="translate(${cx},${y.opus})">
-                    <rect class="box" x="${-bw*0.8}" y="-32" width="${bw*1.6}" height="64" rx="3" fill="#080808" stroke="${stepColor('opus')}" stroke-width="1.5"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${c.text}" font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.05em">OPUS</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">final verdict</text>
+                <!-- ====== COPYWRITER ====== -->
+                <g class="gb-node" onclick="showNodeDetails('copy')" transform="translate(${cx},${y.copy})">
+                    ${stepStatus('copy') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('copy')}" stroke-width="1.5"/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">COPYWRITER</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">CREATION</text>
+                    ${stepStatus('copy') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <line class="line" x1="${cx}" y1="${y.opus+32}" x2="${cx}" y2="${y.out-16}"/>
+                <!-- Split to review nodes -->
+                <path class="gb-line gb-flow" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colL} ${y.copy + bh / 2 + 25} L${colL} ${y.review - bh / 2}" fill="none"/>
+                <path class="gb-line gb-flow" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colR} ${y.copy + bh / 2 + 25} L${colR} ${y.review - bh / 2}" fill="none"/>
                 
-                <!-- Output -->
-                <g class="node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
-                    <rect class="box" x="${-bw}" y="-16" width="${bw*2}" height="32" rx="2" fill="${job.steps?.opus?.status==='done'?c.red:'#0a0a0a'}" stroke="${job.steps?.opus?.status==='done'?'#fff':c.border}"/>
-                    <text x="0" y="4" text-anchor="middle" fill="${job.steps?.opus?.status==='done'?'#fff':c.dim}" font-size="9" font-weight="600" font-family="Inter" letter-spacing="0.15em">DELIVERY</text>
+                <!-- ====== BRAND (Left) ====== -->
+                <g class="gb-node" onclick="showNodeDetails('brand')" transform="translate(${colL},${y.review})">
+                    ${stepStatus('brand') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('brand')}" stroke-width="1.5"/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">BRAND</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">GUARDIAN</text>
+                    ${stepStatus('brand') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
+                </g>
+                
+                <!-- ====== CRITIC (Right) ====== -->
+                <g class="gb-node" onclick="showNodeDetails('critic')" transform="translate(${colR},${y.review})">
+                    ${stepStatus('critic') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
+                          fill="url(#gbGradient)" stroke="${stepColor('critic')}" stroke-width="1.5"/>
+                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
+                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CRITIC</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                          font-size="10" font-family="JetBrains Mono">PRE-CHECK</text>
+                    ${stepStatus('critic') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
+                </g>
+                <!-- Merge to Opus -->
+                <path class="gb-line gb-flow" d="M${colL} ${y.review + bh / 2} L${colL} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25} L${cx} ${y.opus - bhLg / 2}" fill="none"/>
+                <path class="gb-line gb-flow" d="M${colR} ${y.review + bh / 2} L${colR} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25}" fill="none"/>
+                
+                <!-- ====== OPUS (Final review) ====== -->
+                <g class="gb-node" onclick="showNodeDetails('opus')" transform="translate(${cx},${y.opus})">
+                    ${stepStatus('opus') === 'done' ? `<rect x="${-bwLg / 2 + 20}" y="${-bhLg / 2 - 4}" width="${bwLg - 40 + 8}" height="${bhLg + 8}" rx="10" fill="none" stroke="${c.done}" stroke-opacity="0.4" stroke-width="2"/>` : ''}
+                    <rect class="gb-box" x="${-bwLg / 2 + 20}" y="${-bhLg / 2}" width="${bwLg - 40}" height="${bhLg}" rx="8" 
+                          fill="url(#gbGradientCore)" stroke="${stepColor('opus')}" stroke-width="2"
+                          ${stepStatus('opus') === 'done' ? 'filter="url(#gbGlowGreen)"' : ''}/>
+                    <text class="gb-title" x="0" y="-8" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.done : c.text}" 
+                          font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">OPUS</text>
+                    <text x="0" y="18" text-anchor="middle" fill="${c.dim}" 
+                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">FINAL VERDICT</text>
+                    ${stepStatus('opus') === 'done' ? `<circle cx="${(bwLg - 40) / 2 - 16}" cy="${-bhLg / 2 + 16}" r="8" fill="${c.done}"/><text x="${(bwLg - 40) / 2 - 16}" y="${-bhLg / 2 + 20}" text-anchor="middle" fill="#000" font-size="10" font-weight="bold">✓</text>` : ''}
+                </g>
+                <line class="gb-line" x1="${cx}" y1="${y.opus + bhLg / 2}" x2="${cx}" y2="${y.out - 24}"/>
+                
+                <!-- ====== DELIVERY OUTPUT ====== -->
+                <g class="gb-node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
+                    <rect class="gb-box" x="${-bwLg / 2 + 10}" y="-24" width="${bwLg - 20}" height="48" rx="6" 
+                          fill="${job.steps?.opus?.status === 'done' ? c.red : '#0f0f0f'}" 
+                          stroke="${job.steps?.opus?.status === 'done' ? '#ffffff' : c.border}" 
+                          stroke-width="${job.steps?.opus?.status === 'done' ? '2' : '1.5'}"
+                          ${job.steps?.opus?.status === 'done' ? 'filter="url(#gbGlowRed)"' : ''}/>
+                    <text x="0" y="6" text-anchor="middle" 
+                          fill="${job.steps?.opus?.status === 'done' ? '#ffffff' : c.dim}" 
+                          font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.2em">
+                        ${job.steps?.opus?.status === 'done' ? '★ DELIVERY READY ★' : 'AWAITING DELIVERY'}
+                    </text>
+                </g>
+                
+                <!-- Status legend -->
+                <g transform="translate(40, ${H - 60})">
+                    <text x="0" y="0" fill="${c.dim}" font-size="10" font-family="JetBrains Mono" letter-spacing="0.15em">STATUS</text>
+                    <circle cx="0" cy="20" r="5" fill="${c.pending}"/>
+                    <text x="14" y="24" fill="${c.dim}" font-size="10" font-family="JetBrains Mono">PENDING</text>
+                    <circle cx="100" cy="20" r="5" fill="${c.red}"/>
+                    <text x="114" y="24" fill="${c.dim}" font-size="10" font-family="JetBrains Mono">ACTIVE</text>
+                    <circle cx="190" cy="20" r="5" fill="${c.done}"/>
+                    <text x="204" y="24" fill="${c.dim}" font-size="10" font-family="JetBrains Mono">DONE</text>
                 </g>
             </svg>`;
-            
+
             document.getElementById('gameboard-svg').innerHTML = html;
             window.currentJob = job;
         }
@@ -445,7 +699,7 @@ BRIEFING
             // Gather all jobs (WIP + Done)
             const allFiles = [...currentState.wip, ...currentState.done];
             const jobs = {};
-            
+
             allFiles.forEach(f => {
                 const parts = f.name.split('__');
                 const jobId = parts.length > 1 ? parts[0] : f.name.split('_').slice(0, -1).join('_') || f.name;
@@ -453,8 +707,8 @@ BRIEFING
                 if (currentState.done.find(d => d.name.includes(jobId))) jobs[jobId].status = 'done';
             });
 
-            const sortedJobs = Object.values(jobs).sort((a,b) => b.timestamp.localeCompare(a.timestamp));
-            
+            const sortedJobs = Object.values(jobs).sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+
             document.getElementById('lobby-list').innerHTML = sortedJobs.map(job => `
                 <div onclick="loadGameJob('${job.id}')" class="border border-[#333] bg-[#080808] p-6 cursor-pointer hover:border-[#DC2626] transition-all group">
                     <div class="flex justify-between items-start mb-4">
@@ -473,7 +727,7 @@ BRIEFING
             // Build job object from files
             const files = [...currentState.wip, ...currentState.done].filter(f => f.name.includes(jobId));
             const isDone = currentState.done.some(f => f.name.includes(jobId));
-            
+
             const job = {
                 title: jobId.replace(/_/g, ' '),
                 steps: {}
@@ -481,7 +735,7 @@ BRIEFING
 
             // Map files to steps based on filename conventions (e.g. 05_copy)
             const stepMap = { 'validator': 'validator', 'audience': 'audience', 'research': 'research', 'claims': 'claims', 'copy': 'copy', 'brand': 'brand', 'critic': 'critic', 'opus': 'opus' };
-            
+
             files.forEach(f => {
                 for (const [key, step] of Object.entries(stepMap)) {
                     if (f.name.toLowerCase().includes(key)) {
@@ -508,7 +762,7 @@ BRIEFING
             if (!currentState) return;
             const groups = groupFiles(currentState.done);
             const container = document.getElementById('approved-list');
-            
+
             if (Object.keys(groups).length === 0) {
                 container.innerHTML = `<div class="text-[#333] text-center font-mono">NO APPROVED ASSETS</div>`;
                 return;
@@ -518,8 +772,8 @@ BRIEFING
             Object.keys(groups).sort().reverse().forEach(id => {
                 // Find final output file (usually Opus or Copy)
                 const files = groups[id];
-                const finalFile = files.find(f => f.name.includes('opus') || f.name.includes('copy')) || files[files.length-1];
-                
+                const finalFile = files.find(f => f.name.includes('opus') || f.name.includes('copy')) || files[files.length - 1];
+
                 // Extract just the content (strip markdown headers if possible)
                 let contentPreview = "NO CONTENT";
                 try {
@@ -530,7 +784,7 @@ BRIEFING
                     } else {
                         contentPreview = finalFile.content;
                     }
-                } catch(e) { contentPreview = finalFile.content; }
+                } catch (e) { contentPreview = finalFile.content; }
 
                 html += `
                     <div class="border border-[#333] bg-[#0a0a0a] p-8">
@@ -563,7 +817,7 @@ BRIEFING
             // Group logic for WIP and DONE
             const groups = groupFiles(files);
             let html = '';
-            
+
             Object.keys(groups).sort().reverse().forEach(groupId => {
                 const groupFiles = groups[groupId];
                 // Tenta extrair um nome legível do primeiro arquivo
@@ -574,21 +828,21 @@ BRIEFING
                     label = firstFile.replace(/^\d+_/, '').replace(/\.md$|\.json$/, '').split('__')[0].replace(/_/g, ' ');
                 }
                 if (groupId === 'outros') label = 'Outros';
-                
+
                 const isOpen = expandedGroups.has(groupId);
                 const color = id === 'wip' ? 'text-[#DC2626]' : 'text-white';
-                
+
                 html += `
                     <div class="mb-4 border border-[#333] bg-[#0a0a0a]">
                         <div class="p-4 cursor-pointer flex justify-between items-center group hover:bg-[#111]" onclick="toggleGroup('${groupId}')">
                             <div class="flex items-center gap-3">
-                                <span class="${id==='wip'?'animate-pulse text-[#DC2626]':'text-[#555]'}">●</span>
+                                <span class="${id === 'wip' ? 'animate-pulse text-[#DC2626]' : 'text-[#555]'}">●</span>
                                 <span class="font-bold text-sm ${color} uppercase tracking-tight">${label}</span>
                             </div>
                             <span class="text-[10px] font-mono text-[#555] group-hover:text-white transition-colors">${groupFiles.length} FILES ${isOpen ? '▲' : '▼'}</span>
                         </div>
                         <div id="group-${groupId}" class="${isOpen ? '' : 'hidden'} border-t border-[#222]">
-                            ${groupFiles.sort((a,b) => a.name.localeCompare(b.name)).map(file => `
+                            ${groupFiles.sort((a, b) => a.name.localeCompare(b.name)).map(file => `
                                 <div class="p-3 pl-8 border-b border-[#1a1a1a] cursor-pointer hover:bg-[#111] group/item transition-colors" onclick="viewFile('${id}', '${file.name}')">
                                     <div class="flex items-center gap-2">
                                         <span class="text-[10px] text-[#333] group-hover/item:text-[#DC2626]">└</span>
@@ -609,7 +863,7 @@ BRIEFING
             if (expandedGroups.has(id)) expandedGroups.delete(id); else expandedGroups.add(id);
             fetchState(); // Re-render to apply class
         }
-        
+
         function groupFiles(files) {
             const g = {};
             files.forEach(f => {
@@ -617,7 +871,7 @@ BRIEFING
                 // Ex: 1770113506169_protocolo_fenix.md -> ID: 1770113506169
                 const match = f.name.match(/^(\d{13,})/);
                 let id;
-                
+
                 if (match) {
                     id = match[1]; // Agrupa pelo timestamp único do job
                 } else {
@@ -625,7 +879,7 @@ BRIEFING
                     const parts = f.name.split('__');
                     id = parts.length > 1 ? parts[0] : f.name.split('_').slice(0, -1).join('_') || 'outros';
                 }
-                
+
                 if (!g[id]) g[id] = [];
                 g[id].push(f);
             });
@@ -641,10 +895,10 @@ BRIEFING
                 renderColumn('done', currentState.done);
                 document.getElementById('connection-status').textContent = 'ONLINE';
                 document.getElementById('connection-status').className = 'text-white';
-                
+
                 // If on Game Lobby, refresh it
-                if (!document.getElementById('view-gameboard').classList.contains('hidden') && 
-                     document.getElementById('gameboard-svg').classList.contains('hidden')) {
+                if (!document.getElementById('view-gameboard').classList.contains('hidden') &&
+                    document.getElementById('gameboard-svg').classList.contains('hidden')) {
                     renderGameLobby();
                 }
             } catch (e) {
@@ -663,75 +917,221 @@ BRIEFING
         }
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
-        
-        // NODE DETAILS (Game Board)
+
+        // NODE DETAILS (Game Board) - Human Friendly Format
         function showNodeDetails(nodeKey) {
             const panel = document.getElementById('node-details-panel');
             const titleEl = document.getElementById('detail-title');
             const contentEl = document.getElementById('detail-content');
-            
-            const nodeNames = {
-                'mission': 'Mission Objective',
-                'douglas': 'Douglas Core',
-                'validator': 'Brief Validator',
-                'audience': 'Audience Analyst',
-                'research': 'Topic Researcher',
-                'claims': 'Claims Checker',
-                'copy': 'Copywriter',
-                'brand': 'Brand Guardians',
-                'critic': 'Critic Lite',
-                'opus': 'Critic Opus',
-                'output': 'Final Delivery'
+
+            const nodeInfo = {
+                'mission': { name: 'Mission Objective', icon: '🎯', desc: 'O briefing original e parâmetros da campanha.' },
+                'douglas': { name: 'Douglas Core', icon: '🤖', desc: 'Orquestrador central que coordena todos os agentes do pipeline.' },
+                'validator': { name: 'Brief Validator', icon: '✓', desc: 'Valida o briefing e identifica lacunas de informação.' },
+                'audience': { name: 'Audience Analyst', icon: '👥', desc: 'Analisa o público-alvo e define perfis psicográficos.' },
+                'research': { name: 'Topic Researcher', icon: '🔍', desc: 'Pesquisa contexto, tendências e referências relevantes.' },
+                'claims': { name: 'Claims Checker', icon: '⚖️', desc: 'Verifica dados e higieniza afirmações para autoridade segura.' },
+                'copy': { name: 'Copywriter', icon: '✍️', desc: 'Criatividade pura - escreve o conteúdo final.' },
+                'brand': { name: 'Brand Guardians', icon: '🛡️', desc: 'Garante aderência ao tom, voz e posicionamento da marca.' },
+                'critic': { name: 'Critic Lite', icon: '💬', desc: 'Avaliação inicial rápida do conteúdo.' },
+                'opus': { name: 'Critic Opus', icon: '🏆', desc: 'Avaliação final profunda - veredicto de aprovação.' },
+                'output': { name: 'Final Delivery', icon: '📤', desc: 'Conteúdo final aprovado e pronto para publicação.' }
             };
-            
-            titleEl.textContent = nodeNames[nodeKey] || nodeKey.toUpperCase();
-            
+
+            const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: '📄', desc: '' };
+            titleEl.textContent = info.name;
+
             // Get content from currentJob
             const job = window.currentJob;
             if (!job) {
-                contentEl.innerHTML = '<p class="text-[#555]">No job loaded.</p>';
+                contentEl.innerHTML = renderEmptyState('Nenhum job carregado.');
                 panel.classList.remove('translate-x-full');
                 return;
             }
-            
+
+            // Build the content
+            let html = `
+                <div class="mb-8 p-6 bg-[#0a0a0a] border border-[#222] rounded-lg">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-3xl">${info.icon}</span>
+                        <div>
+                            <h4 class="text-white font-bold text-lg tracking-tight" style="font-family: Inter;">${info.name}</h4>
+                            <p class="text-[#888] text-sm">${info.desc}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
             // Special cases
             if (nodeKey === 'mission') {
-                contentEl.innerHTML = `<div class="text-white text-xl mb-4">${job.title}</div><p class="text-[#999]">Briefing content and mission parameters.</p>`;
+                html += `
+                    <div class="space-y-4">
+                        <div class="p-5 bg-[#111] border-l-4 border-[#DC2626]">
+                            <span class="text-[#888] text-xs uppercase tracking-widest">Campanha</span>
+                            <p class="text-white text-xl mt-2" style="font-family: Inter; font-weight: 900;">${job.title || 'Sem título'}</p>
+                        </div>
+                    </div>
+                `;
             } else if (nodeKey === 'douglas') {
-                contentEl.innerHTML = `<div class="text-[#DC2626] text-xl mb-4">CENTRAL ORCHESTRATOR</div><p class="text-[#999]">Douglas coordinates all agents in the pipeline, making decisions and routing tasks.</p>`;
-            } else if (nodeKey === 'output') {
-                // Find copy or opus output
-                const finalStep = job.steps?.opus || job.steps?.copy;
-                if (finalStep?.output) {
-                    contentEl.innerHTML = marked.parse(finalStep.output);
-                } else {
-                    contentEl.innerHTML = '<p class="text-[#555]">Awaiting pipeline completion...</p>';
-                }
+                html += `
+                    <div class="space-y-4">
+                        <div class="p-5 bg-[#0a0a0a] border border-[#222]">
+                            <span class="text-[#888] text-xs uppercase tracking-widest">Função</span>
+                            <p class="text-[#ccc] mt-2">Coordena a execução de todos os agentes, toma decisões de roteamento e gerencia o fluxo do pipeline.</p>
+                        </div>
+                    </div>
+                `;
             } else {
-                // Regular step
+                // Regular step - format output nicely
                 const step = job.steps?.[nodeKey];
                 if (step?.output) {
-                    contentEl.innerHTML = marked.parse(step.output);
+                    html += formatAgentOutput(step.output, nodeKey);
                 } else if (step?.status === 'done') {
-                    contentEl.innerHTML = '<p class="text-green-500">✓ Completed</p>';
+                    html += `
+                        <div class="p-5 bg-[#111] border-l-4 border-white">
+                            <span class="text-white text-lg">✓ Concluído</span>
+                        </div>
+                    `;
                 } else {
-                    contentEl.innerHTML = '<p class="text-[#555]">Pending...</p>';
+                    html += renderEmptyState('Aguardando execução...');
                 }
             }
-            
+
+            contentEl.innerHTML = html;
             panel.classList.remove('translate-x-full');
         }
-        
+
+        function renderEmptyState(message) {
+            return `
+                <div class="flex items-center justify-center h-32 text-[#555]">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function formatAgentOutput(rawOutput, nodeKey) {
+            // Try to extract structured data from markdown/json
+            let html = '<div class="space-y-4">';
+
+            // Check if it's JSON
+            const jsonMatch = rawOutput.match(/```json\n([\s\S]*?)\n```/);
+            if (jsonMatch) {
+                try {
+                    const data = JSON.parse(jsonMatch[1]);
+                    html += formatJsonAsCards(data, nodeKey);
+                } catch (e) {
+                    html += formatMarkdownAsTopics(rawOutput);
+                }
+            } else {
+                html += formatMarkdownAsTopics(rawOutput);
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function formatJsonAsCards(data, nodeKey) {
+            let html = '';
+
+            // Handle different data structures
+            if (Array.isArray(data)) {
+                data.forEach((item, i) => {
+                    html += `
+                        <div class="p-5 bg-[#0a0a0a] border border-[#222] rounded">
+                            <span class="text-[#DC2626] text-xs font-bold">#${i + 1}</span>
+                            <p class="text-white mt-2">${typeof item === 'string' ? item : JSON.stringify(item, null, 2)}</p>
+                        </div>
+                    `;
+                });
+            } else if (typeof data === 'object') {
+                Object.entries(data).forEach(([key, value]) => {
+                    const label = key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').toUpperCase();
+                    html += `
+                        <div class="p-5 bg-[#111] border-l-4 border-[#333]">
+                            <span class="text-[#888] text-xs uppercase tracking-widest">${label}</span>
+                            <p class="text-white mt-2 text-lg" style="font-family: Inter;">${formatValue(value)}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            return html;
+        }
+
+        function formatValue(value) {
+            if (Array.isArray(value)) {
+                return value.map(v => `<span class="inline-block bg-[#222] px-3 py-1 mr-2 mb-2 text-sm rounded">${v}</span>`).join('');
+            }
+            if (typeof value === 'object' && value !== null) {
+                return `<pre class="text-sm text-[#888] mt-2 overflow-x-auto">${JSON.stringify(value, null, 2)}</pre>`;
+            }
+            return value;
+        }
+
+        function formatMarkdownAsTopics(markdown) {
+            // Split by headers and format as cards
+            const sections = markdown.split(/^##?\s+/m).filter(s => s.trim());
+            let html = '';
+
+            sections.forEach(section => {
+                const lines = section.split('\n');
+                const title = lines[0]?.trim() || '';
+                const content = lines.slice(1).join('\n').trim();
+
+                if (title) {
+                    html += `
+                        <div class="p-5 bg-[#0a0a0a] border border-[#222] rounded">
+                            <h5 class="text-white font-bold mb-3" style="font-family: Inter; letter-spacing: -0.02em;">${title}</h5>
+                            <div class="text-[#999] text-sm leading-relaxed prose-content">
+                                ${formatMarkdownContent(content)}
+                            </div>
+                        </div>
+                    `;
+                } else if (content) {
+                    html += `
+                        <div class="p-5 bg-[#111] text-[#ccc] text-sm leading-relaxed">
+                            ${formatMarkdownContent(content)}
+                        </div>
+                    `;
+                }
+            });
+
+            // Fallback if no sections found
+            if (!html) {
+                html = `
+                    <div class="p-5 bg-[#111] text-[#ccc] text-sm leading-relaxed">
+                        ${formatMarkdownContent(markdown)}
+                    </div>
+                `;
+            }
+
+            return html;
+        }
+
+        function formatMarkdownContent(content) {
+            // Convert bullet points to styled list
+            let formatted = content
+                .replace(/^[-*]\s+(.+)$/gm, '<li class="flex items-start gap-3 mb-2"><span class="text-[#DC2626] mt-1">•</span><span>$1</span></li>')
+                .replace(/(<li.*<\/li>)+/gs, '<ul class="list-none">$&</ul>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>')
+                .replace(/`([^`]+)`/g, '<code class="bg-[#222] px-2 py-1 text-[#DC2626] text-xs rounded">$1</code>')
+                .replace(/\n\n/g, '</p><p class="mt-3">')
+                .replace(/\n/g, '<br>');
+
+            return `<p>${formatted}</p>`;
+        }
+
+
         function closeNodeDetails() {
             document.getElementById('node-details-panel').classList.add('translate-x-full');
         }
-        
+
         async function fetchArchitecture() {
             try {
                 const res = await fetch(`${API_URL}/architecture`);
                 const data = await res.json();
                 document.getElementById('architecture-content').innerHTML = marked.parse(data.content || 'No content');
-            } catch(e) {
+            } catch (e) {
                 document.getElementById('architecture-content').innerHTML = '<p class="text-red-500">Failed to load architecture.</p>';
             }
         }
@@ -750,7 +1150,7 @@ BRIEFING
                         <span class="text-[10px] text-[#555] ml-4">${new Date(f.mtime).toLocaleDateString('pt-BR')}</span>
                     </div>
                 `).join('');
-            } catch(e) {
+            } catch (e) {
                 document.getElementById('history-list').innerHTML = '<p class="text-red-500">Failed to load history.</p>';
             }
         }
@@ -759,7 +1159,7 @@ BRIEFING
         setInterval(fetchState, 5000);
         fetchState();
         showTab('board');
-        
+
         // Stub for submit
         async function submitBriefing() {
             const title = document.getElementById('briefing-title').value;
@@ -774,4 +1174,5 @@ BRIEFING
         }
     </script>
 </body>
+
 </html>
