@@ -348,11 +348,29 @@ app.get('/api/history', (req, res) => {
 
 // API: Squad Architecture (read-only)
 app.get('/api/architecture', (req, res) => {
-    const filePath = path.join(__dirname, 'SQUAD_ARCHITECTURE.md');
-    if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'SQUAD_ARCHITECTURE.md not found' });
+    // Tenta vários caminhos possíveis
+    const possiblePaths = [
+        path.join(__dirname, 'SQUAD_ARCHITECTURE.md'),
+        path.join(process.cwd(), 'SQUAD_ARCHITECTURE.md'),
+        path.join(__dirname, '..', 'SQUAD_ARCHITECTURE.md')
+    ];
+
+    let content = null;
+    let usedPath = null;
+
+    for (const p of possiblePaths) {
+        if (fs.existsSync(p)) {
+            content = fs.readFileSync(p, 'utf-8');
+            usedPath = p;
+            break;
+        }
     }
-    const content = fs.readFileSync(filePath, 'utf-8');
+
+    if (!content) {
+        log('error', 'architecture_not_found', { searchedPaths: possiblePaths });
+        return res.status(404).json({ error: 'SQUAD_ARCHITECTURE.md not found', searched: possiblePaths });
+    }
+    
     res.json({ content });
 });
 
