@@ -427,19 +427,52 @@ BRIEFING
 
     <!-- DETAILS PANEL -->
     <div id="node-details-panel"
-        class="fixed top-24 right-0 w-full md:w-[600px] h-[calc(100vh-6rem)] bg-[#050505]/95 border-l border-white/10 p-10 overflow-y-auto shadow-2xl z-[100] transform translate-x-full transition-transform duration-300">
-        <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
+        class="fixed top-24 right-0 w-full md:w-[600px] h-[calc(100vh-6rem)] bg-[#050505]/95 border-l border-white/10 shadow-2xl z-[100] transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="flex justify-between items-center p-8 border-b border-white/10">
             <div>
-                <h3 id="detail-title" class="text-3xl font-brick text-white uppercase tracking-tighter">NODE DETAILS
-                </h3>
-                <div class="h-1 w-20 bg-[#DC2626] mt-4"></div>
+                <h3 id="detail-title" class="text-2xl font-brick text-white uppercase tracking-tighter">NODE DETAILS</h3>
+                <p id="detail-subtitle" class="text-xs font-mono text-[#555] mt-1"></p>
             </div>
             <button onclick="closeNodeDetails()"
                 class="text-[#555] hover:text-white transition-colors text-2xl">&times;</button>
         </div>
         <div id="detail-content"
-            class="prose prose-invert prose-p:text-[#ccc] prose-headings:font-brick prose-headings:text-white prose-pre:bg-[#111] prose-pre:border prose-pre:border-white/10 max-w-none font-mono text-sm leading-relaxed">
+            class="flex-1 overflow-y-auto p-8 prose prose-invert prose-p:text-[#ccc] prose-headings:font-brick prose-headings:text-white prose-pre:bg-[#111] prose-pre:border prose-pre:border-white/10 max-w-none font-mono text-sm leading-relaxed">
             <p class="text-[#555] italic">Select a system node to view logs.</p>
+        </div>
+        
+        <!-- Feedback Actions for Game Board -->
+        <div id="detail-actions" class="hidden p-6 border-t border-white/10 bg-[#0a0a0a]">
+            <div id="detail-feedback-panel" class="hidden mb-4">
+                <textarea id="detail-feedback-text" rows="2" 
+                    placeholder="O que precisa mudar?"
+                    class="w-full bg-[#000] border border-[#333] p-3 text-white text-sm font-mono placeholder-[#555] focus:outline-none focus:border-[#DC2626] mb-3"
+                    oninput="detectDetailFeedbackType()"></textarea>
+                <div id="detail-feedback-routing" class="hidden p-2 border border-[#222] bg-[#050505] mb-3 text-xs">
+                    <span class="font-mono text-[#555]">→</span>
+                    <span id="detail-routing-target" class="font-mono text-[#DC2626] ml-1"></span>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button onclick="submitDetailFeedback('revisar')"
+                        class="px-4 py-2 border border-[#555] text-[#555] font-mono text-xs hover:border-white hover:text-white transition-colors">
+                        AJUSTAR
+                    </button>
+                    <button onclick="submitDetailFeedback('reprovar')"
+                        class="px-4 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs hover:bg-[#DC2626] hover:text-black transition-colors">
+                        REFAZER
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <button onclick="toggleDetailFeedback()" id="btn-detail-feedback"
+                    class="text-[#555] hover:text-[#DC2626] font-mono text-xs transition-colors flex items-center gap-2">
+                    <span>✎</span> Feedback
+                </button>
+                <button onclick="approveDetailNode()"
+                    class="px-6 py-2 bg-white text-black font-brick text-sm hover:bg-[#22C55E] transition-colors">
+                    APROVAR ✓
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1059,6 +1092,23 @@ BRIEFING
             }
 
             contentEl.innerHTML = html;
+            
+            // Show actions panel if there's content to review
+            const actionsPanel = document.getElementById('detail-actions');
+            const subtitleEl = document.getElementById('detail-subtitle');
+            
+            if (actionsPanel) {
+                // Show actions for nodes that have output
+                const hasContent = job.steps?.[nodeKey]?.status === 'done' || nodeKey === 'mission';
+                if (hasContent && nodeKey !== 'douglas') {
+                    actionsPanel.classList.remove('hidden');
+                    currentDetailNode = info.friendly || info.name;
+                    if (subtitleEl) subtitleEl.textContent = info.desc;
+                } else {
+                    actionsPanel.classList.add('hidden');
+                }
+            }
+            
             panel.classList.remove('translate-x-full');
         }
 
@@ -1195,6 +1245,70 @@ BRIEFING
 
         function closeNodeDetails() {
             document.getElementById('node-details-panel').classList.add('translate-x-full');
+            // Reset feedback panel
+            const feedbackPanel = document.getElementById('detail-feedback-panel');
+            if (feedbackPanel) feedbackPanel.classList.add('hidden');
+        }
+
+        // ===== GAME BOARD FEEDBACK SYSTEM =====
+        let currentDetailNode = null;
+        
+        function toggleDetailFeedback() {
+            const panel = document.getElementById('detail-feedback-panel');
+            const btn = document.getElementById('btn-detail-feedback');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                btn.innerHTML = '<span>✕</span> Fechar';
+                btn.classList.add('text-[#DC2626]');
+                document.getElementById('detail-feedback-text').focus();
+            } else {
+                panel.classList.add('hidden');
+                btn.innerHTML = '<span>✎</span> Feedback';
+                btn.classList.remove('text-[#DC2626]');
+                document.getElementById('detail-feedback-text').value = '';
+                document.getElementById('detail-feedback-routing').classList.add('hidden');
+            }
+        }
+        
+        function detectDetailFeedbackType() {
+            const text = document.getElementById('detail-feedback-text').value.toLowerCase();
+            const routingDiv = document.getElementById('detail-feedback-routing');
+            const routingTarget = document.getElementById('detail-routing-target');
+            
+            if (text.length < 3) {
+                routingDiv.classList.add('hidden');
+                return;
+            }
+            
+            let detected = 'craft';
+            for (const [type, keywords] of Object.entries(feedbackKeywords)) {
+                for (const keyword of keywords) {
+                    if (text.includes(keyword)) {
+                        detected = type;
+                        break;
+                    }
+                }
+            }
+            
+            routingDiv.classList.remove('hidden');
+            routingTarget.textContent = `${feedbackRouting[detected].target} ${feedbackRouting[detected].desc}`;
+        }
+        
+        function submitDetailFeedback(action) {
+            const text = document.getElementById('detail-feedback-text').value;
+            if (!text.trim()) {
+                showToast('Escreva o feedback', 'error');
+                return;
+            }
+            
+            showToast(`Feedback enviado para ${currentDetailNode || 'próxima etapa'}`, 'warning');
+            toggleDetailFeedback();
+            closeNodeDetails();
+        }
+        
+        function approveDetailNode() {
+            showToast(`${currentDetailNode || 'Etapa'} aprovada!`, 'success');
+            closeNodeDetails();
         }
 
         // ===== FEEDBACK SYSTEM v2 (Auto-detect) =====
