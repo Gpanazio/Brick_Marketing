@@ -220,13 +220,37 @@ app.get('/api/config', (req, res) => {
 // API: Get all state (including failed)
 app.get('/api/state', (req, res) => {
     const mode = req.query.mode || 'marketing';
-    res.json({
+    const state = {
         mode,
         briefing: getFiles('briefing', mode),
         wip: getFiles('wip', mode),
         done: getFiles('done', mode),
-        failed: getFiles('failed', mode)
-    });
+        failed: getFiles('failed', mode),
+        cases: []
+    };
+    
+    // Also include marketing/cases/* for projetos mode
+    if (mode === 'projetos') {
+        const casesDir = path.join(__dirname, 'marketing', 'cases');
+        if (fs.existsSync(casesDir)) {
+            const caseFolders = fs.readdirSync(casesDir).filter(f => !f.startsWith('.'));
+            caseFolders.forEach(caseFolder => {
+                const pipelineDir = path.join(casesDir, caseFolder, 'pipeline');
+                if (fs.existsSync(pipelineDir)) {
+                    const files = fs.readdirSync(pipelineDir).filter(f => !f.startsWith('.')).map(f => ({
+                        name: f,
+                        path: path.join('cases', caseFolder, 'pipeline', f),
+                        content: fs.readFileSync(path.join(pipelineDir, f), 'utf-8'),
+                        mtime: fs.statSync(path.join(pipelineDir, f)).mtime.toISOString(),
+                        caseFolder
+                    }));
+                    state.cases.push(...files);
+                }
+            });
+        }
+    }
+    
+    res.json(state);
 });
 
 // API: Get pending briefings (for watcher)
