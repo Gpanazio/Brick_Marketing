@@ -1,0 +1,33 @@
+# TOPIC RESEARCHER - 180 SEGUROS
+
+```json
+{
+  "contexto_mercado": {
+    "momento": "Embedded insurance em alta - seguros integrados em jornadas digitais",
+    "concorrencia": "Icatu, Mapfre, grandes bancos - todos com tom corporativo genérico",
+    "diferencial_180": "Nasceu tech, não virou tech. API-first desde o dia 1."
+  },
+  "referencias_criativas": [
+    {
+      "marca": "Nubank",
+      "o_que_funciona": "Institucional com pessoas reais, sem banco de imagem",
+      "aplicabilidade": "Alta - mesmo território de 'tech humanizada'"
+    },
+    {
+      "marca": "Lemonade",
+      "o_que_funciona": "Transparência brutal, mostra os números",
+      "aplicabilidade": "Média - tom pode ser agressivo demais pro Brasil"
+    }
+  ],
+  "territorios_criativos": [
+    "Bastidores: mostrar quem faz acontecer (time real)",
+    "Dados: resultado concreto, não promessa",
+    "Tecnologia invisível: a tech serve, não aparece"
+  ],
+  "armadilhas_evitar": [
+    "Banco de imagem genérico (sorrisos falsos)",
+    "Jargão tech (API, machine learning, etc)",
+    "Promessas vagas ('o futuro do seguro')"
+  ]
+}
+```

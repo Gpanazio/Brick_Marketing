@@ -1,0 +1,23 @@
+# BRIEF VALIDATOR - 180 SEGUROS
+
+```json
+{
+  "status": "PASS",
+  "cliente": "180 Seguros",
+  "projeto": "Vídeo institucional 90-120s",
+  "campos_validados": {
+    "objetivo": "✓ Fortalecer identidade + awareness B2B/B2C",
+    "publico": "✓ Fintechs, bancos, cooperativas + clientes finais",
+    "formato": "✓ 90-120s + cortes (30s, 15s, 6s)",
+    "tom": "✓ Institucional moderno, humano, sem hype",
+    "budget": "✓ R$ 40.000",
+    "prazo": "✓ 14 de abril (10 semanas)",
+    "assets": "✓ Banco interno + material 2024 + 1 diária"
+  },
+  "lacunas": [],
+  "assumido": {
+    "locucao": "Off, voz neutra, humana, confiável"
+  },
+  "pronto_para_squad": true
+}
+```

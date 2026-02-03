@@ -1,0 +1,20 @@
+# AUDIENCE ANALYST - 180 SEGUROS
+
+```json
+{
+  "publico_primario": {
+    "segmento": "B2B - Decisores de fintechs, bancos digitais, cooperativas",
+    "cargo": "C-Level, Head de Produto, Head de Parcerias",
+    "dor": "Precisam de seguro integrado via API mas não querem parecer 'mais um banco vendendo seguro'",
+    "desejo": "Parceiro tech que resolva sem burocracia e não envergonhe a marca deles"
+  },
+  "publico_secundario": {
+    "segmento": "B2C indireto - Clientes finais dos parceiros",
+    "perfil": "Usuário de fintech/banco digital, 25-45 anos, urbano",
+    "dor": "Seguro = coisa chata, burocrática, que só lembra quando precisa",
+    "desejo": "Que funcione invisível e resolva rápido quando precisar"
+  },
+  "insight_chave": "O vídeo precisa falar com dois públicos: o decisor B2B (que vai contratar) e o usuário final (que vai usar). Tom: competente pro B2B, humano pro B2C.",
+  "tom_recomendado": "Confiante sem arrogância. Mostra resultado, não promete milagre."
+}
+```

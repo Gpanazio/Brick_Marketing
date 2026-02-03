@@ -1,0 +1,27 @@
+# BRAND GUARDIAN - 180 SEGUROS
+
+```json
+{
+  "veredicto": "APROVADO",
+  "analise_tom": {
+    "alinhamento": 92,
+    "pontos_positivos": [
+      "Tom institucional sem ser corporativo genérico",
+      "Humano e próximo - mostra pessoas reais",
+      "Confiante sem arrogância",
+      "Linguagem clara, sem jargões"
+    ],
+    "ajustes_menores": [
+      "Verificar se 'Simples assim' não conflita com alguma marca registrada",
+      "Considerar adicionar 'desde 20XX' para reforçar solidez"
+    ]
+  },
+  "analise_posicionamento": {
+    "clareza_oferta": "✓ Claro - seguradora tech que é humana",
+    "diferencial": "✓ Presente - pessoas reais vs banco de imagem",
+    "credibilidade": "✓ Dados concretos prometidos no roteiro"
+  },
+  "palavras_proibidas_detectadas": [],
+  "consistencia_visual": "Alinhado com branding 2024 (preto, branco, vermelho, Noto Sans)"
+}
+```

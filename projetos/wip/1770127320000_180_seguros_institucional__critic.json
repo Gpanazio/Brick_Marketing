@@ -1,0 +1,27 @@
+# CRITIC LITE - 180 SEGUROS
+
+```json
+{
+  "score": 78,
+  "threshold": 65,
+  "status": "PASSA PARA OPUS",
+  "avaliacao_rapida": {
+    "clareza": 8,
+    "originalidade": 7,
+    "on_brand": 9,
+    "executabilidade": 8,
+    "budget_fit": 8
+  },
+  "pontos_fortes": [
+    "Conceito diferenciador (pessoas reais)",
+    "Budget realista e detalhado",
+    "Cronograma factível",
+    "Usa assets existentes (eficiência)"
+  ],
+  "flags": [
+    "Verificar qualidade do material 2024 antes de commitar",
+    "Confirmar disponibilidade do time para captação"
+  ],
+  "recomendacao": "Aprovar para revisão Opus. Conceito sólido, execução bem planejada."
+}
+```
