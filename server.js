@@ -70,6 +70,17 @@ const log = (level, event, data = {}) => {
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
+
+// Disable cache for index.html to ensure updates are seen immediately
+app.use((req, res, next) => {
+    if (req.path === '/' || req.path === '/index.html') {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        res.set('Expires', '-1');
+        res.set('Pragma', 'no-cache');
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rate limiting para /api/state (proteção sem quebrar dashboard)
