@@ -496,31 +496,46 @@ app.get('/api/architecture', (req, res) => {
 
 // API: Get pipeline configuration
 app.get('/api/pipeline', (req, res) => {
-    const pipelinePath = path.join(__dirname, 'config', 'pipeline.json');
+    const mode = req.query.mode || 'marketing';
+    const pipelinePath = path.join(__dirname, 'config', `pipeline-${mode}.json`);
+    
     if (fs.existsSync(pipelinePath)) {
         const config = JSON.parse(fs.readFileSync(pipelinePath, 'utf-8'));
         res.json(config);
     } else {
-        res.status(404).json({ error: 'Pipeline config not found' });
+        // Fallback to default marketing config
+        const fallbackPath = path.join(__dirname, 'config', 'pipeline-marketing.json');
+        if (fs.existsSync(fallbackPath)) {
+            const config = JSON.parse(fs.readFileSync(fallbackPath, 'utf-8'));
+            res.json(config);
+        } else {
+            res.status(404).json({ error: 'Pipeline config not found' });
+        }
     }
 });
 
 // API: Save pipeline configuration
 app.post('/api/pipeline', (req, res) => {
-    const { nodes } = req.body;
+    const { nodes, mode } = req.body;
     if (!nodes) {
         return res.status(400).json({ error: 'Missing nodes config' });
     }
     
-    const pipelinePath = path.join(__dirname, 'config', 'pipeline.json');
+    const targetMode = mode || 'marketing';
+    const pipelinePath = path.join(__dirname, 'config', `pipeline-${targetMode}.json`);
+    
+    // Determine version based on mode
+    const version = targetMode === 'projetos' ? '2.0' : '3.3';
+    
     const config = {
         nodes,
-        version: '3.3',
+        version,
+        mode: targetMode,
         lastUpdate: new Date().toISOString()
     };
     
     fs.writeFileSync(pipelinePath, JSON.stringify(config, null, 2));
-    log('info', 'pipeline_config_updated', { nodes: Object.keys(nodes).length });
+    log('info', 'pipeline_config_updated', { mode: targetMode, nodes: Object.keys(nodes).length });
     res.json({ success: true, config });
 });
 

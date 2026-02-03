@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK AI // SQUAD NODES</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brick-black: #000000;
+            --brick-red: #DC2626;
+            --brick-white: #FFFFFF;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .font-brick { font-weight: 900; letter-spacing: -0.05em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Node Card */
+        .node-card {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .node-card:hover {
+            border-color: var(--brick-red);
+            transform: translateY(-2px);
+        }
+        
+        .node-card.active {
+            border-color: var(--brick-red);
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.15);
+        }
+        
+        .node-card.done {
+            border-color: #22c55e;
+        }
+        
+        .node-card.done .status-dot {
+            background: #22c55e;
+        }
+        
+        /* Avatar/Icon area */
+        .agent-avatar {
+            width: 64px;
+            height: 64px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        
+        .node-card:hover .agent-avatar {
+            border-color: var(--brick-red);
+        }
+        
+        /* Status indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+        }
+        
+        .status-dot.processing {
+            background: var(--brick-red);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        /* Connection lines */
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #222 50%, transparent 50%);
+            background-size: 8px 2px;
+        }
+        
+        /* Personality tag */
+        .personality-tag {
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border: 1px solid #333;
+            color: #666;
+        }
+        
+        /* Flow indicator */
+        .flow-arrow {
+            color: #333;
+            font-size: 20px;
+        }
+        
+        .flow-arrow.active {
+            color: var(--brick-red);
+        }
+
+        /* Noise overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="noise-overlay"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
+            <div>
+                <h1 class="text-3xl font-brick tracking-tighter text-white flex items-baseline gap-3">
+                    BRICK AI <span class="text-[#DC2626] text-base font-mono tracking-widest opacity-80">SQUAD</span>
+                </h1>
+                <p class="font-mono text-[10px] text-[#555] tracking-widest mt-2">MARKETING PIPELINE</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="font-mono text-xs text-[#555]">Briefing:</span>
+                <span class="font-mono text-sm text-white">brick_linkedin_q1.md</span>
+                <span class="px-2 py-1 bg-[#DC2626]/20 text-[#DC2626] font-mono text-[10px] uppercase">Em Progresso</span>
+            </div>
+        </header>
+
+        <!-- Pipeline Flow -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-6">
+                <div class="w-3 h-3 bg-[#DC2626]"></div>
+                <span class="font-mono text-xs text-[#666]">FLUXO DE PROCESSAMENTO</span>
+            </div>
+        </div>
+
+        <!-- Nodes Grid -->
+        <div class="grid grid-cols-4 gap-6 mb-12">
+            
+            <!-- Node 1: Brief Validator -->
+            <div class="node-card done p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #22c55e;">
+                        <span>🔍</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot" style="background: #22c55e;"></span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">DONE</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Validator</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Analisa lacunas e valida briefing</p>
+                
+                <div class="personality-tag inline-block mb-4">
+                    METÓDICO · IMPLACÁVEL
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#444]">Gemini Flash</span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">✓ 2.3s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 2: Audience Analyst -->
+            <div class="node-card done p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #22c55e;">
+                        <span>👥</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot" style="background: #22c55e;"></span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">DONE</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Audience</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Mapeia dores e gatilhos do público</p>
+                
+                <div class="personality-tag inline-block mb-4">
+                    EMPÁTICO · INVESTIGATIVO
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#444]">Gemini Flash</span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">✓ 1.8s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 3: Claims Checker -->
+            <div class="node-card done p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #22c55e;">
+                        <span>⚖️</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot" style="background: #22c55e;"></span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">DONE</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Claims</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Filtra hype e valida autoridade</p>
+                
+                <div class="personality-tag inline-block mb-4">
+                    CÉTICO · ANTI-HYPE
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#444]">Gemini Flash</span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">✓ 1.5s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 4: Researcher -->
+            <div class="node-card done p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #22c55e;">
+                        <span>📚</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot" style="background: #22c55e;"></span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">DONE</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Researcher</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Busca dados e tendências reais</p>
+                
+                <div class="personality-tag inline-block mb-4">
+                    CURIOSO · FACTUAL
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#444]">Gemini + Search</span>
+                        <span class="font-mono text-[10px] text-[#22c55e]">✓ 4.1s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flow Arrow -->
+        <div class="flex justify-center mb-8">
+            <div class="flex items-center gap-4 text-[#333]">
+                <div class="h-px w-24 bg-[#333]"></div>
+                <span class="font-mono text-lg">↓</span>
+                <div class="h-px w-24 bg-[#333]"></div>
+            </div>
+        </div>
+
+        <!-- Creative Section - 3 Parallel Copywriters -->
+        <div class="mb-6">
+            <div class="flex items-center gap-2 mb-6">
+                <div class="w-3 h-3 bg-[#DC2626]"></div>
+                <span class="font-mono text-xs text-[#666]">BATALHA CRIATIVA</span>
+                <span class="font-mono text-[10px] text-[#444] ml-2">3 versões em paralelo</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6 mb-12">
+            
+            <!-- Copywriter 1: GPT -->
+            <div class="node-card active p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #DC2626;">
+                        <span>✍️</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot processing"></span>
+                        <span class="font-mono text-[10px] text-[#DC2626]">WRITING</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Copy A</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Estruturado e profissional</p>
+                
+                <div class="personality-tag inline-block mb-4" style="border-color: #3b82f6; color: #3b82f6;">
+                    PRECISO · CORPORATIVO
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#3b82f6]">GPT-5.2 Codex</span>
+                        <span class="font-mono text-[10px] text-[#DC2626]">● 12s...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copywriter 2: Flash -->
+            <div class="node-card active p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #DC2626;">
+                        <span>⚡</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot processing"></span>
+                        <span class="font-mono text-[10px] text-[#DC2626]">WRITING</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Copy B</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Hooks agressivos e diretos</p>
+                
+                <div class="personality-tag inline-block mb-4" style="border-color: #f59e0b; color: #f59e0b;">
+                    VELOZ · PROVOCADOR
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#f59e0b]">Gemini Flash</span>
+                        <span class="font-mono text-[10px] text-[#DC2626]">● 8s...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copywriter 3: Sonnet -->
+            <div class="node-card active p-6 cursor-pointer" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar" style="border-color: #DC2626;">
+                        <span>🎭</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot processing"></span>
+                        <span class="font-mono text-[10px] text-[#DC2626]">WRITING</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Copy C</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Storytelling emocional</p>
+                
+                <div class="personality-tag inline-block mb-4" style="border-color: #a855f7; color: #a855f7;">
+                    NARRATIVO · HUMANO
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#a855f7]">Claude Sonnet</span>
+                        <span class="font-mono text-[10px] text-[#DC2626]">● 15s...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flow Arrow -->
+        <div class="flex justify-center mb-8">
+            <div class="flex items-center gap-4 text-[#333]">
+                <div class="h-px w-24 bg-[#333]"></div>
+                <span class="font-mono text-lg">↓</span>
+                <div class="h-px w-24 bg-[#333]"></div>
+            </div>
+        </div>
+
+        <!-- Final Row -->
+        <div class="mb-6">
+            <div class="flex items-center gap-2 mb-6">
+                <div class="w-3 h-3 bg-[#DC2626]"></div>
+                <span class="font-mono text-xs text-[#666]">JULGAMENTO FINAL</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+            
+            <!-- Brand Guardian -->
+            <div class="node-card p-6 cursor-pointer opacity-50" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar">
+                        <span>🛡️</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot"></span>
+                        <span class="font-mono text-[10px] text-[#444]">WAITING</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Guardian</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Protege tom e posicionamento</p>
+                
+                <div class="personality-tag inline-block mb-4">
+                    RÍGIDO · PROTETOR
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#444]">Gemini Flash</span>
+                        <span class="font-mono text-[10px] text-[#444]">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critic -->
+            <div class="node-card p-6 cursor-pointer opacity-50" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar">
+                        <span>🎯</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot"></span>
+                        <span class="font-mono text-[10px] text-[#444]">WAITING</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Critic</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Escolhe a melhor das 3 versões</p>
+                
+                <div class="personality-tag inline-block mb-4">
+                    EXIGENTE · DECISIVO
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#444]">Claude Sonnet</span>
+                        <span class="font-mono text-[10px] text-[#444]">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Approval - Opus -->
+            <div class="node-card p-6 cursor-pointer opacity-50" onclick="showOutput(this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="agent-avatar">
+                        <span>👑</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="status-dot"></span>
+                        <span class="font-mono text-[10px] text-[#444]">WAITING</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-brick text-lg text-white mb-1">Opus</h3>
+                <p class="font-mono text-[11px] text-[#666] mb-4">Aprovação final ou veto</p>
+                
+                <div class="personality-tag inline-block mb-4" style="border-color: #f59e0b; color: #f59e0b;">
+                    SUPREMO · IMPLACÁVEL
+                </div>
+                
+                <div class="border-t border-[#222] pt-4 mt-auto">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] text-[#f59e0b]">Claude Opus</span>
+                        <span class="font-mono text-[10px] text-[#444]">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Panel (appears on click) -->
+        <div id="output-panel" class="fixed top-0 right-0 w-1/2 h-full bg-[#0a0a0a] border-l border-[#222] transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto" style="display: none;">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <h2 class="font-brick text-2xl text-white mb-2">Output: Validator</h2>
+                        <span class="font-mono text-xs text-[#666]">Processado em 2.3s</span>
+                    </div>
+                    <button onclick="closeOutput()" class="text-[#666] hover:text-white text-2xl">&times;</button>
+                </div>
+                
+                <div class="bg-black border border-[#222] p-6 font-mono text-sm text-[#999] leading-relaxed">
+                    <pre class="whitespace-pre-wrap">
+{
+  "status": "PASS",
+  "missing_fields": [],
+  "confidence": 0.92,
+  "notes": "Briefing completo. Objetivo claro, público definido, canal especificado.",
+  "assumptions": {
+    "tom": "Profissional mas não corporativo",
+    "urgencia": "Média"
+  }
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showOutput(card) {
+            const panel = document.getElementById('output-panel');
+            panel.style.display = 'block';
+            setTimeout(() => {
+                panel.style.transform = 'translateX(0)';
+            }, 10);
+        }
+        
+        function closeOutput() {
+            const panel = document.getElementById('output-panel');
+            panel.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                panel.style.display = 'none';
+            }, 300);
+        }
+    </script>
+</body>
+</html>

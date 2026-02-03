@@ -1,0 +1,17 @@
+{
+  "nodes": {
+    "validator": { "enabled": true, "model": "flash" },
+    "audience": { "enabled": true, "model": "flash" },
+    "researcher": { "enabled": true, "model": "flash" },
+    "claims": { "enabled": true, "model": "flash" },
+    "copy_gpt": { "enabled": true, "model": "gpt" },
+    "copy_flash": { "enabled": true, "model": "flash" },
+    "copy_sonnet": { "enabled": true, "model": "sonnet" },
+    "guardian": { "enabled": true, "model": "flash" },
+    "critics": { "enabled": true, "model": "gpt" },
+    "opus": { "enabled": true, "model": "opus" }
+  },
+  "version": "3.3",
+  "mode": "marketing",
+  "lastUpdate": "2026-02-03T18:28:00.000Z"
+}

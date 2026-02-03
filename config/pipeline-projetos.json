@@ -1,0 +1,13 @@
+{
+  "nodes": {
+    "brand_digest": { "enabled": true, "model": "flash" },
+    "creative_ideation": { "enabled": true, "model": "gpt" },
+    "concept_critic": { "enabled": true, "model": "flash" },
+    "execution_design": { "enabled": true, "model": "gemini_pro" },
+    "copywriter": { "enabled": true, "model": "sonnet" },
+    "director": { "enabled": true, "model": "gemini_pro" }
+  },
+  "version": "2.0",
+  "mode": "projetos",
+  "lastUpdate": "2026-02-03T18:28:00.000Z"
+}

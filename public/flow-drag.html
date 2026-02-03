@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK AI // FLOW</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --bg: #0A0A0A;
+            --card: #0D0D0D;
+            --border: #1A1A1A;
+            --border-hover: #2A2A2A;
+            --text: #FFFFFF;
+            --text-muted: #666666;
+            --text-dim: #444444;
+            --red: #DC2626;
+            --red-dim: #991B1B;
+            --blue: #3B82F6;
+            --purple: #A855F7;
+            --amber: #F59E0B;
+            --gold: #EAB308;
+            --green: #22C55E;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--black);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .logo span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--red);
+            letter-spacing: 0.1em;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+
+        .btn-primary {
+            background: var(--red);
+            border-color: var(--red);
+            color: var(--text);
+        }
+
+        .btn-primary:hover {
+            background: var(--red-dim);
+            border-color: var(--red-dim);
+        }
+
+        /* Canvas */
+        #canvas {
+            position: absolute;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+            background-size: 32px 32px;
+            overflow: hidden;
+        }
+
+        /* SVG Connections */
+        #connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .connection {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 2;
+            transition: stroke 0.15s ease;
+        }
+
+        .connection.active {
+            stroke: var(--red);
+        }
+
+        /* Node Card */
+        .node {
+            position: absolute;
+            width: 220px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            cursor: grab;
+            user-select: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .node:hover {
+            border-color: var(--border-hover);
+        }
+
+        .node:active {
+            cursor: grabbing;
+        }
+
+        .node.enabled {
+            border-color: var(--red);
+        }
+
+        .node.enabled:hover {
+            box-shadow: 0 0 0 1px var(--red);
+        }
+
+        .node.disabled {
+            opacity: 0.35;
+        }
+
+        /* Node Header */
+        .node-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .node-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: border-color 0.15s ease;
+        }
+
+        .node.enabled .node-icon {
+            border-color: var(--red);
+        }
+
+        .node-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .node-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .node-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 2px;
+        }
+
+        .node-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Toggle */
+        .toggle {
+            width: 32px;
+            height: 18px;
+            background: var(--border);
+            border-radius: 9px;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.15s ease;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: var(--text);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.15s ease;
+        }
+
+        .toggle.on {
+            background: var(--red);
+        }
+
+        .toggle.on::after {
+            transform: translateX(14px);
+        }
+
+        /* Node Body */
+        .node-body {
+            padding: 12px 16px 16px;
+        }
+
+        .node-personality {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .node-model {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 4px 8px;
+            background: var(--black);
+            border: 1px solid var(--border);
+        }
+
+        .model-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* Connection Ports */
+        .port {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            transition: all 0.15s ease;
+        }
+
+        .port:hover {
+            background: var(--red);
+            border-color: var(--red);
+            transform: scale(1.2);
+        }
+
+        .node.enabled .port {
+            border-color: var(--red);
+        }
+
+        .port-in {
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .port-out {
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .port:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        /* Stage Labels */
+        .stage-label {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        /* Parallel Group */
+        .parallel-box {
+            position: absolute;
+            border: 1px dashed var(--border);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .parallel-label {
+            position: absolute;
+            top: -9px;
+            left: 16px;
+            background: var(--black);
+            padding: 0 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+        }
+
+        /* Model Colors */
+        .model-flash { color: var(--amber); }
+        .model-flash .model-dot { background: var(--amber); }
+        
+        .model-gpt { color: var(--blue); }
+        .model-gpt .model-dot { background: var(--blue); }
+        
+        .model-sonnet { color: var(--purple); }
+        .model-sonnet .model-dot { background: var(--purple); }
+        
+        .model-opus { color: var(--gold); }
+        .model-opus .model-dot { background: var(--gold); }
+        
+        .model-human { color: var(--green); }
+        .model-human .model-dot { background: var(--green); }
+
+        /* Special Nodes */
+        .node.opus {
+            border-color: var(--gold);
+        }
+        .node.opus .node-icon {
+            border-color: var(--gold);
+        }
+        .node.opus .toggle.on {
+            background: var(--gold);
+        }
+
+        .node.human {
+            border-color: var(--green);
+        }
+        .node.human .node-icon {
+            border-color: var(--green);
+        }
+        .node.human .toggle.on {
+            background: var(--green);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>BRICK AI</h1>
+            <span>FLOW EDITOR</span>
+        </div>
+        <div class="header-actions">
+            <select class="btn" style="appearance: none; padding-right: 24px;">
+                <option>Marketing v3.3</option>
+                <option>Projetos v2.0</option>
+                <option>Ideias v1.0</option>
+            </select>
+            <button class="btn">RESET</button>
+            <button class="btn btn-primary">SAVE</button>
+        </div>
+    </header>
+
+    <div id="canvas">
+        <svg id="connections"></svg>
+
+        <!-- Stage Labels -->
+        <div class="stage-label" style="left: 16px; top: 100px;">ANÁLISE</div>
+        <div class="stage-label" style="left: 16px; top: 380px;">CRIAÇÃO</div>
+        <div class="stage-label" style="left: 16px; top: 620px;">QUALIDADE</div>
+        <div class="stage-label" style="left: 16px; top: 820px;">APROVAÇÃO</div>
+
+        <!-- Parallel Box for Copywriters -->
+        <div class="parallel-box" id="parallel-copy" style="left: 56px; top: 330px; width: 720px; height: 160px;">
+            <span class="parallel-label">EXECUÇÃO PARALELA</span>
+        </div>
+
+        <!-- 01. BRIEF VALIDATOR -->
+        <div class="node enabled" id="node-01" style="left: 300px; top: 40px;">
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">🔍</div>
+                <div class="node-info">
+                    <div class="node-number">01</div>
+                    <div class="node-title">Brief Validator</div>
+                    <div class="node-desc">Valida briefing, gera lacunas</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">METÓDICO · RIGOROSO</div>
+                <div class="node-model model-flash">
+                    <span class="model-dot"></span>
+                    Gemini Flash
+                </div>
+            </div>
+        </div>
+
+        <!-- 02. AUDIENCE -->
+        <div class="node enabled" id="node-02" style="left: 140px; top: 190px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">👥</div>
+                <div class="node-info">
+                    <div class="node-number">02</div>
+                    <div class="node-title">Audience</div>
+                    <div class="node-desc">Mapeia público e dores</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">EMPÁTICO · INVESTIGATIVO</div>
+                <div class="node-model model-flash">
+                    <span class="model-dot"></span>
+                    Gemini Flash
+                </div>
+            </div>
+        </div>
+
+        <!-- 03. RESEARCHER -->
+        <div class="node enabled" id="node-03" style="left: 460px; top: 190px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">📚</div>
+                <div class="node-info">
+                    <div class="node-number">03</div>
+                    <div class="node-title">Researcher</div>
+                    <div class="node-desc">Busca dados e tendências</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">CURIOSO · FACTUAL</div>
+                <div class="node-model model-flash">
+                    <span class="model-dot"></span>
+                    Flash + Search
+                </div>
+            </div>
+        </div>
+
+        <!-- 04. CLAIMS -->
+        <div class="node enabled" id="node-04" style="left: 800px; top: 190px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">⚖️</div>
+                <div class="node-info">
+                    <div class="node-number">04</div>
+                    <div class="node-title">Claims Checker</div>
+                    <div class="node-desc">Filtra hype, valida dados</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">CÉTICO · ANTI-HYPE</div>
+                <div class="node-model model-flash">
+                    <span class="model-dot"></span>
+                    Gemini Flash
+                </div>
+            </div>
+        </div>
+
+        <!-- 05A. COPY GPT -->
+        <div class="node enabled" id="node-05a" style="left: 70px; top: 350px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">✍️</div>
+                <div class="node-info">
+                    <div class="node-number">05A</div>
+                    <div class="node-title">Copy A</div>
+                    <div class="node-desc">Estruturado, versátil</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">PRECISO · CORPORATIVO</div>
+                <div class="node-model model-gpt">
+                    <span class="model-dot"></span>
+                    GPT-5.2
+                </div>
+            </div>
+        </div>
+
+        <!-- 05B. COPY FLASH -->
+        <div class="node enabled" id="node-05b" style="left: 310px; top: 350px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">⚡</div>
+                <div class="node-info">
+                    <div class="node-number">05B</div>
+                    <div class="node-title">Copy B</div>
+                    <div class="node-desc">Hooks curtos e incisivos</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">VELOZ · PROVOCADOR</div>
+                <div class="node-model model-flash">
+                    <span class="model-dot"></span>
+                    Gemini Flash
+                </div>
+            </div>
+        </div>
+
+        <!-- 05C. COPY SONNET -->
+        <div class="node enabled" id="node-05c" style="left: 550px; top: 350px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">🎭</div>
+                <div class="node-info">
+                    <div class="node-number">05C</div>
+                    <div class="node-title">Copy C</div>
+                    <div class="node-desc">Nuance, storytelling</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">NARRATIVO · HUMANO</div>
+                <div class="node-model model-sonnet">
+                    <span class="model-dot"></span>
+                    Claude Sonnet
+                </div>
+            </div>
+        </div>
+
+        <!-- 06. BRAND GUARDIANS -->
+        <div class="node enabled" id="node-06" style="left: 180px; top: 530px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">🛡️</div>
+                <div class="node-info">
+                    <div class="node-number">06</div>
+                    <div class="node-title">Brand Guardians</div>
+                    <div class="node-desc">Style + Positioning</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">RÍGIDO · PROTETOR</div>
+                <div class="node-model model-flash">
+                    <span class="model-dot"></span>
+                    Gemini Flash
+                </div>
+            </div>
+        </div>
+
+        <!-- 07. CRITICS -->
+        <div class="node enabled" id="node-07" style="left: 500px; top: 530px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">🔬</div>
+                <div class="node-info">
+                    <div class="node-number">07</div>
+                    <div class="node-title">Critics</div>
+                    <div class="node-desc">Escolhe melhor das 3</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">EXIGENTE · DECISIVO</div>
+                <div class="node-model model-sonnet">
+                    <span class="model-dot"></span>
+                    Claude Sonnet
+                </div>
+            </div>
+        </div>
+
+        <!-- 08. OPUS -->
+        <div class="node enabled opus" id="node-08" style="left: 250px; top: 680px;">
+            <div class="port port-in"></div>
+            <div class="port port-out"></div>
+            <div class="node-header">
+                <div class="node-icon">👑</div>
+                <div class="node-info">
+                    <div class="node-number">08</div>
+                    <div class="node-title">Filtro Final</div>
+                    <div class="node-desc">Aprovação ≥ 80%</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">SUPREMO · IMPLACÁVEL</div>
+                <div class="node-model model-opus">
+                    <span class="model-dot"></span>
+                    Claude Opus
+                </div>
+            </div>
+        </div>
+
+        <!-- 09. HUMAN -->
+        <div class="node enabled human" id="node-09" style="left: 550px; top: 680px;">
+            <div class="port port-in"></div>
+            <div class="node-header">
+                <div class="node-icon">👤</div>
+                <div class="node-info">
+                    <div class="node-number">09</div>
+                    <div class="node-title">Human Feedback</div>
+                    <div class="node-desc">Aprovar ou revisar</div>
+                </div>
+                <div class="toggle on"></div>
+            </div>
+            <div class="node-body">
+                <div class="node-personality">DECISÃO FINAL</div>
+                <div class="node-model model-human">
+                    <span class="model-dot"></span>
+                    Dashboard
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const svg = document.getElementById('connections');
+        const nodes = document.querySelectorAll('.node');
+        
+        // Connection definitions
+        const connections = [
+            ['node-01', 'node-02'],
+            ['node-01', 'node-03'],
+            ['node-02', 'node-04'],
+            ['node-03', 'node-04'],
+            ['node-04', 'node-05a'],
+            ['node-04', 'node-05b'],
+            ['node-04', 'node-05c'],
+            ['node-05a', 'node-06'],
+            ['node-05b', 'node-06'],
+            ['node-05c', 'node-06'],
+            ['node-06', 'node-07'],
+            ['node-07', 'node-08'],
+            ['node-08', 'node-09'],
+        ];
+
+        function drawConnections() {
+            svg.innerHTML = '';
+            svg.setAttribute('width', canvas.scrollWidth);
+            svg.setAttribute('height', canvas.scrollHeight);
+
+            connections.forEach(([fromId, toId]) => {
+                const from = document.getElementById(fromId);
+                const to = document.getElementById(toId);
+                if (!from || !to) return;
+
+                const fromEnabled = from.classList.contains('enabled');
+                const toEnabled = to.classList.contains('enabled');
+
+                const x1 = from.offsetLeft + from.offsetWidth;
+                const y1 = from.offsetTop + from.offsetHeight / 2;
+                const x2 = to.offsetLeft;
+                const y2 = to.offsetTop + to.offsetHeight / 2;
+
+                const midX = (x1 + x2) / 2;
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`);
+                path.setAttribute('class', `connection ${fromEnabled && toEnabled ? 'active' : ''}`);
+                svg.appendChild(path);
+            });
+        }
+
+        // Drag functionality
+        let dragging = null;
+        let offset = { x: 0, y: 0 };
+
+        nodes.forEach(node => {
+            node.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('toggle')) return;
+                dragging = node;
+                const rect = node.getBoundingClientRect();
+                const canvasRect = canvas.getBoundingClientRect();
+                offset.x = e.clientX - rect.left;
+                offset.y = e.clientY - rect.top;
+                node.style.zIndex = 10;
+            });
+
+            // Toggle click
+            const toggle = node.querySelector('.toggle');
+            if (toggle) {
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggle.classList.toggle('on');
+                    node.classList.toggle('enabled');
+                    node.classList.toggle('disabled');
+                    drawConnections();
+                });
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!dragging) return;
+            const canvasRect = canvas.getBoundingClientRect();
+            const x = e.clientX - canvasRect.left - offset.x + canvas.scrollLeft;
+            const y = e.clientY - canvasRect.top - offset.y + canvas.scrollTop;
+            dragging.style.left = Math.max(0, x) + 'px';
+            dragging.style.top = Math.max(0, y) + 'px';
+            drawConnections();
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (dragging) {
+                dragging.style.zIndex = 1;
+                dragging = null;
+            }
+        });
+
+        // Initial draw
+        drawConnections();
+        window.addEventListener('resize', drawConnections);
+    </script>
+</body>
+</html>

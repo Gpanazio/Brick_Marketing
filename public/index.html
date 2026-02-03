@@ -169,7 +169,8 @@
         let currentMode = null;
         let selectedJobId = null;
 
-        const nodeDef = [
+        // MARKETING PIPELINE v3.3
+        const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'CORE' },
             { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
             { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator', model: 'FLASH' },
@@ -186,18 +187,36 @@
             { id: 'n10', x: 0, y: 2150, title: 'OUTPUT_ASSETS', label: 'Final_Ready', model: 'READY' }
         ];
 
-        const links = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+
+        // PROJETOS PIPELINE v2.0
+        const nodeDefProjetos = [
+            { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'CORE' },
+            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
+            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'FLASH' },
+            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Generator', model: 'GPT-5' },
+            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'FLASH' },
+            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI_PRO' },
+            { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer', model: 'SONNET' },
+            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI_PRO' },
+            { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'DASHBOARD', human: true },
+            { id: 'p10', x: 0, y: 1950, title: 'OUTPUT_FINAL', label: 'Proposal_Ready', model: 'READY' }
+        ];
+
+        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
+
+        // IDEIAS (placeholder - mesmo que Marketing por enquanto)
+        const nodeDefIdeias = nodeDefMarketing;
+        const linksIdeias = linksMarketing;
+
+        // Active pipeline (muda com currentMode)
+        let nodeDef = nodeDefMarketing;
+        let links = linksMarketing;
 
         async function fetchState() {
             try {
                 const res = await fetch(`${API_URL}/state${currentMode ? '?mode='+currentMode : ''}`);
                 currentState = await res.json();
-                
-                // 180 SEGUROS FULL POWER PATCH
-                if (currentMode === 'projetos' && currentState) {
-                    const legacy = nodeDef.map(n => ({ name: `180_seguros_2026__${n.title.toLowerCase()}.md`, mtime: '2026' }));
-                    currentState.done = [...currentState.done, ...legacy];
-                }
                 renderLobby();
                 if(selectedJobId) renderNodeGraphic();
             } catch(e) {}
@@ -205,6 +224,22 @@
 
         function enterMode(mode) {
             currentMode = mode;
+            
+            // Switch pipeline definition based on mode
+            if (mode === 'projetos') {
+                nodeDef = nodeDefProjetos;
+                links = linksProjetos;
+                nodeConfigMap = nodeConfigMapProjetos;
+            } else if (mode === 'ideias') {
+                nodeDef = nodeDefIdeias;
+                links = linksIdeias;
+                nodeConfigMap = nodeConfigMapIdeias;
+            } else {
+                nodeDef = nodeDefMarketing;
+                links = linksMarketing;
+                nodeConfigMap = nodeConfigMapMarketing;
+            }
+            
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('project-lobby').classList.remove('hidden');
             document.getElementById('btn-back-lobby').classList.remove('hidden');
@@ -250,7 +285,7 @@
             document.getElementById('ng-title').textContent = title;
             document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
-            renderNodeGraphic();
+            loadPipelineConfig().then(() => renderNodeGraphic());
         }
 
         function closeNodeGraphic() {
@@ -342,17 +377,27 @@
         function openNewBriefing() { alert("Opening Briefing Module..."); }
 
         // NODE CONFIG MAPPING
-        const nodeConfigMap = {
+        const nodeConfigMapMarketing = {
             'n1': 'validator', 'n2': 'audience', 'n3': 'researcher', 'n4': 'claims',
             'n5a': 'copy_gpt', 'n5b': 'copy_flash', 'n5c': 'copy_sonnet',
             'n6': 'guardian', 'n7': 'critics', 'n8': 'opus'
         };
 
+        const nodeConfigMapProjetos = {
+            'p1': 'brand_digest', 'p2': 'creative_ideation', 'p3': 'concept_critic',
+            'p4': 'execution_design', 'p5': 'copywriter', 'p6': 'director'
+        };
+
+        const nodeConfigMapIdeias = nodeConfigMapMarketing; // Placeholder
+
+        let nodeConfigMap = nodeConfigMapMarketing;
+
         let pipelineConfig = null;
 
         async function loadPipelineConfig() {
             try {
-                const res = await fetch(`${API_URL}/pipeline`);
+                const mode = currentMode || 'marketing';
+                const res = await fetch(`${API_URL}/pipeline?mode=${mode}`);
                 if (res.ok) {
                     pipelineConfig = await res.json();
                     applyConfigToNodes();
@@ -394,18 +439,18 @@
                 nodes[configKey] = { enabled, model: 'auto' };
             });
 
-            // Add default entries for nodes not in map
-            nodes.human = { enabled: true, model: 'dashboard' };
+            const mode = currentMode || 'marketing';
 
             try {
                 const res = await fetch(`${API_URL}/pipeline`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
-                    body: JSON.stringify({ nodes })
+                    body: JSON.stringify({ nodes, mode })
                 });
                 if (res.ok) {
-                    alert('✅ Pipeline configuration saved!');
-                    pipelineConfig = await res.json();
+                    const result = await res.json();
+                    alert(`✅ ${mode.toUpperCase()} pipeline configuration saved!`);
+                    pipelineConfig = result.config;
                 } else {
                     alert('❌ Failed to save configuration');
                 }

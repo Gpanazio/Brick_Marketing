@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK AI // FLOW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-brick { font-weight: 900; letter-spacing: -0.05em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .node {
+            background: #0a0a0a;
+            border: 2px solid #DC2626;
+        }
+        
+        .node.off {
+            border-color: #333;
+            opacity: 0.4;
+        }
+        
+        .node-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #DC2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .node.off .node-icon { border-color: #333; }
+        
+        .toggle {
+            width: 36px;
+            height: 20px;
+            background: #DC2626;
+            border-radius: 10px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .toggle::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
+        
+        .toggle.off { background: #333; }
+        .toggle.off::after { right: auto; left: 2px; }
+        
+        .model-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .line-v {
+            width: 2px;
+            background: #DC2626;
+            margin: 0 auto;
+        }
+        
+        .line-v.off { background: #333; }
+        
+        .connector-split {
+            width: 300px;
+            height: 40px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .connector-split::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: #DC2626;
+        }
+        
+        .connector-split::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: calc(50% - 149px);
+            width: 300px;
+            height: 2px;
+            background: #DC2626;
+        }
+        
+        .connector-merge {
+            width: 300px;
+            height: 40px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .connector-merge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: calc(50% - 149px);
+            width: 300px;
+            height: 2px;
+            background: #DC2626;
+        }
+        
+        .connector-merge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 40px;
+            background: #DC2626;
+        }
+        
+        .drop-line {
+            width: 2px;
+            height: 20px;
+            background: #DC2626;
+        }
+    </style>
+</head>
+<body class="p-8 min-h-screen">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-12 pb-6 border-b border-white/10 max-w-3xl mx-auto">
+        <div>
+            <h1 class="text-2xl font-brick">BRICK AI <span class="text-[#DC2626] text-sm font-mono ml-2">FLOW</span></h1>
+            <p class="font-mono text-[10px] text-[#555] mt-1 tracking-widest">MARKETING PIPELINE v3.3</p>
+        </div>
+        <div class="flex gap-3">
+            <button class="px-4 py-2 border border-[#333] text-[#666] font-mono text-xs">RESET</button>
+            <button class="px-4 py-2 bg-[#DC2626] text-white font-mono text-xs">SAVE</button>
+        </div>
+    </header>
+
+    <div class="max-w-3xl mx-auto">
+
+        <!-- BRIEFING (entrada) -->
+        <div class="text-center mb-2">
+            <span class="font-mono text-xs text-[#555] tracking-widest">BRIEFING</span>
+        </div>
+        <div class="line-v h-8"></div>
+
+        <!-- 01. BRIEF VALIDATOR -->
+        <div class="node p-5 max-w-xl mx-auto">
+            <div class="flex items-center gap-4">
+                <div class="node-icon">🔍</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-mono text-[10px] text-[#555]">01</span>
+                        <h3 class="font-bold">BRIEF VALIDATOR</h3>
+                    </div>
+                    <p class="text-[11px] text-[#666] mb-2">Gerador de lacunas · questions_to_human · assumptions_if_silent</p>
+                    <div class="text-[9px] text-[#555] tracking-wider">METÓDICO · RIGOROSO · NÃO-BINÁRIO</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-[#f59e0b]">
+                        <span class="model-dot" style="background:#f59e0b"></span>
+                        Flash
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line-v h-8"></div>
+
+        <!-- 02-03 AUDIENCE + RESEARCHER (paralelo) -->
+        <div class="flex justify-center gap-8">
+            
+            <!-- 02. AUDIENCE ANALYST -->
+            <div class="node p-4 w-64">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="node-icon text-base" style="width:32px;height:32px;">👥</div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-[10px] text-[#555]">02</span>
+                            <h3 class="font-bold text-sm">AUDIENCE</h3>
+                        </div>
+                        <p class="text-[10px] text-[#666]">Mapeia público e dores</p>
+                    </div>
+                    <div class="toggle" style="width:28px;height:16px;"></div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-[9px] text-[#555] tracking-wider">EMPÁTICO · INVESTIGATIVO</span>
+                    <div class="flex items-center gap-1 text-[9px] font-mono text-[#f59e0b]">
+                        <span class="model-dot" style="background:#f59e0b;width:6px;height:6px;"></span>
+                        Flash
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03. TOPIC RESEARCHER -->
+            <div class="node p-4 w-64">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="node-icon text-base" style="width:32px;height:32px;">📚</div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-[10px] text-[#555]">03</span>
+                            <h3 class="font-bold text-sm">RESEARCHER</h3>
+                        </div>
+                        <p class="text-[10px] text-[#666]">Busca dados e tendências</p>
+                    </div>
+                    <div class="toggle" style="width:28px;height:16px;"></div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-[9px] text-[#555] tracking-wider">CURIOSO · FACTUAL</span>
+                    <div class="flex items-center gap-1 text-[9px] font-mono text-[#f59e0b]">
+                        <span class="model-dot" style="background:#f59e0b;width:6px;height:6px;"></span>
+                        Flash
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Merge lines -->
+        <div class="connector-merge"></div>
+
+        <!-- 04. CLAIMS CHECKER -->
+        <div class="node p-5 max-w-xl mx-auto">
+            <div class="flex items-center gap-4">
+                <div class="node-icon">⚖️</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-mono text-[10px] text-[#555]">04</span>
+                        <h3 class="font-bold">CLAIMS CHECKER</h3>
+                    </div>
+                    <p class="text-[11px] text-[#666] mb-2">Valida dados · [NEEDS SOURCE] · Higieniza para Autoridade Segura</p>
+                    <div class="text-[9px] text-[#555] tracking-wider">CÉTICO · ANTI-HYPE · MODESTO</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-[#f59e0b]">
+                        <span class="model-dot" style="background:#f59e0b"></span>
+                        Flash
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Split to 3 copywriters -->
+        <div class="connector-split"></div>
+        <div class="flex justify-center gap-4">
+            <div class="drop-line"></div>
+            <div class="drop-line" style="margin: 0 118px;"></div>
+            <div class="drop-line"></div>
+        </div>
+
+        <!-- 05. COPYWRITERS (3 paralelos) -->
+        <div class="flex justify-center gap-4 mb-2">
+            <span class="font-mono text-[10px] text-[#DC2626] tracking-widest">05 COPYWRITERS — EXECUÇÃO PARALELA</span>
+        </div>
+
+        <div class="flex justify-center gap-4 border border-dashed border-[#333] p-4 mx-auto" style="max-width: 620px;">
+            
+            <!-- COPY A - GPT -->
+            <div class="node p-4 w-48">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="node-icon text-base" style="width:32px;height:32px;border-color:#3b82f6;">✍️</div>
+                    <div class="toggle" style="width:28px;height:16px;background:#3b82f6;"></div>
+                </div>
+                <h3 class="font-bold text-sm mb-1">COPY A</h3>
+                <p class="text-[10px] text-[#666] mb-2">Estruturado, versátil</p>
+                <div class="text-[9px] text-[#3b82f6] tracking-wider mb-2">PRECISO · CORPORATIVO</div>
+                <div class="flex items-center gap-1 text-[9px] font-mono text-[#3b82f6]">
+                    <span class="model-dot" style="background:#3b82f6;width:6px;height:6px;"></span>
+                    GPT-5.2
+                </div>
+            </div>
+
+            <!-- COPY B - Flash -->
+            <div class="node p-4 w-48">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="node-icon text-base" style="width:32px;height:32px;">⚡</div>
+                    <div class="toggle" style="width:28px;height:16px;"></div>
+                </div>
+                <h3 class="font-bold text-sm mb-1">COPY B</h3>
+                <p class="text-[10px] text-[#666] mb-2">Hooks curtos e incisivos</p>
+                <div class="text-[9px] text-[#f59e0b] tracking-wider mb-2">VELOZ · PROVOCADOR</div>
+                <div class="flex items-center gap-1 text-[9px] font-mono text-[#f59e0b]">
+                    <span class="model-dot" style="background:#f59e0b;width:6px;height:6px;"></span>
+                    Flash
+                </div>
+            </div>
+
+            <!-- COPY C - Sonnet -->
+            <div class="node p-4 w-48">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="node-icon text-base" style="width:32px;height:32px;border-color:#a855f7;">🎭</div>
+                    <div class="toggle" style="width:28px;height:16px;background:#a855f7;"></div>
+                </div>
+                <h3 class="font-bold text-sm mb-1">COPY C</h3>
+                <p class="text-[10px] text-[#666] mb-2">Nuance, storytelling</p>
+                <div class="text-[9px] text-[#a855f7] tracking-wider mb-2">NARRATIVO · HUMANO</div>
+                <div class="flex items-center gap-1 text-[9px] font-mono text-[#a855f7]">
+                    <span class="model-dot" style="background:#a855f7;width:6px;height:6px;"></span>
+                    Sonnet
+                </div>
+            </div>
+        </div>
+
+        <!-- Merge from copywriters -->
+        <div class="flex justify-center gap-4 mt-0">
+            <div class="drop-line"></div>
+            <div class="drop-line" style="margin: 0 118px;"></div>
+            <div class="drop-line"></div>
+        </div>
+        <div class="connector-merge" style="transform: rotate(180deg);"></div>
+
+        <!-- 06. BRAND GUARDIANS -->
+        <div class="node p-5 max-w-xl mx-auto">
+            <div class="flex items-center gap-4">
+                <div class="node-icon">🛡️</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-mono text-[10px] text-[#555]">06</span>
+                        <h3 class="font-bold">BRAND GUARDIANS</h3>
+                    </div>
+                    <p class="text-[11px] text-[#666] mb-2">
+                        <span class="text-[#888]">STYLE:</span> Tom, Voz, Proibições · 
+                        <span class="text-[#888]">POSITIONING:</span> Lógica Comercial, Oferta Clara
+                    </p>
+                    <div class="text-[9px] text-[#555] tracking-wider">RÍGIDO · PROTETOR · VIGILANTE</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-[#f59e0b]">
+                        <span class="model-dot" style="background:#f59e0b"></span>
+                        Flash
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line-v h-8"></div>
+
+        <!-- 07. CRITICS -->
+        <div class="node p-5 max-w-xl mx-auto">
+            <div class="flex items-center gap-4">
+                <div class="node-icon">🔬</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-mono text-[10px] text-[#555]">07</span>
+                        <h3 class="font-bold">CRITICS</h3>
+                    </div>
+                    <p class="text-[11px] text-[#666] mb-2">
+                        <span class="text-[#888]">LITE:</span> Triagem 65% · 
+                        <span class="text-[#888]">HEAVY:</span> Escolhe melhor das 3 versões
+                    </p>
+                    <div class="text-[9px] text-[#555] tracking-wider">EXIGENTE · DECISIVO · COMPARATIVO</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-[#a855f7]">
+                        <span class="model-dot" style="background:#a855f7"></span>
+                        Sonnet
+                    </div>
+                    <div class="toggle"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line-v h-8"></div>
+
+        <!-- 08. FILTRO FINAL (OPUS) -->
+        <div class="node p-5 max-w-xl mx-auto" style="border-color: #eab308;">
+            <div class="flex items-center gap-4">
+                <div class="node-icon" style="border-color: #eab308;">👑</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-mono text-[10px] text-[#eab308]">08</span>
+                        <h3 class="font-bold">FILTRO FINAL</h3>
+                    </div>
+                    <p class="text-[11px] text-[#666] mb-2">Aprovação definitiva · Score >= 80%</p>
+                    <div class="text-[9px] text-[#eab308] tracking-wider">SUPREMO · IMPLACÁVEL · VETO FINAL</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-[#eab308]">
+                        <span class="model-dot" style="background:#eab308"></span>
+                        Opus
+                    </div>
+                    <div class="toggle" style="background:#eab308;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line-v h-8"></div>
+
+        <!-- 09. HUMAN FEEDBACK -->
+        <div class="node p-5 max-w-xl mx-auto" style="border-color: #22c55e;">
+            <div class="flex items-center gap-4">
+                <div class="node-icon" style="border-color: #22c55e;">👤</div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-mono text-[10px] text-[#22c55e]">09</span>
+                        <h3 class="font-bold">HUMAN FEEDBACK</h3>
+                    </div>
+                    <p class="text-[11px] text-[#666] mb-2">Aprovar · Revisar com feedback · Reprovar</p>
+                    <div class="text-[9px] text-[#22c55e] tracking-wider">DASHBOARD · DECISÃO FINAL</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-[#22c55e]">
+                        <span class="model-dot" style="background:#22c55e"></span>
+                        Humano
+                    </div>
+                    <div class="toggle" style="background:#22c55e;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Split to OUTPUT or FEEDBACK LOOP -->
+        <div class="flex justify-center gap-8 mt-8">
+            
+            <!-- APROVAR -->
+            <div class="text-center">
+                <div class="line-v h-8 mx-auto" style="background:#22c55e;"></div>
+                <div class="node p-4 w-40" style="border-color:#22c55e;">
+                    <div class="node-icon mx-auto mb-2" style="border-color:#22c55e;width:32px;height:32px;">✅</div>
+                    <h3 class="font-bold text-sm">APROVAR</h3>
+                    <p class="text-[10px] text-[#22c55e]">→ OUTPUT</p>
+                </div>
+            </div>
+
+            <!-- FEEDBACK LOOP -->
+            <div class="text-center">
+                <div class="line-v h-8 mx-auto" style="background:#f59e0b;"></div>
+                <div class="node p-4 w-40" style="border-color:#f59e0b;">
+                    <div class="node-icon mx-auto mb-2" style="border-color:#f59e0b;width:32px;height:32px;">🔄</div>
+                    <h3 class="font-bold text-sm">FEEDBACK</h3>
+                    <p class="text-[10px] text-[#f59e0b]">→ Volta pro agente</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-16"></div>
+
+    </div>
+</body>
+</html>
