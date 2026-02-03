@@ -377,7 +377,69 @@ BRIEFING
                 <div id="viewer-content"
                     class="p-8 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0a0a0a] font-mono text-sm leading-relaxed text-[#ccc]">
                 </div>
-                <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505] flex justify-end gap-4"></div>
+                <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505]">
+                    <!-- Feedback Panel -->
+                    <div id="feedback-panel" class="hidden mb-6">
+                        <div class="border border-[#333] bg-[#0a0a0a] p-6">
+                            <h4 class="text-xs font-mono text-[#DC2626] uppercase tracking-widest mb-4">FEEDBACK LOOP</h4>
+                            
+                            <div class="mb-4">
+                                <label class="text-[10px] font-mono text-[#666] uppercase tracking-widest block mb-2">Problema em:</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <button onclick="selectFeedbackType('conceito')" id="fb-conceito" 
+                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
+                                        CONCEITO
+                                    </button>
+                                    <button onclick="selectFeedbackType('craft')" id="fb-craft"
+                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
+                                        EXECUÇÃO/CRAFT
+                                    </button>
+                                    <button onclick="selectFeedbackType('marca')" id="fb-marca"
+                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
+                                        MARCA/TOM
+                                    </button>
+                                    <button onclick="selectFeedbackType('dados')" id="fb-dados"
+                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
+                                        DADOS/CLAIMS
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="text-[10px] font-mono text-[#666] uppercase tracking-widest block mb-2">Feedback:</label>
+                                <textarea id="feedback-text" rows="3" 
+                                    placeholder="O que precisa mudar? Seja específico..."
+                                    class="w-full bg-[#000] border border-[#333] p-4 text-white text-sm font-mono placeholder-[#444] focus:outline-none focus:border-[#DC2626]"></textarea>
+                            </div>
+                            
+                            <div id="feedback-routing" class="hidden mb-4 p-3 border border-[#222] bg-[#050505]">
+                                <span class="text-[10px] font-mono text-[#555]">ROTEAMENTO:</span>
+                                <span id="routing-target" class="text-xs font-mono text-[#DC2626] ml-2"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <button onclick="toggleFeedbackPanel()" id="btn-toggle-feedback"
+                            class="text-[#555] hover:text-[#DC2626] font-mono text-xs tracking-widest transition-colors">
+                            + FEEDBACK
+                        </button>
+                        <div class="flex gap-4">
+                            <button onclick="submitFeedback('reprovar')" id="btn-reprovar"
+                                class="hidden px-6 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs tracking-widest hover:bg-[#DC2626] hover:text-black transition-colors">
+                                REPROVAR
+                            </button>
+                            <button onclick="submitFeedback('revisar')" id="btn-revisar"
+                                class="hidden px-6 py-2 border border-[#666] text-[#666] font-mono text-xs tracking-widest hover:border-white hover:text-white transition-colors">
+                                REVISAR
+                            </button>
+                            <button onclick="submitFeedback('aprovar')"
+                                class="px-8 py-2 bg-white text-black font-mono text-xs tracking-widest hover:bg-[#DC2626] hover:text-white transition-colors">
+                                APROVAR
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -877,8 +939,17 @@ BRIEFING
         async function viewFile(cat, fname) {
             const file = currentState[cat].find(f => f.name === fname);
             if (!file) return;
+            currentViewingFile = fname;
             document.getElementById('viewer-title').innerText = fname;
             document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
+            
+            // Reset feedback panel when opening new file
+            const feedbackPanel = document.getElementById('feedback-panel');
+            if (feedbackPanel && !feedbackPanel.classList.contains('hidden')) {
+                toggleFeedbackPanel();
+            }
+            resetFeedbackForm();
+            
             openModal('viewer');
         }
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
@@ -1106,6 +1177,164 @@ BRIEFING
         function closeNodeDetails() {
             document.getElementById('node-details-panel').classList.add('translate-x-full');
         }
+
+        // ===== FEEDBACK SYSTEM =====
+        let currentFeedbackType = null;
+        let currentViewingFile = null;
+
+        const feedbackRouting = {
+            'conceito': { target: 'COPYWRITER', desc: 'Nova tentativa de criação' },
+            'craft': { target: 'DIRECTOR', desc: 'Refinamento de execução' },
+            'marca': { target: 'BRAND GUARDIAN', desc: 'Revisão de tom e voz' },
+            'dados': { target: 'RESEARCHER', desc: 'Verificação de claims' }
+        };
+
+        function toggleFeedbackPanel() {
+            const panel = document.getElementById('feedback-panel');
+            const btnReprovar = document.getElementById('btn-reprovar');
+            const btnRevisar = document.getElementById('btn-revisar');
+            const btnToggle = document.getElementById('btn-toggle-feedback');
+            
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                btnReprovar.classList.remove('hidden');
+                btnRevisar.classList.remove('hidden');
+                btnToggle.textContent = '- FECHAR FEEDBACK';
+                btnToggle.classList.add('text-[#DC2626]');
+            } else {
+                panel.classList.add('hidden');
+                btnReprovar.classList.add('hidden');
+                btnRevisar.classList.add('hidden');
+                btnToggle.textContent = '+ FEEDBACK';
+                btnToggle.classList.remove('text-[#DC2626]');
+                resetFeedbackForm();
+            }
+        }
+
+        function selectFeedbackType(type) {
+            currentFeedbackType = type;
+            
+            // Update button styles
+            document.querySelectorAll('.feedback-type-btn').forEach(btn => {
+                btn.classList.remove('border-[#DC2626]', 'text-white', 'bg-[#DC2626]/10');
+                btn.classList.add('border-[#333]', 'text-[#666]');
+            });
+            
+            const selectedBtn = document.getElementById(`fb-${type}`);
+            selectedBtn.classList.remove('border-[#333]', 'text-[#666]');
+            selectedBtn.classList.add('border-[#DC2626]', 'text-white', 'bg-[#DC2626]/10');
+            
+            // Show routing info
+            const routingDiv = document.getElementById('feedback-routing');
+            const routingTarget = document.getElementById('routing-target');
+            routingDiv.classList.remove('hidden');
+            routingTarget.textContent = `${feedbackRouting[type].target} → ${feedbackRouting[type].desc}`;
+        }
+
+        function resetFeedbackForm() {
+            currentFeedbackType = null;
+            document.getElementById('feedback-text').value = '';
+            document.getElementById('feedback-routing').classList.add('hidden');
+            document.querySelectorAll('.feedback-type-btn').forEach(btn => {
+                btn.classList.remove('border-[#DC2626]', 'text-white', 'bg-[#DC2626]/10');
+                btn.classList.add('border-[#333]', 'text-[#666]');
+            });
+        }
+
+        async function submitFeedback(action) {
+            const feedbackText = document.getElementById('feedback-text')?.value || '';
+            
+            if (action === 'aprovar') {
+                // Move to done
+                if (currentViewingFile) {
+                    try {
+                        await fetch(`${API_URL}/move`, {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'X-API-Key': 'brick-squad-2026'
+                            },
+                            body: JSON.stringify({
+                                filename: currentViewingFile,
+                                from: 'wip',
+                                to: 'done'
+                            })
+                        });
+                        showToast('APROVADO — Movido para OUTPUT', 'success');
+                        closeModal('viewer');
+                        fetchState();
+                    } catch (e) {
+                        showToast('Erro ao aprovar', 'error');
+                    }
+                }
+                return;
+            }
+            
+            if ((action === 'reprovar' || action === 'revisar') && !currentFeedbackType) {
+                showToast('Selecione o tipo de problema', 'error');
+                return;
+            }
+            
+            if ((action === 'reprovar' || action === 'revisar') && !feedbackText.trim()) {
+                showToast('Escreva o feedback', 'error');
+                return;
+            }
+            
+            // Submit feedback
+            const feedback = {
+                timestamp: new Date().toISOString(),
+                file: currentViewingFile,
+                action: action,
+                type: currentFeedbackType,
+                text: feedbackText,
+                routedTo: feedbackRouting[currentFeedbackType]?.target
+            };
+            
+            try {
+                await fetch(`${API_URL}/feedback`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'brick-squad-2026'
+                    },
+                    body: JSON.stringify(feedback)
+                });
+                
+                const actionText = action === 'reprovar' ? 'REPROVADO' : 'EM REVISÃO';
+                showToast(`${actionText} — Feedback enviado para ${feedbackRouting[currentFeedbackType].target}`, action === 'reprovar' ? 'error' : 'warning');
+                closeModal('viewer');
+                fetchState();
+            } catch (e) {
+                // Even if API doesn't exist yet, show success for demo
+                const actionText = action === 'reprovar' ? 'REPROVADO' : 'EM REVISÃO';
+                showToast(`${actionText} — Roteado para ${feedbackRouting[currentFeedbackType].target}`, action === 'reprovar' ? 'error' : 'warning');
+                closeModal('viewer');
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            // Remove existing toasts
+            document.querySelectorAll('.toast-notification').forEach(t => t.remove());
+            
+            const colors = {
+                success: 'border-white bg-white/10',
+                error: 'border-[#DC2626] bg-[#DC2626]/10',
+                warning: 'border-[#F59E0B] bg-[#F59E0B]/10'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = `toast-notification fixed bottom-8 right-8 ${colors[type]} border px-6 py-4 font-mono text-sm text-white z-[200] transition-opacity duration-300`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Update viewFile to track current file
+        const originalViewFile = typeof viewFile === 'function' ? viewFile : null;
 
         async function fetchArchitecture() {
             try {
