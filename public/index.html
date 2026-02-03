@@ -307,28 +307,109 @@ BRIEFING
 
         function renderGameBoard(job) {
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-            const colors = { text: '#E5E5E5', textDim: '#555', border: '#333', line: '#222', highlight: '#DC2626', nodeBg: '#0a0a0a', success: '#fff', active: '#DC2626' };
-            const getStepColor = (k) => job.steps?.[k] ? (job.steps[k].status === 'done' ? colors.success : colors.active) : colors.border;
+            const c = { text: '#ccc', dim: '#666', border: '#2a2a2a', line: '#1a1a1a', red: '#DC2626', bg: '#0c0c0c', done: '#888' };
+            const stepColor = (k) => job.steps?.[k]?.status === 'done' ? c.done : (job.steps?.[k] ? c.red : c.border);
             
-            // Layout (Same SVG logic)
-            const W=1400, cx=W/2, colLeft=cx-350, colRight=cx+350, boxW=240, lgBoxW=400;
-            const yMission=100, yDouglas=240, yValidator=380, yResearch=520, yClaims=660, yCopy=800, yReview=940, yOpus=1100;
+            // Compact Layout (+20%)
+            const W=1080, cx=W/2, colL=cx-240, colR=cx+240, bw=168, bwLg=264;
+            const y = { mission:60, core:144, val:240, research:336, claims:432, copy:528, review:624, opus:744, out:840 };
+            const gap = 36;
 
             const html = `
-            <style>.flow-line{stroke-dasharray:4 4;animation:flowPulse 1s linear infinite}.node-rect{transition:all 0.3s}.node-group:hover .node-rect{stroke:#DC2626;stroke-width:2;fill:#111}.tech-font{font-family:'JetBrains Mono',monospace}.label-font{font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:0.05em}@keyframes flowPulse{0%{stroke-dashoffset:24;opacity:0.3}100%{stroke-dashoffset:0;opacity:0.8}}</style>
-            <svg viewBox="0 0 ${W} 1350" preserveAspectRatio="xMidYMin meet" style="width:100%;height:100%"><defs><linearGradient id="gradNode" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1"/><stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1"/></linearGradient></defs>
-                <g transform="translate(${cx}, 50)"><text y="0" text-anchor="middle" fill="#333" font-size="20" letter-spacing="0.5em" font-weight="900" class="label-font">SQUAD ARCHITECTURE</text></g>
-                <g class="node-group" onclick="showNodeDetails('mission')" transform="translate(${cx}, ${yMission})"><line x1="0" y1="30" x2="0" y2="${yDouglas-yMission-60}" stroke="${colors.line}" stroke-width="1"/><rect x="${-lgBoxW/2}" y="-30" width="${lgBoxW}" height="60" fill="${colors.nodeBg}" stroke="${colors.border}" stroke-width="1" class="node-rect"/><text x="-180" y="-8" text-anchor="start" fill="${colors.textDim}" font-size="10" class="tech-font">MISSION OBJECTIVE</text><text x="-180" y="12" text-anchor="start" fill="${colors.text}" font-size="14" class="tech-font font-bold">${(job.title||'').substring(0,45)}</text></g>
-                <g class="node-group" onclick="showNodeDetails('douglas')" transform="translate(${cx}, ${yDouglas})"><line x1="0" y1="50" x2="0" y2="${yValidator-yDouglas-50}" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="#080808" stroke="${colors.highlight}" stroke-width="1" rx="2" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.highlight}" font-size="24" font-weight="900" letter-spacing="0.1em" class="label-font">DOUGLAS CORE</text><text x="0" y="15" text-anchor="middle" fill="#555" font-size="10" class="tech-font tracking-widest">CENTRAL COGNITIVE AUTHORITY</text></g>
-                <g class="node-group" onclick="showNodeDetails('validator')" transform="translate(${cx}, ${yValidator})"><path d="M0 50 L0 70 L${colLeft-cx} 70 L${colLeft-cx} ${yResearch-yValidator-50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><path d="M0 50 L0 70 L${colRight-cx} 70 L${colRight-cx} ${yResearch-yValidator-50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('validator')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">BRIEF VALIDATOR</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">GATEKEEPER</text></g>
-                <g class="node-group" onclick="showNodeDetails('audience')" transform="translate(${colLeft}, ${yResearch})"><path d="M0 50 L0 70 L${cx-colLeft} 70 L${cx-colLeft} ${yClaims-yResearch-50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('audience')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">AUDIENCE ANALYST</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PSYCHOGRAPHICS</text></g>
-                <g class="node-group" onclick="showNodeDetails('research')" transform="translate(${colRight}, ${yResearch})"><path d="M0 50 L0 70 L${cx-colRight} 70 L${cx-colRight} ${yClaims-yResearch-50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('research')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">TOPIC RESEARCHER</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">CONTEXT & FACTS</text></g>
-                <g class="node-group" onclick="showNodeDetails('claims')" transform="translate(${cx}, ${yClaims})"><line x1="0" y1="50" x2="0" y2="${yCopy-yClaims-50}" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('claims')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">CLAIMS CHECKER</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">TRUTH FILTER</text></g>
-                <g class="node-group" onclick="showNodeDetails('copy')" transform="translate(${cx}, ${yCopy})"><path d="M0 50 L0 70 L${colLeft-cx} 70 L${colLeft-cx} ${yReview-yCopy-50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><path d="M0 50 L0 70 L${colRight-cx} 70 L${colRight-cx} ${yReview-yCopy-50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('copy')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">COPYWRITER</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">CREATION ENGINE</text></g>
-                <g class="node-group" onclick="showNodeDetails('brand')" transform="translate(${colLeft}, ${yReview})"><path d="M0 50 L0 70 L${cx-colLeft} 70 L${cx-colLeft} ${yOpus-yReview-70}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('brand')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">BRAND GUARDIANS</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">STYLE & POSITION</text></g>
-                <g class="node-group" onclick="showNodeDetails('critic')" transform="translate(${colRight}, ${yReview})"><path d="M0 50 L0 70 L${cx-colRight} 70 L${cx-colRight} ${yOpus-yReview-70}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('critic')}" stroke-width="1" class="node-rect"/><text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">CRITIC LITE</text><text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PRE-CHECK (65%)</text></g>
-                <g class="node-group" onclick="showNodeDetails('opus')" transform="translate(${cx}, ${yOpus})"><line x1="0" y1="70" x2="0" y2="100" stroke="${colors.line}" stroke-width="1" class="flow-line"/><rect x="${-lgBoxW/2}" y="-70" width="${lgBoxW}" height="140" fill="#050505" stroke="${getStepColor('opus')}" stroke-width="2" rx="4" class="node-rect"/><text x="0" y="-15" text-anchor="middle" fill="${colors.text}" font-size="28" font-weight="900" letter-spacing="0.1em" class="label-font">CRITIC OPUS</text><text x="0" y="25" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">FINAL VERDICT</text></g>
-                <g class="node-group" onclick="showNodeDetails('output')" transform="translate(${cx}, ${yOpus+160})"><rect x="${-boxW}" y="-30" width="${boxW*2}" height="60" fill="${job.steps?.opus?.status==='done'?'#DC2626':'#0a0a0a'}" stroke="${job.steps?.opus?.status==='done'?'#fff':'#333'}" stroke-width="1"/><text x="0" y="5" text-anchor="middle" fill="${job.steps?.opus?.status==='done'?'#fff':'#555'}" font-size="12" letter-spacing="0.2em" font-weight="bold" class="label-font">⚡ FINAL DELIVERY</text></g>
+            <style>
+                .node{cursor:pointer;transition:all 0.2s ease}
+                .node:hover .box{stroke:${c.red};stroke-opacity:0.8}
+                .node:hover text{fill:#fff}
+                .box{transition:all 0.2s}
+                .line{stroke:${c.line};stroke-width:1}
+                .flow{stroke-dasharray:3 3;animation:dash 0.8s linear infinite}
+                @keyframes dash{to{stroke-dashoffset:-6}}
+            </style>
+            <svg viewBox="0 0 ${W} 888" style="width:100%;max-width:1080px;height:auto">
+                <defs><linearGradient id="grd" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#151515"/><stop offset="100%" stop-color="#0a0a0a"/></linearGradient></defs>
+                
+                <!-- Mission -->
+                <g class="node" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
+                    <rect class="box" x="${-bwLg/2}" y="-18" width="${bwLg}" height="36" rx="2" fill="${c.bg}" stroke="${c.border}"/>
+                    <text x="0" y="5" text-anchor="middle" fill="${c.dim}" font-size="10" font-family="Inter">${(job.title||'SELECT JOB').substring(0,28).toUpperCase()}</text>
+                </g>
+                <line class="line" x1="${cx}" y1="${y.mission+18}" x2="${cx}" y2="${y.core-gap}"/>
+                
+                <!-- Douglas Core -->
+                <g class="node" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.core})">
+                    <rect class="box" x="${-bwLg/2}" y="-28" width="${bwLg}" height="56" rx="3" fill="#080808" stroke="${c.red}" stroke-opacity="0.6"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${c.red}" font-size="13" font-weight="700" font-family="Inter" letter-spacing="0.1em">DOUGLAS</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">ORCHESTRATOR</text>
+                </g>
+                <line class="line flow" x1="${cx}" y1="${y.core+28}" x2="${cx}" y2="${y.val-gap}"/>
+                
+                <!-- Validator -->
+                <g class="node" onclick="showNodeDetails('validator')" transform="translate(${cx},${y.val})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('validator')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">VALIDATOR</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">gatekeeper</text>
+                </g>
+                <path class="line flow" d="M${cx} ${y.val+24} L${cx} ${y.val+40} L${colL} ${y.val+40} L${colL} ${y.research-gap}" fill="none"/>
+                <path class="line flow" d="M${cx} ${y.val+24} L${cx} ${y.val+40} L${colR} ${y.val+40} L${colR} ${y.research-gap}" fill="none"/>
+                
+                <!-- Audience + Research (parallel) -->
+                <g class="node" onclick="showNodeDetails('audience')" transform="translate(${colL},${y.research})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('audience')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">AUDIENCE</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">psychographics</text>
+                </g>
+                <g class="node" onclick="showNodeDetails('research')" transform="translate(${colR},${y.research})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('research')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">RESEARCH</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">context</text>
+                </g>
+                <path class="line flow" d="M${colL} ${y.research+24} L${colL} ${y.research+40} L${cx} ${y.research+40} L${cx} ${y.claims-gap}" fill="none"/>
+                <path class="line flow" d="M${colR} ${y.research+24} L${colR} ${y.research+40} L${cx} ${y.research+40}" fill="none"/>
+                
+                <!-- Claims -->
+                <g class="node" onclick="showNodeDetails('claims')" transform="translate(${cx},${y.claims})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('claims')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">CLAIMS</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">truth filter</text>
+                </g>
+                <line class="line flow" x1="${cx}" y1="${y.claims+24}" x2="${cx}" y2="${y.copy-gap}"/>
+                
+                <!-- Copy -->
+                <g class="node" onclick="showNodeDetails('copy')" transform="translate(${cx},${y.copy})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('copy')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">COPYWRITER</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">creation</text>
+                </g>
+                <path class="line flow" d="M${cx} ${y.copy+24} L${cx} ${y.copy+40} L${colL} ${y.copy+40} L${colL} ${y.review-gap}" fill="none"/>
+                <path class="line flow" d="M${cx} ${y.copy+24} L${cx} ${y.copy+40} L${colR} ${y.copy+40} L${colR} ${y.review-gap}" fill="none"/>
+                
+                <!-- Brand + Critic (parallel) -->
+                <g class="node" onclick="showNodeDetails('brand')" transform="translate(${colL},${y.review})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('brand')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">BRAND</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">guardian</text>
+                </g>
+                <g class="node" onclick="showNodeDetails('critic')" transform="translate(${colR},${y.review})">
+                    <rect class="box" x="${-bw/2}" y="-24" width="${bw}" height="48" rx="2" fill="url(#grd)" stroke="${stepColor('critic')}"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="10" font-weight="600" font-family="Inter">CRITIC</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">pre-check</text>
+                </g>
+                <path class="line flow" d="M${colL} ${y.review+24} L${colL} ${y.review+40} L${cx} ${y.review+40} L${cx} ${y.opus-gap}" fill="none"/>
+                <path class="line flow" d="M${colR} ${y.review+24} L${colR} ${y.review+40} L${cx} ${y.review+40}" fill="none"/>
+                
+                <!-- Opus -->
+                <g class="node" onclick="showNodeDetails('opus')" transform="translate(${cx},${y.opus})">
+                    <rect class="box" x="${-bw*0.8}" y="-32" width="${bw*1.6}" height="64" rx="3" fill="#080808" stroke="${stepColor('opus')}" stroke-width="1.5"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${c.text}" font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.05em">OPUS</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" font-size="8" font-family="monospace">final verdict</text>
+                </g>
+                <line class="line" x1="${cx}" y1="${y.opus+32}" x2="${cx}" y2="${y.out-16}"/>
+                
+                <!-- Output -->
+                <g class="node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
+                    <rect class="box" x="${-bw}" y="-16" width="${bw*2}" height="32" rx="2" fill="${job.steps?.opus?.status==='done'?c.red:'#0a0a0a'}" stroke="${job.steps?.opus?.status==='done'?'#fff':c.border}"/>
+                    <text x="0" y="4" text-anchor="middle" fill="${job.steps?.opus?.status==='done'?'#fff':c.dim}" font-size="9" font-weight="600" font-family="Inter" letter-spacing="0.15em">DELIVERY</text>
+                </g>
             </svg>`;
             
             document.getElementById('gameboard-svg').innerHTML = html;
@@ -582,8 +663,97 @@ BRIEFING
         }
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
-        async function fetchArchitecture() { /* ... (mesmo codigo anterior) ... */ }
-        async function fetchHistory() { /* ... */ } // Pode usar fetchState agora já que temos tudo em currentState
+        
+        // NODE DETAILS (Game Board)
+        function showNodeDetails(nodeKey) {
+            const panel = document.getElementById('node-details-panel');
+            const titleEl = document.getElementById('detail-title');
+            const contentEl = document.getElementById('detail-content');
+            
+            const nodeNames = {
+                'mission': 'Mission Objective',
+                'douglas': 'Douglas Core',
+                'validator': 'Brief Validator',
+                'audience': 'Audience Analyst',
+                'research': 'Topic Researcher',
+                'claims': 'Claims Checker',
+                'copy': 'Copywriter',
+                'brand': 'Brand Guardians',
+                'critic': 'Critic Lite',
+                'opus': 'Critic Opus',
+                'output': 'Final Delivery'
+            };
+            
+            titleEl.textContent = nodeNames[nodeKey] || nodeKey.toUpperCase();
+            
+            // Get content from currentJob
+            const job = window.currentJob;
+            if (!job) {
+                contentEl.innerHTML = '<p class="text-[#555]">No job loaded.</p>';
+                panel.classList.remove('translate-x-full');
+                return;
+            }
+            
+            // Special cases
+            if (nodeKey === 'mission') {
+                contentEl.innerHTML = `<div class="text-white text-xl mb-4">${job.title}</div><p class="text-[#999]">Briefing content and mission parameters.</p>`;
+            } else if (nodeKey === 'douglas') {
+                contentEl.innerHTML = `<div class="text-[#DC2626] text-xl mb-4">CENTRAL ORCHESTRATOR</div><p class="text-[#999]">Douglas coordinates all agents in the pipeline, making decisions and routing tasks.</p>`;
+            } else if (nodeKey === 'output') {
+                // Find copy or opus output
+                const finalStep = job.steps?.opus || job.steps?.copy;
+                if (finalStep?.output) {
+                    contentEl.innerHTML = marked.parse(finalStep.output);
+                } else {
+                    contentEl.innerHTML = '<p class="text-[#555]">Awaiting pipeline completion...</p>';
+                }
+            } else {
+                // Regular step
+                const step = job.steps?.[nodeKey];
+                if (step?.output) {
+                    contentEl.innerHTML = marked.parse(step.output);
+                } else if (step?.status === 'done') {
+                    contentEl.innerHTML = '<p class="text-green-500">✓ Completed</p>';
+                } else {
+                    contentEl.innerHTML = '<p class="text-[#555]">Pending...</p>';
+                }
+            }
+            
+            panel.classList.remove('translate-x-full');
+        }
+        
+        function closeNodeDetails() {
+            document.getElementById('node-details-panel').classList.add('translate-x-full');
+        }
+        
+        async function fetchArchitecture() {
+            try {
+                const res = await fetch(`${API_URL}/architecture`);
+                const data = await res.json();
+                document.getElementById('architecture-content').innerHTML = marked.parse(data.content || 'No content');
+            } catch(e) {
+                document.getElementById('architecture-content').innerHTML = '<p class="text-red-500">Failed to load architecture.</p>';
+            }
+        }
+        async function fetchHistory() {
+            try {
+                const res = await fetch(`${API_URL}/history`);
+                const data = await res.json();
+                const list = document.getElementById('history-list');
+                if (!data.history || data.history.length === 0) {
+                    list.innerHTML = '<div class="text-[#333] text-center font-mono">NO HISTORY</div>';
+                    return;
+                }
+                list.innerHTML = data.history.map(f => `
+                    <div class="card p-4 cursor-pointer hover:bg-[#111]" onclick="viewHistoryFile('${f.name}')">
+                        <span class="font-mono text-sm text-white">${f.name}</span>
+                        <span class="text-[10px] text-[#555] ml-4">${new Date(f.mtime).toLocaleDateString('pt-BR')}</span>
+                    </div>
+                `).join('');
+            } catch(e) {
+                document.getElementById('history-list').innerHTML = '<p class="text-red-500">Failed to load history.</p>';
+            }
+        }
 
         // Init
         setInterval(fetchState, 5000);
