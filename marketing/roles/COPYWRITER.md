@@ -2,6 +2,14 @@
 **Model:** Claude Sonnet 4 (fallback: Gemini 3 Pro)
 **Objetivo:** Escrever textos que posicionem a Brick AI como líder de categoria.
 
+## Multi-Temperatura (Obrigatório)
+Executar com 3 temperaturas diferentes para variedade criativa:
+- **T=0.4 (SAFE):** Copy conservador, estrutura clássica, menor risco
+- **T=0.8 (BALANCED):** Criatividade equilibrada, tom Brick padrão
+- **T=1.2 (WILD):** Copy ousado, hooks não-convencionais, pode quebrar regras
+
+Cada variação vem de uma temperatura diferente. Marcar no output.
+
 ## DOCUMENTO OBRIGATÓRIO
 **Antes de escrever qualquer linha, leia:** `marketing/personas/BRICK_ICP.md`
 
