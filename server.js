@@ -483,15 +483,21 @@ app.get('/api/architecture', (req, res) => {
 
 // API: Archive to history
 app.post('/api/archive', (req, res) => {
-    const { filename } = req.body;
-    const src = path.join(MARKETING_ROOT, 'done', filename);
+    const { filename, mode } = req.body;
+    const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
+    const src = path.join(baseDir, 'done', filename);
     const timestamp = new Date().toISOString().split('T')[0];
     const destFilename = `${timestamp}_${filename}`;
-    const dest = path.join(HISTORY_ROOT, destFilename);
+    const historyDir = path.join(baseDir, 'history');
+    
+    // Ensure history dir exists
+    if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
+    
+    const dest = path.join(historyDir, destFilename);
     
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
-        log('info', 'file_archived', { filename, archived: destFilename });
+        log('info', 'file_archived', { filename, archived: destFilename, mode });
         res.json({ success: true, archived: destFilename });
     } else {
         res.status(404).json({ error: 'File not found' });

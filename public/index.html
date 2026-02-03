@@ -1085,7 +1085,10 @@
                 <div class="border border-[#222] bg-[#0a0a0a] p-5 mb-4">
                     <div class="flex justify-between items-center mb-4 border-b border-[#222] pb-3">
                         <h3 class="text-sm font-bold text-white uppercase tracking-wide">${id.replace(/_/g, ' ')}</h3>
-                        <button onclick="viewFile('done', '${finalFile.name}')" class="text-[10px] font-mono text-[#DC2626] hover:text-white border border-[#333] px-3 py-1 hover:border-[#DC2626] transition-colors uppercase tracking-widest">VER</button>
+                        <div class="flex gap-2">
+                            <button onclick="viewFile('done', '${finalFile.name}')" class="text-[10px] font-mono text-[#DC2626] hover:text-white border border-[#333] px-3 py-1 hover:border-[#DC2626] transition-colors uppercase tracking-widest">VER</button>
+                            <button onclick="archiveProject('${finalFile.name}')" class="text-[10px] font-mono text-[#555] hover:text-white border border-[#333] px-3 py-1 hover:border-white transition-colors uppercase tracking-widest">ARQUIVAR</button>
+                        </div>
                     </div>
                     <div class="prose prose-invert max-w-none font-mono text-xs text-[#888] leading-relaxed line-clamp-4">
                         ${marked.parse(contentPreview)}
@@ -1732,6 +1735,30 @@
             if (feedbackText) feedbackText.value = '';
             const routingDiv = document.getElementById('feedback-routing');
             if (routingDiv) routingDiv.classList.add('hidden');
+        }
+
+        async function archiveProject(filename) {
+            if (!confirm(`Arquivar "${filename}"? O arquivo será movido para history/`)) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/archive`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'brick-squad-2026'
+                    },
+                    body: JSON.stringify({ filename, mode: currentMode })
+                });
+                
+                if (response.ok) {
+                    showToast('Projeto arquivado com sucesso', 'success');
+                    fetchState();
+                } else {
+                    showToast('Erro ao arquivar', 'error');
+                }
+            } catch (e) {
+                showToast('Erro ao arquivar: ' + e.message, 'error');
+            }
         }
 
         async function submitFeedback(action) {
