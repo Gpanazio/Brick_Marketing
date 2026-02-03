@@ -771,52 +771,89 @@
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">Dados OK?</text>
                 </g>
-                <line class="${getFlowClass('claims')}" x1="${cx}" y1="${y.claims + bh / 2}" x2="${cx}" y2="${y.copy - bh / 2}"/>
                 
-                <!-- ====== COPYWRITER ====== -->
-                <g class="${getNodeClass('copy')}" onclick="showNodeDetails('copy')" transform="translate(${cx},${y.copy})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                <!-- Split to 3 Copywriters -->
+                <path class="${getFlowClass('claims')}" d="M${cx} ${y.claims + bh / 2} L${cx} ${y.claims + bh / 2 + 20} L${colL} ${y.claims + bh / 2 + 20} L${colL} ${y.copy - bh / 2}" fill="none"/>
+                <path class="${getFlowClass('claims')}" d="M${cx} ${y.claims + bh / 2} L${cx} ${y.copy - bh / 2}" fill="none"/>
+                <path class="${getFlowClass('claims')}" d="M${cx} ${y.claims + bh / 2} L${cx} ${y.claims + bh / 2 + 20} L${colR} ${y.claims + bh / 2 + 20} L${colR} ${y.copy - bh / 2}" fill="none"/>
+                
+                <!-- ====== COPYWRITER A (GPT-5.2) - Left ====== -->
+                <g class="${getNodeClass('copy_a')}" onclick="showNodeDetails('copy_a')" transform="translate(${colL},${y.copy})">
+                    <rect class="gb-box" x="${-bw / 2 + 20}" y="${-bh / 2}" width="${bw - 40}" height="${bh}" 
                           fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CRIAÇÃO</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Texto</text>
+                          font-size="12" font-weight="900" font-family="Inter">COPY A</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" 
+                          font-size="9" font-family="JetBrains Mono">GPT-5.2</text>
+                </g>
+                
+                <!-- ====== COPYWRITER B (Flash) - Center ====== -->
+                <g class="${getNodeClass('copy_b')}" onclick="showNodeDetails('copy_b')" transform="translate(${cx},${y.copy})">
+                    <rect class="gb-box" x="${-bw / 2 + 20}" y="${-bh / 2}" width="${bw - 40}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
+                          font-size="12" font-weight="900" font-family="Inter">COPY B</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" 
+                          font-size="9" font-family="JetBrains Mono">FLASH</text>
+                </g>
+                
+                <!-- ====== COPYWRITER C (Sonnet) - Right ====== -->
+                <g class="${getNodeClass('copy_c')}" onclick="showNodeDetails('copy_c')" transform="translate(${colR},${y.copy})">
+                    <rect class="gb-box" x="${-bw / 2 + 20}" y="${-bh / 2}" width="${bw - 40}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
+                          font-size="12" font-weight="900" font-family="Inter">COPY C</text>
+                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" 
+                          font-size="9" font-family="JetBrains Mono">SONNET</text>
                 </g>
 
-                <path class="${getFlowClass('copy')}" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colL} ${y.copy + bh / 2 + 25} L${colL} ${y.review - bh / 2}" fill="none"/>
-                <path class="${getFlowClass('copy')}" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colR} ${y.copy + bh / 2 + 25} L${colR} ${y.review - bh / 2}" fill="none"/>
+                <!-- Merge from 3 Copywriters to Brand Guardian -->
+                <path class="${getFlowClass('copy')}" d="M${colL} ${y.copy + bh / 2} L${colL} ${y.copy + bh / 2 + 25} L${cx} ${y.copy + bh / 2 + 25}" fill="none"/>
+                <path class="${getFlowClass('copy')}" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25}" fill="none"/>
+                <path class="${getFlowClass('copy')}" d="M${colR} ${y.copy + bh / 2} L${colR} ${y.copy + bh / 2 + 25} L${cx} ${y.copy + bh / 2 + 25} L${cx} ${y.review - bh / 2}" fill="none"/>
                 
-                <!-- ====== BRAND (Left) ====== -->
-                <g class="${getNodeClass('brand')}" onclick="showNodeDetails('brand')" transform="translate(${colL},${y.review})">
+                <!-- ====== BRAND GUARDIAN (Center) ====== -->
+                <g class="${getNodeClass('brand')}" onclick="showNodeDetails('brand')" transform="translate(${cx},${y.review})">
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('brand')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('brand') === 'done' ? c.text : (stepStatus('brand') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">TOM</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">BRAND</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Voz Brick</text>
+                          font-size="10" font-family="JetBrains Mono">Valida 3</text>
                 </g>
                 
-                <!-- ====== CRITIC (Right) ====== -->
-                <g class="${getNodeClass('critic')}" onclick="showNodeDetails('critic')" transform="translate(${colR},${y.review})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                <!-- Split to Critics -->
+                <path class="${getFlowClass('brand')}" d="M${cx} ${y.review + bh / 2} L${cx} ${y.review + bh / 2 + 20} L${cx - 120} ${y.review + bh / 2 + 20} L${cx - 120} ${y.opus - bhLg / 2 - 60}" fill="none"/>
+                <path class="${getFlowClass('brand')}" d="M${cx} ${y.review + bh / 2} L${cx} ${y.review + bh / 2 + 20} L${cx + 120} ${y.review + bh / 2 + 20} L${cx + 120} ${y.opus - bhLg / 2 - 60}" fill="none"/>
+                
+                <!-- ====== CRITIC (Left) ====== -->
+                <g class="${getNodeClass('critic')}" onclick="showNodeDetails('critic')" transform="translate(${cx - 120},${y.opus - 60})">
+                    <rect class="gb-box" x="${-bw / 2 + 30}" y="${-bh / 2 + 10}" width="${bw - 60}" height="${bh - 20}" 
                           fill="#000" stroke="${stepColor('critic')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('critic') === 'done' ? c.text : (stepStatus('critic') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">REVISÃO</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Qualidade</text>
+                    <text x="0" y="4" text-anchor="middle" fill="${stepStatus('critic') === 'done' ? c.text : (stepStatus('critic') === 'active' ? c.red : c.sub)}" 
+                          font-size="11" font-weight="900" font-family="Inter">CRITICS</text>
                 </g>
-
-                <path class="${getFlowClass('brand')}" d="M${colL} ${y.review + bh / 2} L${colL} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25} L${cx} ${y.opus - bhLg / 2}" fill="none"/>
-                <path class="${getFlowClass('critic')}" d="M${colR} ${y.review + bh / 2} L${colR} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25}" fill="none"/>
+                
+                <!-- ====== CRITIC OPUS (Right) ====== -->
+                <g class="${getNodeClass('opus_critic')}" onclick="showNodeDetails('opus_critic')" transform="translate(${cx + 120},${y.opus - 60})">
+                    <rect class="gb-box" x="${-bw / 2 + 30}" y="${-bh / 2 + 10}" width="${bw - 60}" height="${bh - 20}" 
+                          fill="#000" stroke="${stepColor('opus')}" stroke-width="1"/>
+                    <text x="0" y="4" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.text : (stepStatus('opus') === 'active' ? c.red : c.sub)}" 
+                          font-size="11" font-weight="900" font-family="Inter">ESCOLHA</text>
+                </g>
+                
+                <!-- Connect Critics to Opus -->
+                <path class="${getFlowClass('critic')}" d="M${cx - 120} ${y.opus - 60 + bh / 2 - 10} L${cx - 120} ${y.opus - 60 + bh / 2} L${cx} ${y.opus - 60 + bh / 2} L${cx} ${y.opus - bhLg / 2}" fill="none"/>
+                <path class="${getFlowClass('opus')}" d="M${cx + 120} ${y.opus - 60 + bh / 2 - 10} L${cx + 120} ${y.opus - 60 + bh / 2} L${cx} ${y.opus - 60 + bh / 2}" fill="none"/>
                 
                 <!-- ====== OPUS (Final review) ====== -->
                 <g class="${getNodeClass('opus')}" onclick="showNodeDetails('opus')" transform="translate(${cx},${y.opus})">
                     <rect class="gb-box" x="${-bwLg / 2 + 20}" y="${-bhLg / 2}" width="${bwLg - 40}" height="${bhLg}" 
                           fill="#000" stroke="${stepColor('opus')}" stroke-width="2"/>
                     <text x="0" y="-8" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.done : (stepStatus('opus') === 'active' ? c.red : c.sub)}" 
-                          font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">APROVAÇÃO</text>
+                          font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CLAUDE OPUS</text>
                     <text x="0" y="18" text-anchor="middle" fill="${c.sub}" 
-                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">Decisão Final</text>
+                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">Filtro Final</text>
                 </g>
                 <line class="${getFlowClass('opus')}" x1="${cx}" y1="${y.opus + bhLg / 2}" x2="${cx}" y2="${y.out - 24}"/>
                 
@@ -1387,24 +1424,33 @@
 │  04. CLAIMS CHECKER                           Gemini Flash  │
 │  ├─ Valida dados e higieniza para Autoridade Segura         │
 └─────────────────────────────────────────────────────────────┘
-                   │
+    │
+    ├──────────────┼──────────────┐
+    ▼              ▼              ▼
+┌────────┐   ┌────────┐   ┌────────┐
+│COPY A  │   │COPY B  │   │COPY C  │
+│GPT-5.2 │   │ FLASH  │   │SONNET  │
+└────────┘   └────────┘   └────────┘
+    │              │              │
+    └──────────────┼──────────────┘
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  05. COPYWRITER                          Claude Sonnet 4    │
-│  ├─ Criatividade pura (Fallback: Gemini 3 Pro)              │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  06. BRAND GUARDIANS                          Gemini Flash  │
+│  06. BRAND GUARDIANS (valida as 3 versões)    Gemini Flash  │
 │  ├─ STYLE (Tom, Voz) + POSITIONING (Oferta, Lógica)         │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│  07. CRITIC LITE    │ ──► │  08. CRITIC OPUS    │
-│  Gemini Flash (65%) │     │  Claude Opus        │
-└─────────────────────┘     └─────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  07. CRITICS (escolhem a melhor das 3)        GPT-5.2       │
+│  ├─ Score 0-100 para cada versão                            │
+│  └─ Escolhem a melhor (ou híbrido)                          │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  08. FILTRO FINAL                            Claude Opus    │
+│  └─ Aprovação definitiva (score >= 80%)                     │
+└─────────────────────────────────────────────────────────────┘
                    │
                    ▼
         ┌──────────────────┐
