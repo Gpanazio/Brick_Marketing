@@ -1,3 +1,6 @@
+// Startup log - helps debug Railway deployment issues
+console.log(`[STARTUP] Node ${process.version} | PID ${process.pid} | PORT ${process.env.PORT || 3000}`);
+
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -176,9 +179,15 @@ const getFiles = (dir, mode = 'marketing') => {
     }));
 };
 
-// API: Health check
+// API: Health check (Railway uses this to verify deployment)
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'online', timestamp: new Date().toISOString() });
+    res.status(200).json({
+        status: 'online',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        port: PORT,
+        node: process.version
+    });
 });
 
 // API: Métricas do pipeline
