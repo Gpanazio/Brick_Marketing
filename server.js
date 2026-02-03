@@ -498,6 +498,58 @@ app.post('/api/archive', (req, res) => {
     }
 });
 
+// Feedback route - recebe feedback humano e salva para processamento
+app.post('/api/feedback', (req, res) => {
+    const { file, action, type, text, routedTo, mode } = req.body;
+    const timestamp = Date.now();
+    
+    const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
+    const feedbackDir = path.join(baseDir, 'feedback');
+    if (!fs.existsSync(feedbackDir)) fs.mkdirSync(feedbackDir, { recursive: true });
+    
+    const feedback = {
+        timestamp: new Date().toISOString(),
+        file,
+        action,
+        type,
+        text,
+        routedTo,
+        mode,
+        status: 'pending'
+    };
+    
+    const feedbackFile = path.join(feedbackDir, `${timestamp}_feedback.json`);
+    fs.writeFileSync(feedbackFile, JSON.stringify(feedback, null, 2));
+    
+    // Create signal file for Douglas to pick up
+    const signalFile = path.join(baseDir, 'FEEDBACK_SIGNAL.txt');
+    fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nArquivo: ${file}\nAção: ${action}\nTipo: ${type}\nTexto: ${text}\nRoteado para: ${routedTo}\nTimestamp: ${new Date().toISOString()}`);
+    
+    log('info', 'feedback_received', { file, action, type, routedTo, mode });
+    res.json({ success: true, saved: feedbackFile });
+});
+
+// Get pending feedbacks
+app.get('/api/feedback', (req, res) => {
+    const mode = req.query.mode || 'marketing';
+    const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
+    const feedbackDir = path.join(baseDir, 'feedback');
+    
+    if (!fs.existsSync(feedbackDir)) {
+        return res.json({ pending: [] });
+    }
+    
+    const files = fs.readdirSync(feedbackDir)
+        .filter(f => f.endsWith('.json'))
+        .map(f => {
+            const content = JSON.parse(fs.readFileSync(path.join(feedbackDir, f), 'utf-8'));
+            return { filename: f, ...content };
+        })
+        .filter(f => f.status === 'pending');
+    
+    res.json({ pending: files });
+});
+
 app.listen(PORT, () => {
     log('info', 'server_started', { port: PORT, marketingRoot: MARKETING_ROOT });
     console.log(`🚀 Brick AI War Room running on port ${PORT}`);
