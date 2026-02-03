@@ -1,0 +1,55 @@
+{
+  "conceito_avaliado": "QUEM FAZ A 180 - Institucional 'humano' com rostos reais do time",
+  "score_execucao": 38,
+  "veredito": "REPENSAR",
+  "resumo_honesto": "O roteiro está no piloto automático do institucional brasileiro. Você pegou um conceito válido (humanizar a empresa) e executou da forma mais previsível possível: talking heads + números + tagline genérica. Não existe um único frame que eu lembraria amanhã.",
+  "cliches_encontrados": [
+    {
+      "cliche": "Todo mundo fala em inovação. A gente prefere mostrar.",
+      "onde": "Abertura [0-10s]",
+      "porque_cafona": "É a frase de abertura de 80% dos institucionais de tech brasileiros desde 2015.",
+      "alternativa": "Corta o texto. Abre direto na ação. SEM NARRAÇÃO por 15 segundos.",
+      "referencia": "Apple 'Designed by Apple in California' (2013)"
+    },
+    {
+      "cliche": "Por trás de cada X, tem Y",
+      "onde": "Tech + Gente [40-70s]",
+      "porque_cafona": "Estrutura de frase de LinkedIn motivacional.",
+      "alternativa": "Mostra a dualidade VISUALMENTE. Split screen sem explicar.",
+      "referencia": "Severance (série)"
+    },
+    {
+      "cliche": "Números em tela",
+      "onde": "Resultado [70-85s]",
+      "porque_cafona": "PowerPoint, não cinema.",
+      "alternativa": "UM número animado de forma inesperada, ou história de UM cliente.",
+      "referencia": "Dollar Shave Club (2012)"
+    },
+    {
+      "cliche": "Simples assim.",
+      "onde": "Assinatura [85-90s]",
+      "porque_cafona": "Tagline vazia que serve pra qualquer empresa.",
+      "alternativa": "Usar o nome 180: 'A gente vira o jogo.' ou silêncio + logo.",
+      "referencia": "Nike"
+    },
+    {
+      "cliche": "Montagem de close-ups do time",
+      "onde": "Os Rostos [10-40s]",
+      "porque_cafona": "LinkedIn em vídeo. Parece onboarding.",
+      "alternativa": "Pessoas FAZENDO, não posando. Documental ou super estilizado.",
+      "referencia": "Patagonia 'Don't Buy This Jacket'"
+    }
+  ],
+  "frame_iconico": {
+    "existe_na_proposta": false,
+    "minha_sugestao": "Momento '180 graus': gira a câmera 180° em plano-sequência. Problema → gira → solução.",
+    "referencia_visual": "Inception / Spike Jonze HomePod"
+  },
+  "referencias_obrigatorias": [
+    {"nome": "Coinbase Super Bowl (2022)", "o_que_roubar": "Simplicidade radical, UM elemento visual"},
+    {"nome": "Patagonia 'Don't Buy This Jacket'", "o_que_roubar": "Tensão real, honestidade que incomoda"},
+    {"nome": "Apple 'The Underdogs'", "o_que_roubar": "Narrativa com arco, personagens não depoentes"},
+    {"nome": "Volvo 'Epic Split'", "o_que_roubar": "Demonstrar através de façanha impossível"}
+  ],
+  "nota_do_diretor": "Esse roteiro parece ter sido escrito em 40 minutos para aprovação rápida. É TÃO seguro que é invisível. Abrir com TENSÃO, mostrar pessoas em AÇÃO (documental sujo), terminar quebrando a quarta parede."
+}
