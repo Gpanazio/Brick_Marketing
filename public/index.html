@@ -378,66 +378,47 @@ BRIEFING
                     class="p-8 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0a0a0a] font-mono text-sm leading-relaxed text-[#ccc]">
                 </div>
                 <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505]">
-                    <!-- Feedback Panel -->
+                    <!-- Simple Feedback Panel -->
                     <div id="feedback-panel" class="hidden mb-6">
                         <div class="border border-[#333] bg-[#0a0a0a] p-6">
-                            <h4 class="text-xs font-mono text-[#DC2626] uppercase tracking-widest mb-4">FEEDBACK LOOP</h4>
-                            
-                            <div class="mb-4">
-                                <label class="text-[10px] font-mono text-[#666] uppercase tracking-widest block mb-2">Problema em:</label>
-                                <div class="flex flex-wrap gap-2">
-                                    <button onclick="selectFeedbackType('conceito')" id="fb-conceito" 
-                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
-                                        CONCEITO
-                                    </button>
-                                    <button onclick="selectFeedbackType('craft')" id="fb-craft"
-                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
-                                        EXECUÇÃO/CRAFT
-                                    </button>
-                                    <button onclick="selectFeedbackType('marca')" id="fb-marca"
-                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
-                                        MARCA/TOM
-                                    </button>
-                                    <button onclick="selectFeedbackType('dados')" id="fb-dados"
-                                        class="feedback-type-btn px-4 py-2 border border-[#333] text-xs font-mono text-[#666] hover:border-[#DC2626] hover:text-white transition-colors">
-                                        DADOS/CLAIMS
-                                    </button>
-                                </div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-brick text-white">O que precisa mudar?</h4>
+                                <button onclick="toggleFeedbackPanel()" class="text-[#555] hover:text-white text-lg">&times;</button>
                             </div>
                             
-                            <div class="mb-4">
-                                <label class="text-[10px] font-mono text-[#666] uppercase tracking-widest block mb-2">Feedback:</label>
-                                <textarea id="feedback-text" rows="3" 
-                                    placeholder="O que precisa mudar? Seja específico..."
-                                    class="w-full bg-[#000] border border-[#333] p-4 text-white text-sm font-mono placeholder-[#444] focus:outline-none focus:border-[#DC2626]"></textarea>
+                            <textarea id="feedback-text" rows="3" 
+                                placeholder="Escreva naturalmente... Ex: 'Tá cafona', 'Tom errado', 'Dado sem fonte'"
+                                class="w-full bg-[#000] border border-[#333] p-4 text-white text-sm font-mono placeholder-[#555] focus:outline-none focus:border-[#DC2626] mb-4"
+                                oninput="detectFeedbackType()"></textarea>
+                            
+                            <div id="feedback-routing" class="hidden p-3 border border-[#222] bg-[#050505] mb-4 flex items-center gap-2">
+                                <span class="text-[10px] font-mono text-[#555]">→</span>
+                                <span id="routing-target" class="text-xs font-mono text-[#DC2626]"></span>
+                                <span id="routing-desc" class="text-[10px] font-mono text-[#555]"></span>
                             </div>
                             
-                            <div id="feedback-routing" class="hidden mb-4 p-3 border border-[#222] bg-[#050505]">
-                                <span class="text-[10px] font-mono text-[#555]">ROTEAMENTO:</span>
-                                <span id="routing-target" class="text-xs font-mono text-[#DC2626] ml-2"></span>
+                            <div class="flex justify-end gap-3">
+                                <button onclick="submitFeedback('revisar')"
+                                    class="px-6 py-2 border border-[#555] text-[#555] font-mono text-xs tracking-widest hover:border-white hover:text-white transition-colors">
+                                    AJUSTAR
+                                </button>
+                                <button onclick="submitFeedback('reprovar')"
+                                    class="px-6 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs tracking-widest hover:bg-[#DC2626] hover:text-black transition-colors">
+                                    REFAZER
+                                </button>
                             </div>
                         </div>
                     </div>
                     
                     <div class="flex justify-between items-center">
                         <button onclick="toggleFeedbackPanel()" id="btn-toggle-feedback"
-                            class="text-[#555] hover:text-[#DC2626] font-mono text-xs tracking-widest transition-colors">
-                            + FEEDBACK
+                            class="text-[#555] hover:text-[#DC2626] font-mono text-xs tracking-widest transition-colors flex items-center gap-2">
+                            <span class="text-lg">✎</span> Feedback
                         </button>
-                        <div class="flex gap-4">
-                            <button onclick="submitFeedback('reprovar')" id="btn-reprovar"
-                                class="hidden px-6 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs tracking-widest hover:bg-[#DC2626] hover:text-black transition-colors">
-                                REPROVAR
-                            </button>
-                            <button onclick="submitFeedback('revisar')" id="btn-revisar"
-                                class="hidden px-6 py-2 border border-[#666] text-[#666] font-mono text-xs tracking-widest hover:border-white hover:text-white transition-colors">
-                                REVISAR
-                            </button>
-                            <button onclick="submitFeedback('aprovar')"
-                                class="px-8 py-2 bg-white text-black font-mono text-xs tracking-widest hover:bg-[#DC2626] hover:text-white transition-colors">
-                                APROVAR
-                            </button>
-                        </div>
+                        <button onclick="submitFeedback('aprovar')"
+                            class="px-8 py-3 bg-white text-black font-brick text-sm tracking-wide hover:bg-[#22C55E] transition-colors">
+                            APROVAR ✓
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1178,67 +1159,89 @@ BRIEFING
             document.getElementById('node-details-panel').classList.add('translate-x-full');
         }
 
-        // ===== FEEDBACK SYSTEM =====
+        // ===== FEEDBACK SYSTEM v2 (Auto-detect) =====
         let currentFeedbackType = null;
         let currentViewingFile = null;
 
         const feedbackRouting = {
-            'conceito': { target: 'COPYWRITER', desc: 'Nova tentativa de criação' },
-            'craft': { target: 'DIRECTOR', desc: 'Refinamento de execução' },
-            'marca': { target: 'BRAND GUARDIAN', desc: 'Revisão de tom e voz' },
-            'dados': { target: 'RESEARCHER', desc: 'Verificação de claims' }
+            'craft': { target: 'DIRECTOR', desc: 'vai refinar a execução' },
+            'conceito': { target: 'COPYWRITER', desc: 'vai reescrever' },
+            'marca': { target: 'BRAND GUARDIAN', desc: 'vai ajustar o tom' },
+            'dados': { target: 'RESEARCHER', desc: 'vai verificar' }
+        };
+
+        // Keywords para detecção automática
+        const feedbackKeywords = {
+            'craft': ['cafona', 'genérico', 'generico', 'execução', 'execucao', 'visual', 'feio', 'amador', 'clichê', 'cliche', 'batido', 'óbvio', 'obvio', 'previsível', 'previsivel'],
+            'conceito': ['ideia', 'idéia', 'conceito', 'mensagem', 'argumento', 'narrativa', 'história', 'historia', 'premissa', 'fraco', 'ruim', 'não funciona', 'nao funciona', 'errado'],
+            'marca': ['tom', 'voz', 'brick', 'marca', 'parece', 'soa', 'linguagem', 'arrogante', 'humilde', 'formal', 'informal'],
+            'dados': ['dado', 'número', 'numero', 'fonte', 'estatística', 'estatistica', 'claim', 'afirmação', 'afirmacao', 'verdade', 'verificar', 'provar']
         };
 
         function toggleFeedbackPanel() {
             const panel = document.getElementById('feedback-panel');
-            const btnReprovar = document.getElementById('btn-reprovar');
-            const btnRevisar = document.getElementById('btn-revisar');
             const btnToggle = document.getElementById('btn-toggle-feedback');
             
             if (panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden');
-                btnReprovar.classList.remove('hidden');
-                btnRevisar.classList.remove('hidden');
-                btnToggle.textContent = '- FECHAR FEEDBACK';
+                btnToggle.innerHTML = '<span class="text-lg">✎</span> Fechar';
                 btnToggle.classList.add('text-[#DC2626]');
+                document.getElementById('feedback-text').focus();
             } else {
                 panel.classList.add('hidden');
-                btnReprovar.classList.add('hidden');
-                btnRevisar.classList.add('hidden');
-                btnToggle.textContent = '+ FEEDBACK';
+                btnToggle.innerHTML = '<span class="text-lg">✎</span> Feedback';
                 btnToggle.classList.remove('text-[#DC2626]');
                 resetFeedbackForm();
             }
         }
 
-        function selectFeedbackType(type) {
-            currentFeedbackType = type;
-            
-            // Update button styles
-            document.querySelectorAll('.feedback-type-btn').forEach(btn => {
-                btn.classList.remove('border-[#DC2626]', 'text-white', 'bg-[#DC2626]/10');
-                btn.classList.add('border-[#333]', 'text-[#666]');
-            });
-            
-            const selectedBtn = document.getElementById(`fb-${type}`);
-            selectedBtn.classList.remove('border-[#333]', 'text-[#666]');
-            selectedBtn.classList.add('border-[#DC2626]', 'text-white', 'bg-[#DC2626]/10');
-            
-            // Show routing info
+        function detectFeedbackType() {
+            const text = document.getElementById('feedback-text').value.toLowerCase();
             const routingDiv = document.getElementById('feedback-routing');
             const routingTarget = document.getElementById('routing-target');
-            routingDiv.classList.remove('hidden');
-            routingTarget.textContent = `${feedbackRouting[type].target} → ${feedbackRouting[type].desc}`;
+            const routingDesc = document.getElementById('routing-desc');
+            
+            if (text.length < 3) {
+                routingDiv.classList.add('hidden');
+                currentFeedbackType = null;
+                return;
+            }
+            
+            // Detectar tipo baseado em keywords
+            let detected = null;
+            let maxScore = 0;
+            
+            for (const [type, keywords] of Object.entries(feedbackKeywords)) {
+                let score = 0;
+                for (const keyword of keywords) {
+                    if (text.includes(keyword)) score++;
+                }
+                if (score > maxScore) {
+                    maxScore = score;
+                    detected = type;
+                }
+            }
+            
+            if (detected && maxScore > 0) {
+                currentFeedbackType = detected;
+                routingDiv.classList.remove('hidden');
+                routingTarget.textContent = feedbackRouting[detected].target;
+                routingDesc.textContent = feedbackRouting[detected].desc;
+            } else {
+                // Default para DIRECTOR se não detectar
+                currentFeedbackType = 'craft';
+                routingDiv.classList.remove('hidden');
+                routingTarget.textContent = 'DIRECTOR';
+                routingDesc.textContent = 'vai analisar e decidir';
+            }
         }
 
         function resetFeedbackForm() {
             currentFeedbackType = null;
-            document.getElementById('feedback-text').value = '';
-            document.getElementById('feedback-routing').classList.add('hidden');
-            document.querySelectorAll('.feedback-type-btn').forEach(btn => {
-                btn.classList.remove('border-[#DC2626]', 'text-white', 'bg-[#DC2626]/10');
-                btn.classList.add('border-[#333]', 'text-[#666]');
-            });
+            const feedbackText = document.getElementById('feedback-text');
+            if (feedbackText) feedbackText.value = '';
+            const routingDiv = document.getElementById('feedback-routing');
+            if (routingDiv) routingDiv.classList.add('hidden');
         }
 
         async function submitFeedback(action) {
