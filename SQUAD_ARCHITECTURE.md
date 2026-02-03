@@ -51,9 +51,26 @@ BRIEFING
 └─────────────────────┘     └─────────────────────┘
                    │
                    ▼
-        ┌──────────────────┐
-        │  APROVADO ≥80%   │──────────────► OUTPUT
-        └──────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  09. DIRECTOR                             Claude Sonnet 4   │
+│  └─ Filtro de craft (copy tem punch? é cafona?)             │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  10. HUMAN FEEDBACK                            Dashboard    │
+│  └─ Aprovar / Revisar com feedback / Reprovar               │
+└─────────────────────────────────────────────────────────────┘
+                   │
+         ┌────────┴────────┐
+         │                 │
+         ▼                 ▼
+    ┌─────────┐    ┌──────────────┐
+    │ APROVAR │    │   FEEDBACK   │
+    │    ↓    │    │      ↓       │
+    │ OUTPUT  │    │ Volta pro    │
+    └─────────┘    │ agente certo │
+                   └──────────────┘
 ```
 
 ---
@@ -258,6 +275,77 @@ BRIEFING
 
 ---
 
+## 09. DIRECTOR (Copy)
+
+**Modelo:** Claude Sonnet 4  
+**Função:** Filtro de craft. O copy está certo, mas está BOM?
+
+**Checklist Anti-Genérico:**
+- Primeira frase prende?
+- Tem clichês? ("No mundo atual...", "Mais que um X, somos Y")
+- Ritmo varia? (frases curtas + longas)
+- Tem especificidade? (números, nomes, exemplos concretos)
+- Punch final é memorável?
+
+**Output:**
+```json
+{
+  "variacao": "v2",
+  "score_craft": 72,
+  "veredito": "REFINAR",
+  "cliches_encontrados": [...],
+  "reescrita": "Copy refinado aqui",
+  "nota_final": "Estrutura boa, primeira frase genérica. Reescrita acima."
+}
+```
+
+**Critérios:**
+- **APROVAR (≥85):** Copy tem voz, pode publicar
+- **REFINAR (60-84):** Ajustes pontuais, DIRECTOR dá a reescrita
+- **REESCREVER (<60):** Volta pro COPYWRITER
+
+---
+
+## 10. HUMAN FEEDBACK (Dashboard)
+
+**Função:** Loop de feedback humano que alimenta o sistema.
+
+**Interface:**
+```
+┌─────────────────────────────────────────────────────┐
+│ Feedback:                                           │
+│ [_______________________________________________]   │
+│                                                     │
+│ Problema em:                                        │
+│ ○ Conceito  ○ Execução/Craft  ○ Marca  ○ Dados     │
+│                                                     │
+│ [Reprovar]  [Revisar com feedback]  [Aprovar]      │
+└─────────────────────────────────────────────────────┘
+```
+
+**Routing de Feedback:**
+| Problema | Volta para |
+|----------|------------|
+| Conceito | COPYWRITER (nova tentativa) |
+| Execução/Craft | DIRECTOR (refinar) |
+| Marca/Tom | BRAND GUARDIAN (revisar) |
+| Dados/Claims | RESEARCHER (verificar) |
+
+**Output salvo:**
+```json
+{
+  "timestamp": "2026-02-03T09:58:00",
+  "briefing_id": "brick_marketing_001",
+  "variacao": "v2",
+  "acao": "revisar",
+  "problema_tipo": "execucao",
+  "feedback_texto": "Tá cafona, parece texto de agência dos anos 2000",
+  "roteado_para": "DIRECTOR"
+}
+```
+
+---
+
 ## MÉTRICAS DE OURO
 
 - **Tempo até aprovação (minutos)**
@@ -326,4 +414,4 @@ marketing/
 
 ---
 
-*Última atualização: 03/02/2026 - v3.2+*
+*Última atualização: 03/02/2026 - v4.0 (DIRECTOR + FEEDBACK LOOP)*
