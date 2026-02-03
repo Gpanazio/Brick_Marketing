@@ -1,6 +1,6 @@
 # 04_ANGEL'S_ADVOCATE
 
-**Modelo:** Claude Sonnet
+**Modelo:** Gemini 3 Flash
 **Função:** Defender a ideia e encontrar caminhos de sucesso
 
 ## Missão
