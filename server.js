@@ -494,6 +494,36 @@ app.get('/api/architecture', (req, res) => {
     res.json({ content });
 });
 
+// API: Get pipeline configuration
+app.get('/api/pipeline', (req, res) => {
+    const pipelinePath = path.join(__dirname, 'config', 'pipeline.json');
+    if (fs.existsSync(pipelinePath)) {
+        const config = JSON.parse(fs.readFileSync(pipelinePath, 'utf-8'));
+        res.json(config);
+    } else {
+        res.status(404).json({ error: 'Pipeline config not found' });
+    }
+});
+
+// API: Save pipeline configuration
+app.post('/api/pipeline', (req, res) => {
+    const { nodes } = req.body;
+    if (!nodes) {
+        return res.status(400).json({ error: 'Missing nodes config' });
+    }
+    
+    const pipelinePath = path.join(__dirname, 'config', 'pipeline.json');
+    const config = {
+        nodes,
+        version: '3.3',
+        lastUpdate: new Date().toISOString()
+    };
+    
+    fs.writeFileSync(pipelinePath, JSON.stringify(config, null, 2));
+    log('info', 'pipeline_config_updated', { nodes: Object.keys(nodes).length });
+    res.json({ success: true, config });
+});
+
 // API: Archive to history
 app.post('/api/archive', (req, res) => {
     const { filename, mode } = req.body;

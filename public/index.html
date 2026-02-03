@@ -271,6 +271,8 @@
                 class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">HISTORY</button>
             <button id="tab-architecture" onclick="showTab('architecture')"
                 class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">ARCH</button>
+            <button id="tab-flow" onclick="showTab('flow')"
+                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">FLOW</button>
         </div>
 
         <!-- Board -->
@@ -382,6 +384,11 @@
                     <div id="architecture-content" class="space-y-12"></div>
                 </div>
             </div>
+        </div>
+
+        <!-- Flow Editor View -->
+        <div id="view-flow" class="hidden">
+            <iframe src="/flow-v2.html" class="w-full h-[calc(100vh-180px)] border-0"></iframe>
         </div>
 
         <!-- Modals (New Briefing / Viewer) -->
@@ -1134,7 +1141,7 @@
 
         // --- NAVIGATION LOGIC ---
         function showTab(tab) {
-            ['board', 'gameboard', 'approved', 'history', 'architecture'].forEach(t => {
+            ['board', 'gameboard', 'approved', 'history', 'architecture', 'flow'].forEach(t => {
                 document.getElementById(`view-${t}`).classList.add('hidden');
                 document.getElementById(`tab-${t}`).classList.replace('border-[#DC2626]', 'border-transparent');
                 document.getElementById(`tab-${t}`).classList.replace('text-white', 'text-[#9CA3AF]');
