@@ -237,55 +237,7 @@
                     <button onclick="closeModal('architectureDiagram')"
                         class="text-[#9CA3AF] hover:text-[#DC2626] text-2xl">&times;</button>
                 </div>
-                <pre class="text-[#9CA3AF] font-mono text-[11px] md:text-xs leading-tight whitespace-pre select-all">
-BRIEFING
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  01. BRIEF VALIDATOR                          Gemini Flash  │
-│  ├─ Gerador de lacunas (não binário)                        │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│  02. AUDIENCE       │     │  03. TOPIC          │
-│  ANALYST            │ ══► │  RESEARCHER         │
-│  Gemini Flash       │     │  Gemini Flash       │
-└─────────────────────┘     └─────────────────────┘
-    │                             │
-    └──────────────┬──────────────┘
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  04. CLAIMS CHECKER                           Gemini Flash  │
-│  ├─ Valida dados (mantém se tiver fonte)                    │
-│  └─ Higieniza para Autoridade Segura                        │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  05. COPYWRITER                          Claude Sonnet 4    │
-│  ├─ Criatividade pura                                       │
-│  └─ Fallback: Gemini 3 Pro (após 2 falhas)                  │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  06. BRAND GUARDIANS (Split)                  Gemini Flash  │
-│  ├─ STYLE GUARDIAN (Tom, Voz, Proibições)                   │
-│  └─ POSITIONING GUARDIAN (Oferta Clara, Lógica Comercial)   │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│  07. CRITIC LITE    │ ──► │  08. CRITIC OPUS    │
-│  Gemini Flash (65%) │     │  Claude Opus        │
-└─────────────────────┘     └─────────────────────┘
-                   │
-                   ▼
-        ┌──────────────────┐
-        │  APROVADO ≥80%   │──────────────► OUTPUT
-        └──────────────────┘
-            </pre>
+                <pre id="architecture-diagram" class="text-[#9CA3AF] font-mono text-[11px] md:text-xs leading-tight whitespace-pre select-all"></pre>
             </div>
         </div>
 
@@ -1098,6 +1050,96 @@ BRIEFING
             
             openModal('viewer');
         }
+        // Architecture diagrams by mode
+        const architectureDiagrams = {
+            marketing: `BRIEFING
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  01. BRIEF VALIDATOR                          Gemini Flash  │
+│  ├─ Gerador de lacunas (não binário)                        │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────┐     ┌─────────────────────┐
+│  02. AUDIENCE       │     │  03. TOPIC          │
+│  ANALYST            │ ══► │  RESEARCHER         │
+│  Gemini Flash       │     │  Gemini Flash       │
+└─────────────────────┘     └─────────────────────┘
+    │                             │
+    └──────────────┬──────────────┘
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  04. CLAIMS CHECKER                           Gemini Flash  │
+│  ├─ Valida dados e higieniza para Autoridade Segura         │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  05. COPYWRITER                          Claude Sonnet 4    │
+│  ├─ Criatividade pura (Fallback: Gemini 3 Pro)              │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  06. BRAND GUARDIANS                          Gemini Flash  │
+│  ├─ STYLE (Tom, Voz) + POSITIONING (Oferta, Lógica)         │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────┐     ┌─────────────────────┐
+│  07. CRITIC LITE    │ ──► │  08. CRITIC OPUS    │
+│  Gemini Flash (65%) │     │  Claude Opus        │
+└─────────────────────┘     └─────────────────────┘
+                   │
+                   ▼
+        ┌──────────────────┐
+        │  APROVADO ≥80%   │──────────────► OUTPUT
+        └──────────────────┘`,
+
+            projetos: `BRIEFING DO CLIENTE
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  01. BRAND DIGEST                             Gemini Flash  │
+│  ├─ Sintetiza materiais de marca em doc acionável           │
+│  └─ DNA + Posicionamento + Tom + Tensões + Assets           │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  02. CREATIVE IDEATION                   Claude Sonnet 4    │
+│  ├─ Gera 3 conceitos criativos com execução                 │
+│  └─ Cada conceito: título + ideia + porquê + risco          │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  03. CRITIC                              Claude Sonnet 4    │
+│  ├─ Avalia conceitos vs briefing/budget/prazo               │
+│  └─ Score + ressalvas + recomendação final                  │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  04. PROPOSAL WRITER                          Gemini Flash  │
+│  ├─ Formata proposta comercial para cliente                 │
+│  └─ Conceito + Execução + Budget + Cronograma               │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  05. DIRECTOR                                 Claude Opus   │
+│  ├─ Craft check final (cafona? clichê? genérico?)           │
+│  └─ Aprovação ou devolução com notas                        │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+        ┌──────────────────┐
+        │  HUMAN FEEDBACK  │──────────────► PROPOSTA FINAL
+        └──────────────────┘`
+        };
+
         function openModal(id) { 
             document.getElementById(`modal-${id}`).classList.remove('hidden');
             // Update briefing modal title based on mode
@@ -1106,6 +1148,11 @@ BRIEFING
                 const placeholder = currentMode === 'projetos' ? 'Nome do cliente/projeto' : 'Nome da campanha';
                 document.getElementById('briefing-modal-title').textContent = title;
                 document.getElementById('briefing-title').placeholder = placeholder;
+            }
+            // Update architecture diagram based on mode
+            if (id === 'architectureDiagram') {
+                const diagram = currentMode === 'projetos' ? architectureDiagrams.projetos : architectureDiagrams.marketing;
+                document.getElementById('architecture-diagram').textContent = diagram;
             }
         }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
