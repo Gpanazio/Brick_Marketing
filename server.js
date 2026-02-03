@@ -577,6 +577,8 @@ app.get('/api/feedback', (req, res) => {
 // Graceful shutdown handler (Railway sends SIGTERM)
 let server;
 const gracefulShutdown = (signal) => {
+    if (gracefulShutdown.isShuttingDown) return;
+    gracefulShutdown.isShuttingDown = true;
     log('info', 'shutdown_signal_received', { signal });
     console.log(`\n⚠️ ${signal} received, shutting down gracefully...`);
 
@@ -591,11 +593,12 @@ const gracefulShutdown = (signal) => {
         });
 
         // Force close after 10s
-        setTimeout(() => {
+        const shutdownTimeout = setTimeout(() => {
             log('warn', 'forced_shutdown');
             console.log('⚠️ Forced shutdown after timeout');
             process.exit(1);
         }, 10000);
+        shutdownTimeout.unref();
     } else {
         process.exit(0);
     }
@@ -608,7 +611,14 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('uncaughtException', (err) => {
     log('error', 'uncaught_exception', { error: err.message, stack: err.stack });
     console.error('❌ Uncaught Exception:', err);
-    gracefulShutdown('UNCAUGHT_EXCEPTION');
+    // Sync-only cleanup - process is in unstable state after uncaught exception
+    try {
+        saveMetrics();
+        log('info', 'metrics_saved_on_uncaught_exception');
+    } catch (saveErr) {
+        log('error', 'metrics_save_failed_on_uncaught_exception', { error: saveErr.message });
+    }
+    process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
