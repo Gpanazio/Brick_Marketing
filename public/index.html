@@ -42,6 +42,12 @@
         .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
         .disabled .node-led { background: #333; box-shadow: none; }
         
+        /* TOGGLE SWITCH */
+        .node-toggle { position: absolute; top: 10px; left: 10px; width: 32px; height: 16px; background: #111; border: 1px solid #222; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .node-toggle::after { content: ''; position: absolute; width: 10px; height: 10px; background: #444; border-radius: 50%; top: 2px; left: 2px; transition: all 0.2s; }
+        .node:not(.disabled) .node-toggle { background: rgba(220, 38, 38, 0.2); border-color: var(--brick-red); }
+        .node:not(.disabled) .node-toggle::after { transform: translateX(14px); background: var(--brick-red); box-shadow: 0 0 6px var(--brick-red); }
+        
         .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
         .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
         .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
@@ -124,7 +130,10 @@
                     Mason Protocol v5.0 // <span id="ng-title" class="text-white">PROJECT_TITLE</span>
                 </div>
             </div>
-            <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-6 py-2 uppercase tracking-widest mt-1">← Back_To_Lobby</button>
+            <div class="flex gap-3">
+                <button onclick="savePipelineConfig()" class="btn-brick">Save_Config</button>
+                <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-6 py-2 uppercase tracking-widest mt-1">← Back_To_Lobby</button>
+            </div>
         </header>
 
         <div id="canvas-container" class="relative w-full h-full overflow-auto cursor-grab active:cursor-grabbing">
@@ -269,6 +278,7 @@
                 if(!hasFile && !n.douglas && n.id !== 'n0') el.classList.add('disabled');
 
                 el.innerHTML = `
+                    ${!n.douglas && !n.human && n.id !== 'n0' && n.id !== 'n10' ? '<div class="node-toggle" onclick="toggleNode(event, \''+n.id+'\')"></div>' : ''}
                     <div class="node-led"></div>
                     <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
                     <div class="node-title">${n.title}</div>
@@ -280,11 +290,12 @@
                         </div>
                     ` : ''}
                 `;
-                el.onclick = () => openPanel(n);
+                el.onclick = (e) => { if (!e.target.classList.contains('node-toggle')) openPanel(n); };
                 container.appendChild(el);
                 makeDraggable(el);
             });
 
+            applyConfigToNodes();
             updateConnections();
         }
 
@@ -330,7 +341,83 @@
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
         function openNewBriefing() { alert("Opening Briefing Module..."); }
 
-        window.onload = () => { setInterval(fetchState, 5000); };
+        // NODE CONFIG MAPPING
+        const nodeConfigMap = {
+            'n1': 'validator', 'n2': 'audience', 'n3': 'researcher', 'n4': 'claims',
+            'n5a': 'copy_gpt', 'n5b': 'copy_flash', 'n5c': 'copy_sonnet',
+            'n6': 'guardian', 'n7': 'critics', 'n8': 'opus'
+        };
+
+        let pipelineConfig = null;
+
+        async function loadPipelineConfig() {
+            try {
+                const res = await fetch(`${API_URL}/pipeline`);
+                if (res.ok) {
+                    pipelineConfig = await res.json();
+                    applyConfigToNodes();
+                }
+            } catch(e) {
+                console.warn('Pipeline config not found, using defaults');
+            }
+        }
+
+        function applyConfigToNodes() {
+            if (!pipelineConfig || !pipelineConfig.nodes) return;
+            Object.entries(nodeConfigMap).forEach(([nodeId, configKey]) => {
+                const node = document.getElementById(nodeId);
+                if (node && pipelineConfig.nodes[configKey]) {
+                    const enabled = pipelineConfig.nodes[configKey].enabled;
+                    if (!enabled) {
+                        node.classList.add('disabled');
+                    } else {
+                        node.classList.remove('disabled');
+                    }
+                }
+            });
+            updateConnections();
+        }
+
+        function toggleNode(e, nodeId) {
+            e.stopPropagation();
+            const node = document.getElementById(nodeId);
+            if (!node) return;
+            node.classList.toggle('disabled');
+            updateConnections();
+        }
+
+        async function savePipelineConfig() {
+            const nodes = {};
+            Object.entries(nodeConfigMap).forEach(([nodeId, configKey]) => {
+                const node = document.getElementById(nodeId);
+                const enabled = node ? !node.classList.contains('disabled') : true;
+                nodes[configKey] = { enabled, model: 'auto' };
+            });
+
+            // Add default entries for nodes not in map
+            nodes.human = { enabled: true, model: 'dashboard' };
+
+            try {
+                const res = await fetch(`${API_URL}/pipeline`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
+                    body: JSON.stringify({ nodes })
+                });
+                if (res.ok) {
+                    alert('✅ Pipeline configuration saved!');
+                    pipelineConfig = await res.json();
+                } else {
+                    alert('❌ Failed to save configuration');
+                }
+            } catch(e) {
+                alert('❌ Error: ' + e.message);
+            }
+        }
+
+        window.onload = () => { 
+            setInterval(fetchState, 5000); 
+            loadPipelineConfig();
+        };
     </script>
 </body>
 </html>
