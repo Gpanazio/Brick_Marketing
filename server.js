@@ -56,7 +56,14 @@ setInterval(saveMetrics, 5 * 60 * 1000); // Salva a cada 5min
 
 // Paths
 const MARKETING_ROOT = path.join(__dirname, 'marketing');
+const PROJETOS_ROOT = path.join(__dirname, 'projetos');
 const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
+
+// Helper to get root by mode
+const getModeRoot = (mode) => {
+    if (mode === 'projetos') return PROJETOS_ROOT;
+    return MARKETING_ROOT; // default: marketing
+};
 
 // Structured logging
 const log = (level, event, data = {}) => {
@@ -126,8 +133,9 @@ const authMiddleware = (req, res, next) => {
 app.use('/api', authMiddleware);
 
 // Helper to read directory
-const getFiles = (dir) => {
-    const dirPath = path.join(MARKETING_ROOT, dir);
+const getFiles = (dir, mode = 'marketing') => {
+    const root = getModeRoot(mode);
+    const dirPath = path.join(root, dir);
     if (!fs.existsSync(dirPath)) return [];
     return fs.readdirSync(dirPath).filter(f => !f.startsWith('.')).map(f => ({
         name: f,
@@ -171,17 +179,20 @@ app.get('/api/config', (req, res) => {
 
 // API: Get all state (including failed)
 app.get('/api/state', (req, res) => {
+    const mode = req.query.mode || 'marketing';
     res.json({
-        briefing: getFiles('briefing'),
-        wip: getFiles('wip'),
-        done: getFiles('done'),
-        failed: getFiles('failed')
+        mode,
+        briefing: getFiles('briefing', mode),
+        wip: getFiles('wip', mode),
+        done: getFiles('done', mode),
+        failed: getFiles('failed', mode)
     });
 });
 
 // API: Get pending briefings (for watcher)
 app.get('/api/pending', (req, res) => {
-    res.json({ briefings: getFiles('briefing') });
+    const mode = req.query.mode || 'marketing';
+    res.json({ briefings: getFiles('briefing', mode) });
 });
 
 // Telegram notification
@@ -204,31 +215,43 @@ async function notifyTelegram(message) {
 
 // API: Create Briefing (from dashboard)
 app.post('/api/briefing', async (req, res) => {
-    const { title, content } = req.body;
+    const { title, content, mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
     const filename = `${Date.now()}_${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.md`;
-    const filePath = path.join(MARKETING_ROOT, 'briefing', filename);
+    const filePath = path.join(root, 'briefing', filename);
     
-    const fileContent = `# BRIEFING: ${title}\n**Date:** ${new Date().toISOString()}\n**Status:** PENDING\n\n${content}`;
+    // Ensure briefing dir exists for this mode
+    const briefingDir = path.join(root, 'briefing');
+    if (!fs.existsSync(briefingDir)) fs.mkdirSync(briefingDir, { recursive: true });
+    
+    const modeLabel = mode === 'projetos' ? 'PROJETO' : 'BRIEFING';
+    const fileContent = `# ${modeLabel}: ${title}\n**Date:** ${new Date().toISOString()}\n**Status:** PENDING\n**Mode:** ${mode || 'marketing'}\n\n${content}`;
     fs.writeFileSync(filePath, fileContent);
     
-    log('info', 'briefing_created', { filename, title });
+    log('info', 'briefing_created', { filename, title, mode: mode || 'marketing' });
     
     // Notify Douglas via Telegram
-    await notifyTelegram(`🚨 *NOVO BRIEFING NO WAR ROOM*\n\n*Título:* ${title}\n\n_Douglas, aciona o squad!_`);
+    const emoji = mode === 'projetos' ? '🎬' : '🚨';
+    const typeLabel = mode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
+    await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}\n\n_Douglas, aciona o squad!_`);
     
-    res.json({ success: true, filename });
+    res.json({ success: true, filename, mode: mode || 'marketing' });
 });
 
 // API: Submit result from agent (com validação de schema)
 app.post('/api/result', (req, res) => {
-    const { filename, content, category, botName, durationMs, model } = req.body;
+    const { filename, content, category, botName, durationMs, model, mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
     const targetCategory = category || 'wip';
-    const filePath = path.join(MARKETING_ROOT, targetCategory, filename);
+    const filePath = path.join(root, targetCategory, filename);
+    
+    // Ensure category dir exists
+    const categoryDir = path.join(root, targetCategory);
+    if (!fs.existsSync(categoryDir)) fs.mkdirSync(categoryDir, { recursive: true });
     
     // Validar output do bot se especificado
     if (botName && schemas[botName]) {
         try {
-            // Tenta extrair JSON do content (pode estar em markdown)
             const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || 
                               content.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
@@ -236,7 +259,6 @@ app.post('/api/result', (req, res) => {
                 const validation = schemas[botName].validate(parsed);
                 if (!validation.valid) {
                     log('warn', 'schema_validation_failed', { botName, error: validation.error });
-                    // Não bloqueia, só loga (soft validation)
                 }
             }
         } catch (e) {
@@ -244,13 +266,12 @@ app.post('/api/result', (req, res) => {
         }
     }
     
-    // Track métricas se fornecidas
     if (botName && durationMs) {
         trackStep(botName, true, durationMs, model);
     }
     
     fs.writeFileSync(filePath, content);
-    log('info', 'result_submitted', { filename, category: targetCategory, botName });
+    log('info', 'result_submitted', { filename, category: targetCategory, botName, mode: mode || 'marketing' });
     metrics.requests.total++;
     metrics.requests.success++;
     res.json({ success: true, filename, category: targetCategory });
@@ -258,13 +279,17 @@ app.post('/api/result', (req, res) => {
 
 // API: Move File (Approve/Reject)
 app.post('/api/move', (req, res) => {
-    const { filename, from, to } = req.body;
-    const src = path.join(MARKETING_ROOT, from, filename);
-    const dest = path.join(MARKETING_ROOT, to, filename);
+    const { filename, from, to, mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    const src = path.join(root, from, filename);
+    const destDir = path.join(root, to);
+    const dest = path.join(destDir, filename);
+    
+    if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
     
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
-        log('info', 'file_moved', { filename, from, to });
+        log('info', 'file_moved', { filename, from, to, mode: mode || 'marketing' });
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -273,11 +298,12 @@ app.post('/api/move', (req, res) => {
 
 // API: Delete File
 app.delete('/api/file', (req, res) => {
-    const { category, filename } = req.body;
-    const filePath = path.join(MARKETING_ROOT, category, filename);
+    const { category, filename, mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    const filePath = path.join(root, category, filename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
-        log('info', 'file_deleted', { filename, category });
+        log('info', 'file_deleted', { filename, category, mode: mode || 'marketing' });
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -286,11 +312,12 @@ app.delete('/api/file', (req, res) => {
 
 // API: Clear briefing after processing
 app.post('/api/briefing/clear', (req, res) => {
-    const { filename } = req.body;
-    const filePath = path.join(MARKETING_ROOT, 'briefing', filename);
+    const { filename, mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    const filePath = path.join(root, 'briefing', filename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
-        log('info', 'briefing_cleared', { filename });
+        log('info', 'briefing_cleared', { filename, mode: mode || 'marketing' });
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });

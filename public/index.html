@@ -418,18 +418,17 @@ BRIEFING
 
         <!-- Modals (New Briefing / Viewer) -->
         <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-            <div class="bg-[#0a0a0a] border border-white/10 p-8 w-full max-w-2xl shadow-2xl relative">
-                <h2 class="text-2xl font-brick text-white mb-6 tracking-tight">NEW MISSION BRIEF</h2>
-                <input id="briefing-title" type="text" placeholder="Mission Codename"
-                    class="w-full bg-[#111] border border-[#333] p-4 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]">
-                <textarea id="briefing-content" rows="8" placeholder="Objectives, Targets, Constraints..."
-                    class="w-full bg-[#111] border border-[#333] p-4 text-white mb-6 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]"></textarea>
-                <div class="flex justify-end gap-6">
+            <div class="bg-[#0a0a0a] border border-white/10 p-6 w-full max-w-2xl shadow-2xl relative">
+                <h2 id="briefing-modal-title" class="text-xl font-brick text-white mb-4 tracking-tight">NEW BRIEFING</h2>
+                <input id="briefing-title" type="text" placeholder="Nome do projeto/campanha"
+                    class="w-full bg-[#111] border border-[#333] p-3 text-white mb-3 focus:outline-none focus:border-[#DC2626] font-mono text-xs placeholder-[#555]">
+                <textarea id="briefing-content" rows="8" placeholder="Contexto, objetivos, referências..."
+                    class="w-full bg-[#111] border border-[#333] p-3 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-xs placeholder-[#555]"></textarea>
+                <div class="flex justify-end gap-4">
                     <button onclick="closeModal('newBriefing')"
-                        class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest">ABORT</button>
+                        class="text-[#555] hover:text-white font-mono text-[10px] tracking-widest uppercase">CANCELAR</button>
                     <button onclick="submitBriefing()"
-                        class="bg-white text-black px-8 py-3 font-brick text-sm hover:bg-[#DC2626] hover:text-white transition-colors tracking-wide">INITIATE
-                        SEQUENCE</button>
+                        class="bg-[#DC2626] text-white px-6 py-2 font-bold text-[10px] hover:bg-red-700 transition-colors tracking-widest uppercase">CRIAR</button>
                 </div>
             </div>
         </div>
@@ -1062,7 +1061,8 @@ BRIEFING
 
         async function fetchState() {
             try {
-                const res = await fetch(`${API_URL}/state`);
+                const modeParam = currentMode ? `?mode=${currentMode}` : '';
+                const res = await fetch(`${API_URL}/state${modeParam}`);
                 currentState = await res.json();
                 renderColumn('briefing', currentState.briefing);
                 renderColumn('wip', currentState.wip);
@@ -1098,7 +1098,16 @@ BRIEFING
             
             openModal('viewer');
         }
-        function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
+        function openModal(id) { 
+            document.getElementById(`modal-${id}`).classList.remove('hidden');
+            // Update briefing modal title based on mode
+            if (id === 'newBriefing') {
+                const title = currentMode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
+                const placeholder = currentMode === 'projetos' ? 'Nome do cliente/projeto' : 'Nome da campanha';
+                document.getElementById('briefing-modal-title').textContent = title;
+                document.getElementById('briefing-title').placeholder = placeholder;
+            }
+        }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
 
         // NODE DETAILS (Game Board) - Premium Card Layout
@@ -1503,7 +1512,8 @@ BRIEFING
                             body: JSON.stringify({
                                 filename: currentViewingFile,
                                 from: 'wip',
-                                to: 'done'
+                                to: 'done',
+                                mode: currentMode || 'marketing'
                             })
                         });
                         showToast('APROVADO — Movido para OUTPUT', 'success');
@@ -1533,7 +1543,8 @@ BRIEFING
                 action: action,
                 type: currentFeedbackType,
                 text: feedbackText,
-                routedTo: feedbackRouting[currentFeedbackType]?.target
+                routedTo: feedbackRouting[currentFeedbackType]?.target,
+                mode: currentMode || 'marketing'
             };
             
             try {
@@ -1616,14 +1627,15 @@ BRIEFING
         fetchState();
         showTab('board');
 
-        // Stub for submit
+        // Submit new briefing/projeto
         async function submitBriefing() {
             const title = document.getElementById('briefing-title').value;
             const content = document.getElementById('briefing-content').value;
             if (!title || !content) return;
             await fetch(`${API_URL}/briefing`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
-                body: JSON.stringify({ title, content })
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
+                body: JSON.stringify({ title, content, mode: currentMode || 'marketing' })
             });
             closeModal('newBriefing');
             fetchState();
