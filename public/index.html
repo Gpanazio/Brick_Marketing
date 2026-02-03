@@ -442,34 +442,34 @@ BRIEFING
         </div>
         
         <!-- Feedback Actions for Game Board -->
-        <div id="detail-actions" class="hidden p-6 border-t border-white/10 bg-[#0a0a0a]">
-            <div id="detail-feedback-panel" class="hidden mb-4">
+        <div id="detail-actions" class="hidden border-t border-white/10 bg-[#0a0a0a]">
+            <div id="detail-feedback-panel" class="hidden p-4 border-b border-white/10">
                 <textarea id="detail-feedback-text" rows="2" 
                     placeholder="O que precisa mudar?"
-                    class="w-full bg-[#000] border border-[#333] p-3 text-white text-sm font-mono placeholder-[#555] focus:outline-none focus:border-[#DC2626] mb-3"
+                    class="w-full bg-[#000] border border-[#333] p-3 text-white text-sm font-mono placeholder-[#555] focus:outline-none focus:border-[#DC2626] mb-2"
                     oninput="detectDetailFeedbackType()"></textarea>
-                <div id="detail-feedback-routing" class="hidden p-2 border border-[#222] bg-[#050505] mb-3 text-xs">
+                <div id="detail-feedback-routing" class="hidden p-2 border border-[#222] bg-[#050505] mb-2 text-xs">
                     <span class="font-mono text-[#555]">→</span>
                     <span id="detail-routing-target" class="font-mono text-[#DC2626] ml-1"></span>
                 </div>
-                <div class="flex justify-end gap-2">
+                <div class="flex gap-2">
                     <button onclick="submitDetailFeedback('revisar')"
-                        class="px-4 py-2 border border-[#555] text-[#555] font-mono text-xs hover:border-white hover:text-white transition-colors">
+                        class="flex-1 py-2 border border-[#555] text-[#555] font-mono text-xs hover:border-white hover:text-white transition-colors">
                         AJUSTAR
                     </button>
                     <button onclick="submitDetailFeedback('reprovar')"
-                        class="px-4 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs hover:bg-[#DC2626] hover:text-black transition-colors">
+                        class="flex-1 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs hover:bg-[#DC2626] hover:text-black transition-colors">
                         REFAZER
                     </button>
                 </div>
             </div>
-            <div class="flex justify-between items-center">
+            <div class="p-4 flex justify-between items-center gap-4">
                 <button onclick="toggleDetailFeedback()" id="btn-detail-feedback"
-                    class="text-[#555] hover:text-[#DC2626] font-mono text-xs transition-colors flex items-center gap-2">
-                    <span>✎</span> Feedback
+                    class="text-[#555] hover:text-[#DC2626] font-mono text-xs transition-colors">
+                    ✎ Feedback
                 </button>
                 <button onclick="approveDetailNode()"
-                    class="px-6 py-2 bg-white text-black font-brick text-sm hover:bg-[#22C55E] transition-colors">
+                    class="flex-1 max-w-[200px] py-3 bg-white text-black font-brick text-sm hover:bg-[#22C55E] transition-colors text-center">
                     APROVAR ✓
                 </button>
             </div>
