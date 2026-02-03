@@ -129,18 +129,88 @@
 
 <body class="p-6">
     <div class="noise-overlay"></div>
-    <div class="relative z-10">
-
-        <!-- Header -->
-        <header class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
+    
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen" class="relative z-10 min-h-[90vh] flex flex-col">
+        <header class="flex justify-between items-end mb-16 border-b border-white/10 pb-6">
             <div>
                 <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
                     BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
                 </h1>
-                <div class="flex items-center gap-3 mt-2 font-mono text-[10px] tracking-[0.2em] text-[#9CA3AF]">
+                <div class="flex items-center gap-3 mt-2 font-mono text-[10px] tracking-[0.2em] text-[#555]">
+                    <span>CENTRO DE CRIAÇÃO</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="flex-1 flex flex-col items-center justify-center -mt-20">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-brick text-white tracking-tight mb-4">Bem vindo ao War Room</h2>
+                <p class="text-[#666] font-mono text-sm">O centro de criação AI da Brick</p>
+            </div>
+            
+            <div class="mb-12">
+                <p class="text-[#555] font-mono text-xs uppercase tracking-widest text-center">O que você quer criar hoje?</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl w-full">
+                <!-- Marketing Card -->
+                <div onclick="enterMode('marketing')" 
+                    class="group cursor-pointer border border-[#222] bg-[#000] p-8 hover:border-[#DC2626] transition-all duration-300">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="p-3 border border-[#333] group-hover:border-[#DC2626] transition-colors">
+                            <span class="text-2xl">📣</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-[#555] uppercase tracking-widest">ATIVO</span>
+                    </div>
+                    <h3 class="text-xl font-brick text-white mb-2 group-hover:text-[#DC2626] transition-colors">Marketing</h3>
+                    <p class="text-[#666] font-mono text-xs leading-relaxed">Criar conteúdo para redes sociais, campanhas e comunicação da Brick AI</p>
+                    <div class="mt-6 pt-4 border-t border-[#222]">
+                        <span class="text-[10px] font-mono text-[#444]">LinkedIn, Instagram, Email</span>
+                    </div>
+                </div>
+                
+                <!-- Projetos Card -->
+                <div onclick="enterMode('projetos')" 
+                    class="group cursor-pointer border border-[#222] bg-[#000] p-8 hover:border-[#DC2626] transition-all duration-300">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="p-3 border border-[#333] group-hover:border-[#DC2626] transition-colors">
+                            <span class="text-2xl">🎬</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-[#DC2626] uppercase tracking-widest">NOVO</span>
+                    </div>
+                    <h3 class="text-xl font-brick text-white mb-2 group-hover:text-[#DC2626] transition-colors">Projetos - Clientes</h3>
+                    <p class="text-[#666] font-mono text-xs leading-relaxed">Propostas criativas, conceitos e direção para projetos de vídeo</p>
+                    <div class="mt-6 pt-4 border-t border-[#222]">
+                        <span class="text-[10px] font-mono text-[#444]">Propostas, Roteiros, Direção</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center py-8">
+            <p class="text-[#333] font-mono text-[10px] tracking-widest">BRICK PRODUÇÕES © 2026</p>
+        </footer>
+    </div>
+    
+    <!-- MAIN DASHBOARD (hidden by default) -->
+    <div id="main-dashboard" class="relative z-10 hidden">
+
+        <!-- Header -->
+        <header id="dashboard-header" class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
+            <div>
+                <div class="flex items-center gap-4 mb-2">
+                    <button id="btn-back-home" onclick="goHome()" class="hidden text-[#555] hover:text-white font-mono text-xs transition-colors">
+                        ← Voltar
+                    </button>
+                    <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
+                        BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
+                    </h1>
+                </div>
+                <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-[#9CA3AF]">
                     <span id="connection-status" class="text-[#DC2626]">CONNECTING...</span>
                     <span class="text-[#333]">|</span>
-                    <span>SYS.VER 3.3 (LOBBY)</span>
+                    <span id="mode-indicator" class="hidden text-white uppercase"></span>
                 </div>
             </div>
             <div class="flex items-center gap-6">
@@ -424,6 +494,8 @@ BRIEFING
             </div>
         </div>
     </div>
+    
+    </div><!-- END main-dashboard -->
 
     <!-- DETAILS PANEL -->
     <div id="node-details-panel"
@@ -480,6 +552,35 @@ BRIEFING
         const API_URL = '/api';
         let currentState = null;
         let selectedJob = null;
+        let currentMode = null;
+
+        // --- MODE NAVIGATION ---
+        function enterMode(mode) {
+            currentMode = mode;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-dashboard').classList.remove('hidden');
+            
+            // Update header with back button and mode name
+            const modeNames = {
+                'marketing': 'Marketing',
+                'projetos': 'Projetos - Clientes'
+            };
+            
+            document.getElementById('mode-indicator').textContent = modeNames[mode] || mode;
+            document.getElementById('mode-indicator').classList.remove('hidden');
+            document.getElementById('btn-back-home').classList.remove('hidden');
+            
+            // Fetch state for the mode
+            fetchState();
+        }
+        
+        function goHome() {
+            currentMode = null;
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            document.getElementById('main-dashboard').classList.add('hidden');
+            document.getElementById('mode-indicator').classList.add('hidden');
+            document.getElementById('btn-back-home').classList.add('hidden');
+        }
 
         // --- FRIENDLY NAMES (must be defined before renderers) ---
         const friendlyFileNames = {
