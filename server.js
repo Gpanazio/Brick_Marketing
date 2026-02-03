@@ -505,7 +505,21 @@ app.post('/api/feedback', (req, res) => {
     
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
     const feedbackDir = path.join(baseDir, 'feedback');
+    const historyDir = path.join(baseDir, 'history');
     if (!fs.existsSync(feedbackDir)) fs.mkdirSync(feedbackDir, { recursive: true });
+    if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
+    
+    // Archive current version before feedback
+    if (file) {
+        const currentFile = path.join(baseDir, 'wip', file);
+        if (fs.existsSync(currentFile)) {
+            const ext = path.extname(file);
+            const base = path.basename(file, ext);
+            const historyFile = path.join(historyDir, `${base}_${timestamp}${ext}`);
+            fs.copyFileSync(currentFile, historyFile);
+            log('info', 'version_archived', { original: file, archived: historyFile });
+        }
+    }
     
     const feedback = {
         timestamp: new Date().toISOString(),
@@ -526,7 +540,7 @@ app.post('/api/feedback', (req, res) => {
     fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nArquivo: ${file}\nAção: ${action}\nTipo: ${type}\nTexto: ${text}\nRoteado para: ${routedTo}\nTimestamp: ${new Date().toISOString()}`);
     
     log('info', 'feedback_received', { file, action, type, routedTo, mode });
-    res.json({ success: true, saved: feedbackFile });
+    res.json({ success: true, saved: feedbackFile, archived: true });
 });
 
 // Get pending feedbacks
