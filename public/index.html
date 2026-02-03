@@ -270,8 +270,37 @@ BRIEFING
 
         // --- GAME BOARD RENDERER (UPDATED COLORS) ---
         function renderGameBoard(data) {
-            const wipJob = data?.wip?.find(j => j.steps);
-            const activeJob = wipJob || { steps: {} }; // Fallback to empty
+            // Priority: 1. Active WIP -> 2. Recent Done -> 3. Empty
+            let activeJob = data?.wip?.find(j => j.steps);
+            
+            if (!activeJob && data?.done?.length > 0) {
+                // Get most recent done job
+                const sortedDone = [...data.done].sort((a,b) => b.name.localeCompare(a.name)); // assumindo timestamp no nome
+                const lastDone = sortedDone[0];
+                
+                // Tenta reconstruir o estado "full success" se o arquivo tiver logs estruturados, 
+                // ou cria um estado sintético de sucesso
+                activeJob = {
+                    title: lastDone.name.split('_').slice(1).join(' ').replace('.md', ''),
+                    steps: {
+                        mission: { status: 'done', output: 'Complete' },
+                        douglas: { status: 'done', output: 'Complete' },
+                        validator: { status: 'done', output: 'Complete' },
+                        audience: { status: 'done', output: 'Complete' },
+                        research: { status: 'done', output: 'Complete' },
+                        claims: { status: 'done', output: 'Complete' },
+                        copy: { status: 'done', output: lastDone.content }, // Põe o conteúdo final aqui pra visualização
+                        brand: { status: 'done', output: 'Complete' },
+                        critic: { status: 'done', output: 'Complete' },
+                        opus: { status: 'done', output: 'Complete' }
+                    }
+                };
+                
+                // Se o conteúdo do arquivo tiver os logs das etapas (o que acontece se concatenarmos), 
+                // poderíamos parsear. Por enquanto, assumimos "Tudo Verde" para o último job.
+            }
+
+            activeJob = activeJob || { steps: {} }; // Fallback
             const missionTitle = activeJob.title || 'SYSTEM IDLE';
             
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
