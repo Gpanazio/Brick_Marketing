@@ -816,7 +816,8 @@ BRIEFING
             if (id === 'briefing') {
                 container.innerHTML = files.map(file => `
                 <div class="card p-5 mb-3 cursor-pointer group hover:bg-[#111]" onclick="viewFile('${id}', '${file.name}')">
-                        <h3 class="font-bold text-sm text-white truncate font-mono">${file.name}</h3>
+                        <h3 class="font-bold text-sm text-white truncate">${getFriendlyName(file.name)}</h3>
+                        <span class="text-[9px] font-mono text-[#444]">${file.name}</span>
                         <p class="text-[10px] text-[#555] mt-2 font-mono uppercase tracking-wide">RAW INPUT</p>
                     </div>
                 `).join('');
@@ -855,7 +856,7 @@ BRIEFING
                                 <div class="p-3 pl-8 border-b border-[#1a1a1a] cursor-pointer hover:bg-[#111] group/item transition-colors" onclick="viewFile('${id}', '${file.name}')">
                                     <div class="flex items-center gap-2">
                                         <span class="text-[10px] text-[#333] group-hover/item:text-[#DC2626]">└</span>
-                                        <span class="text-[10px] font-mono text-[#777] group-hover/item:text-white truncate">${file.name.split('__').pop()}</span>
+                                        <span class="text-xs text-[#999] group-hover/item:text-white truncate">${getFriendlyName(file.name.split('__').pop())}</span>
                                     </div>
                                 </div>
                             `).join('')}
@@ -921,7 +922,7 @@ BRIEFING
             const file = currentState[cat].find(f => f.name === fname);
             if (!file) return;
             currentViewingFile = fname;
-            document.getElementById('viewer-title').innerText = fname;
+            document.getElementById('viewer-title').innerHTML = `<span class="text-white">${getFriendlyName(fname)}</span> <span class="text-[#555] text-xs ml-2">${fname}</span>`;
             document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
             
             // Reset feedback panel when opening new file
@@ -943,18 +944,58 @@ BRIEFING
             const contentEl = document.getElementById('detail-content');
 
             const nodeInfo = {
-                'mission': { name: 'MISSION BRIEF', icon: 'TARGET', desc: 'Campaign objectives and parameters.' },
-                'douglas': { name: 'DOUGLAS CORE', icon: 'CPU', desc: 'Central orchestration and pipeline management.' },
-                'validator': { name: 'BRIEF VALIDATOR', icon: 'GATE', desc: 'Validates input and identifies gaps.' },
-                'audience': { name: 'AUDIENCE ANALYST', icon: 'PROFILE', desc: 'Psychographic profiling and segmentation.' },
-                'research': { name: 'TOPIC RESEARCHER', icon: 'SEARCH', desc: 'Contextual analysis and trend sourcing.' },
-                'claims': { name: 'CLAIMS CHECKER', icon: 'SHIELD', desc: 'Fact-checking and authority hygiene.' },
-                'copy': { name: 'COPYWRITER', icon: 'WRITE', desc: 'Creative generation and messaging.' },
-                'brand': { name: 'BRAND GUARDIAN', icon: 'LOCK', desc: 'Tone, voice, and positioning enforcement.' },
-                'critic': { name: 'CRITIC LITE', icon: 'SCAN', desc: 'Initial content quality assessment.' },
-                'opus': { name: 'CRITIC OPUS', icon: 'STAR', desc: 'Final detailed review and approval.' },
-                'output': { name: 'FINAL DELIVERY', icon: 'BOX', desc: 'Production-ready asset package.' }
+                'mission': { name: 'BRIEFING', icon: 'TARGET', desc: 'O que precisa ser feito', friendly: 'Briefing' },
+                'douglas': { name: 'ORQUESTRADOR', icon: 'CPU', desc: 'Coordena o fluxo de trabalho', friendly: 'Coordenação' },
+                'validator': { name: 'VALIDAÇÃO', icon: 'GATE', desc: 'Verifica se o briefing está completo', friendly: 'Validação' },
+                'audience': { name: 'PÚBLICO', icon: 'PROFILE', desc: 'Análise de quem vai receber', friendly: 'Público-alvo' },
+                'research': { name: 'PESQUISA', icon: 'SEARCH', desc: 'Busca contexto e referências', friendly: 'Pesquisa' },
+                'claims': { name: 'VERIFICAÇÃO', icon: 'SHIELD', desc: 'Checa se os dados estão corretos', friendly: 'Verificação' },
+                'copy': { name: 'CRIAÇÃO', icon: 'WRITE', desc: 'Escreve o conteúdo', friendly: 'Texto' },
+                'brand': { name: 'TOM DE VOZ', icon: 'LOCK', desc: 'Garante que soa como a Brick', friendly: 'Tom' },
+                'critic': { name: 'REVISÃO', icon: 'SCAN', desc: 'Primeira checagem de qualidade', friendly: 'Revisão' },
+                'opus': { name: 'APROVAÇÃO', icon: 'STAR', desc: 'Revisão final detalhada', friendly: 'Aprovação' },
+                'director': { name: 'DIREÇÃO', icon: 'EYE', desc: 'Refina a execução e o craft', friendly: 'Direção' },
+                'output': { name: 'PRONTO', icon: 'BOX', desc: 'Conteúdo aprovado para uso', friendly: 'Finalizado' }
             };
+            
+            // Mapa de nomes de arquivo para nomes amigáveis
+            const friendlyFileNames = {
+                'validator': 'Validação',
+                'brief_validator': 'Validação',
+                'audience': 'Público-alvo',
+                'audience_analyst': 'Público-alvo',
+                'research': 'Pesquisa',
+                'researcher': 'Pesquisa',
+                'topic_researcher': 'Pesquisa',
+                'claims': 'Verificação de Dados',
+                'claims_checker': 'Verificação de Dados',
+                'copy': 'Texto Criativo',
+                'copywriter': 'Texto Criativo',
+                'brand': 'Tom de Voz',
+                'brand_guardian': 'Tom de Voz',
+                'style_guardian': 'Estilo',
+                'positioning_guardian': 'Posicionamento',
+                'critic': 'Revisão',
+                'critic_lite': 'Revisão Rápida',
+                'opus': 'Aprovação Final',
+                'critic_opus': 'Aprovação Final',
+                'director': 'Direção de Craft',
+                'output': 'Versão Final'
+            };
+            
+            function getFriendlyName(filename) {
+                // Remove extensão e timestamp
+                const base = filename.replace(/\.(md|json|txt)$/i, '').replace(/^\d+_/, '').replace(/_\d+$/, '');
+                const key = base.toLowerCase();
+                
+                // Procura match parcial
+                for (const [pattern, friendly] of Object.entries(friendlyFileNames)) {
+                    if (key.includes(pattern)) return friendly;
+                }
+                
+                // Fallback: capitaliza o nome
+                return base.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
 
             const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: 'FILE', desc: '' };
             titleEl.textContent = info.name;
@@ -1164,10 +1205,10 @@ BRIEFING
         let currentViewingFile = null;
 
         const feedbackRouting = {
-            'craft': { target: 'DIRECTOR', desc: 'vai refinar a execução' },
-            'conceito': { target: 'COPYWRITER', desc: 'vai reescrever' },
-            'marca': { target: 'BRAND GUARDIAN', desc: 'vai ajustar o tom' },
-            'dados': { target: 'RESEARCHER', desc: 'vai verificar' }
+            'craft': { target: 'Direção', desc: 'vai refinar a execução' },
+            'conceito': { target: 'Criação', desc: 'vai reescrever' },
+            'marca': { target: 'Tom de Voz', desc: 'vai ajustar' },
+            'dados': { target: 'Pesquisa', desc: 'vai verificar' }
         };
 
         // Keywords para detecção automática
