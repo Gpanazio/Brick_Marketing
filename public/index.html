@@ -546,6 +546,7 @@
         // --- MODE NAVIGATION ---
         function enterMode(mode) {
             currentMode = mode;
+            localStorage.setItem('brickai_mode', mode);
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('main-dashboard').classList.remove('hidden');
             
@@ -566,10 +567,19 @@
         
         function goHome() {
             currentMode = null;
+            localStorage.removeItem('brickai_mode');
             document.getElementById('welcome-screen').classList.remove('hidden');
             document.getElementById('main-dashboard').classList.add('hidden');
             document.getElementById('mode-indicator').classList.add('hidden');
             document.getElementById('btn-back-home').classList.add('hidden');
+        }
+        
+        // Restore mode on page load (F5 persistence)
+        function restoreMode() {
+            const savedMode = localStorage.getItem('brickai_mode');
+            if (savedMode && ['marketing', 'projetos', 'ideias'].includes(savedMode)) {
+                enterMode(savedMode);
+            }
         }
 
         // --- FRIENDLY NAMES (must be defined before renderers) ---
@@ -2146,7 +2156,12 @@ ruins rápido e refinar as boas.`
 
         // Init
         setInterval(fetchState, 5000);
-        fetchState();
+        restoreMode(); // Restore mode from localStorage (F5 persistence)
+        if (!currentMode) {
+            // No saved mode, stay on welcome screen
+        } else {
+            fetchState();
+        }
         showTab('board');
 
         // File upload handling
