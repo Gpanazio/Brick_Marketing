@@ -3,10 +3,53 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const rateLimit = require('express-rate-limit');
+
+// Config e Contratos
+const CONFIG = require('./config/constants');
+const schemas = require('./contracts/schemas');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
+
+// Métricas em memória (persiste em arquivo a cada 5min)
+const METRICS_FILE = path.join(__dirname, '.metrics.json');
+let metrics = {
+    pipeline: {},
+    requests: { total: 0, success: 0, failed: 0 },
+    startedAt: new Date().toISOString()
+};
+
+function loadMetrics() {
+    try {
+        if (fs.existsSync(METRICS_FILE)) {
+            metrics = JSON.parse(fs.readFileSync(METRICS_FILE, 'utf-8'));
+        }
+    } catch (e) { /* ignore */ }
+}
+
+function saveMetrics() {
+    try {
+        fs.writeFileSync(METRICS_FILE, JSON.stringify(metrics, null, 2));
+    } catch (e) { /* ignore */ }
+}
+
+function trackStep(botName, success, durationMs, model = null) {
+    if (!metrics.pipeline[botName]) {
+        metrics.pipeline[botName] = { runs: 0, success: 0, failed: 0, totalMs: 0, fallbacks: 0 };
+    }
+    metrics.pipeline[botName].runs++;
+    metrics.pipeline[botName].totalMs += durationMs;
+    if (success) metrics.pipeline[botName].success++;
+    else metrics.pipeline[botName].failed++;
+    if (model && model.includes('gemini') && botName === 'copywriter') {
+        metrics.pipeline[botName].fallbacks++;
+    }
+}
+
+loadMetrics();
+setInterval(saveMetrics, 5 * 60 * 1000); // Salva a cada 5min
 
 // Paths
 const MARKETING_ROOT = path.join(__dirname, 'marketing');
@@ -25,6 +68,14 @@ const log = (level, event, data = {}) => {
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Rate limiting para /api/state (proteção sem quebrar dashboard)
+const stateLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minuto
+    max: 60, // 60 requests por minuto
+    message: { error: 'Too many requests, slow down' }
+});
+app.use('/api/state', stateLimiter);
 
 // Ensure directories exist (including failed/)
 ['briefing', 'wip', 'done', 'failed'].forEach(dir => {
@@ -83,6 +134,33 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'online', timestamp: new Date().toISOString() });
 });
 
+// API: Métricas do pipeline
+app.get('/api/metrics', (req, res) => {
+    const pipelineStats = {};
+    for (const [bot, data] of Object.entries(metrics.pipeline)) {
+        pipelineStats[bot] = {
+            ...data,
+            avgMs: data.runs > 0 ? Math.round(data.totalMs / data.runs) : 0,
+            successRate: data.runs > 0 ? Math.round((data.success / data.runs) * 100) : 0
+        };
+    }
+    res.json({
+        uptime: metrics.startedAt,
+        requests: metrics.requests,
+        pipeline: pipelineStats,
+        thresholds: CONFIG.THRESHOLDS
+    });
+});
+
+// API: Config (read-only, expõe thresholds e models)
+app.get('/api/config', (req, res) => {
+    res.json({
+        thresholds: CONFIG.THRESHOLDS,
+        models: CONFIG.MODELS,
+        paths: CONFIG.PATHS
+    });
+});
+
 // API: Get all state (including failed)
 app.get('/api/state', (req, res) => {
     res.json({
@@ -133,14 +211,40 @@ app.post('/api/briefing', async (req, res) => {
     res.json({ success: true, filename });
 });
 
-// API: Submit result from agent
+// API: Submit result from agent (com validação de schema)
 app.post('/api/result', (req, res) => {
-    const { filename, content, category } = req.body;
+    const { filename, content, category, botName, durationMs, model } = req.body;
     const targetCategory = category || 'wip';
     const filePath = path.join(MARKETING_ROOT, targetCategory, filename);
     
+    // Validar output do bot se especificado
+    if (botName && schemas[botName]) {
+        try {
+            // Tenta extrair JSON do content (pode estar em markdown)
+            const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || 
+                              content.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                const parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+                const validation = schemas[botName].validate(parsed);
+                if (!validation.valid) {
+                    log('warn', 'schema_validation_failed', { botName, error: validation.error });
+                    // Não bloqueia, só loga (soft validation)
+                }
+            }
+        } catch (e) {
+            log('warn', 'schema_parse_failed', { botName, error: e.message });
+        }
+    }
+    
+    // Track métricas se fornecidas
+    if (botName && durationMs) {
+        trackStep(botName, true, durationMs, model);
+    }
+    
     fs.writeFileSync(filePath, content);
-    log('info', 'result_submitted', { filename, category: targetCategory });
+    log('info', 'result_submitted', { filename, category: targetCategory, botName });
+    metrics.requests.total++;
+    metrics.requests.success++;
     res.json({ success: true, filename, category: targetCategory });
 });
 
