@@ -14,10 +14,10 @@
         rel="stylesheet">
     <style>
         :root {
-            --brick-black: #050505;
+            --brick-black: #000000;
             --brick-red: #DC2626;
-            --brick-gray: #9CA3AF;
-            --brick-white: #E5E5E5;
+            --brick-white: #FFFFFF;
+            --brick-gray: #333333;
         }
 
         body {
@@ -30,7 +30,7 @@
         .font-brick {
             font-family: 'Inter', sans-serif;
             font-weight: 900;
-            letter-spacing: -0.04em;
+            letter-spacing: -0.05em;
         }
 
         .font-mono {
@@ -39,13 +39,13 @@
 
         .column {
             min-height: 80vh;
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
+            background: #000000;
+            border: 1px solid #222;
         }
 
         .card {
-            background: #0a0a0a;
-            border: 1px solid #333;
+            background: #000000;
+            border: 1px solid #222;
             transition: all 0.2s;
             position: relative;
             overflow: hidden;
@@ -58,7 +58,7 @@
             left: 0;
             width: 2px;
             height: 100%;
-            background: #333;
+            background: #222;
             transition: background 0.2s;
         }
 
@@ -71,8 +71,7 @@
         }
 
         .modal-bg {
-            background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.98);
         }
 
         /* Noise Texture */
@@ -84,41 +83,25 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.03;
+            opacity: 0.05;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: #000000;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #333;
+            background: #222;
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: var(--brick-red);
-        }
-
-        .animate-blink {
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
         }
     </style>
 </head>
@@ -244,7 +227,7 @@ BRIEFING
             <div class="column p-6 relative">
                 <h2
                     class="text-xs font-mono text-[#DC2626] border-b border-white/10 pb-4 mb-6 tracking-[0.2em] flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 bg-[#DC2626] rounded-full animate-blink"></span> 02 // PROCESSING
+                    <span class="w-1.5 h-1.5 bg-[#DC2626] rounded-full"></span> 02 // PROCESSING
                 </h2>
                 <div id="col-wip" class="space-y-4">Loading...</div>
             </div>
@@ -259,7 +242,7 @@ BRIEFING
         </div>
 
         <!-- Game Board View (Lobby & Map) -->
-        <div id="view-gameboard" class="hidden border border-white/10 bg-[#0a0a0a]">
+        <div id="view-gameboard" class="hidden border border-white/10 bg-[#000]">
             <div class="min-h-[90vh] relative overflow-hidden flex flex-col">
                 <!-- Grid overlay -->
                 <div class="absolute inset-0 pointer-events-none opacity-10"
@@ -295,7 +278,7 @@ BRIEFING
 
                 <!-- Main SVG Board (Hidden by default) -->
                 <div id="gameboard-svg" class="relative z-10 flex-1 hidden flex justify-center items-center py-12">
-                    <div class="text-[#DC2626] animate-blink font-mono text-xs tracking-widest">[ LOADING SCHEMATIC... ]
+                    <div class="text-[#DC2626] font-mono text-xs tracking-widest">[ LOADING SCHEMATIC... ]
                     </div>
                 </div>
             </div>
@@ -406,18 +389,16 @@ BRIEFING
         function renderGameBoard(job) {
             document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
 
-            // Enhanced color palette - WHITE and RED only
+            // STRICT BRICK PALETTE - No Green, No Pulse
             const c = {
-                text: '#f0f0f0',      // Brighter white
-                dim: '#888888',       // Lighter gray for subtitles
-                border: '#3a3a3a',    // Lighter borders
-                line: '#333333',      // Visible lines
-                red: '#ef4444',       // Brighter red
-                redGlow: 'rgba(239,68,68,0.4)',
-                bg: '#0c0c0c',
-                done: '#ffffff',      // White for completed
-                doneGlow: 'rgba(255,255,255,0.3)',
-                pending: '#555555'
+                text: '#FFFFFF',      // Pure White
+                sub: '#666666',       // Dark Gray for less importance
+                border: '#333333',    // Visible borders
+                line: '#333333',      // Connectors
+                red: '#DC2626',       // Brick Red
+                bg: '#000000',        // Pure Black
+                done: '#FFFFFF',      // White for completed steps
+                pending: '#222222'    // Very dark gray for future
             };
 
             const stepStatus = (k) => {
@@ -431,22 +412,15 @@ BRIEFING
                 if (status === 'active') return c.red;
                 return c.border;
             };
-            const stepGlow = (k) => {
-                const status = stepStatus(k);
-                if (status === 'done') return c.doneGlow;
-                if (status === 'active') return c.redGlow;
-                return 'transparent';
-            };
 
-            // LARGER Layout for better readability
+            // LARGER Layout
             const W = 1200, H = 1050;
             const cx = W / 2;
             const colL = cx - 280, colR = cx + 280;
-            const bw = 200, bh = 64;        // Bigger boxes
-            const bwLg = 320, bhLg = 80;    // Even bigger for main nodes
+            const bw = 200, bh = 64;
+            const bwLg = 320, bhLg = 80;
             const gap = 50;
 
-            // More vertical spacing
             const y = {
                 mission: 80,
                 core: 180,
@@ -461,208 +435,161 @@ BRIEFING
 
             const html = `
             <style>
-                .gb-node { cursor: pointer; }
+                .gb-node { cursor: pointer; transition: all 0.2s; }
                 .gb-node:hover .gb-box { stroke: ${c.red}; stroke-width: 2; }
-                .gb-node:hover .gb-title { fill: #ffffff; }
-                .gb-box { transition: stroke 0.2s, stroke-width 0.2s; }
-                .gb-line { stroke: ${c.line}; stroke-width: 2; }
-                .gb-flow { stroke-dasharray: 8 4; }
+                .gb-node:hover text { fill: #ffffff; }
+                .gb-box { transition: stroke 0.2s, stroke-width 0.2s, fill 0.2s; }
+                .gb-line { stroke: ${c.line}; stroke-width: 1; }
+                .gb-flow { stroke-dasharray: 4 4; }
             </style>
-            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto">
+            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto; background: #000;">
                 <defs>
-                    <!-- Enhanced gradients -->
-                    <linearGradient id="gbGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#1a1a1a"/>
-                        <stop offset="100%" stop-color="#0d0d0d"/>
-                    </linearGradient>
-                    <linearGradient id="gbGradientCore" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#1f1f1f"/>
-                        <stop offset="100%" stop-color="#0a0a0a"/>
-                    </linearGradient>
-                    <linearGradient id="gbGradientRed" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="rgba(239,68,68,0.15)"/>
-                        <stop offset="100%" stop-color="rgba(239,68,68,0.05)"/>
-                    </linearGradient>
-                    <!-- Glow filters -->
-                    <filter id="gbGlowRed" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                    <filter id="gbGlowGreen" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="3" result="blur"/>
-                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
+                    <pattern id="gbGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M40 0L0 0 0 40" fill="none" stroke="#111" stroke-width="1"/>
+                    </pattern>
                 </defs>
-                
-                <!-- Background grid pattern -->
-                <pattern id="gbGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-                    <path d="M60 0L0 0 0 60" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
-                </pattern>
                 <rect width="100%" height="100%" fill="url(#gbGrid)"/>
                 
                 <!-- ====== MISSION HEADER ====== -->
                 <g class="gb-node" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
-                    <rect class="gb-box" x="${-bwLg / 2}" y="-28" width="${bwLg}" height="56" rx="4" 
-                          fill="url(#gbGradient)" stroke="${c.border}" stroke-width="1.5"/>
+                    <rect class="gb-box" x="${-bwLg / 2}" y="-28" width="${bwLg}" height="56" 
+                          fill="#000" stroke="${c.border}" stroke-width="1"/>
                     <text x="0" y="-4" text-anchor="middle" fill="${c.text}" 
                           font-size="16" font-weight="900" font-family="Inter" letter-spacing="-0.05em">
-                        ${(job.title || 'SELECT MISSION').substring(0, 26).toUpperCase()}
+                        ${(job.title || 'SELECT MISSION').substring(0, 30).toUpperCase()}
                     </text>
-                    <text x="0" y="16" text-anchor="middle" fill="${c.dim}" 
-                          font-size="10" font-family="JetBrains Mono" letter-spacing="0.2em">BRIEFING</text>
+                    <text x="0" y="16" text-anchor="middle" fill="${c.sub}" 
+                          font-size="10" font-family="JetBrains Mono" letter-spacing="0.2em">BRIEFING INGEST</text>
                 </g>
                 <line class="gb-line" x1="${cx}" y1="${y.mission + 28}" x2="${cx}" y2="${y.core - bhLg / 2}"/>
                 
-                <!-- ====== DOUGLAS CORE (Main orchestrator) ====== -->
+                <!-- ====== DOUGLAS CORE ====== -->
                 <g class="gb-node" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.core})">
-                    <!-- Outer glow ring -->
-                    <rect x="${-bwLg / 2 - 4}" y="${-bhLg / 2 - 4}" width="${bwLg + 8}" height="${bhLg + 8}" rx="8" 
-                          fill="none" stroke="${c.red}" stroke-opacity="0.2" stroke-width="1"/>
-                    <!-- Main box -->
-                    <rect class="gb-box" x="${-bwLg / 2}" y="${-bhLg / 2}" width="${bwLg}" height="${bhLg}" rx="6" 
-                          fill="url(#gbGradientRed)" stroke="${c.red}" stroke-width="2" filter="url(#gbGlowRed)"/>
-                    <text class="gb-title" x="0" y="-8" text-anchor="middle" fill="${c.red}" 
+                    <rect class="gb-box" x="${-bwLg / 2}" y="${-bhLg / 2}" width="${bwLg}" height="${bhLg}" 
+                          fill="#000" stroke="${c.red}" stroke-width="2"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${c.red}" 
                           font-size="24" font-weight="900" font-family="Inter" letter-spacing="-0.05em">DOUGLAS</text>
-                    <text x="0" y="18" text-anchor="middle" fill="${c.dim}" 
+                    <text x="0" y="18" text-anchor="middle" fill="${c.sub}" 
                           font-size="11" font-family="JetBrains Mono" letter-spacing="0.25em">ORCHESTRATOR</text>
                 </g>
                 <line class="gb-line gb-flow" x1="${cx}" y1="${y.core + bhLg / 2}" x2="${cx}" y2="${y.val - bh / 2}"/>
                 
                 <!-- ====== VALIDATOR ====== -->
                 <g class="gb-node" onclick="showNodeDetails('validator')" transform="translate(${cx},${y.val})">
-                    ${stepStatus('validator') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('validator')}" stroke-width="1.5"
-                          ${stepStatus('validator') !== 'pending' ? 'filter="url(#gbGlowGreen)"' : ''}/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">VALIDATOR</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('validator')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('validator') === 'done' ? c.text : (stepStatus('validator') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">VALIDATOR</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">GATEKEEPER</text>
-                    ${stepStatus('validator') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <!-- Split to parallel nodes -->
+                
                 <path class="gb-line gb-flow" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colL} ${y.val + bh / 2 + 25} L${colL} ${y.research - bh / 2}" fill="none"/>
                 <path class="gb-line gb-flow" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colR} ${y.val + bh / 2 + 25} L${colR} ${y.research - bh / 2}" fill="none"/>
                 
                 <!-- ====== AUDIENCE (Left) ====== -->
                 <g class="gb-node" onclick="showNodeDetails('audience')" transform="translate(${colL},${y.research})">
-                    ${stepStatus('audience') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('audience')}" stroke-width="1.5"/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">AUDIENCE</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('audience')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('audience') === 'done' ? c.text : (stepStatus('audience') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">AUDIENCE</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">PSYCHOGRAPHICS</text>
-                    ${stepStatus('audience') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
                 
                 <!-- ====== RESEARCH (Right) ====== -->
                 <g class="gb-node" onclick="showNodeDetails('research')" transform="translate(${colR},${y.research})">
-                    ${stepStatus('research') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('research')}" stroke-width="1.5"/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">RESEARCH</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('research')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('research') === 'done' ? c.text : (stepStatus('research') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">RESEARCH</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">CONTEXT</text>
-                    ${stepStatus('research') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <!-- Merge lines -->
+
                 <path class="gb-line gb-flow" d="M${colL} ${y.research + bh / 2} L${colL} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25} L${cx} ${y.claims - bh / 2}" fill="none"/>
                 <path class="gb-line gb-flow" d="M${colR} ${y.research + bh / 2} L${colR} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25}" fill="none"/>
                 
                 <!-- ====== CLAIMS ====== -->
                 <g class="gb-node" onclick="showNodeDetails('claims')" transform="translate(${cx},${y.claims})">
-                    ${stepStatus('claims') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('claims')}" stroke-width="1.5"/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CLAIMS</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('claims')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('claims') === 'done' ? c.text : (stepStatus('claims') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CLAIMS</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">TRUTH FILTER</text>
-                    ${stepStatus('claims') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
                 <line class="gb-line gb-flow" x1="${cx}" y1="${y.claims + bh / 2}" x2="${cx}" y2="${y.copy - bh / 2}"/>
                 
                 <!-- ====== COPYWRITER ====== -->
                 <g class="gb-node" onclick="showNodeDetails('copy')" transform="translate(${cx},${y.copy})">
-                    ${stepStatus('copy') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('copy')}" stroke-width="1.5"/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">COPYWRITER</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">COPYWRITER</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">CREATION</text>
-                    ${stepStatus('copy') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <!-- Split to review nodes -->
+
                 <path class="gb-line gb-flow" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colL} ${y.copy + bh / 2 + 25} L${colL} ${y.review - bh / 2}" fill="none"/>
                 <path class="gb-line gb-flow" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colR} ${y.copy + bh / 2 + 25} L${colR} ${y.review - bh / 2}" fill="none"/>
                 
                 <!-- ====== BRAND (Left) ====== -->
                 <g class="gb-node" onclick="showNodeDetails('brand')" transform="translate(${colL},${y.review})">
-                    ${stepStatus('brand') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('brand')}" stroke-width="1.5"/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">BRAND</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('brand')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('brand') === 'done' ? c.text : (stepStatus('brand') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">BRAND</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">GUARDIAN</text>
-                    ${stepStatus('brand') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
                 
                 <!-- ====== CRITIC (Right) ====== -->
                 <g class="gb-node" onclick="showNodeDetails('critic')" transform="translate(${colR},${y.review})">
-                    ${stepStatus('critic') === 'done' ? `<rect x="${-bw / 2 - 3}" y="${-bh / 2 - 3}" width="${bw + 6}" height="${bh + 6}" rx="5" fill="none" stroke="${c.done}" stroke-opacity="0.3" stroke-width="1"/>` : ''}
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" rx="4" 
-                          fill="url(#gbGradient)" stroke="${stepColor('critic')}" stroke-width="1.5"/>
-                    <text class="gb-title" x="0" y="-6" text-anchor="middle" fill="${c.text}" 
-                          font-size="15" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CRITIC</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.dim}" 
+                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
+                          fill="#000" stroke="${stepColor('critic')}" stroke-width="1"/>
+                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('critic') === 'done' ? c.text : (stepStatus('critic') === 'active' ? c.red : c.sub)}" 
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CRITIC</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
                           font-size="10" font-family="JetBrains Mono">PRE-CHECK</text>
-                    ${stepStatus('critic') === 'done' ? `<circle cx="${bw / 2 - 12}" cy="${-bh / 2 + 12}" r="6" fill="${c.done}"/><text x="${bw / 2 - 12}" y="${-bh / 2 + 16}" text-anchor="middle" fill="#000" font-size="8" font-weight="bold">✓</text>` : ''}
                 </g>
-                <!-- Merge to Opus -->
+
                 <path class="gb-line gb-flow" d="M${colL} ${y.review + bh / 2} L${colL} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25} L${cx} ${y.opus - bhLg / 2}" fill="none"/>
                 <path class="gb-line gb-flow" d="M${colR} ${y.review + bh / 2} L${colR} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25}" fill="none"/>
                 
                 <!-- ====== OPUS (Final review) ====== -->
                 <g class="gb-node" onclick="showNodeDetails('opus')" transform="translate(${cx},${y.opus})">
-                    ${stepStatus('opus') === 'done' ? `<rect x="${-bwLg / 2 + 20}" y="${-bhLg / 2 - 4}" width="${bwLg - 40 + 8}" height="${bhLg + 8}" rx="10" fill="none" stroke="${c.done}" stroke-opacity="0.4" stroke-width="2"/>` : ''}
-                    <rect class="gb-box" x="${-bwLg / 2 + 20}" y="${-bhLg / 2}" width="${bwLg - 40}" height="${bhLg}" rx="8" 
-                          fill="url(#gbGradientCore)" stroke="${stepColor('opus')}" stroke-width="2"
-                          ${stepStatus('opus') === 'done' ? 'filter="url(#gbGlowGreen)"' : ''}/>
-                    <text class="gb-title" x="0" y="-8" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.done : c.text}" 
+                    <rect class="gb-box" x="${-bwLg / 2 + 20}" y="${-bhLg / 2}" width="${bwLg - 40}" height="${bhLg}" 
+                          fill="#000" stroke="${stepColor('opus')}" stroke-width="2"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.done : (stepStatus('opus') === 'active' ? c.red : c.sub)}" 
                           font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">OPUS</text>
-                    <text x="0" y="18" text-anchor="middle" fill="${c.dim}" 
+                    <text x="0" y="18" text-anchor="middle" fill="${c.sub}" 
                           font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">FINAL VERDICT</text>
-                    ${stepStatus('opus') === 'done' ? `<circle cx="${(bwLg - 40) / 2 - 16}" cy="${-bhLg / 2 + 16}" r="8" fill="${c.done}"/><text x="${(bwLg - 40) / 2 - 16}" y="${-bhLg / 2 + 20}" text-anchor="middle" fill="#000" font-size="10" font-weight="bold">✓</text>` : ''}
                 </g>
                 <line class="gb-line" x1="${cx}" y1="${y.opus + bhLg / 2}" x2="${cx}" y2="${y.out - 24}"/>
                 
                 <!-- ====== DELIVERY OUTPUT ====== -->
                 <g class="gb-node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
-                    <rect class="gb-box" x="${-bwLg / 2 + 10}" y="-24" width="${bwLg - 20}" height="48" rx="6" 
-                          fill="${job.steps?.opus?.status === 'done' ? c.red : '#0f0f0f'}" 
-                          stroke="${job.steps?.opus?.status === 'done' ? '#ffffff' : c.border}" 
-                          stroke-width="${job.steps?.opus?.status === 'done' ? '2' : '1.5'}"
-                          ${job.steps?.opus?.status === 'done' ? 'filter="url(#gbGlowRed)"' : ''}/>
+                    <rect class="gb-box" x="${-bwLg / 2 + 10}" y="-24" width="${bwLg - 20}" height="48" 
+                          fill="${job.steps?.opus?.status === 'done' ? c.red : '#000'}" 
+                          stroke="${job.steps?.opus?.status === 'done' ? c.red : c.border}" 
+                          stroke-width="1"/>
                     <text x="0" y="6" text-anchor="middle" 
-                          fill="${job.steps?.opus?.status === 'done' ? '#ffffff' : c.dim}" 
+                          fill="${job.steps?.opus?.status === 'done' ? '#FFFFFF' : c.sub}" 
                           font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.2em">
-                        ${job.steps?.opus?.status === 'done' ? '★ DELIVERY READY ★' : 'AWAITING DELIVERY'}
+                        ${job.steps?.opus?.status === 'done' ? 'DELIVERY READY' : 'AWAITING DELIVERY'}
                     </text>
                 </g>
                 
                 <!-- Status legend -->
                 <g transform="translate(40, ${H - 60})">
-                    <text x="0" y="0" fill="${c.dim}" font-size="10" font-family="JetBrains Mono" letter-spacing="0.15em">STATUS</text>
-                    <circle cx="0" cy="20" r="5" fill="${c.pending}"/>
-                    <text x="14" y="24" fill="${c.dim}" font-size="10" font-family="JetBrains Mono">PENDING</text>
-                    <circle cx="100" cy="20" r="5" fill="${c.red}"/>
-                    <text x="114" y="24" fill="${c.dim}" font-size="10" font-family="JetBrains Mono">ACTIVE</text>
-                    <circle cx="190" cy="20" r="5" fill="${c.done}"/>
-                    <text x="204" y="24" fill="${c.dim}" font-size="10" font-family="JetBrains Mono">DONE</text>
+                    <text x="0" y="0" fill="${c.sub}" font-size="10" font-family="JetBrains Mono" letter-spacing="0.15em">STATUS</text>
+                    <circle cx="0" cy="20" r="4" fill="${c.border}"/>
+                    <text x="14" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">PENDING</text>
+                    <circle cx="100" cy="20" r="4" fill="${c.red}"/>
+                    <text x="114" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">ACTIVE</text>
+                    <circle cx="190" cy="20" r="4" fill="${c.done}"/>
+                    <text x="204" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">DONE</text>
                 </g>
             </svg>`;
 
@@ -918,45 +845,47 @@ BRIEFING
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
 
-        // NODE DETAILS (Game Board) - Human Friendly Format
+        // NODE DETAILS (Game Board) - Premium Card Layout
         function showNodeDetails(nodeKey) {
             const panel = document.getElementById('node-details-panel');
             const titleEl = document.getElementById('detail-title');
             const contentEl = document.getElementById('detail-content');
 
             const nodeInfo = {
-                'mission': { name: 'Mission Objective', icon: '🎯', desc: 'O briefing original e parâmetros da campanha.' },
-                'douglas': { name: 'Douglas Core', icon: '🤖', desc: 'Orquestrador central que coordena todos os agentes do pipeline.' },
-                'validator': { name: 'Brief Validator', icon: '✓', desc: 'Valida o briefing e identifica lacunas de informação.' },
-                'audience': { name: 'Audience Analyst', icon: '👥', desc: 'Analisa o público-alvo e define perfis psicográficos.' },
-                'research': { name: 'Topic Researcher', icon: '🔍', desc: 'Pesquisa contexto, tendências e referências relevantes.' },
-                'claims': { name: 'Claims Checker', icon: '⚖️', desc: 'Verifica dados e higieniza afirmações para autoridade segura.' },
-                'copy': { name: 'Copywriter', icon: '✍️', desc: 'Criatividade pura - escreve o conteúdo final.' },
-                'brand': { name: 'Brand Guardians', icon: '🛡️', desc: 'Garante aderência ao tom, voz e posicionamento da marca.' },
-                'critic': { name: 'Critic Lite', icon: '💬', desc: 'Avaliação inicial rápida do conteúdo.' },
-                'opus': { name: 'Critic Opus', icon: '🏆', desc: 'Avaliação final profunda - veredicto de aprovação.' },
-                'output': { name: 'Final Delivery', icon: '📤', desc: 'Conteúdo final aprovado e pronto para publicação.' }
+                'mission': { name: 'MISSION BRIEF', icon: 'TARGET', desc: 'Campaign objectives and parameters.' },
+                'douglas': { name: 'DOUGLAS CORE', icon: 'CPU', desc: 'Central orchestration and pipeline management.' },
+                'validator': { name: 'BRIEF VALIDATOR', icon: 'GATE', desc: 'Validates input and identifies gaps.' },
+                'audience': { name: 'AUDIENCE ANALYST', icon: 'PROFILE', desc: 'Psychographic profiling and segmentation.' },
+                'research': { name: 'TOPIC RESEARCHER', icon: 'SEARCH', desc: 'Contextual analysis and trend sourcing.' },
+                'claims': { name: 'CLAIMS CHECKER', icon: 'SHIELD', desc: 'Fact-checking and authority hygiene.' },
+                'copy': { name: 'COPYWRITER', icon: 'WRITE', desc: 'Creative generation and messaging.' },
+                'brand': { name: 'BRAND GUARDIAN', icon: 'LOCK', desc: 'Tone, voice, and positioning enforcement.' },
+                'critic': { name: 'CRITIC LITE', icon: 'SCAN', desc: 'Initial content quality assessment.' },
+                'opus': { name: 'CRITIC OPUS', icon: 'STAR', desc: 'Final detailed review and approval.' },
+                'output': { name: 'FINAL DELIVERY', icon: 'BOX', desc: 'Production-ready asset package.' }
             };
 
-            const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: '📄', desc: '' };
+            const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: 'FILE', desc: '' };
             titleEl.textContent = info.name;
 
             // Get content from currentJob
             const job = window.currentJob;
             if (!job) {
-                contentEl.innerHTML = renderEmptyState('Nenhum job carregado.');
+                contentEl.innerHTML = renderEmptyState('SYSTEM IDLE');
                 panel.classList.remove('translate-x-full');
                 return;
             }
 
-            // Build the content
+            // Build the content header
             let html = `
-                <div class="mb-8 p-6 bg-[#0a0a0a] border border-[#222] rounded-lg">
-                    <div class="flex items-center gap-4 mb-4">
-                        <span class="text-3xl">${info.icon}</span>
+                <div class="mb-8 p-6 bg-[#000] border border-[#333]">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-[#111] border border-[#222]">
+                            <span class="text-[#DC2626] font-mono text-xs font-bold tracking-widest">${info.icon}</span>
+                        </div>
                         <div>
-                            <h4 class="text-white font-bold text-lg tracking-tight" style="font-family: Inter;">${info.name}</h4>
-                            <p class="text-[#888] text-sm">${info.desc}</p>
+                            <h4 class="text-white font-black text-xl tracking-tighter uppercase" style="font-family: Inter;">${info.name}</h4>
+                            <p class="text-[#666] text-xs font-mono mt-1 tracking-wide">${info.desc.toUpperCase()}</p>
                         </div>
                     </div>
                 </div>
@@ -966,18 +895,21 @@ BRIEFING
             if (nodeKey === 'mission') {
                 html += `
                     <div class="space-y-4">
-                        <div class="p-5 bg-[#111] border-l-4 border-[#DC2626]">
-                            <span class="text-[#888] text-xs uppercase tracking-widest">Campanha</span>
-                            <p class="text-white text-xl mt-2" style="font-family: Inter; font-weight: 900;">${job.title || 'Sem título'}</p>
+                        <div class="p-6 bg-[#000] border border-[#222]">
+                            <span class="text-[#666] font-mono text-[10px] uppercase tracking-widest block mb-2">CAMPAIGN TITLE</span>
+                            <p class="text-white text-2xl font-black tracking-tight" style="font-family: Inter;">${job.title || 'UNTITLED OPERATION'}</p>
                         </div>
                     </div>
                 `;
             } else if (nodeKey === 'douglas') {
                 html += `
                     <div class="space-y-4">
-                        <div class="p-5 bg-[#0a0a0a] border border-[#222]">
-                            <span class="text-[#888] text-xs uppercase tracking-widest">Função</span>
-                            <p class="text-[#ccc] mt-2">Coordena a execução de todos os agentes, toma decisões de roteamento e gerencia o fluxo do pipeline.</p>
+                        <div class="p-6 bg-[#000] border border-[#222]">
+                            <span class="text-[#666] font-mono text-[10px] uppercase tracking-widest block mb-2">SYSTEM STATUS</span>
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 bg-[#DC2626]"></div>
+                                <p class="text-white font-mono text-sm">ONLINE // ORCHESTRATING</p>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -988,12 +920,12 @@ BRIEFING
                     html += formatAgentOutput(step.output, nodeKey);
                 } else if (step?.status === 'done') {
                     html += `
-                        <div class="p-5 bg-[#111] border-l-4 border-white">
-                            <span class="text-white text-lg">✓ Concluído</span>
+                        <div class="p-6 bg-[#000] border border-[#333] flex items-center gap-3">
+                            <span class="text-white font-mono text-sm">PROCESS COMPLETE</span>
                         </div>
                     `;
                 } else {
-                    html += renderEmptyState('Aguardando execução...');
+                    html += renderEmptyState('AWAITING ACTIVATION');
                 }
             }
 
@@ -1003,15 +935,15 @@ BRIEFING
 
         function renderEmptyState(message) {
             return `
-                <div class="flex items-center justify-center h-32 text-[#555]">
-                    <p>${message}</p>
+                <div class="flex items-center justify-center h-32 border border-dashed border-[#222]">
+                    <p class="text-[#444] font-mono text-xs tracking-widest">${message}</p>
                 </div>
             `;
         }
 
         function formatAgentOutput(rawOutput, nodeKey) {
             // Try to extract structured data from markdown/json
-            let html = '<div class="space-y-4">';
+            let html = '<div class="space-y-6">';
 
             // Check if it's JSON
             const jsonMatch = rawOutput.match(/```json\n([\s\S]*?)\n```/);
@@ -1037,19 +969,27 @@ BRIEFING
             if (Array.isArray(data)) {
                 data.forEach((item, i) => {
                     html += `
-                        <div class="p-5 bg-[#0a0a0a] border border-[#222] rounded">
-                            <span class="text-[#DC2626] text-xs font-bold">#${i + 1}</span>
-                            <p class="text-white mt-2">${typeof item === 'string' ? item : JSON.stringify(item, null, 2)}</p>
+                        <div class="bg-[#000] border border-[#222] p-0 overflow-hidden">
+                            <div class="bg-[#111] px-4 py-2 border-b border-[#222] flex justify-between items-center">
+                                <span class="text-[#ccc] font-mono text-[10px] tracking-widest">ITEM ${String(i + 1).padStart(2, '0')}</span>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-white text-sm leading-relaxed font-mono">${typeof item === 'string' ? item : JSON.stringify(item, null, 2)}</p>
+                            </div>
                         </div>
                     `;
                 });
             } else if (typeof data === 'object') {
                 Object.entries(data).forEach(([key, value]) => {
-                    const label = key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').toUpperCase();
+                    const label = key.replace(/_/g, ' ').toUpperCase();
                     html += `
-                        <div class="p-5 bg-[#111] border-l-4 border-[#333]">
-                            <span class="text-[#888] text-xs uppercase tracking-widest">${label}</span>
-                            <p class="text-white mt-2 text-lg" style="font-family: Inter;">${formatValue(value)}</p>
+                        <div class="bg-[#000] border border-[#222] mb-4">
+                            <div class="px-4 py-2 border-b border-[#222]">
+                                <span class="text-[#666] font-mono text-[10px] uppercase tracking-widest">${label}</span>
+                            </div>
+                            <div class="p-5">
+                                <p class="text-white text-base font-medium" style="font-family: Inter;">${formatValue(value)}</p>
+                            </div>
                         </div>
                     `;
                 });
@@ -1060,10 +1000,10 @@ BRIEFING
 
         function formatValue(value) {
             if (Array.isArray(value)) {
-                return value.map(v => `<span class="inline-block bg-[#222] px-3 py-1 mr-2 mb-2 text-sm rounded">${v}</span>`).join('');
+                return value.map(v => `<span class="inline-block border border-[#333] px-3 py-1 mr-2 mb-2 text-xs font-mono text-[#ccc]">${v}</span>`).join('');
             }
             if (typeof value === 'object' && value !== null) {
-                return `<pre class="text-sm text-[#888] mt-2 overflow-x-auto">${JSON.stringify(value, null, 2)}</pre>`;
+                return `<pre class="text-xs text-[#888] font-mono overflow-x-auto whitespace-pre-wrap">${JSON.stringify(value, null, 2)}</pre>`;
             }
             return value;
         }
@@ -1080,16 +1020,18 @@ BRIEFING
 
                 if (title) {
                     html += `
-                        <div class="p-5 bg-[#0a0a0a] border border-[#222] rounded">
-                            <h5 class="text-white font-bold mb-3" style="font-family: Inter; letter-spacing: -0.02em;">${title}</h5>
-                            <div class="text-[#999] text-sm leading-relaxed prose-content">
+                        <div class="bg-[#000] border border-[#222] mb-6">
+                            <div class="bg-[#050505] px-6 py-4 border-b border-[#222]">
+                                <h5 class="text-white font-black text-sm uppercase tracking-wide" style="font-family: Inter;">${title.toUpperCase()}</h5>
+                            </div>
+                            <div class="p-6 text-[#ccc] text-sm leading-relaxed font-mono">
                                 ${formatMarkdownContent(content)}
                             </div>
                         </div>
                     `;
                 } else if (content) {
                     html += `
-                        <div class="p-5 bg-[#111] text-[#ccc] text-sm leading-relaxed">
+                        <div class="bg-[#000] border border-[#222] p-6 text-[#ccc] text-sm leading-relaxed font-mono mb-6">
                             ${formatMarkdownContent(content)}
                         </div>
                     `;
@@ -1099,7 +1041,7 @@ BRIEFING
             // Fallback if no sections found
             if (!html) {
                 html = `
-                    <div class="p-5 bg-[#111] text-[#ccc] text-sm leading-relaxed">
+                    <div class="bg-[#000] border border-[#222] p-6 text-[#ccc] text-sm leading-relaxed font-mono">
                         ${formatMarkdownContent(markdown)}
                     </div>
                 `;
@@ -1109,13 +1051,13 @@ BRIEFING
         }
 
         function formatMarkdownContent(content) {
-            // Convert bullet points to styled list
+            // Convert bullet points to styled list and other formatting
             let formatted = content
-                .replace(/^[-*]\s+(.+)$/gm, '<li class="flex items-start gap-3 mb-2"><span class="text-[#DC2626] mt-1">•</span><span>$1</span></li>')
-                .replace(/(<li.*<\/li>)+/gs, '<ul class="list-none">$&</ul>')
-                .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>')
-                .replace(/`([^`]+)`/g, '<code class="bg-[#222] px-2 py-1 text-[#DC2626] text-xs rounded">$1</code>')
-                .replace(/\n\n/g, '</p><p class="mt-3">')
+                .replace(/^[-*]\s+(.+)$/gm, '<li class="flex items-start gap-3 mb-3"><span class="text-[#DC2626] text-[10px] mt-1 square-bullet">■</span><span>$1</span></li>')
+                .replace(/(<li.*<\/li>)+/gs, '<ul class="list-none my-2">$&</ul>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+                .replace(/`([^`]+)`/g, '<code class="bg-[#111] border border-[#333] px-1 py-0.5 text-[#DC2626] text-xs">$1</code>')
+                .replace(/\n\n/g, '</p><p class="mt-4">')
                 .replace(/\n/g, '<br>');
 
             return `<p>${formatted}</p>`;
