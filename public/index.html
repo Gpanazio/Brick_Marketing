@@ -311,47 +311,47 @@ BRIEFING
             }
         }
 
-// Mock Data Completo para Preview
+// Dados Reais do Squad Run: "Quem não sabe, ensina"
 const previewJob = {
-    id: 'preview_001',
-    title: 'Quem não sabe, ensina (Lançamento B2B)',
+    id: '1770068268705',
+    title: 'Quem não sabe, ensina',
     status: 'done',
     steps: {
-        'mason': {
+        'douglas': {
             status: 'active',
-            output: "## MASON CORE LOG\n\n- **Routing:** Briefing recebido via Webhook.\n- **Context:** Cliente 'Brick Education'. Histórico: 3 lançamentos anteriores.\n- **Directive:** Priorizar autoridade técnica sobre hype de vendas.\n- **Decision:** Encaminhar para Squad Alpha (Full Cycle)."
+            output: "## DOUGLAS CORE LOG\n\n**Run ID:** 1770068268705\n**Timestamp:** 2026-02-02T21:38:00Z\n\n### Briefing Recebido\n- **Conceito:** Posicionamento anti vendedor de curso\n- **Público:** LinkedIn — diretores de criação, CMOs, heads de marketing\n- **Tom:** Bold, unapologetic, anti-guru\n- **Contexto:** Aquecimento lançamento Brick AI (23/02)\n\n### Decisões de Roteamento\n- Squad: Full Cycle (8 agentes)\n- Prioridade: Alta\n- Directive: Autoridade real > hype de vendas"
         },
         'validator': {
             status: 'done',
-            output: "## BRIEF VALIDATOR REPORT\n\n**STATUS: PASS** (com ressalvas)\n\n### Lacunas Identificadas:\n1. **Canal de Distribuição:** Não especificado. *Assumed: LinkedIn + Email.*\n2. **Budget:** Ausente. *Ignorado para fase criativa.*\n\n### Perguntas ao Humano:\n- O tom deve ser 'Professor' ou 'Mentor'? (Definido como Mentor).\n\n**Score de Clareza:** 85/100."
+            output: "## BRIEF VALIDATOR ✅\n**Modelo:** Gemini Flash\n**Status:** PASS\n\n### Briefing Estruturado\n- **Objetivo:** Posicionamento anti vendedor de curso\n- **Público:** LinkedIn — diretores de criação, CMOs\n- **Formato:** Post LinkedIn (texto bold)\n- **Tom:** Bold, unapologetic, anti-guru\n\n### Assumptions\n- Canal default: LinkedIn\n- Quantidade: 3 variações\n- CTA: Implícito (curiosidade)"
         },
         'audience': {
             status: 'done',
-            output: "## AUDIENCE ANALYST\n\n**Target:** Gestores de TI e CTOs.\n**Dores Reais:**\n- Turnover alto da equipe técnica.\n- Sobrecarga operacional ('apagando incêndio').\n- Medo de obsolescência tecnológica.\n\n**Linguagem:** Técnica, direta, sem buzzwords de marketing. Valorizam métricas de eficiência."
+            output: "## AUDIENCE ANALYST 📊\n**Modelo:** Gemini Flash\n\n### Perfil do Público\n- **Cargo:** Diretores de Criação, CMOs, Heads de Marketing\n- **Senioridade:** Pleno/Sênior (35-50 anos)\n- **Dor Principal:** Cansados de ver 'especialistas' que nunca produziram nada vendendo curso\n\n### Insights\n- Público rejeita linguagem de startup/growth hacker\n- Valorizam experiência prática sobre teoria\n- Respondem bem a tom direto e até provocativo\n\n### Gatilhos\n- Autenticidade, track record, anti-hype, resultados tangíveis"
         },
         'research': {
             status: 'done',
-            output: "## TOPIC RESEARCHER\n\n**Contexto de Mercado:**\n- Crescimento de 40% em edtechs B2B.\n- Tendência: 'Upskilling' interno vs contratação externa.\n\n**Referências:**\n- Relatório Gartner 2025 sobre Talent Gap.\n- Case de sucesso da IBM (P-TECH).\n\n**Angle:** Ensinar não é caridade, é estratégia de retenção."
+            output: "## TOPIC RESEARCHER 🔍\n**Modelo:** Gemini Flash\n\n### Contexto de Mercado\n- Explosão de 'infoprodutores de IA' em 2025-2026\n- Saturação de cursos de 'como criar vídeos com IA'\n- Diferencial Brick: 10 anos de produção real\n\n### Referências de Tom (Anti-Guru)\n- Naval Ravikant: 'Specific knowledge cannot be taught'\n- Paul Graham: 'Startups = do things that don't scale'\n- **Brick: 'Vision over Prompt'**\n\n### Angle\nMercado começa a separar 'quem faz' de 'quem ensina'"
         },
         'claims': {
             status: 'done',
-            output: "## CLAIMS CHECKER\n\n**Verificações:**\n- ❌ 'Aumenta retenção em 100%' -> **Alterado para** 'Pode dobrar a retenção' (Fonte: Estudo X).\n- ✅ 'Custo de reposição é 3x salário' -> **Verificado** (Fonte: HR Tech Report).\n\n**Status Final:** Seguro para publicação."
+            output: "## CLAIMS CHECKER ✓\n**Modelo:** Gemini Flash\n\n### Verificações\n\n| Claim | Status | Ação |\n|-------|--------|------|\n| '10 anos de set' | ✅ VÁLIDO | Mantém (verificável) |\n| 'Nunca produziram um filme' | ⚠️ GENÉRICO | Ajustado: 'raramente pisaram num set' |\n| 'Zero cursos vendidos' | ✅ VÁLIDO | Mantém |\n\n**Status Final:** Seguro para publicação"
         },
         'copy': {
             status: 'done',
-            output: "## COPYWRITER (Claude Sonnet)\n\n**Headline:** Pare de contratar seniors. Comece a criá-los.\n\n**Body:**\nO mercado não está seco. Ele está verde. Enquanto você briga por talentos prontos pagando salários inflacionados, seu concorrente está transformando juniores em arquitetos.\n\nEnsinar não é 'perda de tempo'. É o único moat que resta em 2026.\n\n**CTA:** Conheça o Brick Education For Business."
+            output: "## COPYWRITER ✍️\n**Modelo:** Claude Sonnet 4\n\n### OUTPUT FINAL (Score: 91%)\n\n---\n\nA cada dia nasce um novo 'especialista em IA para vídeo'.\n\nCurso de 12 módulos. Comunidade exclusiva. Mentorias semanais.\n\nCurioso: raramente pisaram num set.\nNunca coordenaram uma equipe de 20 pessoas às 4h da manhã.\nNunca ouviram um cliente dizer 'ficou uma merda, refaz'.\n\nEu tenho 10 anos disso.\n\nE posso garantir: IA não substitui direção.\nEla amplifica quem já sabe o que está fazendo.\n\n**Quem não sabe pintar, só faz sujeira — com ou sem pincel novo.**\n\n#ProductionEnhanced #BrickAI"
         },
         'brand': {
             status: 'done',
-            output: "## BRAND GUARDIAN\n\n**Style Check:**\n- Tom: Aprovado (Sério, Mentor).\n- Palavras proibidas encontradas: 'Disruptivo' (Removido).\n\n**Positioning Check:**\n- A oferta está clara? Sim.\n- A promessa é crível? Sim."
+            output: "## BRAND GUARDIANS 🛡️\n\n### STYLE GUARDIAN\n| Critério | Score |\n|----------|-------|\n| Tom Bold | ✅ 10/10 |\n| Anti-jargão | ✅ 9/10 |\n| Proibições | ✅ 10/10 |\n| Personalidade | ✅ 9/10 |\n\n**Score Style:** 95%\n\n### POSITIONING GUARDIAN\n| Critério | Score |\n|----------|-------|\n| Diferencial claro | ✅ 9/10 |\n| Autoridade | ✅ 10/10 |\n| Anti-hype | ✅ 10/10 |\n| CTA implícito | ✅ 8/10 |\n\n**Score Positioning:** 93%"
         },
         'critic': {
             status: 'done',
-            output: "## CRITIC LITE\n\n**Nota:** 88/100\n\n**Pontos Fortes:** Headline provocativa. Argumento lógico sólido.\n**Pontos Fracos:** CTA poderia ser mais urgente.\n\n**Veredito:** APROVADO para fase final."
+            output: "## CRITIC LITE 🔍\n**Modelo:** Gemini Flash\n**Threshold:** 65%\n\n### Scores por Variação\n\n| Variação | Score | Status |\n|----------|-------|--------|\n| V1 (Curta) | 82% | ✅ Aprovado |\n| V2 (Média) | **90%** | ✅ Aprovado |\n| V3 (Story) | 87% | ✅ Aprovado |\n\n**Recomendação:** V2 é a mais forte.\n\n### Rubrica Aplicada\n- Clareza da Oferta: 22/25\n- Dor Reconhecível: 19/20\n- Prova/Credibilidade: 18/20\n- On-brand: 19/20\n- CTA Específico: 12/15"
         },
         'opus': {
             status: 'done',
-            output: "## CRITIC OPUS (Final Judgement)\n\n**DECISÃO: PUBLICAR**\n\nEste texto respeita a inteligência do público-alvo. Não apela para gatilhos baratos de escassez. Constrói autoridade ao desafiar o senso comum ('contratar vs criar').\n\n**Ajuste Final:** N/A.\n**Assinatura:** OPUS-PRIME-V4."
+            output: "## CRITIC OPUS ⚖️\n**Modelo:** Claude Opus\n**Status:** APROVADO\n\n### Análise Final V2\n\n> Melhor equilíbrio. Contexto suficiente pra não parecer gratuito, punch no final. A frase 'Quem não sabe pintar, só faz sujeira' é memorável.\n\n**Score Opus: 91%**\n\n---\n\n### DECISÃO: ✅ PUBLICAR\n\n**Tempo total:** 2m 34s\n**Loops:** 0\n**Próximo passo:** Aguardando aprovação humana\n\n*Assinatura: DOUGLAS-OPUS-V4*"
         }
     }
 };
@@ -410,10 +410,10 @@ function renderGameBoard(data) {
                 
                 <line x1="300" y1="195" x2="300" y2="235" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
                 
-                <!-- MASON CORE -->
-                <g class="node-box" onclick="showNodeDetails('mason')" transform="translate(300, 300)">
+                <!-- DOUGLAS CORE -->
+                <g class="node-box" onclick="showNodeDetails('douglas')" transform="translate(300, 300)">
                     <rect x="-190" y="-60" width="380" height="120" fill="rgba(0,0,0,0.9)" stroke="${colors.red}" stroke-width="2" rx="5" stroke-dasharray="12 6"/>
-                    <text x="0" y="-15" text-anchor="middle" fill="${colors.red}" font-size="30" font-weight="bold" letter-spacing="0.08em">MASON CORE</text>
+                    <text x="0" y="-15" text-anchor="middle" fill="${colors.red}" font-size="30" font-weight="bold" letter-spacing="0.08em">DOUGLAS CORE</text>
                     <text x="0" y="18" text-anchor="middle" fill="${colors.redDim}" font-size="14">Central Cognitive Authority</text>
                     <text x="0" y="40" text-anchor="middle" fill="#555" font-size="11">(Truth / Consistency / Control)</text>
                 </g>
