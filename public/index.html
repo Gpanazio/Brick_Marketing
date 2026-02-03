@@ -1,2260 +1,336 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BRICK AI // WAR ROOM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --brick-black: #000000;
-            --brick-red: #DC2626;
-            --brick-white: #FFFFFF;
-            --brick-gray: #333333;
+        :root { --brick-red: #DC2626; --brick-black: #000; --brick-white: #FFF; --brick-gray: #111; }
+        body { background-color: var(--brick-black); color: var(--brick-white); font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; height: 100vh; }
+        .font-brick { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.05em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* THE FAVORITE BACKGROUND */
+        .grid-bg { 
+            position: fixed; inset: 0; 
+            background-image: 
+                linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px); 
+            background-size: 25px 25px; 
+            pointer-events: none; z-index: -1; 
+        }
+        .vignette {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none; z-index: -1;
         }
 
-        body {
-            background-color: var(--brick-black);
-            color: var(--brick-white);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+        /* NODE STYLING (MATCHING IMAGE) */
+        .node { 
+            position: absolute; width: 320px;
+            background: rgba(5, 5, 5, 0.9); border: 1px solid #222; 
+            padding: 24px; cursor: move; z-index: 10;
+            transition: border-color 0.3s;
         }
+        .node:hover { border-color: #444; }
+        .node.node-douglas { border: 1px solid var(--brick-red); box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
+        .node.disabled { opacity: 0.3; filter: grayscale(1); }
+        
+        .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
+        .disabled .node-led { background: #333; box-shadow: none; }
+        
+        .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
+        .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
+        .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
 
-        .font-brick {
-            font-family: 'Inter', sans-serif;
-            font-weight: 900;
-            letter-spacing: -0.05em;
-        }
+        /* ANGULAR CONNECTIONS */
+        .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
+        .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
+        
+        .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
 
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
+        /* SIDE PANEL */
+        .side-panel { position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: #050505; border-left: 1px solid #222; z-index: 250; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .side-panel.open { right: 0; }
+        
+        /* INTERFACE ELEMENTS */
+        .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 8px 16px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
+        .btn-brick:hover { background: #fff; color: #000; }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #222; }
 
-        .column {
-            min-height: 80vh;
-            background: #000000;
-            border: 1px solid #222;
-        }
-
-        .card {
-            background: #000000;
-            border: 1px solid #222;
-            transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: #222;
-            transition: background 0.2s;
-        }
-
-        .card:hover {
-            border-color: var(--brick-red);
-        }
-
-        .card:hover::before {
-            background: var(--brick-red);
-        }
-
-        .modal-bg {
-            background: rgba(0, 0, 0, 0.98);
-        }
-
-        /* Noise Texture */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #000000;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #222;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--brick-red);
-        }
-
-        /* Subtle Animations */
-        @keyframes flow {
-            to {
-                stroke-dashoffset: -40;
-            }
-        }
-
-        @keyframes breathe {
-
-            0%,
-            100% {
-                stroke: #DC2626;
-                stroke-width: 2px;
-            }
-
-            50% {
-                stroke: #7f1d1d;
-                stroke-width: 2px;
-            }
-        }
+        #view-nodegraphic { display: none; }
+        #view-nodegraphic.active { display: block; }
     </style>
 </head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="vignette"></div>
 
-<body class="p-6">
-    <div class="noise-overlay"></div>
-    
-    <!-- WELCOME SCREEN -->
-    <div id="welcome-screen" class="relative z-10 min-h-[90vh] flex flex-col">
-        <header class="flex justify-between items-end mb-16 border-b border-white/10 pb-6">
+    <!-- MAIN INTERFACE -->
+    <div id="main-ui" class="h-screen flex flex-col p-8">
+        <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8 relative z-50">
             <div>
-                <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
-                    BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
+                    BRICK AI <span id="header-sector" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span>
                 </h1>
-                <div class="flex items-center gap-3 mt-2 font-mono text-[10px] tracking-[0.2em] text-[#555]">
-                    <span>CENTRO DE CRIAÇÃO</span>
-                </div>
+                <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">System_Active</div>
             </div>
-        </header>
-        
-        <div class="flex-1 flex flex-col items-center justify-center -mt-20">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-brick text-white tracking-tight mb-4">Bem vindo ao War Room</h2>
-                <p class="text-[#666] font-mono text-sm">O centro de criação AI da Brick</p>
-            </div>
-            
-            <div class="mb-12">
-                <p class="text-[#555] font-mono text-xs uppercase tracking-widest text-center">O que você quer criar hoje?</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
-                <!-- Marketing Card -->
-                <div onclick="enterMode('marketing')" 
-                    class="group cursor-pointer border border-[#222] bg-[#000] p-8 hover:border-[#DC2626] transition-all duration-300">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="w-12 h-12 border border-[#333] group-hover:border-[#DC2626] transition-colors flex items-center justify-center">
-                            <span class="text-[#555] group-hover:text-[#DC2626] font-brick text-lg">MK</span>
-                        </div>
-                        <span class="text-[10px] font-mono text-[#555] uppercase tracking-widest">ATIVO</span>
-                    </div>
-                    <h3 class="text-xl font-brick text-white mb-2 group-hover:text-[#DC2626] transition-colors">Marketing</h3>
-                    <p class="text-[#666] font-mono text-xs leading-relaxed">Conteúdo para redes sociais, campanhas e comunicação</p>
-                    <div class="mt-6 pt-4 border-t border-[#222]">
-                        <span class="text-[10px] font-mono text-[#444]">LinkedIn · Instagram · Email</span>
-                    </div>
-                </div>
-                
-                <!-- Projetos Card -->
-                <div onclick="enterMode('projetos')" 
-                    class="group cursor-pointer border border-[#222] bg-[#000] p-8 hover:border-[#DC2626] transition-all duration-300">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="w-12 h-12 border border-[#333] group-hover:border-[#DC2626] transition-colors flex items-center justify-center">
-                            <span class="text-[#555] group-hover:text-[#DC2626] font-brick text-lg">PR</span>
-                        </div>
-                        <span class="text-[10px] font-mono text-[#555] uppercase tracking-widest">ATIVO</span>
-                    </div>
-                    <h3 class="text-xl font-brick text-white mb-2 group-hover:text-[#DC2626] transition-colors">Projetos</h3>
-                    <p class="text-[#666] font-mono text-xs leading-relaxed">Propostas criativas e direção para clientes</p>
-                    <div class="mt-6 pt-4 border-t border-[#222]">
-                        <span class="text-[10px] font-mono text-[#444]">Propostas · Roteiros · Direção</span>
-                    </div>
-                </div>
-                
-                <!-- Ideias Card -->
-                <div onclick="enterMode('ideias')" 
-                    class="group cursor-pointer border border-[#222] bg-[#000] p-8 hover:border-[#DC2626] transition-all duration-300">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="w-12 h-12 border border-[#333] group-hover:border-[#DC2626] transition-colors flex items-center justify-center">
-                            <span class="text-[#555] group-hover:text-[#DC2626] font-brick text-lg">ID</span>
-                        </div>
-                        <span class="text-[10px] font-mono text-[#DC2626] uppercase tracking-widest">NOVO</span>
-                    </div>
-                    <h3 class="text-xl font-brick text-white mb-2 group-hover:text-[#DC2626] transition-colors">Ideias</h3>
-                    <p class="text-[#666] font-mono text-xs leading-relaxed">Validação brutal de ideias malucas e conceitos criativos</p>
-                    <div class="mt-6 pt-4 border-t border-[#222]">
-                        <span class="text-[10px] font-mono text-[#444]">Kill · Pivot · Test · Go</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <footer class="text-center py-8">
-            <p class="text-[#333] font-mono text-[10px] tracking-widest">BRICK PRODUÇÕES © 2026</p>
-        </footer>
-    </div>
-    
-    <!-- MAIN DASHBOARD (hidden by default) -->
-    <div id="main-dashboard" class="relative z-10 hidden">
-
-        <!-- Header -->
-        <header id="dashboard-header" class="mb-8 border-b border-white/10 pb-6">
-            <div class="flex justify-between items-start">
-                <!-- Logo (sempre fixo) -->
-                <div>
-                    <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
-                        BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
-                    </h1>
-                    <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-[#666] mt-2">
-                        <span id="connection-status" class="text-[#DC2626]">CONNECTING...</span>
-                        <span id="mode-indicator" class="hidden text-white uppercase"></span>
-                    </div>
-                </div>
-                <!-- Actions (direita) -->
-                <div class="flex items-center gap-4">
-                    <button id="btn-back-home" onclick="goHome()" class="hidden text-[#555] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest transition-colors border border-[#333] px-3 py-1.5 hover:border-[#DC2626]">
-                        ← INÍCIO
-                    </button>
-                    <button onclick="openModal('architectureDiagram')"
-                        class="text-[10px] font-mono text-[#999] hover:text-[#DC2626] transition-colors uppercase tracking-widest border border-[#333] px-3 py-1.5 hover:border-[#DC2626]">
-                        PROTOCOLS
-                    </button>
-                    <button onclick="openModal('newBriefing')"
-                        class="bg-[#DC2626] text-white px-4 py-1.5 font-bold text-[10px] tracking-widest hover:bg-red-700 transition-colors uppercase">
-                        + BRIEFING
-                    </button>
-                </div>
+            <div class="flex gap-4">
+                <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
+                <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
 
-        <!-- Modal: Architecture Diagram -->
-        <div id="modal-architectureDiagram"
-            class="fixed inset-0 modal-bg hidden flex items-center justify-center z-[60] p-4">
-            <div
-                class="bg-[#0a0a0a] border border-[#DC2626]/30 p-8 w-full max-w-5xl max-h-[90vh] shadow-[0_0_50px_rgba(220,38,38,0.1)] overflow-auto relative">
-                <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                    <h2 class="text-xl font-brick text-white uppercase tracking-tighter">System Architecture <span
-                            class="text-[#DC2626]">//</span> Flow</h2>
-                    <button onclick="closeModal('architectureDiagram')"
-                        class="text-[#9CA3AF] hover:text-[#DC2626] text-2xl">&times;</button>
+        <!-- WELCOME -->
+        <div id="welcome-screen" class="flex-1 flex items-center justify-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+                <div onclick="enterMode('marketing')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
+                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Marketing</h3>
+                    <p class="text-[#444] font-mono text-xs uppercase">Content & Flow</p>
                 </div>
-                <pre id="architecture-diagram" class="text-[#9CA3AF] font-mono text-[11px] md:text-xs leading-tight whitespace-pre select-all"></pre>
-            </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="flex gap-8 mb-8 border-b border-white/10 pb-0">
-            <button id="tab-board" onclick="showTab('board')"
-                class="text-white font-brick text-sm tracking-widest border-b-2 border-[#DC2626] pb-4 px-2 transition-colors">SQUAD
-                BOARD</button>
-            <button id="tab-gameboard" onclick="showTab('gameboard')"
-                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">GAME
-                BOARD</button>
-            <button id="tab-approved" onclick="showTab('approved')"
-                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">APROVADOS</button>
-            <button id="tab-history" onclick="showTab('history')"
-                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">HISTORY</button>
-            <button id="tab-architecture" onclick="showTab('architecture')"
-                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">ARCH</button>
-            <button id="tab-flow" onclick="showTab('flow')"
-                class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">FLOW</button>
-        </div>
-
-        <!-- Board -->
-        <div id="view-board" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <!-- Column 1: Briefing -->
-            <div class="column p-4">
-                <h2 class="text-[10px] font-mono text-[#666] border-b border-white/10 pb-3 mb-4 tracking-[0.2em] uppercase">01 // INPUT</h2>
-                <div id="col-briefing" class="space-y-3">Loading...</div>
-            </div>
-
-            <!-- Column 2: WIP -->
-            <div class="column p-4 relative">
-                <h2 class="text-[10px] font-mono text-[#DC2626] border-b border-white/10 pb-3 mb-4 tracking-[0.2em] flex items-center gap-2 uppercase">
-                    <span class="w-1.5 h-1.5 bg-[#DC2626] rounded-full animate-pulse"></span> 02 // PROCESSING
-                </h2>
-                <div id="col-wip" class="space-y-3">Loading...</div>
-            </div>
-
-            <!-- Column 3: Done -->
-            <div class="column p-4">
-                <h2 class="text-[10px] font-mono text-white border-b border-white/10 pb-3 mb-4 tracking-[0.2em] uppercase">03 // OUTPUT</h2>
-                <div id="col-done" class="space-y-3">Loading...</div>
-            </div>
-
-        </div>
-
-        <!-- Game Board View (Lobby & Map) -->
-        <div id="view-gameboard" class="hidden border border-white/10 bg-[#000]">
-            <div class="min-h-[90vh] relative overflow-hidden flex flex-col">
-                <!-- Grid overlay -->
-                <div class="absolute inset-0 pointer-events-none opacity-10"
-                    style="background-image: linear-gradient(rgba(220,38,38,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.1) 1px, transparent 1px); background-size: 40px 40px;">
+                <div onclick="enterMode('projetos')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
+                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos</h3>
+                    <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
                 </div>
-
-                <!-- Header -->
-                <div
-                    class="relative z-10 p-6 border-b border-white/10 flex justify-between items-center bg-[#050505]/80 backdrop-blur">
-                    <div class="flex items-center gap-4">
-                        <button id="back-to-lobby" onclick="showGameLobby()"
-                            class="hidden text-xs font-mono text-[#9CA3AF] hover:text-[#DC2626] transition-colors border border-[#333] px-3 py-1 uppercase tracking-widest">
-                            &lt; BACK TO LOBBY
-                        </button>
-                        <div>
-                            <h1 class="text-lg font-mono text-white tracking-widest">SYSTEM ARCHITECTURE MAP</h1>
-                            <p class="text-[9px] text-[#9CA3AF] font-mono tracking-[0.3em] mt-1">MASON PROTOCOL v3.2</p>
-                        </div>
-                    </div>
-                    <div class="text-right font-mono text-[9px] text-[#555]">
-                        <div id="gameboard-time">--:--:--</div>
-                    </div>
-                </div>
-
-                <!-- Lobby (List of Briefings) -->
-                <div id="gameboard-lobby" class="relative z-10 flex-1 p-12 overflow-y-auto">
-                    <h3 class="text-xs font-mono text-[#555] uppercase tracking-[0.2em] mb-8">Select Briefing Sequence
-                    </h3>
-                    <div id="lobby-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Injected by JS -->
-                    </div>
-                </div>
-
-                <!-- Main SVG Board (Hidden by default) -->
-                <div id="gameboard-svg" class="relative z-10 flex-1 hidden flex justify-center items-center py-12">
-                    <div class="text-[#DC2626] font-mono text-xs tracking-widest">[ LOADING SCHEMATIC... ]
-                    </div>
+                <div onclick="enterMode('ideias')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
+                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
+                    <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
                 </div>
             </div>
         </div>
 
-        <!-- Approved View -->
-        <div id="view-approved" class="hidden">
-            <div class="column p-12 border-white/10 bg-[#050505]">
-                <div class="max-w-5xl mx-auto">
-                    <div class="flex items-center justify-between mb-12 border-b border-white/10 pb-6">
-                        <h2 class="text-3xl font-brick text-white tracking-tighter">APPROVED ASSETS</h2>
-                        <span class="text-[10px] font-mono text-[#555] uppercase tracking-[0.2em]">Ready for
-                            Publication</span>
-                    </div>
-                    <div id="approved-list" class="space-y-8">
-                        <!-- Output cards -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- History View -->
-        <div id="view-history" class="hidden">
-            <div class="column p-8 border-white/10">
-                <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                    <h2 class="text-2xl font-brick text-white tracking-tight">CAMPAIGN LOGS</h2>
-                </div>
-                <div id="history-list" class="space-y-4">Loading...</div>
-            </div>
-        </div>
-
-        <!-- Architecture View -->
-        <div id="view-architecture" class="hidden">
-            <div class="column p-12 border-white/10 bg-[#050505]">
-                <div class="max-w-4xl mx-auto">
-                    <div class="flex items-center gap-6 mb-16 border-b border-white/10 pb-8">
-                        <div class="h-12 w-1 bg-[#DC2626]"></div>
-                        <div>
-                            <h2 class="text-4xl font-brick text-white tracking-tighter">SQUAD PROTOCOLS</h2>
-                            <p class="text-[10px] font-mono text-[#555] uppercase tracking-[0.4em] mt-2">Classified //
-                                Internal Use Only</p>
-                        </div>
-                    </div>
-                    <div id="architecture-content" class="space-y-12"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Flow Editor View -->
-        <div id="view-flow" class="hidden">
-            <iframe src="/flow-v2.html" class="w-full h-[calc(100vh-180px)] border-0"></iframe>
-        </div>
-
-        <!-- Modals (New Briefing / Viewer) -->
-        <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-            <div class="bg-[#0a0a0a] border border-white/10 p-6 w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
-                <h2 id="briefing-modal-title" class="text-xl font-brick text-white mb-4 tracking-tight">NEW BRIEFING</h2>
-                <input id="briefing-title" type="text" placeholder="Nome do projeto/campanha"
-                    class="w-full bg-[#111] border border-[#333] p-3 text-white mb-3 focus:outline-none focus:border-[#DC2626] font-mono text-xs placeholder-[#555]">
-                <textarea id="briefing-content" rows="6" placeholder="Contexto, objetivos, referências..."
-                    class="w-full bg-[#111] border border-[#333] p-3 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-xs placeholder-[#555]"></textarea>
-                
-                <!-- File Upload Section -->
-                <div class="mb-4">
-                    <label class="block text-[10px] font-mono text-[#555] uppercase tracking-widest mb-2">
-                        ANEXOS (PDF, Imagem, Texto)
-                    </label>
-                    <div id="file-drop-zone" 
-                        class="border-2 border-dashed border-[#333] p-4 text-center cursor-pointer hover:border-[#DC2626] transition-colors"
-                        ondragover="event.preventDefault(); this.classList.add('border-[#DC2626]')"
-                        ondragleave="this.classList.remove('border-[#DC2626]')"
-                        ondrop="handleFileDrop(event)"
-                        onclick="document.getElementById('briefing-files').click()">
-                        <input type="file" id="briefing-files" multiple accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp" class="hidden" onchange="handleFileSelect(event)">
-                        <p class="text-[#555] font-mono text-xs">Arraste arquivos ou clique para selecionar</p>
-                        <p class="text-[#333] font-mono text-[10px] mt-1">PDF, imagens, texto (.txt, .md)</p>
-                    </div>
-                    <div id="file-list" class="mt-2 space-y-1"></div>
-                </div>
-                
-                <div class="flex justify-between items-center">
-                    <p class="text-[10px] font-mono text-[#444]">
-                        <span class="text-[#DC2626]">Douglas</span> vai processar os anexos antes de passar pro squad
-                    </p>
-                    <div class="flex gap-4">
-                        <button onclick="closeModal('newBriefing')"
-                            class="text-[#555] hover:text-white font-mono text-[10px] tracking-widest uppercase">CANCELAR</button>
-                        <button onclick="submitBriefing()"
-                            class="bg-[#DC2626] text-white px-6 py-2 font-bold text-[10px] hover:bg-red-700 transition-colors tracking-widest uppercase">CRIAR</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="modal-viewer" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-            <div
-                class="bg-[#0a0a0a] border border-white/10 w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
-                <div class="flex justify-between items-center p-6 border-b border-white/10 bg-[#050505]">
-                    <h2 id="viewer-title" class="text-lg font-mono text-white tracking-widest uppercase">FILENAME</h2>
-                    <button onclick="closeModal('viewer')"
-                        class="text-[#555] hover:text-[#DC2626] text-2xl">&times;</button>
-                </div>
-                <div id="viewer-content"
-                    class="p-8 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0a0a0a] font-mono text-sm leading-relaxed text-[#ccc]">
-                </div>
-                <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505]">
-                    <!-- Simple Feedback Panel -->
-                    <div id="feedback-panel" class="hidden mb-6">
-                        <div class="border border-[#333] bg-[#0a0a0a] p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h4 class="text-sm font-brick text-white">O que precisa mudar?</h4>
-                                <button onclick="toggleFeedbackPanel()" class="text-[#555] hover:text-white text-lg">&times;</button>
-                            </div>
-                            
-                            <textarea id="feedback-text" rows="3" 
-                                placeholder="Escreva naturalmente... Ex: 'Tá cafona', 'Tom errado', 'Dado sem fonte'"
-                                class="w-full bg-[#000] border border-[#333] p-4 text-white text-sm font-mono placeholder-[#555] focus:outline-none focus:border-[#DC2626] mb-4"
-                                oninput="detectFeedbackType()"></textarea>
-                            
-                            <div id="feedback-routing" class="hidden p-3 border border-[#222] bg-[#050505] mb-4 flex items-center gap-2">
-                                <span class="text-[10px] font-mono text-[#555]">→</span>
-                                <span id="routing-target" class="text-xs font-mono text-[#DC2626]"></span>
-                                <span id="routing-desc" class="text-[10px] font-mono text-[#555]"></span>
-                            </div>
-                            
-                            <div class="flex justify-end gap-3">
-                                <button onclick="submitFeedback('revisar')"
-                                    class="px-6 py-2 border border-[#555] text-[#555] font-mono text-xs tracking-widest hover:border-white hover:text-white transition-colors">
-                                    AJUSTAR
-                                </button>
-                                <button onclick="submitFeedback('reprovar')"
-                                    class="px-6 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs tracking-widest hover:bg-[#DC2626] hover:text-black transition-colors">
-                                    REFAZER
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between items-center">
-                        <button onclick="toggleFeedbackPanel()" id="btn-toggle-feedback"
-                            class="text-[#555] hover:text-[#DC2626] font-mono text-xs tracking-widest transition-colors flex items-center gap-2">
-                            <span class="text-lg">✎</span> Feedback
-                        </button>
-                        <button onclick="submitFeedback('aprovar')"
-                            class="px-8 py-3 bg-white text-black font-brick text-sm tracking-wide hover:bg-[#22C55E] transition-colors">
-                            APROVAR ✓
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <!-- LOBBY -->
+        <div id="project-lobby" class="hidden flex-1 overflow-y-auto pr-4">
+            <div id="lobby-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-20"></div>
         </div>
     </div>
-    
-    </div><!-- END main-dashboard -->
 
-    <!-- DETAILS PANEL -->
-    <div id="node-details-panel"
-        class="fixed top-24 right-0 w-full md:w-[600px] h-[calc(100vh-6rem)] bg-[#050505]/95 border-l border-white/10 shadow-2xl z-[100] transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="flex justify-between items-center p-8 border-b border-white/10">
+    <!-- THE FAVORITE WAR ROOM (NODE GRAPHIC) -->
+    <div id="view-nodegraphic" class="fixed inset-0 z-[100] bg-black">
+        <header class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
             <div>
-                <h3 id="detail-title" class="text-2xl font-brick text-white uppercase tracking-tighter">NODE DETAILS</h3>
-                <p id="detail-subtitle" class="text-xs font-mono text-[#555] mt-1"></p>
-            </div>
-            <button onclick="closeNodeDetails()"
-                class="text-[#555] hover:text-white transition-colors text-2xl">&times;</button>
-        </div>
-        <div id="detail-content"
-            class="flex-1 overflow-y-auto p-8 prose prose-invert prose-p:text-[#ccc] prose-headings:font-brick prose-headings:text-white prose-pre:bg-[#111] prose-pre:border prose-pre:border-white/10 max-w-none font-mono text-sm leading-relaxed">
-            <p class="text-[#555] italic">Select a system node to view logs.</p>
-        </div>
-        
-        <!-- Feedback Actions for Game Board -->
-        <div id="detail-actions" class="hidden border-t border-white/10 bg-[#0a0a0a]">
-            <div id="detail-feedback-panel" class="hidden p-4 border-b border-white/10">
-                <textarea id="detail-feedback-text" rows="2" 
-                    placeholder="O que precisa mudar?"
-                    class="w-full bg-[#000] border border-[#333] p-3 text-white text-sm font-mono placeholder-[#555] focus:outline-none focus:border-[#DC2626] mb-2"
-                    oninput="detectDetailFeedbackType()"></textarea>
-                <div id="detail-feedback-routing" class="hidden p-2 border border-[#222] bg-[#050505] mb-2 text-xs">
-                    <span class="font-mono text-[#555]">→</span>
-                    <span id="detail-routing-target" class="font-mono text-[#DC2626] ml-1"></span>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="submitDetailFeedback('revisar')"
-                        class="flex-1 py-2 border border-[#555] text-[#555] font-mono text-xs hover:border-white hover:text-white transition-colors">
-                        AJUSTAR
-                    </button>
-                    <button onclick="submitDetailFeedback('reprovar')"
-                        class="flex-1 py-2 border border-[#DC2626] text-[#DC2626] font-mono text-xs hover:bg-[#DC2626] hover:text-black transition-colors">
-                        REFAZER
-                    </button>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
+                    BRICK AI <span id="ng-sector-title" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">MARKETING</span>
+                </h1>
+                <div class="text-[9px] font-mono text-[#DC2626] mt-2 tracking-widest uppercase">
+                    Mason Protocol v5.0 // <span id="ng-title" class="text-white">PROJECT_TITLE</span>
                 </div>
             </div>
-            <div class="p-4 flex justify-between items-center gap-4">
-                <button onclick="toggleDetailFeedback()" id="btn-detail-feedback"
-                    class="text-[#555] hover:text-[#DC2626] font-mono text-xs transition-colors">
-                    ✎ Feedback
-                </button>
-                <button onclick="approveDetailNode()"
-                    class="flex-1 max-w-[200px] py-3 bg-white text-black font-brick text-sm hover:bg-[#22C55E] transition-colors text-center">
-                    APROVAR ✓
-                </button>
+            <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-6 py-2 uppercase tracking-widest mt-1">← Back_To_Lobby</button>
+        </header>
+
+        <div id="canvas-container" class="relative w-full h-full overflow-auto cursor-grab active:cursor-grabbing">
+            <svg id="conn-svg" class="absolute inset-0 w-full h-[3000px] pointer-events-none"></svg>
+            <div id="node-container" class="relative w-full h-[3000px]"></div>
+        </div>
+
+        <!-- TACTICAL LOG -->
+        <div class="fixed bottom-10 left-10 w-80 h-32 bg-black/90 border border-[#111] p-4 z-[120] font-mono text-[9px]">
+            <div class="flex justify-between text-[#444] mb-2 border-b border-[#111] pb-2">
+                <span>WAR_ROOM_LOG</span>
+                <span class="animate-pulse">SQUAD_READY</span>
+            </div>
+            <div id="tactical-log" class="text-[#666] space-y-1">
+                <div>> INITIALIZING_MASON_PROTOCOL...</div>
+                <div>> MAPPING_AGENT_NETWORK...</div>
             </div>
         </div>
+    </div>
+
+    <!-- AGENT PANEL -->
+    <div id="agent-panel" class="side-panel">
+        <div class="p-10 border-b border-[#111] flex justify-between items-center">
+            <h2 id="panel-title" class="text-2xl font-brick text-white uppercase">AGENTE</h2>
+            <button onclick="closePanel()" class="text-[#444] hover:text-white font-mono text-[10px]">CLOSE_</button>
+        </div>
+        <div id="panel-body" class="p-10 overflow-y-auto h-[calc(100vh-150px)] font-mono text-[11px] text-[#888]"></div>
     </div>
 
     <script>
         const API_URL = '/api';
         let currentState = null;
-        let selectedJob = null;
         let currentMode = null;
-
-        // --- MODE NAVIGATION ---
-        function enterMode(mode) {
-            currentMode = mode;
-            localStorage.setItem('brickai_mode', mode);
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('main-dashboard').classList.remove('hidden');
-            
-            // Update header with back button and mode name
-            const modeNames = {
-                'marketing': 'Marketing',
-                'projetos': 'Projetos - Clientes',
-                'ideias': 'Idea Validator'
-            };
-            
-            document.getElementById('mode-indicator').textContent = modeNames[mode] || mode;
-            document.getElementById('mode-indicator').classList.remove('hidden');
-            document.getElementById('btn-back-home').classList.remove('hidden');
-            
-            // Fetch state for the mode
-            fetchState();
-        }
-        
-        function goHome() {
-            currentMode = null;
-            localStorage.removeItem('brickai_mode');
-            document.getElementById('welcome-screen').classList.remove('hidden');
-            document.getElementById('main-dashboard').classList.add('hidden');
-            document.getElementById('mode-indicator').classList.add('hidden');
-            document.getElementById('btn-back-home').classList.add('hidden');
-        }
-        
-        // Restore mode on page load (F5 persistence)
-        function restoreMode() {
-            const savedMode = localStorage.getItem('brickai_mode');
-            if (savedMode && ['marketing', 'projetos', 'ideias'].includes(savedMode)) {
-                enterMode(savedMode);
-            }
-        }
-
-        // --- FRIENDLY NAMES (must be defined before renderers) ---
-        const friendlyFileNames = {
-            'validator': 'Validação',
-            'brief_validator': 'Validação',
-            'audience': 'Público-alvo',
-            'audience_analyst': 'Público-alvo',
-            'research': 'Pesquisa',
-            'researcher': 'Pesquisa',
-            'topic_researcher': 'Pesquisa',
-            'claims': 'Verificação de Dados',
-            'claims_checker': 'Verificação de Dados',
-            'copy': 'Texto Criativo',
-            'copywriter': 'Texto Criativo',
-            'brand': 'Tom de Voz',
-            'brand_guardian': 'Tom de Voz',
-            'style_guardian': 'Estilo',
-            'positioning_guardian': 'Posicionamento',
-            'critic': 'Revisão',
-            'critic_lite': 'Revisão Rápida',
-            'opus': 'Aprovação Final',
-            'critic_opus': 'Aprovação Final',
-            'director': 'Direção de Craft',
-            'output': 'Versão Final',
-            'briefing': 'Briefing'
-        };
-        
-        function getFriendlyName(filename) {
-            if (!filename) return 'Arquivo';
-            const base = filename.replace(/\.(md|json|txt)$/i, '').replace(/^\d+_/, '').replace(/_\d+$/, '');
-            const key = base.toLowerCase();
-            for (const [pattern, friendly] of Object.entries(friendlyFileNames)) {
-                if (key.includes(pattern)) return friendly;
-            }
-            return base.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        }
-
-        // --- RENDERERS ---
-
-        function renderGameBoard(job) {
-            document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-
-            // STRICT BRICK PALETTE - No Green, No Pulse
-            const c = {
-                text: '#FFFFFF',      // Pure White
-                sub: '#666666',       // Dark Gray for less importance
-                border: '#333333',    // Visible borders
-                line: '#333333',      // Connectors
-                red: '#DC2626',       // Brick Red
-                bg: '#000000',        // Pure Black
-                done: '#FFFFFF',      // White for completed steps
-                pending: '#222222'    // Very dark gray for future
-            };
-
-            const stepStatus = (k) => {
-                if (job.steps?.[k]?.status === 'done') return 'done';
-                if (job.steps?.[k]) return 'active';
-                return 'pending';
-            };
-            const stepColor = (k) => {
-                const status = stepStatus(k);
-                if (status === 'done') return c.done;
-                if (status === 'active') return c.red;
-                return c.border;
-            };
-
-            // Animation Helpers
-            const getFlowClass = (fromKey) => {
-                const s = stepStatus(fromKey);
-                // If source is done or active, flow is active
-                if (s === 'done' || s === 'active') return 'gb-line gb-flow animate-flow';
-                return 'gb-line gb-flow';
-            };
-
-            const getNodeClass = (key) => {
-                return stepStatus(key) === 'active' ? 'gb-node node-active' : 'gb-node';
-            };
-
-            // LARGER Layout
-            const W = 1200, H = 1050;
-            const cx = W / 2;
-            const colL = cx - 280, colR = cx + 280;
-            const bw = 200, bh = 64;
-            const bwLg = 320, bhLg = 80;
-            const gap = 50;
-
-            const y = {
-                mission: 80,
-                core: 180,
-                val: 300,
-                research: 420,
-                claims: 540,
-                copy: 660,
-                review: 780,
-                opus: 920,
-                out: 1020
-            };
-
-            const html = `
-            <style>
-                .gb-node { cursor: pointer; transition: all 0.2s; }
-                .gb-node:hover .gb-box { stroke: ${c.red}; stroke-width: 2; }
-                .gb-node:hover text { fill: #ffffff; }
-                .gb-box { transition: stroke 0.2s, stroke-width 0.2s, fill 0.2s; }
-                .gb-line { stroke: ${c.line}; stroke-width: 1; }
-                .gb-flow { stroke-dasharray: 4 4; }
-                
-                /* Animation Classes */
-                .animate-flow { animation: flow 1s linear infinite; opacity: 0.8; stroke: #555; }
-                .node-active .gb-box { animation: breathe 4s ease-in-out infinite; }
-            </style>
-            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto; background: #000;">
-                <defs>
-                    <pattern id="gbGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M40 0L0 0 0 40" fill="none" stroke="#111" stroke-width="1"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#gbGrid)"/>
-                
-                <!-- ====== MISSION HEADER ====== -->
-                <g class="${getNodeClass('mission')}" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
-                    <rect class="gb-box" x="${-bwLg / 2}" y="-28" width="${bwLg}" height="56" 
-                          fill="#000" stroke="${c.border}" stroke-width="1"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" 
-                          font-size="16" font-weight="900" font-family="Inter" letter-spacing="-0.05em">
-                        ${(job.title || 'SELECT MISSION').substring(0, 30).toUpperCase()}
-                    </text>
-                    <text x="0" y="16" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono" letter-spacing="0.2em">BRIEFING INGEST</text>
-                </g>
-
-                <!-- Status legend (Top) -->
-                <g transform="translate(40, 40)">
-                    <text x="0" y="0" fill="${c.sub}" font-size="10" font-family="JetBrains Mono" letter-spacing="0.15em">STATUS</text>
-                    <circle cx="0" cy="20" r="4" fill="${c.border}"/>
-                    <text x="14" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">PENDING</text>
-                    <circle cx="100" cy="20" r="4" fill="${c.red}"/>
-                    <text x="114" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">ACTIVE</text>
-                    <circle cx="190" cy="20" r="4" fill="${c.done}"/>
-                    <text x="204" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">DONE</text>
-                </g>
-
-                <line class="${getFlowClass('mission')}" x1="${cx}" y1="${y.mission + 28}" x2="${cx}" y2="${y.core - bhLg / 2}"/>
-                
-                <!-- ====== DOUGLAS CORE ====== -->
-                <g class="${getNodeClass('douglas')}" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.core})">
-                    <rect class="gb-box" x="${-bwLg / 2}" y="${-bhLg / 2}" width="${bwLg}" height="${bhLg}" 
-                          fill="#000" stroke="${c.red}" stroke-width="2"/>
-                    <text x="0" y="-8" text-anchor="middle" fill="${c.red}" 
-                          font-size="24" font-weight="900" font-family="Inter" letter-spacing="-0.05em">DOUGLAS</text>
-                    <text x="0" y="18" text-anchor="middle" fill="${c.sub}" 
-                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.25em">ORCHESTRATOR</text>
-                </g>
-                <line class="${getFlowClass('douglas')}" x1="${cx}" y1="${y.core + bhLg / 2}" x2="${cx}" y2="${y.val - bh / 2}"/>
-                
-                <!-- ====== VALIDATOR ====== -->
-                <g class="${getNodeClass('validator')}" onclick="showNodeDetails('validator')" transform="translate(${cx},${y.val})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('validator')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('validator') === 'done' ? c.text : (stepStatus('validator') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">VALIDAÇÃO</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Briefing OK?</text>
-                </g>
-                
-                <path class="${getFlowClass('validator')}" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colL} ${y.val + bh / 2 + 25} L${colL} ${y.research - bh / 2}" fill="none"/>
-                <path class="${getFlowClass('validator')}" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colR} ${y.val + bh / 2 + 25} L${colR} ${y.research - bh / 2}" fill="none"/>
-                
-                <!-- ====== AUDIENCE (Left) ====== -->
-                <g class="${getNodeClass('audience')}" onclick="showNodeDetails('audience')" transform="translate(${colL},${y.research})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('audience')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('audience') === 'done' ? c.text : (stepStatus('audience') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">PÚBLICO</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Pra quem?</text>
-                </g>
-                
-                <!-- ====== RESEARCH (Right) ====== -->
-                <g class="${getNodeClass('research')}" onclick="showNodeDetails('research')" transform="translate(${colR},${y.research})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('research')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('research') === 'done' ? c.text : (stepStatus('research') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">PESQUISA</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Contexto</text>
-                </g>
-
-                <path class="${getFlowClass('audience')}" d="M${colL} ${y.research + bh / 2} L${colL} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25} L${cx} ${y.claims - bh / 2}" fill="none"/>
-                <path class="${getFlowClass('research')}" d="M${colR} ${y.research + bh / 2} L${colR} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25}" fill="none"/>
-                
-                <!-- ====== CLAIMS ====== -->
-                <g class="${getNodeClass('claims')}" onclick="showNodeDetails('claims')" transform="translate(${cx},${y.claims})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('claims')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('claims') === 'done' ? c.text : (stepStatus('claims') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CHECAGEM</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Dados OK?</text>
-                </g>
-                
-                <!-- Split to 3 Copywriters -->
-                <path class="${getFlowClass('claims')}" d="M${cx} ${y.claims + bh / 2} L${cx} ${y.claims + bh / 2 + 20} L${colL} ${y.claims + bh / 2 + 20} L${colL} ${y.copy - bh / 2}" fill="none"/>
-                <path class="${getFlowClass('claims')}" d="M${cx} ${y.claims + bh / 2} L${cx} ${y.copy - bh / 2}" fill="none"/>
-                <path class="${getFlowClass('claims')}" d="M${cx} ${y.claims + bh / 2} L${cx} ${y.claims + bh / 2 + 20} L${colR} ${y.claims + bh / 2 + 20} L${colR} ${y.copy - bh / 2}" fill="none"/>
-                
-                <!-- ====== COPYWRITER A (GPT-5.2) - Left ====== -->
-                <g class="${getNodeClass('copy_a')}" onclick="showNodeDetails('copy_a')" transform="translate(${colL},${y.copy})">
-                    <rect class="gb-box" x="${-bw / 2 + 20}" y="${-bh / 2}" width="${bw - 40}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
-                          font-size="12" font-weight="900" font-family="Inter">COPY A</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" 
-                          font-size="9" font-family="JetBrains Mono">GPT-5.2</text>
-                </g>
-                
-                <!-- ====== COPYWRITER B (Flash) - Center ====== -->
-                <g class="${getNodeClass('copy_b')}" onclick="showNodeDetails('copy_b')" transform="translate(${cx},${y.copy})">
-                    <rect class="gb-box" x="${-bw / 2 + 20}" y="${-bh / 2}" width="${bw - 40}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
-                          font-size="12" font-weight="900" font-family="Inter">COPY B</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" 
-                          font-size="9" font-family="JetBrains Mono">FLASH</text>
-                </g>
-                
-                <!-- ====== COPYWRITER C (Sonnet) - Right ====== -->
-                <g class="${getNodeClass('copy_c')}" onclick="showNodeDetails('copy_c')" transform="translate(${colR},${y.copy})">
-                    <rect class="gb-box" x="${-bw / 2 + 20}" y="${-bh / 2}" width="${bw - 40}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
-                          font-size="12" font-weight="900" font-family="Inter">COPY C</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" 
-                          font-size="9" font-family="JetBrains Mono">SONNET</text>
-                </g>
-
-                <!-- Merge from 3 Copywriters to Brand Guardian -->
-                <path class="${getFlowClass('copy')}" d="M${colL} ${y.copy + bh / 2} L${colL} ${y.copy + bh / 2 + 25} L${cx} ${y.copy + bh / 2 + 25}" fill="none"/>
-                <path class="${getFlowClass('copy')}" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25}" fill="none"/>
-                <path class="${getFlowClass('copy')}" d="M${colR} ${y.copy + bh / 2} L${colR} ${y.copy + bh / 2 + 25} L${cx} ${y.copy + bh / 2 + 25} L${cx} ${y.review - bh / 2}" fill="none"/>
-                
-                <!-- ====== BRAND GUARDIAN (Center) ====== -->
-                <g class="${getNodeClass('brand')}" onclick="showNodeDetails('brand')" transform="translate(${cx},${y.review})">
-                    <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
-                          fill="#000" stroke="${stepColor('brand')}" stroke-width="1"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('brand') === 'done' ? c.text : (stepStatus('brand') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">BRAND</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">Valida 3</text>
-                </g>
-                
-                <!-- Split to Critics -->
-                <path class="${getFlowClass('brand')}" d="M${cx} ${y.review + bh / 2} L${cx} ${y.review + bh / 2 + 20} L${cx - 120} ${y.review + bh / 2 + 20} L${cx - 120} ${y.opus - bhLg / 2 - 60}" fill="none"/>
-                <path class="${getFlowClass('brand')}" d="M${cx} ${y.review + bh / 2} L${cx} ${y.review + bh / 2 + 20} L${cx + 120} ${y.review + bh / 2 + 20} L${cx + 120} ${y.opus - bhLg / 2 - 60}" fill="none"/>
-                
-                <!-- ====== CRITIC (Left) ====== -->
-                <g class="${getNodeClass('critic')}" onclick="showNodeDetails('critic')" transform="translate(${cx - 120},${y.opus - 60})">
-                    <rect class="gb-box" x="${-bw / 2 + 30}" y="${-bh / 2 + 10}" width="${bw - 60}" height="${bh - 20}" 
-                          fill="#000" stroke="${stepColor('critic')}" stroke-width="1"/>
-                    <text x="0" y="4" text-anchor="middle" fill="${stepStatus('critic') === 'done' ? c.text : (stepStatus('critic') === 'active' ? c.red : c.sub)}" 
-                          font-size="11" font-weight="900" font-family="Inter">CRITICS</text>
-                </g>
-                
-                <!-- ====== CRITIC OPUS (Right) ====== -->
-                <g class="${getNodeClass('opus_critic')}" onclick="showNodeDetails('opus_critic')" transform="translate(${cx + 120},${y.opus - 60})">
-                    <rect class="gb-box" x="${-bw / 2 + 30}" y="${-bh / 2 + 10}" width="${bw - 60}" height="${bh - 20}" 
-                          fill="#000" stroke="${stepColor('opus')}" stroke-width="1"/>
-                    <text x="0" y="4" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.text : (stepStatus('opus') === 'active' ? c.red : c.sub)}" 
-                          font-size="11" font-weight="900" font-family="Inter">ESCOLHA</text>
-                </g>
-                
-                <!-- Connect Critics to Opus -->
-                <path class="${getFlowClass('critic')}" d="M${cx - 120} ${y.opus - 60 + bh / 2 - 10} L${cx - 120} ${y.opus - 60 + bh / 2} L${cx} ${y.opus - 60 + bh / 2} L${cx} ${y.opus - bhLg / 2}" fill="none"/>
-                <path class="${getFlowClass('opus')}" d="M${cx + 120} ${y.opus - 60 + bh / 2 - 10} L${cx + 120} ${y.opus - 60 + bh / 2} L${cx} ${y.opus - 60 + bh / 2}" fill="none"/>
-                
-                <!-- ====== OPUS (Final review) ====== -->
-                <g class="${getNodeClass('opus')}" onclick="showNodeDetails('opus')" transform="translate(${cx},${y.opus})">
-                    <rect class="gb-box" x="${-bwLg / 2 + 20}" y="${-bhLg / 2}" width="${bwLg - 40}" height="${bhLg}" 
-                          fill="#000" stroke="${stepColor('opus')}" stroke-width="2"/>
-                    <text x="0" y="-8" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.done : (stepStatus('opus') === 'active' ? c.red : c.sub)}" 
-                          font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CLAUDE OPUS</text>
-                    <text x="0" y="18" text-anchor="middle" fill="${c.sub}" 
-                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">Filtro Final</text>
-                </g>
-                <line class="${getFlowClass('opus')}" x1="${cx}" y1="${y.opus + bhLg / 2}" x2="${cx}" y2="${y.out - 24}"/>
-                
-                <!-- ====== DELIVERY OUTPUT ====== -->
-                <g class="gb-node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
-                    <rect class="gb-box" x="${-bwLg / 2 + 10}" y="-24" width="${bwLg - 20}" height="48" 
-                          fill="${job.steps?.opus?.status === 'done' ? c.red : '#000'}" 
-                          stroke="${job.steps?.opus?.status === 'done' ? c.red : c.border}" 
-                          stroke-width="1"/>
-                    <text x="0" y="6" text-anchor="middle" 
-                          fill="${job.steps?.opus?.status === 'done' ? '#FFFFFF' : c.sub}" 
-                          font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.2em">
-                        ${job.steps?.opus?.status === 'done' ? 'DELIVERY READY' : 'AWAITING DELIVERY'}
-                    </text>
-                </g>
-
-            </svg>`;
-
-            document.getElementById('gameboard-svg').innerHTML = html;
-            window.currentJob = job;
-        }
-
-        // Game Board for PROJETOS mode (specific pipeline)
-        function renderGameBoardProjetos(job) {
-            document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-
-            const c = { text: '#FFFFFF', sub: '#666666', border: '#333333', line: '#333333', red: '#DC2626', done: '#FFFFFF', pending: '#222222' };
-
-            const stepStatus = (k) => job.steps?.[k]?.status === 'done' ? 'done' : job.steps?.[k] ? 'active' : 'pending';
-            const stepColor = (k) => stepStatus(k) === 'done' ? c.done : stepStatus(k) === 'active' ? c.red : c.border;
-            const getFlowClass = (k) => (stepStatus(k) === 'done' || stepStatus(k) === 'active') ? 'gb-line gb-flow animate-flow' : 'gb-line gb-flow';
-            const getNodeClass = (k) => stepStatus(k) === 'active' ? 'gb-node node-active' : 'gb-node';
-            const textColor = (k) => stepStatus(k) === 'done' ? c.text : stepStatus(k) === 'active' ? c.red : c.sub;
-
-            const W = 1200, H = 1100;
-            const cx = W / 2, colL = cx - 180, colR = cx + 180;
-            const bw = 200, bh = 60, bwLg = 280, bhLg = 70;
-            const y = { mission: 60, douglas: 140, digest: 230, creative: 320, concept: 410, copy: 500, brand: 590, review: 680, director: 790, out: 890 };
-
-            const html = `
-            <style>
-                .gb-node { cursor: pointer; transition: all 0.2s; }
-                .gb-node:hover .gb-box { stroke: ${c.red}; stroke-width: 2; }
-                .gb-node:hover text { fill: #fff; }
-                .gb-line { stroke: ${c.line}; stroke-width: 1; }
-                .gb-flow { stroke-dasharray: 4 4; }
-                .animate-flow { animation: flow 1s linear infinite; opacity: 0.8; stroke: #555; }
-                .node-active .gb-box { animation: breathe 4s ease-in-out infinite; }
-            </style>
-            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto;background:#000;">
-                <defs><pattern id="gbGrid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="#111" stroke-width="1"/></pattern></defs>
-                <rect width="100%" height="100%" fill="url(#gbGrid)"/>
-                
-                <g transform="translate(40,25)">
-                    <text x="0" y="0" fill="${c.sub}" font-size="9" font-family="JetBrains Mono" letter-spacing="0.15em">PROPOSTA PIPELINE</text>
-                    <circle cx="0" cy="14" r="3" fill="${c.border}"/><text x="10" y="17" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">PENDING</text>
-                    <circle cx="80" cy="14" r="3" fill="${c.red}"/><text x="90" y="17" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">ACTIVE</text>
-                    <circle cx="150" cy="14" r="3" fill="${c.done}"/><text x="160" y="17" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">DONE</text>
-                </g>
-
-                <!-- MISSION -->
-                <g class="${getNodeClass('mission')}" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
-                    <rect class="gb-box" x="${-bwLg/2}" y="-22" width="${bwLg}" height="44" fill="#000" stroke="${c.border}"/>
-                    <text x="0" y="-2" text-anchor="middle" fill="${c.text}" font-size="13" font-weight="900" font-family="Inter">${(job.title || 'PROJETO').substring(0,26).toUpperCase()}</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">BRIEFING + ANEXOS</text>
-                </g>
-                <line class="${getFlowClass('mission')}" x1="${cx}" y1="${y.mission+22}" x2="${cx}" y2="${y.douglas-bhLg/2}"/>
-
-                <!-- DOUGLAS -->
-                <g class="${getNodeClass('douglas')}" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.douglas})">
-                    <rect class="gb-box" x="${-bwLg/2}" y="${-bhLg/2}" width="${bwLg}" height="${bhLg}" fill="#000" stroke="${c.red}" stroke-width="2"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${c.red}" font-size="18" font-weight="900" font-family="Inter">DOUGLAS</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">PROCESSA ANEXOS</text>
-                </g>
-                <line class="${getFlowClass('douglas')}" x1="${cx}" y1="${y.douglas+bhLg/2}" x2="${cx}" y2="${y.digest-bh/2}"/>
-
-                <!-- BRAND DIGEST -->
-                <g class="${getNodeClass('brand_digest')}" onclick="showNodeDetails('brand_digest')" transform="translate(${cx},${y.digest})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('brand_digest')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('brand_digest')}" font-size="12" font-weight="900" font-family="Inter">BRAND DIGEST</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Síntese da Marca</text>
-                </g>
-                <line class="${getFlowClass('brand_digest')}" x1="${cx}" y1="${y.digest+bh/2}" x2="${cx}" y2="${y.creative-bh/2}"/>
-
-                <!-- CREATIVE IDEATION -->
-                <g class="${getNodeClass('creative')}" onclick="showNodeDetails('creative')" transform="translate(${cx},${y.creative})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('creative')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('creative')}" font-size="12" font-weight="900" font-family="Inter">CREATIVE IDEATION</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">3 Conceitos</text>
-                </g>
-                <line class="${getFlowClass('creative')}" x1="${cx}" y1="${y.creative+bh/2}" x2="${cx}" y2="${y.concept-bh/2}"/>
-
-                <!-- CONCEPT CRITIC -->
-                <g class="${getNodeClass('concept_critic')}" onclick="showNodeDetails('concept_critic')" transform="translate(${cx},${y.concept})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('concept_critic')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('concept_critic')}" font-size="12" font-weight="900" font-family="Inter">CONCEPT CRITIC</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Escolhe Conceito</text>
-                </g>
-                <line class="${getFlowClass('concept_critic')}" x1="${cx}" y1="${y.concept+bh/2}" x2="${cx}" y2="${y.copy-bh/2}"/>
-
-                <!-- COPYWRITER -->
-                <g class="${getNodeClass('copy')}" onclick="showNodeDetails('copy')" transform="translate(${cx},${y.copy})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('copy')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('copy')}" font-size="12" font-weight="900" font-family="Inter">COPYWRITER</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Escreve Proposta</text>
-                </g>
-                <line class="${getFlowClass('copy')}" x1="${cx}" y1="${y.copy+bh/2}" x2="${cx}" y2="${y.brand-bh/2}"/>
-
-                <!-- BRAND GUARDIAN -->
-                <g class="${getNodeClass('brand')}" onclick="showNodeDetails('brand')" transform="translate(${cx},${y.brand})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('brand')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('brand')}" font-size="12" font-weight="900" font-family="Inter">BRAND GUARDIAN</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Tom de Voz</text>
-                </g>
-                <path class="${getFlowClass('brand')}" d="M${cx} ${y.brand+bh/2} L${cx} ${y.brand+bh/2+15} L${colL} ${y.brand+bh/2+15} L${colL} ${y.review-bh/2}" fill="none"/>
-                <path class="${getFlowClass('brand')}" d="M${cx} ${y.brand+bh/2} L${cx} ${y.brand+bh/2+15} L${colR} ${y.brand+bh/2+15} L${colR} ${y.review-bh/2}" fill="none"/>
-
-                <!-- CRITIC LITE -->
-                <g class="${getNodeClass('critic')}" onclick="showNodeDetails('critic')" transform="translate(${colL},${y.review})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('critic')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('critic')}" font-size="12" font-weight="900" font-family="Inter">CRITIC LITE</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Flash 65%</text>
-                </g>
-
-                <!-- CRITIC OPUS -->
-                <g class="${getNodeClass('opus')}" onclick="showNodeDetails('opus')" transform="translate(${colR},${y.review})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('opus')}"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('opus')}" font-size="12" font-weight="900" font-family="Inter">CRITIC OPUS</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Aprovação</text>
-                </g>
-                <line x1="${colL+bw/2}" y1="${y.review}" x2="${colR-bw/2}" y2="${y.review}" stroke="${c.sub}" stroke-width="1"/>
-                <path class="${getFlowClass('opus')}" d="M${colL} ${y.review+bh/2} L${colL} ${y.review+bh/2+20} L${cx} ${y.review+bh/2+20} L${cx} ${y.director-bhLg/2}" fill="none"/>
-                <path class="${getFlowClass('opus')}" d="M${colR} ${y.review+bh/2} L${colR} ${y.review+bh/2+20} L${cx} ${y.review+bh/2+20}" fill="none"/>
-
-                <!-- DIRECTOR -->
-                <g class="${getNodeClass('director')}" onclick="showNodeDetails('director')" transform="translate(${cx},${y.director})">
-                    <rect class="gb-box" x="${-bw/2-20}" y="${-bhLg/2}" width="${bw+40}" height="${bhLg}" fill="#000" stroke="${stepColor('director')}" stroke-width="2"/>
-                    <text x="0" y="-4" text-anchor="middle" fill="${textColor('director')}" font-size="14" font-weight="900" font-family="Inter">DIRECTOR</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Craft Final</text>
-                </g>
-                <line class="${getFlowClass('director')}" x1="${cx}" y1="${y.director+bhLg/2}" x2="${cx}" y2="${y.out-22}"/>
-
-                <!-- OUTPUT -->
-                <g class="gb-node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
-                    <rect class="gb-box" x="${-bwLg/2}" y="-22" width="${bwLg}" height="44" fill="${job.steps?.director?.status === 'done' ? c.red : '#000'}" stroke="${job.steps?.director?.status === 'done' ? c.red : c.border}"/>
-                    <text x="0" y="5" text-anchor="middle" fill="${job.steps?.director?.status === 'done' ? '#FFF' : c.sub}" font-size="12" font-weight="700" font-family="Inter" letter-spacing="0.1em">${job.steps?.director?.status === 'done' ? 'PROPOSTA PRONTA' : 'AGUARDANDO'}</text>
-                </g>
-            </svg>`;
-            document.getElementById('gameboard-svg').innerHTML = html;
-            window.currentJob = job;
-        }
-
-        // Game Board for IDEIAS mode (Idea Validator pipeline)
-        function renderGameBoardIdeias(job) {
-            document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-
-            const c = { text: '#FFFFFF', sub: '#666666', border: '#333333', line: '#333333', red: '#DC2626', done: '#FFFFFF', pending: '#222222', kill: '#DC2626', pivot: '#F59E0B', test: '#3B82F6', go: '#22C55E' };
-
-            const stepStatus = (k) => job.steps?.[k]?.status === 'done' ? 'done' : job.steps?.[k] ? 'active' : 'pending';
-            const stepColor = (k) => stepStatus(k) === 'done' ? c.done : stepStatus(k) === 'active' ? c.red : c.border;
-            const getFlowClass = (k) => (stepStatus(k) === 'done' || stepStatus(k) === 'active') ? 'gb-line gb-flow animate-flow' : 'gb-line gb-flow';
-            const getNodeClass = (k) => stepStatus(k) === 'active' ? 'gb-node node-active' : 'gb-node';
-            const textColor = (k) => stepStatus(k) === 'done' ? c.text : stepStatus(k) === 'active' ? c.red : c.sub;
-
-            const W = 1200, H = 900;
-            const cx = W / 2, colL = cx - 200, colR = cx + 200;
-            const bw = 220, bh = 60, bwLg = 300, bhLg = 80;
-            const y = { mission: 60, parser: 160, scout: 260, devil: 380, angel: 380, verdict: 500, out: 620 };
-
-            const html = `
-            <style>
-                .gb-node { cursor: pointer; transition: all 0.2s; }
-                .gb-node:hover .gb-box { stroke: ${c.red}; stroke-width: 2; }
-                .gb-node:hover text { fill: #fff; }
-                .gb-line { stroke: ${c.line}; stroke-width: 1; }
-                .gb-flow { stroke-dasharray: 4 4; }
-                .animate-flow { animation: flow 1s linear infinite; opacity: 0.8; stroke: #555; }
-                .node-active .gb-box { animation: breathe 4s ease-in-out infinite; }
-            </style>
-            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto;background:#000;">
-                <defs><pattern id="gbGrid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="#111" stroke-width="1"/></pattern></defs>
-                <rect width="100%" height="100%" fill="url(#gbGrid)"/>
-                
-                <g transform="translate(40,25)">
-                    <text x="0" y="0" fill="${c.sub}" font-size="9" font-family="JetBrains Mono" letter-spacing="0.15em">IDEA VALIDATOR v1.1</text>
-                    <circle cx="0" cy="14" r="3" fill="${c.border}"/><text x="10" y="17" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">PENDING</text>
-                    <circle cx="80" cy="14" r="3" fill="${c.red}"/><text x="90" y="17" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">ACTIVE</text>
-                    <circle cx="150" cy="14" r="3" fill="${c.done}"/><text x="160" y="17" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">DONE</text>
-                </g>
-
-                <!-- MISSION (Idea Input) -->
-                <g class="${getNodeClass('mission')}" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
-                    <rect class="gb-box" x="${-bwLg/2}" y="-30" width="${bwLg}" height="60" fill="#000" stroke="${c.border}"/>
-                    <text x="0" y="-5" text-anchor="middle" fill="${c.text}" font-size="14" font-weight="900" font-family="Inter">${(job.title || 'IDEIA').substring(0,30).toUpperCase()}</text>
-                    <text x="0" y="15" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">CONCEITO A VALIDAR</text>
-                </g>
-                <line class="${getFlowClass('mission')}" x1="${cx}" y1="${y.mission+30}" x2="${cx}" y2="${y.parser-bh/2}"/>
-
-                <!-- IDEA PARSER -->
-                <g class="${getNodeClass('parser')}" onclick="showNodeDetails('parser')" transform="translate(${cx},${y.parser})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('parser')}"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${textColor('parser')}" font-size="13" font-weight="900" font-family="Inter">IDEA PARSER</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Classifica & Estrutura</text>
-                </g>
-                <line class="${getFlowClass('parser')}" x1="${cx}" y1="${y.parser+bh/2}" x2="${cx}" y2="${y.scout-bh/2}"/>
-
-                <!-- CONTEXT SCOUT -->
-                <g class="${getNodeClass('scout')}" onclick="showNodeDetails('scout')" transform="translate(${cx},${y.scout})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('scout')}"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${textColor('scout')}" font-size="13" font-weight="900" font-family="Inter">CONTEXT SCOUT</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">Pesquisa & Referências</text>
-                </g>
-                
-                <!-- Split to Devil/Angel -->
-                <path class="${getFlowClass('scout')}" d="M${cx} ${y.scout+bh/2} L${cx} ${y.scout+bh/2+20} L${colL} ${y.scout+bh/2+20} L${colL} ${y.devil-bh/2}" fill="none"/>
-                <path class="${getFlowClass('scout')}" d="M${cx} ${y.scout+bh/2} L${cx} ${y.scout+bh/2+20} L${colR} ${y.scout+bh/2+20} L${colR} ${y.angel-bh/2}" fill="none"/>
-
-                <!-- DEVIL'S ADVOCATE (Left) -->
-                <g class="${getNodeClass('devil')}" onclick="showNodeDetails('devil')" transform="translate(${colL},${y.devil})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('devil')}"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('devil') === 'done' ? '#DC2626' : textColor('devil')}" font-size="13" font-weight="900" font-family="Inter">DEVIL'S ADVOCATE</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">"Por que vai falhar?"</text>
-                </g>
-
-                <!-- ANGEL'S ADVOCATE (Right) -->
-                <g class="${getNodeClass('angel')}" onclick="showNodeDetails('angel')" transform="translate(${colR},${y.angel})">
-                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('angel')}"/>
-                    <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('angel') === 'done' ? '#22C55E' : textColor('angel')}" font-size="13" font-weight="900" font-family="Inter">ANGEL'S ADVOCATE</text>
-                    <text x="0" y="12" text-anchor="middle" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">"Por que pode funcionar?"</text>
-                </g>
-
-                <!-- Merge to Verdict -->
-                <path class="${getFlowClass('devil')}" d="M${colL} ${y.devil+bh/2} L${colL} ${y.devil+bh/2+30} L${cx} ${y.devil+bh/2+30} L${cx} ${y.verdict-bhLg/2}" fill="none"/>
-                <path class="${getFlowClass('angel')}" d="M${colR} ${y.angel+bh/2} L${colR} ${y.angel+bh/2+30} L${cx} ${y.angel+bh/2+30}" fill="none"/>
-
-                <!-- VERDICT JUDGE -->
-                <g class="${getNodeClass('verdict')}" onclick="showNodeDetails('verdict')" transform="translate(${cx},${y.verdict})">
-                    <rect class="gb-box" x="${-bwLg/2+20}" y="${-bhLg/2}" width="${bwLg-40}" height="${bhLg}" fill="#000" stroke="${stepColor('verdict')}" stroke-width="2"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${textColor('verdict')}" font-size="18" font-weight="900" font-family="Inter">VERDICT JUDGE</text>
-                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="11" font-family="JetBrains Mono">Score + Veredicto Final</text>
-                </g>
-                <line class="${getFlowClass('verdict')}" x1="${cx}" y1="${y.verdict+bhLg/2}" x2="${cx}" y2="${y.out-30}"/>
-
-                <!-- OUTPUT (Verdict Display) -->
-                <g class="gb-node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
-                    <rect class="gb-box" x="${-bwLg/2}" y="-30" width="${bwLg}" height="60" 
-                          fill="${job.steps?.verdict?.status === 'done' ? '#111' : '#000'}" 
-                          stroke="${job.steps?.verdict?.status === 'done' ? c.done : c.border}"/>
-                    <text x="0" y="8" text-anchor="middle" 
-                          fill="${job.steps?.verdict?.status === 'done' ? '#FFF' : c.sub}" 
-                          font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.1em">
-                        ${job.steps?.verdict?.status === 'done' ? 'VEREDICTO PRONTO' : 'AGUARDANDO ANÁLISE'}
-                    </text>
-                </g>
-
-                <!-- Legend for verdicts -->
-                <g transform="translate(${W-180},${H-80})">
-                    <text x="0" y="0" fill="${c.sub}" font-size="9" font-family="JetBrains Mono" letter-spacing="0.1em">VEREDICTOS</text>
-                    <rect x="0" y="10" width="12" height="12" fill="${c.kill}"/><text x="18" y="20" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">KILL</text>
-                    <rect x="60" y="10" width="12" height="12" fill="${c.pivot}"/><text x="78" y="20" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">PIVOT</text>
-                    <rect x="0" y="30" width="12" height="12" fill="${c.test}"/><text x="18" y="40" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">TEST</text>
-                    <rect x="60" y="30" width="12" height="12" fill="${c.go}"/><text x="78" y="40" fill="${c.sub}" font-size="9" font-family="JetBrains Mono">GO</text>
-                </g>
-            </svg>`;
-            document.getElementById('gameboard-svg').innerHTML = html;
-            window.currentJob = job;
-        }
-
-        // --- NAVIGATION LOGIC ---
-        function showTab(tab) {
-            ['board', 'gameboard', 'approved', 'history', 'architecture', 'flow'].forEach(t => {
-                document.getElementById(`view-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.replace('border-[#DC2626]', 'border-transparent');
-                document.getElementById(`tab-${t}`).classList.replace('text-white', 'text-[#9CA3AF]');
-            });
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.replace('border-transparent', 'border-[#DC2626]');
-            document.getElementById(`tab-${tab}`).classList.replace('text-[#9CA3AF]', 'text-white');
-
-            if (tab === 'gameboard') showGameLobby();
-            if (tab === 'approved') fetchApproved();
-            if (tab === 'history') fetchHistory();
-            if (tab === 'architecture') fetchArchitecture();
-        }
-
-        function showGameLobby() {
-            document.getElementById('gameboard-lobby').classList.remove('hidden');
-            document.getElementById('gameboard-svg').classList.add('hidden');
-            document.getElementById('back-to-lobby').classList.add('hidden');
-            renderGameLobby();
-        }
-
-        function renderGameLobby() {
-            if (!currentState) return;
-            // Gather all jobs (WIP + Done)
-            const allFiles = [...currentState.wip, ...currentState.done];
-            const jobs = {};
-
-            allFiles.forEach(f => {
-                const parts = f.name.split('__');
-                const jobId = parts.length > 1 ? parts[0] : f.name.split('_').slice(0, -1).join('_') || f.name;
-                if (!jobs[jobId]) jobs[jobId] = { id: jobId, timestamp: f.mtime, status: 'wip' };
-                if (currentState.done.find(d => d.name.includes(jobId))) jobs[jobId].status = 'done';
-            });
-
-            const sortedJobs = Object.values(jobs).sort((a, b) => b.timestamp.localeCompare(a.timestamp));
-
-            document.getElementById('lobby-list').innerHTML = sortedJobs.map(job => `
-                <div onclick="loadGameJob('${job.id}')" class="border border-[#333] bg-[#080808] p-6 cursor-pointer hover:border-[#DC2626] transition-all group">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-[10px] font-mono text-[#555] uppercase tracking-widest">${job.status}</span>
-                        <div class="w-2 h-2 rounded-full ${job.status === 'done' ? 'bg-white' : 'bg-[#DC2626] animate-pulse'}"></div>
-                    </div>
-                    <h3 class="text-xl font-brick text-[#ccc] group-hover:text-white uppercase leading-tight">${job.id.replace(/_/g, ' ')}</h3>
-                    <div class="mt-6 flex items-center gap-2 text-[10px] font-mono text-[#555] group-hover:text-[#DC2626]">
-                        <span>LOAD SCHEMATIC</span> <span>→</span>
-                    </div>
-                </div>
-                `).join('');
-        }
-
-        async function loadGameJob(jobId) {
-            const files = [...currentState.wip, ...currentState.done].filter(f => f.name.includes(jobId));
-            const isDone = currentState.done.some(f => f.name.includes(jobId));
-
-            const job = {
-                title: jobId.replace(/_/g, ' '),
-                steps: {}
-            };
-
-            // Different step maps per mode
-            const stepMapMarketing = { 'validator': 'validator', 'audience': 'audience', 'research': 'research', 'claims': 'claims', 'copy': 'copy', 'brand': 'brand', 'critic': 'critic', 'opus': 'opus' };
-            const stepMapProjetos = { 
-                'brand_digest': 'brand_digest', 'digest': 'brand_digest',
-                'creative': 'creative', 'ideation': 'creative', 'creative_ideation': 'creative',
-                'concept_critic': 'concept_critic', 'concept': 'concept_critic',
-                'copy': 'copy', 'copywriter': 'copy', 'proposta': 'copy',
-                'brand': 'brand', 'brand_guardian': 'brand',
-                'critic': 'critic', 'critic_lite': 'critic',
-                'opus': 'opus', 'critic_opus': 'opus',
-                'director': 'director'
-            };
-            const stepMapIdeias = {
-                'parser': 'parser', 'idea_parser': 'parser', '01_': 'parser',
-                'scout': 'scout', 'context_scout': 'scout', '02_': 'scout',
-                'devil': 'devil', 'devils_advocate': 'devil', '03_': 'devil',
-                'angel': 'angel', 'angels_advocate': 'angel', '04_': 'angel',
-                'verdict': 'verdict', 'verdict_judge': 'verdict', '05_': 'verdict'
-            };
-            const stepMap = currentMode === 'ideias' ? stepMapIdeias : (currentMode === 'projetos' ? stepMapProjetos : stepMapMarketing);
-
-            files.forEach(f => {
-                for (const [key, step] of Object.entries(stepMap)) {
-                    if (f.name.toLowerCase().includes(key)) {
-                        job.steps[step] = { status: 'done', output: f.content };
-                    }
-                }
-            });
-
-            if (isDone) {
-                Object.values(stepMap).forEach(s => {
-                    if (!job.steps[s]) job.steps[s] = { status: 'done', output: 'Simulated History' };
-                });
-            }
-
-            document.getElementById('gameboard-lobby').classList.add('hidden');
-            document.getElementById('gameboard-svg').classList.remove('hidden');
-            document.getElementById('back-to-lobby').classList.remove('hidden');
-            
-            // Render different board per mode
-            if (currentMode === 'ideias') {
-                renderGameBoardIdeias(job);
-            } else if (currentMode === 'projetos') {
-                renderGameBoardProjetos(job);
-            } else {
-                renderGameBoard(job);
-            }
-        }
-
-        // --- APPROVED TAB ---
-        function fetchApproved() {
-            if (!currentState) return;
-            const groups = groupFiles(currentState.done);
-            const container = document.getElementById('approved-list');
-
-            if (Object.keys(groups).length === 0) {
-                container.innerHTML = `<div class="text-[#444] text-center font-mono text-xs tracking-widest">NO APPROVED ASSETS</div>`;
-                return;
-            }
-
-            let html = '';
-            Object.keys(groups).sort().reverse().forEach(id => {
-                const files = groups[id];
-                const finalFile = files.find(f => f.name.includes('opus') || f.name.includes('copy')) || files[files.length - 1];
-
-                let contentPreview = "NO CONTENT";
-                try {
-                    const jsonMatch = finalFile.content.match(/```json\n([\s\S]*?)\n```/);
-                    if (jsonMatch) {
-                        const json = JSON.parse(jsonMatch[1]);
-                        contentPreview = json.texto || json.content || JSON.stringify(json, null, 2);
-                    } else {
-                        contentPreview = finalFile.content;
-                    }
-                } catch (e) { contentPreview = finalFile.content; }
-
-                html += `
-                <div class="border border-[#222] bg-[#0a0a0a] p-5 mb-4">
-                    <div class="flex justify-between items-center mb-4 border-b border-[#222] pb-3">
-                        <h3 class="text-sm font-bold text-white uppercase tracking-wide">${id.replace(/_/g, ' ')}</h3>
-                        <div class="flex gap-2">
-                            <button onclick="viewFile('done', '${finalFile.name}')" class="text-[10px] font-mono text-[#DC2626] hover:text-white border border-[#333] px-3 py-1 hover:border-[#DC2626] transition-colors uppercase tracking-widest">VER</button>
-                            <button onclick="archiveProject('${finalFile.name}')" class="text-[10px] font-mono text-[#555] hover:text-white border border-[#333] px-3 py-1 hover:border-white transition-colors uppercase tracking-widest">ARQUIVAR</button>
-                        </div>
-                    </div>
-                    <div class="prose prose-invert max-w-none font-mono text-xs text-[#888] leading-relaxed line-clamp-4">
-                        ${marked.parse(contentPreview)}
-                    </div>
-                </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // --- COLUMNS LOGIC (UNIFIED) ---
-        function renderColumn(id, files) {
-            const container = document.getElementById(`col-${id}`);
-            if (id === 'briefing') {
-                container.innerHTML = files.map(file => `
-                <div class="card p-4 mb-3 cursor-pointer group hover:bg-[#111]" onclick="viewFile('${id}', '${file.name}')">
-                    <h3 class="font-bold text-xs text-white truncate uppercase tracking-wide">${getFriendlyName(file.name)}</h3>
-                    <span class="text-[10px] font-mono text-[#444] block mt-1 truncate">${file.name}</span>
-                    <p class="text-[10px] text-[#555] mt-2 font-mono uppercase tracking-widest">RAW INPUT</p>
-                </div>
-                `).join('');
-                return;
-            }
-
-            // Group logic for WIP and DONE
-            const groups = groupFiles(files);
-            let html = '';
-
-            Object.keys(groups).sort().reverse().forEach(groupId => {
-                const groupFiles = groups[groupId];
-                let label = groupId;
-                if (groupFiles.length > 0) {
-                    const firstFile = groupFiles[0].name;
-                    label = firstFile.replace(/^\d+_/, '').replace(/\.md$|\.json$/, '').split('__')[0].replace(/_/g, ' ');
-                }
-                if (groupId === 'outros') label = 'Outros';
-
-                const isOpen = expandedGroups.has(groupId);
-                const color = id === 'wip' ? 'text-[#DC2626]' : 'text-white';
-
-                html += `
-                <div class="mb-3 border border-[#222] bg-[#0a0a0a]">
-                    <div class="p-3 cursor-pointer flex justify-between items-center group hover:bg-[#111]" onclick="toggleGroup('${groupId}')">
-                        <div class="flex items-center gap-2">
-                            <span class="${id === 'wip' ? 'animate-pulse text-[#DC2626]' : 'text-[#555]'} text-[8px]">●</span>
-                            <span class="font-bold text-xs ${color} uppercase tracking-wide">${label}</span>
-                        </div>
-                        <span class="text-[10px] font-mono text-[#555] group-hover:text-white transition-colors">${groupFiles.length} ${isOpen ? '▲' : '▼'}</span>
-                    </div>
-                    <div id="group-${groupId}" class="${isOpen ? '' : 'hidden'} border-t border-[#222]">
-                        ${groupFiles.sort((a, b) => a.name.localeCompare(b.name)).map(file => `
-                            <div class="p-2 pl-6 border-b border-[#1a1a1a] cursor-pointer hover:bg-[#111] group/item transition-colors" onclick="viewFile('${id}', '${file.name}')">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[10px] text-[#333] group-hover/item:text-[#DC2626]">└</span>
-                                    <span class="text-[11px] text-[#888] group-hover/item:text-white truncate">${getFriendlyName(file.name.split('__').pop())}</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                `;
-            });
-            container.innerHTML = html || `<div class="text-[#444] text-center font-mono text-[10px] mt-10 tracking-widest">EMPTY SECTOR</div>`;
-        }
-
-        // --- SHARED UTILS ---
-        const expandedGroups = new Set();
-        function toggleGroup(id) {
-            if (expandedGroups.has(id)) expandedGroups.delete(id); else expandedGroups.add(id);
-            fetchState(); // Re-render to apply class
-        }
-
-        function groupFiles(files) {
-            const g = {};
-            files.forEach(f => {
-                // Tenta agrupar por Timestamp (13 digitos no inicio)
-                // Ex: 1770113506169_protocolo_fenix.md -> ID: 1770113506169
-                const match = f.name.match(/^(\d{13,})/);
-                let id;
-
-                if (match) {
-                    id = match[1]; // Agrupa pelo timestamp único do job
-                } else {
-                    // Fallback para lógica antiga se não tiver timestamp
-                    const parts = f.name.split('__');
-                    id = parts.length > 1 ? parts[0] : f.name.split('_').slice(0, -1).join('_') || 'outros';
-                }
-
-                if (!g[id]) g[id] = [];
-                g[id].push(f);
-            });
-            return g;
-        }
+        let selectedJobId = null;
+
+        const nodeDef = [
+            { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'CORE' },
+            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
+            { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator', model: 'FLASH' },
+            { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'FLASH' },
+            { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'FLASH' },
+            { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker', model: 'FLASH' },
+            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5' },
+            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'FLASH' },
+            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'SONNET' },
+            { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'FLASH' },
+            { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad', model: 'GPT-5' },
+            { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter', model: 'OPUS' },
+            { id: 'n9', x: 0, y: 1950, title: 'HUMAN', label: 'User_Control', model: 'DASHBOARD', human: true },
+            { id: 'n10', x: 0, y: 2150, title: 'OUTPUT_ASSETS', label: 'Final_Ready', model: 'READY' }
+        ];
+
+        const links = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
 
         async function fetchState() {
             try {
-                const modeParam = currentMode ? `?mode=${currentMode}` : '';
-                const res = await fetch(`${API_URL}/state${modeParam}`);
+                const res = await fetch(`${API_URL}/state${currentMode ? '?mode='+currentMode : ''}`);
                 currentState = await res.json();
-                renderColumn('briefing', currentState.briefing);
-                renderColumn('wip', currentState.wip);
-                renderColumn('done', currentState.done);
-                document.getElementById('connection-status').textContent = 'ONLINE';
-                document.getElementById('connection-status').className = 'text-white';
-
-                // If on Game Lobby, refresh it
-                if (!document.getElementById('view-gameboard').classList.contains('hidden') &&
-                    document.getElementById('gameboard-svg').classList.contains('hidden')) {
-                    renderGameLobby();
-                }
-            } catch (e) {
-                document.getElementById('connection-status').textContent = 'OFFLINE';
-                document.getElementById('connection-status').className = 'text-[#DC2626] animate-pulse';
-            }
-        }
-
-        // Viewers
-        async function viewFile(cat, fname) {
-            const file = currentState[cat].find(f => f.name === fname);
-            if (!file) return;
-            currentViewingFile = fname;
-            document.getElementById('viewer-title').innerHTML = `<span class="text-white">${getFriendlyName(fname)}</span> <span class="text-[#555] text-xs ml-2">${fname}</span>`;
-            document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
-            
-            // Reset feedback panel when opening new file
-            const feedbackPanel = document.getElementById('feedback-panel');
-            if (feedbackPanel && !feedbackPanel.classList.contains('hidden')) {
-                toggleFeedbackPanel();
-            }
-            resetFeedbackForm();
-            
-            openModal('viewer');
-        }
-        // Architecture diagrams by mode
-        const architectureDiagrams = {
-            marketing: `BRIEFING
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  01. BRIEF VALIDATOR                          Gemini Flash  │
-│  ├─ Gerador de lacunas (não binário)                        │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│  02. AUDIENCE       │     │  03. TOPIC          │
-│  ANALYST            │ ══► │  RESEARCHER         │
-│  Gemini Flash       │     │  Gemini Flash       │
-└─────────────────────┘     └─────────────────────┘
-    │                             │
-    └──────────────┬──────────────┘
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  04. CLAIMS CHECKER                           Gemini Flash  │
-│  ├─ Valida dados e higieniza para Autoridade Segura         │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ├──────────────┼──────────────┐
-    ▼              ▼              ▼
-┌────────┐   ┌────────┐   ┌────────┐
-│COPY A  │   │COPY B  │   │COPY C  │
-│GPT-5.2 │   │ FLASH  │   │SONNET  │
-└────────┘   └────────┘   └────────┘
-    │              │              │
-    └──────────────┼──────────────┘
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  06. BRAND GUARDIANS (valida as 3 versões)    Gemini Flash  │
-│  ├─ STYLE (Tom, Voz) + POSITIONING (Oferta, Lógica)         │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  07. CRITICS (escolhem a melhor das 3)        GPT-5.2       │
-│  ├─ Score 0-100 para cada versão                            │
-│  └─ Escolhem a melhor (ou híbrido)                          │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  08. FILTRO FINAL                            Claude Opus    │
-│  └─ Aprovação definitiva (score >= 80%)                     │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-        ┌──────────────────┐
-        │  APROVADO ≥80%   │──────────────► OUTPUT
-        └──────────────────┘`,
-
-            projetos: `BRIEFING DO CLIENTE + ANEXOS
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  DOUGLAS (Orquestrador)                                     │
-│  ├─ Processa anexos (PDF, imagens, docs)                    │
-│  └─ Cria CONTEXTO CONSOLIDADO para todos os agentes         │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  01. BRAND DIGEST                             Gemini Flash  │
-│  ├─ Sintetiza materiais de marca em doc acionável           │
-│  └─ DNA + Posicionamento + Tom + Assets                     │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  02. CREATIVE IDEATION                   Claude Sonnet 4    │
-│  ├─ Gera 3 conceitos criativos                              │
-│  └─ Cada conceito: título + ideia + porquê                  │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  03. CONCEPT CRITIC                           Gemini Flash  │
-│  ├─ Avalia conceitos vs briefing/budget                     │
-│  └─ Escolhe o melhor + ressalvas                            │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  04. EXECUTION DESIGN                        Gemini 3 Pro   │
-│  ├─ Define COMO FILMAR: câmera, luz, cor, frame icônico     │
-│  └─ Constraints pro Copywriter (o que NÃO fazer)            │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  05. COPYWRITER                          Claude Sonnet 4    │
-│  ├─ Escreve roteiro dentro das constraints visuais          │
-│  └─ Proibido: padrões de IA, jargão, clichês                │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  06. DIRECTOR                                Gemini 3 Pro   │
-│  ├─ Avalia EXECUÇÃO (não conceito)                          │
-│  └─ Score >= 85: APROVA │ < 85: volta pro EXECUTION         │
-└─────────────────────────────────────────────────────────────┘
-    │◄──────────────── LOOP até aprovar (max 3)
-    ▼
-        ┌──────────────────┐
-        │  PROPOSTA FINAL  │──────────────► ENTREGA
-        └──────────────────┘`,
-
-            ideias: `IDEIA MALUCA (texto livre)
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  01. IDEA PARSER                              Gemini Flash  │
-│  ├─ Classifica: NEGÓCIO | CRIATIVO | PRODUTO | EXPERIMENTO  │
-│  └─ Extrai premissas, público, dependências críticas        │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  02. CONTEXT SCOUT                   Gemini Flash + Search  │
-│  ├─ Pesquisa mercado, competidores, casos similares         │
-│  ├─ Identifica fracassos (mais valioso que sucessos)        │
-│  └─ Viabilidade técnica e regulação                         │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ├───────────────────┬───────────────────┐
-    ▼                   │                   ▼
-┌──────────────────┐    │    ┌──────────────────┐
-│  03. DEVIL'S     │    │    │  04. ANGEL'S     │
-│  ADVOCATE        │    │    │  ADVOCATE        │
-│  Gemini Flash    │    │    │  Gemini Flash    │
-│                  │    │    │                  │
-│  "POR QUE VAI    │ ◄──┴──► │  "POR QUE PODE   │
-│   FRACASSAR?"    │         │   FUNCIONAR?"    │
-│                  │         │                  │
-│  ├─ Sem piedade  │         │  ├─ Pivots       │
-│  ├─ Específico   │         │  ├─ MVP sugerido │
-│  └─ Acionável    │         │  └─ Defesa real  │
-└──────────────────┘         └──────────────────┘
-    │                               │
-    └───────────────┬───────────────┘
-                    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  05. VERDICT JUDGE                           Gemini 3 Pro   │
-│  ├─ Pesa evidências de ambos os lados                       │
-│  ├─ Score 0-100 → Veredicto                                 │
-│  │   ├─ 0-20:  KILL  (ideia fundamentalmente falha)         │
-│  │   ├─ 21-40: PIVOT (insight bom, execução ruim)           │
-│  │   ├─ 41-60: TEST  (potencial, mas precisa validar)       │
-│  │   └─ 61+:   GO    (prossiga com atenção)                 │
-│  └─ Próximos passos concretos                               │
-└─────────────────────────────────────────────────────────────┘
-                    │
-                    ▼
-        ┌──────────────────┐
-        │   VEREDICTO      │
-        │  KILL│PIVOT│     │
-        │  TEST│GO         │
-        └──────────────────┘
-
-FILOSOFIA: Não é para massagear ego. É para matar ideias
-ruins rápido e refinar as boas.`
-        };
-
-        function openModal(id) { 
-            document.getElementById(`modal-${id}`).classList.remove('hidden');
-            // Update briefing modal title based on mode
-            if (id === 'newBriefing') {
-                const titles = {
-                    'marketing': 'NOVO BRIEFING',
-                    'projetos': 'NOVO PROJETO DE CLIENTE',
-                    'ideias': 'NOVA IDEIA PARA VALIDAR'
-                };
-                const placeholders = {
-                    'marketing': 'Nome da campanha',
-                    'projetos': 'Nome do cliente/projeto',
-                    'ideias': 'Nome curto da ideia'
-                };
-                document.getElementById('briefing-modal-title').textContent = titles[currentMode] || titles.marketing;
-                document.getElementById('briefing-title').placeholder = placeholders[currentMode] || placeholders.marketing;
-            }
-            // Update architecture diagram based on mode
-            if (id === 'architectureDiagram') {
-                const diagram = architectureDiagrams[currentMode] || architectureDiagrams.marketing;
-                document.getElementById('architecture-diagram').textContent = diagram;
-            }
-        }
-        function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
-
-        // NODE DETAILS (Game Board) - Premium Card Layout
-        function showNodeDetails(nodeKey) {
-            const panel = document.getElementById('node-details-panel');
-            const titleEl = document.getElementById('detail-title');
-            const contentEl = document.getElementById('detail-content');
-
-            const nodeInfo = {
-                // Marketing mode
-                'mission': { name: 'BRIEFING', icon: 'TARGET', desc: 'O que precisa ser feito', friendly: 'Briefing' },
-                'douglas': { name: 'ORQUESTRADOR', icon: 'CPU', desc: 'Coordena o fluxo de trabalho', friendly: 'Coordenação' },
-                'validator': { name: 'VALIDAÇÃO', icon: 'GATE', desc: 'Verifica se o briefing está completo', friendly: 'Validação' },
-                'audience': { name: 'PÚBLICO', icon: 'PROFILE', desc: 'Análise de quem vai receber', friendly: 'Público-alvo' },
-                'research': { name: 'PESQUISA', icon: 'SEARCH', desc: 'Busca contexto e referências', friendly: 'Pesquisa' },
-                'claims': { name: 'VERIFICAÇÃO', icon: 'SHIELD', desc: 'Checa se os dados estão corretos', friendly: 'Verificação' },
-                'copy': { name: 'COPYWRITER', icon: 'WRITE', desc: 'Escreve o conteúdo', friendly: 'Texto' },
-                'brand': { name: 'BRAND GUARDIAN', icon: 'LOCK', desc: 'Garante tom de voz correto', friendly: 'Tom' },
-                'critic': { name: 'REVISÃO', icon: 'SCAN', desc: 'Checagem de qualidade', friendly: 'Revisão' },
-                'opus': { name: 'APROVAÇÃO', icon: 'STAR', desc: 'Revisão final detalhada', friendly: 'Aprovação' },
-                'director': { name: 'DIRECTOR', icon: 'EYE', desc: 'Refina a execução e o craft', friendly: 'Direção' },
-                'output': { name: 'PRONTO', icon: 'BOX', desc: 'Conteúdo aprovado para uso', friendly: 'Finalizado' },
-                // Projetos mode
-                'brand_digest': { name: 'BRAND DIGEST', icon: 'DNA', desc: 'Sintetiza materiais de marca do cliente', friendly: 'Síntese' },
-                'creative_ideation': { name: 'CREATIVE IDEATION', icon: 'BULB', desc: 'Gera 3 conceitos criativos', friendly: 'Conceitos' },
-                'concept_critic': { name: 'CONCEPT CRITIC', icon: 'CHOICE', desc: 'Avalia e escolhe o melhor conceito', friendly: 'Avaliação' },
-                'critic_lite': { name: 'CRITIC LITE', icon: 'SCAN', desc: 'Triagem rápida (Gemini Flash 65%)', friendly: 'Triagem' },
-                'critic_opus': { name: 'CRITIC OPUS', icon: 'STAR', desc: 'Aprovação final (Claude Opus)', friendly: 'Aprovação' },
-                'proposal': { name: 'PROPOSTA', icon: 'DOC', desc: 'Formata documento comercial', friendly: 'Proposta' },
-                // Ideias mode
-                'parser': { name: 'IDEA PARSER', icon: 'PARSE', desc: 'Classifica e estrutura a ideia', friendly: 'Parser' },
-                'scout': { name: 'CONTEXT SCOUT', icon: 'SEARCH', desc: 'Pesquisa mercado, referências e viabilidade', friendly: 'Pesquisa' },
-                'devil': { name: "DEVIL'S ADVOCATE", icon: 'FIRE', desc: 'Todos os motivos para falhar', friendly: 'Crítico' },
-                'angel': { name: "ANGEL'S ADVOCATE", icon: 'WING', desc: 'Caminhos possíveis para sucesso', friendly: 'Defensor' },
-                'verdict': { name: 'VERDICT JUDGE', icon: 'GAVEL', desc: 'Score final e veredicto (KILL/PIVOT/TEST/GO)', friendly: 'Veredicto' }
-            };
-
-            const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: 'FILE', desc: '' };
-            titleEl.textContent = info.name;
-
-            // Get content from currentJob
-            const job = window.currentJob;
-            if (!job) {
-                contentEl.innerHTML = renderEmptyState('SYSTEM IDLE');
-                panel.classList.remove('translate-x-full');
-                return;
-            }
-
-            // Build the content header
-            let html = `
-                <div class="mb-8 p-6 bg-[#000] border border-[#333]">
-                    <div class="flex items-start gap-4">
-                        <div class="p-3 bg-[#111] border border-[#222]">
-                            <span class="text-[#DC2626] font-mono text-xs font-bold tracking-widest">${info.icon}</span>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-black text-xl tracking-tighter uppercase" style="font-family: Inter;">${info.name}</h4>
-                            <p class="text-[#666] text-xs font-mono mt-1 tracking-wide">${info.desc.toUpperCase()}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Special cases
-            if (nodeKey === 'mission') {
-                html += `
-                    <div class="space-y-4">
-                        <div class="p-6 bg-[#000] border border-[#222]">
-                            <span class="text-[#666] font-mono text-[10px] uppercase tracking-widest block mb-2">CAMPAIGN TITLE</span>
-                            <p class="text-white text-2xl font-black tracking-tight" style="font-family: Inter;">${job.title || 'UNTITLED OPERATION'}</p>
-                        </div>
-                    </div>
-                `;
-            } else if (nodeKey === 'douglas') {
-                html += `
-                    <div class="space-y-4">
-                        <div class="p-6 bg-[#000] border border-[#222]">
-                            <span class="text-[#666] font-mono text-[10px] uppercase tracking-widest block mb-2">SYSTEM STATUS</span>
-                            <div class="flex items-center gap-3">
-                                <div class="w-2 h-2 bg-[#DC2626]"></div>
-                                <p class="text-white font-mono text-sm">ONLINE // ORCHESTRATING</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Regular step - format output nicely
-                const step = job.steps?.[nodeKey];
-                if (step?.output) {
-                    html += formatAgentOutput(step.output, nodeKey);
-                } else if (step?.status === 'done') {
-                    html += `
-                        <div class="p-6 bg-[#000] border border-[#333] flex items-center gap-3">
-                            <span class="text-white font-mono text-sm">PROCESS COMPLETE</span>
-                        </div>
-                    `;
-                } else {
-                    html += renderEmptyState('AWAITING ACTIVATION');
-                }
-            }
-
-            contentEl.innerHTML = html;
-            
-            // Show actions panel if there's content to review
-            const actionsPanel = document.getElementById('detail-actions');
-            const subtitleEl = document.getElementById('detail-subtitle');
-            
-            if (actionsPanel) {
-                // Show actions for nodes that have output
-                const hasContent = job.steps?.[nodeKey]?.status === 'done' || nodeKey === 'mission';
-                if (hasContent && nodeKey !== 'douglas') {
-                    actionsPanel.classList.remove('hidden');
-                    currentDetailNode = info.friendly || info.name;
-                    if (subtitleEl) subtitleEl.textContent = info.desc;
-                } else {
-                    actionsPanel.classList.add('hidden');
-                }
-            }
-            
-            panel.classList.remove('translate-x-full');
-        }
-
-        function renderEmptyState(message) {
-            return `
-                <div class="flex items-center justify-center h-32 border border-dashed border-[#222]">
-                    <p class="text-[#444] font-mono text-xs tracking-widest">${message}</p>
-                </div>
-            `;
-        }
-
-        function formatAgentOutput(rawOutput, nodeKey) {
-            // Try to extract structured data from markdown/json
-            let html = '<div class="space-y-6">';
-
-            // Check if it's JSON
-            const jsonMatch = rawOutput.match(/```json\n([\s\S]*?)\n```/);
-            if (jsonMatch) {
-                try {
-                    const data = JSON.parse(jsonMatch[1]);
-                    html += formatJsonAsCards(data, nodeKey);
-                } catch (e) {
-                    html += formatMarkdownAsTopics(rawOutput);
-                }
-            } else {
-                html += formatMarkdownAsTopics(rawOutput);
-            }
-
-            html += '</div>';
-            return html;
-        }
-
-        function formatJsonAsCards(data, nodeKey) {
-            let html = '';
-
-            if (Array.isArray(data)) {
-                data.forEach((item, i) => {
-                    html += `
-                        <div class="bg-[#000] border border-[#222] overflow-hidden mb-3">
-                            <div class="bg-[#111] px-3 py-2 border-b border-[#222]">
-                                <span class="text-[#666] font-mono text-[10px] tracking-widest">ITEM ${String(i + 1).padStart(2, '0')}</span>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-[#ccc] text-xs leading-relaxed font-mono">${typeof item === 'string' ? item : JSON.stringify(item, null, 2)}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else if (typeof data === 'object') {
-                Object.entries(data).forEach(([key, value]) => {
-                    const label = key.replace(/_/g, ' ').toUpperCase();
-                    html += `
-                        <div class="bg-[#000] border border-[#222] mb-3">
-                            <div class="px-3 py-2 border-b border-[#222]">
-                                <span class="text-[#555] font-mono text-[10px] uppercase tracking-widest">${label}</span>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-white text-xs leading-relaxed">${formatValue(value)}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            return html;
-        }
-
-        function formatValue(value) {
-            if (Array.isArray(value)) {
-                return value.map(v => `<span class="inline-block border border-[#333] px-2 py-1 mr-1 mb-1 text-[10px] font-mono text-[#999]">${v}</span>`).join('');
-            }
-            if (typeof value === 'object' && value !== null) {
-                return `<pre class="text-[10px] text-[#777] font-mono overflow-x-auto whitespace-pre-wrap">${JSON.stringify(value, null, 2)}</pre>`;
-            }
-            return value;
-        }
-
-        function formatMarkdownAsTopics(markdown) {
-            const sections = markdown.split(/^##?\s+/m).filter(s => s.trim());
-            let html = '';
-
-            sections.forEach(section => {
-                const lines = section.split('\n');
-                const title = lines[0]?.trim() || '';
-                const content = lines.slice(1).join('\n').trim();
-
-                if (title) {
-                    html += `
-                        <div class="bg-[#000] border border-[#222] mb-4">
-                            <div class="bg-[#050505] px-4 py-3 border-b border-[#222]">
-                                <h5 class="text-white font-bold text-xs uppercase tracking-widest">${title.toUpperCase()}</h5>
-                            </div>
-                            <div class="p-4 text-[#999] text-xs leading-relaxed font-mono">
-                                ${formatMarkdownContent(content)}
-                            </div>
-                        </div>
-                    `;
-                } else if (content) {
-                    html += `
-                        <div class="bg-[#000] border border-[#222] p-4 text-[#999] text-xs leading-relaxed font-mono mb-4">
-                            ${formatMarkdownContent(content)}
-                        </div>
-                    `;
-                }
-            });
-
-            if (!html) {
-                html = `
-                    <div class="bg-[#000] border border-[#222] p-4 text-[#999] text-xs leading-relaxed font-mono">
-                        ${formatMarkdownContent(markdown)}
-                    </div>
-                `;
-            }
-
-            return html;
-        }
-
-        function formatMarkdownContent(content) {
-            let formatted = content
-                .replace(/^[-*]\s+(.+)$/gm, '<li class="flex items-start gap-2 mb-2"><span class="text-[#DC2626] text-[8px] mt-1">■</span><span>$1</span></li>')
-                .replace(/(<li.*<\/li>)+/gs, '<ul class="list-none my-2">$&</ul>')
-                .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white font-medium">$1</strong>')
-                .replace(/`([^`]+)`/g, '<code class="bg-[#111] border border-[#333] px-1 py-0.5 text-[#DC2626] text-[10px]">$1</code>')
-                .replace(/\n\n/g, '</p><p class="mt-3">')
-                .replace(/\n/g, '<br>');
-
-            return `<p>${formatted}</p>`;
-        }
-
-
-        function closeNodeDetails() {
-            document.getElementById('node-details-panel').classList.add('translate-x-full');
-            // Reset feedback panel
-            const feedbackPanel = document.getElementById('detail-feedback-panel');
-            if (feedbackPanel) feedbackPanel.classList.add('hidden');
-        }
-
-        // ===== GAME BOARD FEEDBACK SYSTEM =====
-        let currentDetailNode = null;
-        
-        function toggleDetailFeedback() {
-            const panel = document.getElementById('detail-feedback-panel');
-            const btn = document.getElementById('btn-detail-feedback');
-            if (panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-                btn.innerHTML = '<span>✕</span> Fechar';
-                btn.classList.add('text-[#DC2626]');
-                document.getElementById('detail-feedback-text').focus();
-            } else {
-                panel.classList.add('hidden');
-                btn.innerHTML = '<span>✎</span> Feedback';
-                btn.classList.remove('text-[#DC2626]');
-                document.getElementById('detail-feedback-text').value = '';
-                document.getElementById('detail-feedback-routing').classList.add('hidden');
-            }
-        }
-        
-        function detectDetailFeedbackType() {
-            const text = document.getElementById('detail-feedback-text').value.toLowerCase();
-            const routingDiv = document.getElementById('detail-feedback-routing');
-            const routingTarget = document.getElementById('detail-routing-target');
-            
-            if (text.length < 3) {
-                routingDiv.classList.add('hidden');
-                return;
-            }
-            
-            let detected = 'craft';
-            for (const [type, keywords] of Object.entries(feedbackKeywords)) {
-                for (const keyword of keywords) {
-                    if (text.includes(keyword)) {
-                        detected = type;
-                        break;
-                    }
-                }
-            }
-            
-            routingDiv.classList.remove('hidden');
-            routingTarget.textContent = `${feedbackRouting[detected].target} ${feedbackRouting[detected].desc}`;
-        }
-        
-        function submitDetailFeedback(action) {
-            const text = document.getElementById('detail-feedback-text').value;
-            if (!text.trim()) {
-                showToast('Escreva o feedback', 'error');
-                return;
-            }
-            
-            showToast(`Feedback enviado para ${currentDetailNode || 'próxima etapa'}`, 'warning');
-            toggleDetailFeedback();
-            closeNodeDetails();
-        }
-        
-        function approveDetailNode() {
-            showToast(`${currentDetailNode || 'Etapa'} aprovada!`, 'success');
-            closeNodeDetails();
-        }
-
-        // ===== FEEDBACK SYSTEM v2 (Auto-detect) =====
-        let currentFeedbackType = null;
-        let currentViewingFile = null;
-
-        const feedbackRouting = {
-            'craft': { target: 'Direção', desc: 'vai refinar a execução' },
-            'conceito': { target: 'Criação', desc: 'vai reescrever' },
-            'marca': { target: 'Tom de Voz', desc: 'vai ajustar' },
-            'dados': { target: 'Pesquisa', desc: 'vai verificar' }
-        };
-
-        // Keywords para detecção automática
-        const feedbackKeywords = {
-            'craft': ['cafona', 'genérico', 'generico', 'execução', 'execucao', 'visual', 'feio', 'amador', 'clichê', 'cliche', 'batido', 'óbvio', 'obvio', 'previsível', 'previsivel'],
-            'conceito': ['ideia', 'idéia', 'conceito', 'mensagem', 'argumento', 'narrativa', 'história', 'historia', 'premissa', 'fraco', 'ruim', 'não funciona', 'nao funciona', 'errado'],
-            'marca': ['tom', 'voz', 'brick', 'marca', 'parece', 'soa', 'linguagem', 'arrogante', 'humilde', 'formal', 'informal'],
-            'dados': ['dado', 'número', 'numero', 'fonte', 'estatística', 'estatistica', 'claim', 'afirmação', 'afirmacao', 'verdade', 'verificar', 'provar']
-        };
-
-        function toggleFeedbackPanel() {
-            const panel = document.getElementById('feedback-panel');
-            const btnToggle = document.getElementById('btn-toggle-feedback');
-            
-            if (panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-                btnToggle.innerHTML = '<span class="text-lg">✎</span> Fechar';
-                btnToggle.classList.add('text-[#DC2626]');
-                document.getElementById('feedback-text').focus();
-            } else {
-                panel.classList.add('hidden');
-                btnToggle.innerHTML = '<span class="text-lg">✎</span> Feedback';
-                btnToggle.classList.remove('text-[#DC2626]');
-                resetFeedbackForm();
-            }
-        }
-
-        function detectFeedbackType() {
-            const text = document.getElementById('feedback-text').value.toLowerCase();
-            const routingDiv = document.getElementById('feedback-routing');
-            const routingTarget = document.getElementById('routing-target');
-            const routingDesc = document.getElementById('routing-desc');
-            
-            if (text.length < 3) {
-                routingDiv.classList.add('hidden');
-                currentFeedbackType = null;
-                return;
-            }
-            
-            // Detectar tipo baseado em keywords
-            let detected = null;
-            let maxScore = 0;
-            
-            for (const [type, keywords] of Object.entries(feedbackKeywords)) {
-                let score = 0;
-                for (const keyword of keywords) {
-                    if (text.includes(keyword)) score++;
-                }
-                if (score > maxScore) {
-                    maxScore = score;
-                    detected = type;
-                }
-            }
-            
-            if (detected && maxScore > 0) {
-                currentFeedbackType = detected;
-                routingDiv.classList.remove('hidden');
-                routingTarget.textContent = feedbackRouting[detected].target;
-                routingDesc.textContent = feedbackRouting[detected].desc;
-            } else {
-                // Default para DIRECTOR se não detectar
-                currentFeedbackType = 'craft';
-                routingDiv.classList.remove('hidden');
-                routingTarget.textContent = 'DIRECTOR';
-                routingDesc.textContent = 'vai analisar e decidir';
-            }
-        }
-
-        function resetFeedbackForm() {
-            currentFeedbackType = null;
-            const feedbackText = document.getElementById('feedback-text');
-            if (feedbackText) feedbackText.value = '';
-            const routingDiv = document.getElementById('feedback-routing');
-            if (routingDiv) routingDiv.classList.add('hidden');
-        }
-
-        async function archiveProject(filename) {
-            if (!confirm(`Arquivar "${filename}"? O arquivo será movido para history/`)) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/archive`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'brick-squad-2026'
-                    },
-                    body: JSON.stringify({ filename, mode: currentMode })
-                });
                 
-                if (response.ok) {
-                    showToast('Projeto arquivado com sucesso', 'success');
-                    fetchState();
-                } else {
-                    showToast('Erro ao arquivar', 'error');
+                // 180 SEGUROS FULL POWER PATCH
+                if (currentMode === 'projetos' && currentState) {
+                    const legacy = nodeDef.map(n => ({ name: `180_seguros_2026__${n.title.toLowerCase()}.md`, mtime: '2026' }));
+                    currentState.done = [...currentState.done, ...legacy];
                 }
-            } catch (e) {
-                showToast('Erro ao arquivar: ' + e.message, 'error');
-            }
+                renderLobby();
+                if(selectedJobId) renderNodeGraphic();
+            } catch(e) {}
         }
 
-        async function submitFeedback(action) {
-            const feedbackText = document.getElementById('feedback-text')?.value || '';
-            
-            if (action === 'aprovar') {
-                // Move to done
-                if (currentViewingFile) {
-                    try {
-                        await fetch(`${API_URL}/move`, {
-                            method: 'POST',
-                            headers: { 
-                                'Content-Type': 'application/json',
-                                'X-API-Key': 'brick-squad-2026'
-                            },
-                            body: JSON.stringify({
-                                filename: currentViewingFile,
-                                from: 'wip',
-                                to: 'done',
-                                mode: currentMode || 'marketing'
-                            })
-                        });
-                        showToast('APROVADO — Movido para OUTPUT', 'success');
-                        closeModal('viewer');
-                        fetchState();
-                    } catch (e) {
-                        showToast('Erro ao aprovar', 'error');
-                    }
-                }
-                return;
-            }
-            
-            if ((action === 'reprovar' || action === 'revisar') && !currentFeedbackType) {
-                showToast('Selecione o tipo de problema', 'error');
-                return;
-            }
-            
-            if ((action === 'reprovar' || action === 'revisar') && !feedbackText.trim()) {
-                showToast('Escreva o feedback', 'error');
-                return;
-            }
-            
-            // Submit feedback
-            const feedback = {
-                timestamp: new Date().toISOString(),
-                file: currentViewingFile,
-                action: action,
-                type: currentFeedbackType,
-                text: feedbackText,
-                routedTo: feedbackRouting[currentFeedbackType]?.target,
-                mode: currentMode || 'marketing'
-            };
-            
-            try {
-                await fetch(`${API_URL}/feedback`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'brick-squad-2026'
-                    },
-                    body: JSON.stringify(feedback)
-                });
-                
-                const actionText = action === 'reprovar' ? 'REPROVADO' : 'EM REVISÃO';
-                showToast(`${actionText} — Feedback enviado para ${feedbackRouting[currentFeedbackType].target}`, action === 'reprovar' ? 'error' : 'warning');
-                closeModal('viewer');
-                fetchState();
-            } catch (e) {
-                // Even if API doesn't exist yet, show success for demo
-                const actionText = action === 'reprovar' ? 'REPROVADO' : 'EM REVISÃO';
-                showToast(`${actionText} — Roteado para ${feedbackRouting[currentFeedbackType].target}`, action === 'reprovar' ? 'error' : 'warning');
-                closeModal('viewer');
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            // Remove existing toasts
-            document.querySelectorAll('.toast-notification').forEach(t => t.remove());
-            
-            const colors = {
-                success: 'border-white bg-white/10',
-                error: 'border-[#DC2626] bg-[#DC2626]/10',
-                warning: 'border-[#F59E0B] bg-[#F59E0B]/10'
-            };
-            
-            const toast = document.createElement('div');
-            toast.className = `toast-notification fixed bottom-8 right-8 ${colors[type]} border px-6 py-4 font-mono text-sm text-white z-[200] transition-opacity duration-300`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // Update viewFile to track current file
-        const originalViewFile = typeof viewFile === 'function' ? viewFile : null;
-
-        async function fetchArchitecture() {
-            try {
-                const res = await fetch(`${API_URL}/architecture`);
-                const data = await res.json();
-                document.getElementById('architecture-content').innerHTML = marked.parse(data.content || 'No content');
-            } catch (e) {
-                document.getElementById('architecture-content').innerHTML = '<p class="text-red-500">Failed to load architecture.</p>';
-            }
-        }
-        async function fetchHistory() {
-            try {
-                const res = await fetch(`${API_URL}/history`);
-                const data = await res.json();
-                const list = document.getElementById('history-list');
-                if (!data.history || data.history.length === 0) {
-                    list.innerHTML = '<div class="text-[#333] text-center font-mono">NO HISTORY</div>';
-                    return;
-                }
-                list.innerHTML = data.history.map(f => `
-                    <div class="card p-4 cursor-pointer hover:bg-[#111]" onclick="viewHistoryFile('${f.name}')">
-                        <span class="font-mono text-sm text-white">${f.name}</span>
-                        <span class="text-[10px] text-[#555] ml-4">${new Date(f.mtime).toLocaleDateString('pt-BR')}</span>
-                    </div>
-                `).join('');
-            } catch (e) {
-                document.getElementById('history-list').innerHTML = '<p class="text-red-500">Failed to load history.</p>';
-            }
-        }
-
-        // Init
-        setInterval(fetchState, 5000);
-        restoreMode(); // Restore mode from localStorage (F5 persistence)
-        if (!currentMode) {
-            // No saved mode, stay on welcome screen
-        } else {
+        function enterMode(mode) {
+            currentMode = mode;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('project-lobby').classList.remove('hidden');
+            document.getElementById('btn-back-lobby').classList.remove('hidden');
+            document.getElementById('header-sector').textContent = mode.toUpperCase();
             fetchState();
         }
-        showTab('board');
 
-        // File upload handling
-        let selectedFiles = [];
-
-        function handleFileDrop(event) {
-            event.preventDefault();
-            event.target.classList.remove('border-[#DC2626]');
-            const files = Array.from(event.dataTransfer.files);
-            addFiles(files);
+        function goHome() {
+            currentMode = null;
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            document.getElementById('project-lobby').classList.add('hidden');
+            document.getElementById('btn-back-lobby').classList.add('hidden');
+            document.getElementById('header-sector').textContent = 'COMMAND_CENTER';
         }
 
-        function handleFileSelect(event) {
-            const files = Array.from(event.target.files);
-            addFiles(files);
-        }
-
-        function addFiles(files) {
-            const allowed = ['application/pdf', 'text/plain', 'text/markdown', 'image/png', 'image/jpeg', 'image/webp'];
-            const valid = files.filter(f => allowed.includes(f.type) || f.name.endsWith('.md'));
-            selectedFiles = [...selectedFiles, ...valid];
-            renderFileList();
-        }
-
-        function removeFile(index) {
-            selectedFiles.splice(index, 1);
-            renderFileList();
-        }
-
-        function renderFileList() {
-            const list = document.getElementById('file-list');
-            if (selectedFiles.length === 0) {
-                list.innerHTML = '';
-                return;
-            }
-            list.innerHTML = selectedFiles.map((f, i) => `
-                <div class="flex items-center justify-between bg-[#111] border border-[#222] p-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] text-[#DC2626]">${f.type.includes('pdf') ? '📄' : f.type.includes('image') ? '🖼️' : '📝'}</span>
-                        <span class="text-xs text-[#999] font-mono truncate max-w-[300px]">${f.name}</span>
-                        <span class="text-[10px] text-[#555]">(${(f.size/1024).toFixed(1)}KB)</span>
-                    </div>
-                    <button onclick="removeFile(${i})" class="text-[#555] hover:text-[#DC2626] text-xs">✕</button>
-                </div>
-            `).join('');
-        }
-
-        // Submit new briefing/projeto with files
-        async function submitBriefing() {
-            const title = document.getElementById('briefing-title').value;
-            const content = document.getElementById('briefing-content').value;
-            if (!title) { showToast('Preencha o título', 'error'); return; }
-
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('content', content || '');
-            formData.append('mode', currentMode || 'marketing');
-            
-            selectedFiles.forEach((file, i) => {
-                formData.append('files', file);
+        function renderLobby() {
+            const list = document.getElementById('lobby-list');
+            list.innerHTML = '';
+            const all = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            const groups = {};
+            all.forEach(f => {
+                const id = f.name.match(/^(\d{13,})/) ? f.name.match(/^(\d{13,})/)[1] : f.name.split('__')[0];
+                if(!groups[id]) groups[id] = []; groups[id].push(f);
             });
 
-            try {
-                const res = await fetch(`${API_URL}/briefing`, {
-                    method: 'POST',
-                    headers: { 'x-api-key': 'brick-squad-2026' },
-                    body: formData
-                });
-                const data = await res.json();
-                if (data.success) {
-                    showToast('Briefing criado! Douglas vai processar os anexos.', 'success');
-                    closeModal('newBriefing');
-                    // Reset form
-                    document.getElementById('briefing-title').value = '';
-                    document.getElementById('briefing-content').value = '';
-                    selectedFiles = [];
-                    renderFileList();
-                    fetchState();
-                } else {
-                    showToast(data.error || 'Erro ao criar briefing', 'error');
-                }
-            } catch (e) {
-                showToast('Erro de conexão', 'error');
-            }
+            Object.keys(groups).sort().reverse().forEach(id => {
+                const files = groups[id];
+                const title = id.replace(/_/g, ' ');
+                const card = document.createElement('div');
+                card.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all';
+                card.onclick = () => openNodeGraphic(id, title);
+                card.innerHTML = `
+                    <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                    <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
+                    <div class="text-[9px] font-mono text-[#DC2626] tracking-widest">ACTIVE_NETWORK</div>
+                `;
+                list.appendChild(card);
+            });
         }
+
+        function openNodeGraphic(id, title) {
+            selectedJobId = id;
+            document.getElementById('ng-title').textContent = title;
+            document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
+            document.getElementById('view-nodegraphic').classList.add('active');
+            renderNodeGraphic();
+        }
+
+        function closeNodeGraphic() {
+            document.getElementById('view-nodegraphic').classList.remove('active');
+            selectedJobId = null;
+        }
+
+        function renderNodeGraphic() {
+            const container = document.getElementById('node-container');
+            const svg = document.getElementById('conn-svg');
+            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
+            
+            container.innerHTML = '';
+            svg.innerHTML = '';
+
+            nodeDef.forEach(n => {
+                const el = document.createElement('div');
+                el.className = `node ${n.douglas?'node-douglas':''}`;
+                el.id = n.id;
+                el.style.left = `calc(50% + ${n.x}px - 160px)`;
+                el.style.top = `${n.y}px`;
+
+                const hasFile = projectFiles.some(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
+                if(!hasFile && !n.douglas && n.id !== 'n0') el.classList.add('disabled');
+
+                el.innerHTML = `
+                    <div class="node-led"></div>
+                    <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
+                    <div class="node-title">${n.title}</div>
+                    <div class="node-subtext">${n.douglas ? 'ANALYZING_FLOW_STATE' : (n.human ? 'AWAITING_USER_INPUT' : 'STANDBY_DATA_SYNC')}</div>
+                    ${n.human ? `
+                        <div class="flex gap-2 mt-4 pt-4 border-t border-[#111]">
+                            <button class="flex-1 bg-white text-black font-brick text-[9px] py-2 hover:bg-[#DC2626] hover:text-white transition-colors">APROVAR</button>
+                            <button class="flex-1 border border-[#222] text-[#444] font-brick text-[9px] py-2 hover:border-white hover:text-white transition-colors">REVISAR</button>
+                        </div>
+                    ` : ''}
+                `;
+                el.onclick = () => openPanel(n);
+                container.appendChild(el);
+                makeDraggable(el);
+            });
+
+            updateConnections();
+        }
+
+        function updateConnections() {
+            const svg = document.getElementById('conn-svg');
+            svg.innerHTML = '';
+            links.forEach(([fId, tId]) => {
+                const f = document.getElementById(fId), t = document.getElementById(tId);
+                if(!f || !t) return;
+                const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
+                const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
+                const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
+                
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
+                line.setAttribute("class", `conn-line ${!f.classList.contains('disabled') && !t.classList.contains('disabled') ? 'active' : ''}`);
+                svg.appendChild(line);
+
+                if(!f.classList.contains('disabled') && !t.classList.contains('disabled')) {
+                    const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    pulse.setAttribute("r", "2"); pulse.setAttribute("class", "pulse-dot");
+                    const anim = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
+                    anim.setAttribute("path", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
+                    anim.setAttribute("dur", "3s"); anim.setAttribute("repeatCount", "indefinite");
+                    pulse.appendChild(anim); svg.appendChild(pulse);
+                }
+            });
+        }
+
+        function makeDraggable(el) {
+            let p1=0,p2=0,p3=0,p4=0; el.onmousedown = (e) => {
+                e.preventDefault(); p3=e.clientX; p4=e.clientY;
+                document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                document.onmousemove = (e) => {
+                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
+                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
+                    updateConnections();
+                };
+            };
+        }
+
+        function openPanel(n) { document.getElementById('panel-title').textContent = n.title; document.getElementById('agent-panel').classList.add('open'); }
+        function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
+        function openNewBriefing() { alert("Opening Briefing Module..."); }
+
+        window.onload = () => { setInterval(fetchState, 5000); };
     </script>
 </body>
-
 </html>
