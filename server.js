@@ -574,8 +574,52 @@ app.get('/api/feedback', (req, res) => {
     res.json({ pending: files });
 });
 
-app.listen(PORT, () => {
-    log('info', 'server_started', { port: PORT, marketingRoot: MARKETING_ROOT });
-    console.log(`🚀 Brick AI War Room running on port ${PORT}`);
+// Graceful shutdown handler (Railway sends SIGTERM)
+let server;
+const gracefulShutdown = (signal) => {
+    log('info', 'shutdown_signal_received', { signal });
+    console.log(`\n⚠️ ${signal} received, shutting down gracefully...`);
+
+    // Save metrics before shutdown
+    saveMetrics();
+
+    if (server) {
+        server.close(() => {
+            log('info', 'server_closed');
+            console.log('✅ Server closed');
+            process.exit(0);
+        });
+
+        // Force close after 10s
+        setTimeout(() => {
+            log('warn', 'forced_shutdown');
+            console.log('⚠️ Forced shutdown after timeout');
+            process.exit(1);
+        }, 10000);
+    } else {
+        process.exit(0);
+    }
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Error handlers - prevent silent crashes
+process.on('uncaughtException', (err) => {
+    log('error', 'uncaught_exception', { error: err.message, stack: err.stack });
+    console.error('❌ Uncaught Exception:', err);
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    log('error', 'unhandled_rejection', { reason: String(reason) });
+    console.error('❌ Unhandled Rejection:', reason);
+    // Don't exit on unhandled rejection, just log it
+});
+
+// Start server - bind to 0.0.0.0 for Railway/Docker compatibility
+server = app.listen(PORT, '0.0.0.0', () => {
+    log('info', 'server_started', { port: PORT, host: '0.0.0.0', marketingRoot: MARKETING_ROOT });
+    console.log(`🚀 Brick AI War Room running on http://0.0.0.0:${PORT}`);
     console.log(`📁 Marketing folder: ${MARKETING_ROOT}`);
 });
