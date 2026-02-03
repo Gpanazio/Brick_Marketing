@@ -1,0 +1,30 @@
+# CREATIVE IDEATION - 180 SEGUROS
+
+```json
+{
+  "conceitos": [
+    {
+      "titulo": "QUEM FAZ A 180",
+      "ideia": "Institucional com rostos reais do time. Sem atores, sem banco de imagem. As pessoas que atendem, desenvolvem, resolvem.",
+      "porque": ["Usa assets existentes", "Impossível de copiar", "Resolve tensão tech x humano"],
+      "risco": "Depende da qualidade do material 2024",
+      "budget_fit": "IDEAL"
+    },
+    {
+      "titulo": "A JORNADA INVISÍVEL",
+      "ideia": "Mostrar os bastidores de um sinistro resolvido em 24h. Split-screen: vida do cliente vs operação 180.",
+      "porque": ["Traduz tecnologia em algo tangível", "Mostra diferencial sem dizer"],
+      "risco": "Motion complexo pode estourar budget",
+      "budget_fit": "APERTADO"
+    },
+    {
+      "titulo": "180 GRAUS",
+      "ideia": "Brincar com o nome: a 180 inverte a perspectiva sobre seguros. Cenas que giram 180°.",
+      "porque": ["Nome vira conceito", "Fácil adaptar para cortes"],
+      "risco": "Pode parecer truque se mal executado",
+      "budget_fit": "OK"
+    }
+  ],
+  "recomendacao": "QUEM FAZ A 180"
+}
+```

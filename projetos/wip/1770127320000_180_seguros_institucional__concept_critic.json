@@ -1,0 +1,23 @@
+# CONCEPT CRITIC - 180 SEGUROS
+
+```json
+{
+  "conceito_escolhido": "QUEM FAZ A 180",
+  "score": 88,
+  "justificativa": "Único conceito que aproveita 100% dos assets existentes e entrega autenticidade impossível de falsificar. Em mercado de institucional genérico, pessoas reais são o diferencial.",
+  "pontos_fortes": [
+    "Maximiza assets existentes (material 2024)",
+    "Diferenciação real vs concorrentes",
+    "Resolve tensão tech x humano elegantemente",
+    "Budget fit perfeito"
+  ],
+  "ressalvas": [
+    "CRÍTICO: Auditar material 2024 antes de commitar",
+    "Confirmar disponibilidade do time para diária"
+  ],
+  "conceitos_descartados": [
+    {"titulo": "A JORNADA INVISÍVEL", "motivo": "Budget apertado para motion de qualidade"},
+    {"titulo": "180 GRAUS", "motivo": "Conceito dependente de execução, sem substância narrativa"}
+  ]
+}
+```
