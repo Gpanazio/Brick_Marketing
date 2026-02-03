@@ -168,7 +168,7 @@ BRIEFING
                 <div class="flex justify-between items-center">
                     <div>
                         <h1 class="text-xl font-mono text-blue-300 tracking-wider">AGENT ARCHITECTURE MAP</h1>
-                        <p class="text-[10px] text-blue-500/50 font-mono tracking-[0.3em] mt-1">BRICK PROTOCOL // MASON SYSTEM</p>
+                        <p class="text-[10px] text-blue-500/50 font-mono tracking-[0.3em] mt-1">BRICK PROTOCOL v3.2+ // MASON SYSTEM</p>
                     </div>
                     <div class="text-right">
                         <div class="text-[10px] text-gray-600 font-mono">STATUS: <span class="text-green-500">ONLINE</span></div>
@@ -397,13 +397,22 @@ function renderGameBoard(data) {
     // SVG Layout Constants
     const W = 1400; // Wider canvas
     const cx = W / 2;
-    const colLeft = cx - 400;
-    const colRight = cx + 400;
+    const colLeft = cx - 350;
+    const colRight = cx + 350;
     
     // Node dimensions
     const boxW = 240;
-    const boxH = 100;
     const lgBoxW = 400; // For central nodes
+
+    // Y Positions (Vertical Flow)
+    const yMission = 100;
+    const yDouglas = 240;
+    const yValidator = 380; // Central Gate
+    const yResearch = 520;  // Split Layer (Audience/Topic)
+    const yClaims = 660;    // Central Gate
+    const yCopy = 800;      // Central Creator
+    const yReview = 940;    // Split Layer (Brand/Lite)
+    const yOpus = 1100;     // Final Gate
 
     let html = `
     <style>
@@ -426,7 +435,6 @@ function renderGameBoard(data) {
         }
         .node-group:hover .node-title { fill: #fff !important; }
         
-        /* Premium Text Styles */
         .tech-font { font-family: 'Courier New', monospace; letter-spacing: -0.02em; }
         .label-font { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
         
@@ -438,7 +446,6 @@ function renderGameBoard(data) {
     </style>
     
     <div class="flex flex-col h-full w-full">
-        <!-- SVG DIAGRAM -->
         <div class="flex-grow w-full relative" style="min-height: 85vh;">
             <svg viewBox="0 0 ${W} 1300" preserveAspectRatio="xMidYMin meet" style="width: 100%; height: 100%; max-width: 1600px; margin: 0 auto; display: block;">
                 
@@ -461,150 +468,119 @@ function renderGameBoard(data) {
                         <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
                         <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
                     </linearGradient>
-                    <linearGradient id="gradActive" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#14532d;stop-opacity:0.3" />
-                        <stop offset="100%" style="stop-color:#000000;stop-opacity:0.8" />
-                    </linearGradient>
                     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
                         <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
                     </pattern>
                 </defs>
 
-                <!-- Background Grid -->
                 <rect width="100%" height="100%" fill="url(#grid)" />
                 
-                <!-- HEADER DECORATION -->
-                <g transform="translate(${cx}, 60)">
+                <!-- HEADER -->
+                <g transform="translate(${cx}, 50)">
                     <text y="0" text-anchor="middle" fill="${colors.blue}" font-size="24" letter-spacing="0.8em" font-weight="900" class="label-font">SQUAD ARCHITECTURE</text>
                     <line x1="-300" y1="20" x2="300" y2="20" stroke="${colors.blue}" stroke-width="1" stroke-opacity="0.3"/>
-                    <rect x="-10" y="15" width="20" height="10" fill="#000" stroke="${colors.blue}" stroke-width="1"/>
                 </g>
                 
                 <!-- 1. MISSION OBJECTIVE -->
-                <g class="node-group" onclick="showNodeDetails('mission')" transform="translate(${cx}, 140)">
-                    <!-- Connecting line to next -->
-                    <line x1="0" y1="40" x2="0" y2="100" stroke="${colors.line}" stroke-width="2"/>
-                    
-                    <rect x="${-lgBoxW/2}" y="-40" width="${lgBoxW}" height="80" fill="${colors.nodeBg}" stroke="${colors.border}" stroke-width="1" rx="0" class="node-rect"/>
-                    <rect x="${-lgBoxW/2}" y="-40" width="4" height="80" fill="${colors.textDim}" />
-                    
-                    <text x="-180" y="-12" text-anchor="start" fill="${colors.blue}" font-size="12" class="label-font">MISSION OBJECTIVE</text>
-                    <text x="-180" y="15" text-anchor="start" fill="${colors.text}" font-size="16" class="tech-font" font-weight="bold">${missionTitle.substring(0,45)}</text>
+                <g class="node-group" onclick="showNodeDetails('mission')" transform="translate(${cx}, ${yMission})">
+                    <line x1="0" y1="30" x2="0" y2="${yDouglas - yMission - 60}" stroke="${colors.line}" stroke-width="2"/>
+                    <rect x="${-lgBoxW/2}" y="-30" width="${lgBoxW}" height="60" fill="${colors.nodeBg}" stroke="${colors.border}" stroke-width="1" class="node-rect"/>
+                    <rect x="${-lgBoxW/2}" y="-30" width="4" height="60" fill="${colors.textDim}" />
+                    <text x="-180" y="-8" text-anchor="start" fill="${colors.blue}" font-size="10" class="label-font">MISSION OBJECTIVE</text>
+                    <text x="-180" y="12" text-anchor="start" fill="${colors.text}" font-size="14" class="tech-font" font-weight="bold">${missionTitle.substring(0,45)}</text>
                 </g>
                 
                 <!-- 2. DOUGLAS CORE -->
-                <g class="node-group" onclick="showNodeDetails('douglas')" transform="translate(${cx}, 280)">
-                    <line x1="0" y1="60" x2="0" y2="100" stroke="${colors.line}" stroke-width="2"/>
-                    <!-- Branching lines -->
-                    <path d="M0 100 L0 120 L${colLeft} 120 L${colLeft} 140" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <path d="M0 100 L0 140" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <path d="M0 100 L0 120 L${colRight} 120 L${colRight} 140" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-
-                    <rect x="${-lgBoxW/2}" y="-60" width="${lgBoxW}" height="120" fill="rgba(20,0,0,0.6)" stroke="${colors.red}" stroke-width="2" rx="2" stroke-dasharray="4 2" class="node-rect"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.red}" font-size="28" font-weight="900" letter-spacing="0.1em" class="label-font">DOUGLAS CORE</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.redDim}" font-size="14" class="tech-font">CENTRAL COGNITIVE AUTHORITY</text>
-                    <rect x="-20" y="50" width="40" height="4" fill="${colors.red}"/>
+                <g class="node-group" onclick="showNodeDetails('douglas')" transform="translate(${cx}, ${yDouglas})">
+                    <line x1="0" y1="50" x2="0" y2="${yValidator - yDouglas - 50}" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="rgba(20,0,0,0.6)" stroke="${colors.red}" stroke-width="2" rx="2" stroke-dasharray="4 2" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.red}" font-size="24" font-weight="900" letter-spacing="0.1em" class="label-font">DOUGLAS CORE</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.redDim}" font-size="12" class="tech-font">CENTRAL COGNITIVE AUTHORITY</text>
                 </g>
 
-                <!-- 3. ANALYSIS LAYER -->
-                <!-- Validator -->
-                <g class="node-group" onclick="showNodeDetails('validator')" transform="translate(${colLeft}, 420)">
+                <!-- 3. BRIEF VALIDATOR (Central) -->
+                <g class="node-group" onclick="showNodeDetails('validator')" transform="translate(${cx}, ${yValidator})">
+                    <!-- Split Output Lines -->
+                    <path d="M0 50 L0 70 L${colLeft - cx} 70 L${colLeft - cx} ${yResearch - yValidator - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <path d="M0 50 L0 70 L${colRight - cx} 70 L${colRight - cx} ${yResearch - yValidator - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
                     <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('validator')}" stroke-width="${activeJob.steps?.validator?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('validator')}"/>
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="4" fill="${getStepColor('validator')}" opacity="0.5"/>
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">BRIEF VALIDATOR</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">INPUT SANITIZATION</text>
-                    
-                    <!-- Line down to merge -->
-                    <path d="M0 50 L0 80 L${-(colLeft-cx)} 80" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">GATEKEEPER</text>
                 </g>
 
-                <!-- Audience -->
-                <g class="node-group" onclick="showNodeDetails('audience')" transform="translate(${cx}, 420)">
+                <!-- 4. RESEARCH LAYER (Split) -->
+                <!-- Audience (Left) -->
+                <g class="node-group" onclick="showNodeDetails('audience')" transform="translate(${colLeft}, ${yResearch})">
+                     <!-- Merge to Claims -->
+                    <path d="M0 50 L0 70 L${cx - colLeft} 70 L${cx - colLeft} ${yClaims - yResearch - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
                     <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('audience')}" stroke-width="${activeJob.steps?.audience?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('audience')}"/>
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="4" fill="${getStepColor('audience')}" opacity="0.5"/>
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">AUDIENCE ANALYST</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">PSYCHOGRAPHIC DATA</text>
-                    
-                    <!-- Line down to merge -->
-                    <line x1="0" y1="50" x2="0" y2="80" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PSYCHOGRAPHICS</text>
                 </g>
 
-                <!-- Research -->
-                <g class="node-group" onclick="showNodeDetails('research')" transform="translate(${colRight}, 420)">
+                <!-- Topic (Right) -->
+                <g class="node-group" onclick="showNodeDetails('research')" transform="translate(${colRight}, ${yResearch})">
+                    <!-- Merge to Claims -->
+                    <path d="M0 50 L0 70 L${cx - colRight} 70 L${cx - colRight} ${yClaims - yResearch - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
                     <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('research')}" stroke-width="${activeJob.steps?.research?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('research')}"/>
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="4" fill="${getStepColor('research')}" opacity="0.5"/>
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">TOPIC RESEARCHER</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">CONTEXT & FACTS</text>
-                    
-                    <!-- Line down to merge -->
-                    <path d="M0 50 L0 80 L${-(colRight-cx)} 80" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">CONTEXT & FACTS</text>
                 </g>
 
-                <!-- Merge Junction 1 -->
-                <circle cx="${cx}" cy="500" r="6" fill="${colors.border}" stroke="#000" stroke-width="2"/>
-                <line x1="${cx}" y1="500" x2="${cx}" y2="540" stroke="${colors.line}" stroke-width="2"/>
-
-                <!-- 4. CLAIMS CHECKER (Central Gate) -->
-                <g class="node-group" onclick="showNodeDetails('claims')" transform="translate(${cx}, 590)">
+                <!-- 5. CLAIMS CHECKER (Central) -->
+                <g class="node-group" onclick="showNodeDetails('claims')" transform="translate(${cx}, ${yClaims})">
+                    <line x1="0" y1="50" x2="0" y2="${yCopy - yClaims - 50}" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    
                     <rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('claims')}" stroke-width="2" class="node-rect" style="${getStepGlow('claims')}"/>
-                    <!-- Tech decorations -->
                     <rect x="${-lgBoxW/2 + 10}" y="-50" width="10" height="4" fill="${getStepColor('claims')}"/>
                     <rect x="${lgBoxW/2 - 20}" y="-50" width="10" height="4" fill="${getStepColor('claims')}"/>
                     
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="20" font-weight="bold" class="label-font">CLAIMS CHECKER</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">VERIFICATION GATE / QUALITY CONTROL</text>
-                    
-                    <!-- Branching to next layer -->
-                    <path d="M0 50 L0 70 L${colLeft} 70 L${colLeft} 90" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <path d="M0 50 L0 90" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <path d="M0 50 L0 70 L${colRight} 70 L${colRight} 90" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">TRUTH FILTER</text>
                 </g>
 
-                <!-- 5. CREATION LAYER -->
-                <!-- Copywriter -->
-                <g class="node-group" onclick="showNodeDetails('copy')" transform="translate(${colLeft}, 770)">
+                <!-- 6. COPYWRITER (Central) -->
+                <g class="node-group" onclick="showNodeDetails('copy')" transform="translate(${cx}, ${yCopy})">
+                    <!-- Split Output Lines -->
+                    <path d="M0 50 L0 70 L${colLeft - cx} 70 L${colLeft - cx} ${yReview - yCopy - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <path d="M0 50 L0 70 L${colRight - cx} 70 L${colRight - cx} ${yReview - yCopy - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
                     <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('copy')}" stroke-width="${activeJob.steps?.copy?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('copy')}"/>
-                    <path d="M${-boxW/2} -50 L${-boxW/2 + 20} -50 L${-boxW/2} -30 Z" fill="${getStepColor('copy')}" />
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">COPYWRITER</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">CONTENT GENERATION</text>
-                    
-                    <path d="M0 50 L0 80 L${-(colLeft-cx)} 80" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">CREATION ENGINE</text>
                 </g>
 
-                <!-- Brand Guardian -->
-                <g class="node-group" onclick="showNodeDetails('brand')" transform="translate(${cx}, 770)">
+                <!-- 7. REVIEW LAYER (Split) -->
+                <!-- Brand (Left) -->
+                <g class="node-group" onclick="showNodeDetails('brand')" transform="translate(${colLeft}, ${yReview})">
+                    <path d="M0 50 L0 70 L${cx - colLeft} 70 L${cx - colLeft} ${yOpus - yReview - 70}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
                     <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('brand')}" stroke-width="${activeJob.steps?.brand?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('brand')}"/>
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">BRAND GUARDIAN</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">VOICE & TONE</text>
-                    
-                    <line x1="0" y1="50" x2="0" y2="80" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">TONE & POSITION</text>
                 </g>
 
-                <!-- Critic Lite -->
-                <g class="node-group" onclick="showNodeDetails('critic')" transform="translate(${colRight}, 770)">
+                <!-- Critic Lite (Right) -->
+                <g class="node-group" onclick="showNodeDetails('critic')" transform="translate(${colRight}, ${yReview})">
+                    <path d="M0 50 L0 70 L${cx - colRight} 70 L${cx - colRight} ${yOpus - yReview - 70}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
                     <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('critic')}" stroke-width="${activeJob.steps?.critic?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('critic')}"/>
                     <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">CRITIC LITE</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">FIRST PASS REVIEW</text>
-                    
-                    <path d="M0 50 L0 80 L${-(colRight-cx)} 80" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PRE-CHECK (65%)</text>
                 </g>
 
-                <!-- Merge Junction 2 -->
-                <circle cx="${cx}" cy="850" r="6" fill="${colors.border}" stroke="#000" stroke-width="2"/>
-                <line x1="${cx}" y1="850" x2="${cx}" y2="890" stroke="${colors.line}" stroke-width="2"/>
-
-                <!-- 6. CRITIC OPUS (Final) -->
-                <g class="node-group" onclick="showNodeDetails('opus')" transform="translate(${cx}, 960)">
+                <!-- 8. CRITIC OPUS (Final) -->
+                <g class="node-group" onclick="showNodeDetails('opus')" transform="translate(${cx}, ${yOpus})">
                     <rect x="${-lgBoxW/2}" y="-70" width="${lgBoxW}" height="140" fill="#000" stroke="${getStepColor('opus')}" stroke-width="3" rx="4" class="node-rect"/>
-                    
-                    <!-- Inner decoration -->
                     <rect x="${-lgBoxW/2 + 10}" y="-60" width="${lgBoxW - 20}" height="120" fill="none" stroke="${colors.line}" stroke-width="1" stroke-dasharray="2 2"/>
                     
                     <text x="0" y="-15" text-anchor="middle" fill="${colors.text}" font-size="32" font-weight="900" letter-spacing="0.1em" class="label-font">CRITIC OPUS</text>
-                    <text x="0" y="25" text-anchor="middle" fill="${colors.textDim}" font-size="14" class="tech-font">FINAL JUDGMENT / RELEASE</text>
+                    <text x="0" y="25" text-anchor="middle" fill="${colors.textDim}" font-size="14" class="tech-font">FINAL VERDICT</text>
                     
-                    <!-- Status indicator -->
-                    <circle cx="-160" cy="0" r="4" fill="${activeJob.steps?.opus?.status === 'done' ? colors.highlight : '#333'}">
+                     <circle cx="-160" cy="0" r="4" fill="${activeJob.steps?.opus?.status === 'done' ? colors.highlight : '#333'}">
                         ${activeJob.steps?.opus?.status === 'done' ? '<animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />' : ''}
                     </circle>
                     <circle cx="160" cy="0" r="4" fill="${activeJob.steps?.opus?.status === 'done' ? colors.highlight : '#333'}">
@@ -613,8 +589,8 @@ function renderGameBoard(data) {
                 </g>
 
                 <!-- OUTPUT -->
-                <line x1="${cx}" y1="1030" x2="${cx}" y2="1080" stroke="${colors.highlight}" stroke-width="2" class="flow-line" opacity="0.5"/>
-                <text x="${cx}" y="1120" text-anchor="middle" fill="${colors.highlight}" font-size="14" letter-spacing="0.3em" class="tech-font">
+                <line x1="${cx}" y1="${yOpus + 70}" x2="${cx}" y2="${yOpus + 120}" stroke="${colors.highlight}" stroke-width="2" class="flow-line" opacity="0.5"/>
+                <text x="${cx}" y="${yOpus + 140}" text-anchor="middle" fill="${colors.highlight}" font-size="14" letter-spacing="0.3em" class="tech-font">
                     [ PROCESS COMPLETE ]
                 </text>
 
@@ -622,7 +598,7 @@ function renderGameBoard(data) {
         </div>
     </div>
     
-    <!-- DETAILS PANEL (Fixed Overlay) -->
+    <!-- DETAILS PANEL -->
     <div id="node-details-panel" class="fixed top-16 right-0 w-full md:w-[500px] h-[calc(100vh-4rem)] bg-zinc-950/95 border-l border-zinc-800 p-8 overflow-y-auto shadow-2xl z-[100]" style="transform: translateX(100%);">
         <div class="flex justify-between items-center mb-8 border-b border-zinc-800 pb-6">
             <div>
@@ -644,7 +620,6 @@ function renderGameBoard(data) {
     document.getElementById('gameboard-svg').innerHTML = html;
     document.getElementById('gameboard-missions').innerHTML = '';
     
-    // Expose functions globally
     window.currentJob = activeJob;
     
     window.showNodeDetails = (stepKey) => {
