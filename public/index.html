@@ -1270,50 +1270,53 @@
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
+│  DOUGLAS (Orquestrador)                                     │
+│  ├─ Processa anexos (PDF, imagens, docs)                    │
+│  └─ Cria CONTEXTO CONSOLIDADO para todos os agentes         │
+└─────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
 │  01. BRAND DIGEST                             Gemini Flash  │
 │  ├─ Sintetiza materiais de marca em doc acionável           │
-│  └─ DNA + Posicionamento + Tom + Tensões + Assets           │
+│  └─ DNA + Posicionamento + Tom + Assets                     │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  02. CREATIVE IDEATION                   Claude Sonnet 4    │
-│  ├─ Gera 3 conceitos criativos com execução                 │
-│  └─ Cada conceito: título + ideia + porquê + risco          │
+│  ├─ Gera 3 conceitos criativos                              │
+│  └─ Cada conceito: título + ideia + porquê                  │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  03. CONCEPT CRITIC                      Claude Sonnet 4    │
-│  ├─ Avalia conceitos vs briefing/budget/prazo               │
+│  03. CONCEPT CRITIC                           Gemini Flash  │
+│  ├─ Avalia conceitos vs briefing/budget                     │
 │  └─ Escolhe o melhor + ressalvas                            │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  04. COPYWRITER                          Claude Sonnet 4    │
-│  ├─ Escreve proposta detalhada do conceito escolhido        │
-│  └─ Roteiro + Execução + Budget + Cronograma                │
+│  04. EXECUTION DESIGN                        Gemini 3 Pro   │
+│  ├─ Define COMO FILMAR: câmera, luz, cor, frame icônico     │
+│  └─ Constraints pro Copywriter (o que NÃO fazer)            │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  05. BRAND GUARDIAN                           Gemini Flash  │
-│  ├─ Verifica tom de voz e posicionamento                    │
+│  05. COPYWRITER                          Claude Sonnet 4    │
+│  ├─ Escreve roteiro dentro das constraints visuais          │
+│  └─ Proibido: padrões de IA, jargão, clichês                │
 └─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│  06. CRITIC LITE    │ ──► │  07. CRITIC OPUS    │
-│  Gemini Flash (65%) │     │  Claude Opus        │
-└─────────────────────┘     └─────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  08. DIRECTOR                                 Claude Opus   │
-│  ├─ Craft check final (cafona? clichê? genérico?)           │
+│  06. DIRECTOR                                Gemini 3 Pro   │
+│  ├─ Avalia EXECUÇÃO (não conceito)                          │
+│  └─ Score >= 85: APROVA │ < 85: volta pro EXECUTION         │
 └─────────────────────────────────────────────────────────────┘
-    │
+    │◄──────────────── LOOP até aprovar (max 3)
     ▼
         ┌──────────────────┐
         │  PROPOSTA FINAL  │──────────────► ENTREGA
