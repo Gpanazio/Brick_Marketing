@@ -483,22 +483,30 @@ BRIEFING
             const groups = groupFiles(files);
             let html = '';
             
-            Object.keys(groups).sort().reverse().forEach(briefingId => {
-                const groupFiles = groups[briefingId];
-                const label = briefingId.replace(/_/g, ' ');
-                const isOpen = expandedGroups.has(briefingId);
+            Object.keys(groups).sort().reverse().forEach(groupId => {
+                const groupFiles = groups[groupId];
+                // Tenta extrair um nome legível do primeiro arquivo
+                let label = groupId;
+                if (groupFiles.length > 0) {
+                    const firstFile = groupFiles[0].name;
+                    // Remove timestamp e extensão para o label
+                    label = firstFile.replace(/^\d+_/, '').replace(/\.md$|\.json$/, '').split('__')[0].replace(/_/g, ' ');
+                }
+                if (groupId === 'outros') label = 'Outros';
+                
+                const isOpen = expandedGroups.has(groupId);
                 const color = id === 'wip' ? 'text-[#DC2626]' : 'text-white';
                 
                 html += `
                     <div class="mb-4 border border-[#333] bg-[#0a0a0a]">
-                        <div class="p-4 cursor-pointer flex justify-between items-center group hover:bg-[#111]" onclick="toggleGroup('${briefingId}')">
+                        <div class="p-4 cursor-pointer flex justify-between items-center group hover:bg-[#111]" onclick="toggleGroup('${groupId}')">
                             <div class="flex items-center gap-3">
                                 <span class="${id==='wip'?'animate-pulse text-[#DC2626]':'text-[#555]'}">●</span>
                                 <span class="font-bold text-sm ${color} uppercase tracking-tight">${label}</span>
                             </div>
                             <span class="text-[10px] font-mono text-[#555] group-hover:text-white transition-colors">${groupFiles.length} FILES ${isOpen ? '▲' : '▼'}</span>
                         </div>
-                        <div id="group-${briefingId}" class="${isOpen ? '' : 'hidden'} border-t border-[#222]">
+                        <div id="group-${groupId}" class="${isOpen ? '' : 'hidden'} border-t border-[#222]">
                             ${groupFiles.sort((a,b) => a.name.localeCompare(b.name)).map(file => `
                                 <div class="p-3 pl-8 border-b border-[#1a1a1a] cursor-pointer hover:bg-[#111] group/item transition-colors" onclick="viewFile('${id}', '${file.name}')">
                                     <div class="flex items-center gap-2">
@@ -524,8 +532,19 @@ BRIEFING
         function groupFiles(files) {
             const g = {};
             files.forEach(f => {
-                const parts = f.name.split('__');
-                const id = parts.length > 1 ? parts[0] : f.name.split('_').slice(0, -1).join('_') || 'outros';
+                // Tenta agrupar por Timestamp (13 digitos no inicio)
+                // Ex: 1770113506169_protocolo_fenix.md -> ID: 1770113506169
+                const match = f.name.match(/^(\d{13,})/);
+                let id;
+                
+                if (match) {
+                    id = match[1]; // Agrupa pelo timestamp único do job
+                } else {
+                    // Fallback para lógica antiga se não tiver timestamp
+                    const parts = f.name.split('__');
+                    id = parts.length > 1 ? parts[0] : f.name.split('_').slice(0, -1).join('_') || 'outros';
+                }
+                
                 if (!g[id]) g[id] = [];
                 g[id].push(f);
             });
