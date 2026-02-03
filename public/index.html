@@ -448,6 +448,42 @@ BRIEFING
         let currentState = null;
         let selectedJob = null;
 
+        // --- FRIENDLY NAMES (must be defined before renderers) ---
+        const friendlyFileNames = {
+            'validator': 'Validação',
+            'brief_validator': 'Validação',
+            'audience': 'Público-alvo',
+            'audience_analyst': 'Público-alvo',
+            'research': 'Pesquisa',
+            'researcher': 'Pesquisa',
+            'topic_researcher': 'Pesquisa',
+            'claims': 'Verificação de Dados',
+            'claims_checker': 'Verificação de Dados',
+            'copy': 'Texto Criativo',
+            'copywriter': 'Texto Criativo',
+            'brand': 'Tom de Voz',
+            'brand_guardian': 'Tom de Voz',
+            'style_guardian': 'Estilo',
+            'positioning_guardian': 'Posicionamento',
+            'critic': 'Revisão',
+            'critic_lite': 'Revisão Rápida',
+            'opus': 'Aprovação Final',
+            'critic_opus': 'Aprovação Final',
+            'director': 'Direção de Craft',
+            'output': 'Versão Final',
+            'briefing': 'Briefing'
+        };
+        
+        function getFriendlyName(filename) {
+            if (!filename) return 'Arquivo';
+            const base = filename.replace(/\.(md|json|txt)$/i, '').replace(/^\d+_/, '').replace(/_\d+$/, '');
+            const key = base.toLowerCase();
+            for (const [pattern, friendly] of Object.entries(friendlyFileNames)) {
+                if (key.includes(pattern)) return friendly;
+            }
+            return base.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        }
+
         // --- RENDERERS ---
 
         function renderGameBoard(job) {
@@ -957,45 +993,6 @@ BRIEFING
                 'director': { name: 'DIREÇÃO', icon: 'EYE', desc: 'Refina a execução e o craft', friendly: 'Direção' },
                 'output': { name: 'PRONTO', icon: 'BOX', desc: 'Conteúdo aprovado para uso', friendly: 'Finalizado' }
             };
-            
-            // Mapa de nomes de arquivo para nomes amigáveis
-            const friendlyFileNames = {
-                'validator': 'Validação',
-                'brief_validator': 'Validação',
-                'audience': 'Público-alvo',
-                'audience_analyst': 'Público-alvo',
-                'research': 'Pesquisa',
-                'researcher': 'Pesquisa',
-                'topic_researcher': 'Pesquisa',
-                'claims': 'Verificação de Dados',
-                'claims_checker': 'Verificação de Dados',
-                'copy': 'Texto Criativo',
-                'copywriter': 'Texto Criativo',
-                'brand': 'Tom de Voz',
-                'brand_guardian': 'Tom de Voz',
-                'style_guardian': 'Estilo',
-                'positioning_guardian': 'Posicionamento',
-                'critic': 'Revisão',
-                'critic_lite': 'Revisão Rápida',
-                'opus': 'Aprovação Final',
-                'critic_opus': 'Aprovação Final',
-                'director': 'Direção de Craft',
-                'output': 'Versão Final'
-            };
-            
-            function getFriendlyName(filename) {
-                // Remove extensão e timestamp
-                const base = filename.replace(/\.(md|json|txt)$/i, '').replace(/^\d+_/, '').replace(/_\d+$/, '');
-                const key = base.toLowerCase();
-                
-                // Procura match parcial
-                for (const [pattern, friendly] of Object.entries(friendlyFileNames)) {
-                    if (key.includes(pattern)) return friendly;
-                }
-                
-                // Fallback: capitaliza o nome
-                return base.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-            }
 
             const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: 'FILE', desc: '' };
             titleEl.textContent = info.name;
