@@ -87,37 +87,27 @@ app.use('/api/state', stateLimiter);
 });
 if (!fs.existsSync(HISTORY_ROOT)) fs.mkdirSync(HISTORY_ROOT, { recursive: true });
 
-// Public routes (no auth required)
-const PUBLIC_ROUTES = ['/api/health', '/api/architecture', '/'];
-
-// Auth middleware - IMPROVED: blocks GET except public routes
+// Auth middleware - ALLOW ALL READ-ONLY ACCESS FOR DASHBOARD
 const authMiddleware = (req, res, next) => {
-    // Clean url for matching (remove query params)
-    const cleanUrl = req.originalUrl.split('?')[0];
-    
-    // Allow public routes
-    if (PUBLIC_ROUTES.some(r => cleanUrl === r || cleanUrl.startsWith(r + '/'))) {
+    // Allow public assets/root
+    if (req.method === 'GET' && (req.path === '/' || !req.path.startsWith('/'))) {
+        return next();
+    }
+
+    // Allow ALL GET requests to API (Read-Only Dashboard)
+    // The dashboard needs state, history, metrics, architecture, etc.
+    // We only protect write actions (POST, PUT, DELETE)
+    if (req.method === 'GET') {
         return next();
     }
     
-    // For dashboard access (serves static HTML)
-    if (req.method === 'GET' && req.path === '/') {
-        return next();
-    }
-    
-    // API state is readable for dashboard (with optional auth)
-    // Note: req.originalUrl must be used because app.use('/api') strips prefix from req.path
-    if (req.method === 'GET' && cleanUrl === '/api/state') {
-        return next();
-    }
-    
-    // All other routes require API key
+    // For Write operations (POST/DELETE), require API Key
     const key = req.headers['x-api-key'] || req.query.key;
     if (key === API_KEY) {
         return next();
     }
     
-    log('warn', 'unauthorized_access', { path: req.path, method: req.method });
+    log('warn', 'unauthorized_write_attempt', { path: req.path, method: req.method });
     res.status(401).json({ error: 'Unauthorized' });
 };
 
