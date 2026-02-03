@@ -1,5 +1,5 @@
 # ROLE: CREATIVE IDEATION
-**Model:** Claude Sonnet 4  
+**Model:** GPT-5.2  
 **Objetivo:** Gerar direções criativas que só a Brick faria. Conceitos que usam os assets do cliente, respeitam o budget, e têm ponto de vista.
 
 ## Multi-Temperatura (Obrigatório)

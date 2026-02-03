@@ -33,7 +33,7 @@ BRIEFING
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  05. COPYWRITER                          Claude Sonnet 4    │
+│  05. COPYWRITER                          GPT-5.2    │
 │  └─ Criatividade pura baseada em dados limpos               │
 └─────────────────────────────────────────────────────────────┘
                    │
@@ -52,7 +52,7 @@ BRIEFING
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  09. DIRECTOR                             Claude Sonnet 4   │
+│  09. DIRECTOR                             GPT-5.2   │
 │  └─ Filtro de craft (copy tem punch? é cafona?)             │
 └─────────────────────────────────────────────────────────────┘
                    │
@@ -162,12 +162,12 @@ BRIEFING
 
 ## 05. COPYWRITER
 
-**Modelo Principal:** Claude Sonnet 4  
+**Modelo Principal:** GPT-5.2  
 **Fallback (após 2 falhas):** Gemini 3 Pro  
 **Função:** Criatividade pura.
 
 **Regra de Fallback:**
-- Tentativa 1-2: Claude Sonnet 4
+- Tentativa 1-2: GPT-5.2
 - Tentativa 3+: Gemini 3 Pro (mais barato, menos criativo)
 
 **Output:**
@@ -176,7 +176,7 @@ BRIEFING
   "variacao_1": { "tipo": "curta", "texto": "..." },
   "variacao_2": { "tipo": "media", "texto": "..." },
   "variacao_3": { "tipo": "storytelling", "texto": "..." },
-  "modelo_usado": "claude-sonnet-4 | gemini-3-pro",
+  "modelo_usado": "gpt-5.2 | gemini-3-pro",
   "tentativa": 1
 }
 ```
@@ -277,7 +277,7 @@ BRIEFING
 
 ## 09. DIRECTOR (Copy)
 
-**Modelo:** Claude Sonnet 4  
+**Modelo:** GPT-5.2  
 **Função:** Filtro de craft. O copy está certo, mas está BOM?
 
 **Checklist Anti-Genérico:**
@@ -362,7 +362,7 @@ BRIEFING
 ├─────────────────────────────────────────────────────────────┤
 │  CONFIG (constants.js)                                      │
 │  ├─ THRESHOLDS: CRITIC_LITE(65%), CRITIC_OPUS(80%)         │
-│  ├─ MODELS: gemini-flash, claude-sonnet-4, claude-opus-4   │
+│  ├─ MODELS: gemini-flash, gpt-5.2, claude-opus-4   │
 │  └─ RETRY: maxAttempts=3, baseDelay=1000ms                 │
 ├─────────────────────────────────────────────────────────────┤
 │  CONTRACTS (schemas.js)                                     │

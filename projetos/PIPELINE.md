@@ -10,7 +10,7 @@ DOUGLAS (processa anexos, expande briefing)
 01_BRAND_DIGEST (Gemini Flash)
     Extrai: identidade, tom, valores, histórico
     ↓
-02_CREATIVE_IDEATION (Claude Sonnet)
+02_CREATIVE_IDEATION (GPT-5.2)
     Gera: 3 conceitos criativos
     ↓
 03_CONCEPT_CRITIC (Gemini Flash)
@@ -22,7 +22,7 @@ DOUGLAS (processa anexos, expande briefing)
     Define: direção visual, câmera, luz, frame icônico
     Entrega: constraints para o copywriter
     ↓
-05_COPYWRITER (Claude Sonnet)
+05_COPYWRITER (GPT-5.2)
     Escreve: roteiro dentro das constraints visuais
     ↓
 06_DIRECTOR (Gemini Pro)
@@ -40,10 +40,10 @@ DOUGLAS (processa anexos, expande briefing)
 | Etapa | Modelo | Motivo |
 |-------|--------|--------|
 | Brand Digest | Gemini Flash | Extração, não criação |
-| Creative Ideation | Claude Sonnet | Criatividade |
+| Creative Ideation | GPT-5.2 | Criatividade |
 | Concept Critic | Gemini Flash | Triagem rápida |
 | Execution Design | Gemini Pro | Direção visual |
-| Copywriter | Claude Sonnet | Roteiro com craft |
+| Copywriter | GPT-5.2 | Roteiro com craft |
 | Director | Gemini Pro | Avaliação de execução |
 
 ## Regra de Retorno
