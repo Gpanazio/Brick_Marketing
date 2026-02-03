@@ -1,8 +1,8 @@
-# BRICK AI SQUAD - ARCHITECTURE v3.2
+# BRICK AI SQUAD - ARCHITECTURE v3.3
 
 ---
 
-## FLUXO DE PRODUÇÃO
+## FLUXO DE PRODUÇÃO (MARKETING)
 
 ```
 BRIEFING
@@ -31,34 +31,38 @@ BRIEFING
 │  └─ Higieniza para Autoridade Segura (anti-hype)            │
 └─────────────────────────────────────────────────────────────┘
                    │
+    ┌──────────────┼──────────────┐
+    │              │              │
+    ▼              ▼              ▼
+┌────────┐   ┌────────┐   ┌────────┐
+│COPY A  │   │COPY B  │   │COPY C  │
+│GPT-5.2 │   │ FLASH  │   │SONNET  │
+└────────┘   └────────┘   └────────┘
+    │              │              │
+    └──────────────┼──────────────┘
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  05. COPYWRITER                          GPT-5.2    │
-│  └─ Criatividade pura baseada em dados limpos               │
-└─────────────────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────────────┐
-│  06. BRAND GUARDIANS (Split)                  Gemini Flash  │
+│  06. BRAND GUARDIANS (valida as 3 versões)    Gemini Flash  │
 │  ├─ STYLE GUARDIAN (Tom, Voz, Proibições)                   │
 │  └─ POSITIONING GUARDIAN (Lógica Comercial, Oferta Clara)   │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│  07. CRITIC LITE    │ ──► │  08. CRITIC OPUS    │
-│  Gemini Flash (65%) │     │  Claude Opus        │
-└─────────────────────┘     └─────────────────────┘
-                   │
-                   ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  09. DIRECTOR                             GPT-5.2   │
-│  └─ Filtro de craft (copy tem punch? é cafona?)             │
+│  07. CRITICS (escolhem a melhor das 3)                      │
+│  ├─ CRITIC LITE (Gemini Flash) - triagem 65%                │
+│  └─ CRITIC HEAVY (GPT-5.2) - avaliação detalhada            │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  10. HUMAN FEEDBACK                            Dashboard    │
+│  08. FILTRO FINAL                            Claude Opus    │
+│  └─ Aprovação definitiva (score >= 80%)                     │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  09. HUMAN FEEDBACK                            Dashboard    │
 │  └─ Aprovar / Revisar com feedback / Reprovar               │
 └─────────────────────────────────────────────────────────────┘
                    │
@@ -72,6 +76,17 @@ BRIEFING
     └─────────┘    │ agente certo │
                    └──────────────┘
 ```
+
+### COPYWRITERS PARALELOS (Etapa 05)
+Após Claims Checker, 3 modelos geram versões independentes:
+
+| Versão | Modelo | Estilo |
+|--------|--------|--------|
+| A | GPT-5.2 | Estruturado, versátil, bom em adaptar tom |
+| B | Gemini Flash | Rápido, direto, hooks curtos e incisivos |
+| C | Claude Sonnet | Nuance, profundidade, storytelling |
+
+As 3 versões passam pelo Brand Guardian e os Critics escolhem a melhor.
 
 ---
 
