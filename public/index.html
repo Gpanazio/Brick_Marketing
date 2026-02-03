@@ -311,173 +311,237 @@ BRIEFING
             }
         }
 
-        function renderGameBoard(data) {
-            document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-            
-            // Get active job from WIP or use placeholder
-            const wipJobs = data?.wip || [];
-            const activeJob = wipJobs[0];
-            const missionTitle = activeJob?.title || 'Aguardando briefing...';
-            
-            // Determine step status from job data
-            const getStepStatus = (stepNum) => {
-                if (!activeJob) return 'pending';
-                const currentStep = activeJob.step || 0;
-                if (stepNum < currentStep) return 'done';
-                if (stepNum === currentStep) return 'running';
-                return 'pending';
-            };
-
-            // Color palette (matching reference exactly)
-            const colors = {
-                text: '#d4d0c8',      // Main text - warm off-white
-                textDim: '#666',       // Dimmed text
-                border: '#d4d0c8',     // Box borders
-                line: '#d4d0c8',       // Connection lines
-                lineDim: '#444',       // Inactive lines
-                red: '#DC2626',        // MASON CORE red
-                redDim: '#7f1d1d',     // Dimmed red
-                bg: '#000'             // Pure black background
-            };
-
-            let html = `
-            <style>
-                @keyframes flowDown {
-                    from { stroke-dashoffset: 12; }
-                    to { stroke-dashoffset: 0; }
-                }
-                .flow-line { animation: flowDown 0.8s linear infinite; }
-            </style>
-            
-            <div style="padding: 40px 20px; min-height: 90vh; font-family: 'Courier New', monospace;">
-                <svg viewBox="0 0 500 1220" style="width: 100%; max-width: 650px; margin: 0 auto; display: block;">
-                    
-                    <!-- ═══════ HEADER ═══════ -->
-                    <text x="250" y="40" text-anchor="middle" fill="${colors.text}" font-size="20" letter-spacing="0.5em" font-weight="300">B R I C K  A I</text>
-                    <line x1="80" y1="60" x2="420" y2="60" stroke="#333" stroke-width="1"/>
-                    <text x="250" y="88" text-anchor="middle" fill="${colors.textDim}" font-size="13" letter-spacing="0.25em">SQUAD ARCHITECTURE</text>
-                    
-                    <!-- ═══════ MISSION OBJECTIVE ═══════ -->
-                    <g transform="translate(250, 145)">
-                        <rect x="-115" y="-28" width="230" height="56" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-4" text-anchor="middle" fill="${colors.text}" font-size="13" letter-spacing="0.15em">MISSION OBJECTIVE</text>
-                        <text x="0" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="10">${missionTitle.substring(0, 35)}</text>
-                    </g>
-                    
-                    <!-- Line to MASON -->
-                    <line x1="250" y1="173" x2="250" y2="210" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <polygon points="250,222 245,210 255,210" fill="${colors.line}"/>
-                    
-                    <!-- ═══════ MASON CORE ═══════ -->
-                    <g transform="translate(250, 280)">
-                        <rect x="-140" y="-50" width="280" height="100" fill="none" stroke="${colors.red}" stroke-width="2" rx="3" stroke-dasharray="8 4"/>
-                        <text x="0" y="-12" text-anchor="middle" fill="${colors.red}" font-size="24" font-weight="bold" letter-spacing="0.08em">MASON CORE</text>
-                        <text x="0" y="14" text-anchor="middle" fill="${colors.redDim}" font-size="12">Central Cognitive Authority</text>
-                        <text x="0" y="34" text-anchor="middle" fill="#555" font-size="10">(Truth / Consistency / Control)</text>
-                    </g>
-                    
-                    <!-- Line from MASON splitting to 3 -->
-                    <line x1="250" y1="330" x2="250" y2="370" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="370" x2="85" y2="410" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="370" x2="250" y2="410" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="370" x2="415" y2="410" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <polygon points="85,422 80,410 90,410" fill="${colors.line}"/>
-                    <polygon points="250,422 245,410 255,410" fill="${colors.line}"/>
-                    <polygon points="415,422 410,410 420,410" fill="${colors.line}"/>
-                    
-                    <!-- ═══════ ANALYSIS LAYER (3 boxes) ═══════ -->
-                    <g transform="translate(85, 475)">
-                        <rect x="-70" y="-42" width="140" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-12" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">BRIEF ANALYZER</text>
-                        <text x="0" y="10" text-anchor="middle" fill="${colors.textDim}" font-size="10">(Intent Check)</text>
-                    </g>
-                    
-                    <g transform="translate(250, 475)">
-                        <rect x="-70" y="-42" width="140" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-12" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">STRATEGY SYNTH</text>
-                        <text x="0" y="10" text-anchor="middle" fill="${colors.textDim}" font-size="10">(Narrative Plan)</text>
-                    </g>
-                    
-                    <g transform="translate(415, 475)">
-                        <rect x="-70" y="-42" width="140" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-12" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">RISK & BIAS</text>
-                        <text x="0" y="10" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">DETECTOR</text>
-                    </g>
-                    
-                    <!-- Lines from Analysis to AGENT BUS -->
-                    <line x1="85" y1="517" x2="85" y2="560" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="517" x2="250" y2="560" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="415" y1="517" x2="415" y2="560" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="85" y1="560" x2="250" y2="590" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="560" x2="250" y2="590" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="415" y1="560" x2="250" y2="590" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <polygon points="250,602 245,590 255,590" fill="${colors.line}"/>
-                    
-                    <!-- ═══════ AGENT BUS ═══════ -->
-                    <g transform="translate(250, 660)">
-                        <rect x="-150" y="-42" width="300" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" letter-spacing="0.12em">AGENT BUS</text>
-                        <text x="0" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Shared Memory / Signals)</text>
-                    </g>
-                    
-                    <!-- Lines from AGENT BUS splitting to 3 -->
-                    <line x1="250" y1="702" x2="250" y2="745" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="745" x2="85" y2="785" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="745" x2="250" y2="785" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="745" x2="415" y2="785" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <polygon points="85,797 80,785 90,785" fill="${colors.line}"/>
-                    <polygon points="250,797 245,785 255,785" fill="${colors.line}"/>
-                    <polygon points="415,797 410,785 420,785" fill="${colors.line}"/>
-                    
-                    <!-- ═══════ EXECUTION LAYER (3 boxes) ═══════ -->
-                    <g transform="translate(85, 850)">
-                        <rect x="-70" y="-42" width="140" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">AUDIENCE CORE</text>
-                        <text x="0" y="14" text-anchor="middle" fill="${colors.textDim}" font-size="10">Segmentation</text>
-                    </g>
-                    
-                    <g transform="translate(250, 850)">
-                        <rect x="-70" y="-42" width="140" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">CONTENT ENGINE</text>
-                        <text x="0" y="14" text-anchor="middle" fill="${colors.textDim}" font-size="10">Copy / Visuals</text>
-                    </g>
-                    
-                    <g transform="translate(415, 850)">
-                        <rect x="-70" y="-42" width="140" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="12" font-weight="bold">DISTRIBUTION AI</text>
-                        <text x="0" y="14" text-anchor="middle" fill="${colors.textDim}" font-size="10">Channels / Media</text>
-                    </g>
-                    
-                    <!-- Lines from Execution to OUTPUT LOCK -->
-                    <line x1="85" y1="892" x2="85" y2="935" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="892" x2="250" y2="935" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="415" y1="892" x2="415" y2="935" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="85" y1="935" x2="250" y2="965" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="250" y1="935" x2="250" y2="965" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <line x1="415" y1="935" x2="250" y2="965" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <polygon points="250,977 245,965 255,965" fill="${colors.line}"/>
-                    
-                    <!-- ═══════ OUTPUT LOCK ═══════ -->
-                    <g transform="translate(250, 1025)">
-                        <rect x="-140" y="-42" width="280" height="84" fill="none" stroke="${colors.border}" stroke-width="1" rx="3"/>
-                        <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" letter-spacing="0.12em">OUTPUT LOCK</text>
-                        <text x="0" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Approval / Alignment / Silence)</text>
-                    </g>
-                    
-                    <!-- Final line down -->
-                    <line x1="250" y1="1067" x2="250" y2="1120" stroke="${colors.line}" stroke-width="1" stroke-dasharray="5 5" class="flow-line"/>
-                    <polygon points="250,1132 245,1120 255,1120" fill="${colors.line}"/>
-                    
-                    <!-- ═══════ ACTION EXECUTED ═══════ -->
-                    <text x="250" y="1170" text-anchor="middle" fill="${colors.text}" font-size="14" letter-spacing="0.18em">[ ACTION EXECUTED ]</text>
-                    
-                </svg>
-            </div>
-            `;
-            
-            document.getElementById('gameboard-svg').innerHTML = html;
-            document.getElementById('gameboard-missions').innerHTML = '';
+// Mock Data Completo para Preview
+const previewJob = {
+    id: 'preview_001',
+    title: 'Quem não sabe, ensina (Lançamento B2B)',
+    status: 'done',
+    steps: {
+        'mason': {
+            status: 'active',
+            output: "## MASON CORE LOG\n\n- **Routing:** Briefing recebido via Webhook.\n- **Context:** Cliente 'Brick Education'. Histórico: 3 lançamentos anteriores.\n- **Directive:** Priorizar autoridade técnica sobre hype de vendas.\n- **Decision:** Encaminhar para Squad Alpha (Full Cycle)."
+        },
+        'validator': {
+            status: 'done',
+            output: "## BRIEF VALIDATOR REPORT\n\n**STATUS: PASS** (com ressalvas)\n\n### Lacunas Identificadas:\n1. **Canal de Distribuição:** Não especificado. *Assumed: LinkedIn + Email.*\n2. **Budget:** Ausente. *Ignorado para fase criativa.*\n\n### Perguntas ao Humano:\n- O tom deve ser 'Professor' ou 'Mentor'? (Definido como Mentor).\n\n**Score de Clareza:** 85/100."
+        },
+        'audience': {
+            status: 'done',
+            output: "## AUDIENCE ANALYST\n\n**Target:** Gestores de TI e CTOs.\n**Dores Reais:**\n- Turnover alto da equipe técnica.\n- Sobrecarga operacional ('apagando incêndio').\n- Medo de obsolescência tecnológica.\n\n**Linguagem:** Técnica, direta, sem buzzwords de marketing. Valorizam métricas de eficiência."
+        },
+        'research': {
+            status: 'done',
+            output: "## TOPIC RESEARCHER\n\n**Contexto de Mercado:**\n- Crescimento de 40% em edtechs B2B.\n- Tendência: 'Upskilling' interno vs contratação externa.\n\n**Referências:**\n- Relatório Gartner 2025 sobre Talent Gap.\n- Case de sucesso da IBM (P-TECH).\n\n**Angle:** Ensinar não é caridade, é estratégia de retenção."
+        },
+        'claims': {
+            status: 'done',
+            output: "## CLAIMS CHECKER\n\n**Verificações:**\n- ❌ 'Aumenta retenção em 100%' -> **Alterado para** 'Pode dobrar a retenção' (Fonte: Estudo X).\n- ✅ 'Custo de reposição é 3x salário' -> **Verificado** (Fonte: HR Tech Report).\n\n**Status Final:** Seguro para publicação."
+        },
+        'copy': {
+            status: 'done',
+            output: "## COPYWRITER (Claude Sonnet)\n\n**Headline:** Pare de contratar seniors. Comece a criá-los.\n\n**Body:**\nO mercado não está seco. Ele está verde. Enquanto você briga por talentos prontos pagando salários inflacionados, seu concorrente está transformando juniores em arquitetos.\n\nEnsinar não é 'perda de tempo'. É o único moat que resta em 2026.\n\n**CTA:** Conheça o Brick Education For Business."
+        },
+        'brand': {
+            status: 'done',
+            output: "## BRAND GUARDIAN\n\n**Style Check:**\n- Tom: Aprovado (Sério, Mentor).\n- Palavras proibidas encontradas: 'Disruptivo' (Removido).\n\n**Positioning Check:**\n- A oferta está clara? Sim.\n- A promessa é crível? Sim."
+        },
+        'critic': {
+            status: 'done',
+            output: "## CRITIC LITE\n\n**Nota:** 88/100\n\n**Pontos Fortes:** Headline provocativa. Argumento lógico sólido.\n**Pontos Fracos:** CTA poderia ser mais urgente.\n\n**Veredito:** APROVADO para fase final."
+        },
+        'opus': {
+            status: 'done',
+            output: "## CRITIC OPUS (Final Judgement)\n\n**DECISÃO: PUBLICAR**\n\nEste texto respeita a inteligência do público-alvo. Não apela para gatilhos baratos de escassez. Constrói autoridade ao desafiar o senso comum ('contratar vs criar').\n\n**Ajuste Final:** N/A.\n**Assinatura:** OPUS-PRIME-V4."
         }
+    }
+};
+
+function renderGameBoard(data) {
+    const activeJob = (data?.wip && data.wip.length > 0) ? data.wip[0] : previewJob;
+    const missionTitle = activeJob.title || 'Aguardando briefing...';
+    
+    document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
+
+    const colors = {
+        text: '#d4d0c8',
+        textDim: '#888',
+        border: '#444',
+        line: '#555',
+        red: '#DC2626',
+        redDim: '#7f1d1d',
+        highlight: '#22c55e'
+    };
+
+    const getStepColor = (stepKey) => {
+        const step = activeJob.steps ? activeJob.steps[stepKey] : null;
+        if (!step) return colors.border;
+        if (step.status === 'done') return colors.highlight;
+        if (step.status === 'active' || step.status === 'running') return '#eab308';
+        return colors.border;
+    };
+
+    let html = `
+    <style>
+        @keyframes flowDown { to { stroke-dashoffset: 0; } }
+        .flow-line { stroke-dasharray: 8 4; stroke-dashoffset: 24; animation: flowDown 1s linear infinite; }
+        .node-box { cursor: pointer; transition: all 0.2s ease; }
+        .node-box:hover rect { stroke: #fff !important; stroke-width: 2.5 !important; }
+        .node-box:hover text { fill: #fff; }
+        #node-details-panel { transition: transform 0.3s ease; }
+        #node-details-panel.show { transform: translateX(0) !important; }
+    </style>
+    
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- SVG DIAGRAM -->
+        <div class="flex-grow" style="min-height: 85vh;">
+            <svg viewBox="0 0 600 1200" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: auto; max-width: 900px; margin: 0 auto; display: block;">
+                
+                <!-- HEADER -->
+                <text x="300" y="45" text-anchor="middle" fill="${colors.text}" font-size="26" letter-spacing="0.5em" font-weight="300">B R I C K  A I</text>
+                <line x1="100" y1="70" x2="500" y2="70" stroke="#333" stroke-width="1"/>
+                <text x="300" y="100" text-anchor="middle" fill="${colors.textDim}" font-size="15" letter-spacing="0.3em">SQUAD ARCHITECTURE</text>
+                
+                <!-- MISSION OBJECTIVE -->
+                <g class="node-box" onclick="showNodeDetails('mission')" transform="translate(300, 160)">
+                    <rect x="-160" y="-35" width="320" height="70" fill="rgba(0,0,0,0.8)" stroke="${colors.border}" stroke-width="1" rx="4"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="15" letter-spacing="0.12em">MISSION OBJECTIVE</text>
+                    <text x="0" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="12">${missionTitle.substring(0,42)}</text>
+                </g>
+                
+                <line x1="300" y1="195" x2="300" y2="235" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                
+                <!-- MASON CORE -->
+                <g class="node-box" onclick="showNodeDetails('mason')" transform="translate(300, 300)">
+                    <rect x="-190" y="-60" width="380" height="120" fill="rgba(0,0,0,0.9)" stroke="${colors.red}" stroke-width="2" rx="5" stroke-dasharray="12 6"/>
+                    <text x="0" y="-15" text-anchor="middle" fill="${colors.red}" font-size="30" font-weight="bold" letter-spacing="0.08em">MASON CORE</text>
+                    <text x="0" y="18" text-anchor="middle" fill="${colors.redDim}" font-size="14">Central Cognitive Authority</text>
+                    <text x="0" y="40" text-anchor="middle" fill="#555" font-size="11">(Truth / Consistency / Control)</text>
+                </g>
+
+                <!-- Lines Split -->
+                <line x1="300" y1="360" x2="300" y2="400" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="400" x2="100" y2="440" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="400" x2="300" y2="440" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="400" x2="500" y2="440" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
+                <!-- ANALYSIS LAYER -->
+                <g class="node-box" onclick="showNodeDetails('validator')" transform="translate(100, 500)">
+                    <rect x="-90" y="-45" width="180" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('validator')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold">BRIEF VALIDATOR</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Intent Check)</text>
+                </g>
+                <g class="node-box" onclick="showNodeDetails('audience')" transform="translate(300, 500)">
+                    <rect x="-90" y="-45" width="180" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('audience')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold">AUDIENCE ANALYST</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Target Profile)</text>
+                </g>
+                <g class="node-box" onclick="showNodeDetails('research')" transform="translate(500, 500)">
+                    <rect x="-90" y="-45" width="180" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('research')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold">TOPIC RESEARCHER</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Context Data)</text>
+                </g>
+
+                <!-- Merge to Bus -->
+                <line x1="100" y1="545" x2="100" y2="580" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="545" x2="300" y2="580" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="500" y1="545" x2="500" y2="580" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="100" y1="580" x2="300" y2="610" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="580" x2="300" y2="610" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="500" y1="580" x2="300" y2="610" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
+                <!-- AGENT BUS (Claims) -->
+                <g class="node-box" onclick="showNodeDetails('claims')" transform="translate(300, 670)">
+                    <rect x="-200" y="-45" width="400" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('claims')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="17" font-weight="bold" letter-spacing="0.1em">CLAIMS CHECKER</text>
+                    <text x="0" y="18" text-anchor="middle" fill="${colors.textDim}" font-size="12">(Fact Verification / Quality Gate)</text>
+                </g>
+
+                <!-- Split to Creation -->
+                <line x1="300" y1="715" x2="300" y2="755" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="755" x2="100" y2="795" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="755" x2="300" y2="795" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="755" x2="500" y2="795" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
+                <!-- CREATION LAYER -->
+                <g class="node-box" onclick="showNodeDetails('copy')" transform="translate(100, 855)">
+                    <rect x="-90" y="-45" width="180" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('copy')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold">COPYWRITER</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Generation)</text>
+                </g>
+                <g class="node-box" onclick="showNodeDetails('brand')" transform="translate(300, 855)">
+                    <rect x="-90" y="-45" width="180" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('brand')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold">BRAND GUARDIAN</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.textDim}" font-size="11">(Voice/Tone)</text>
+                </g>
+                <g class="node-box" onclick="showNodeDetails('critic')" transform="translate(500, 855)">
+                    <rect x="-90" y="-45" width="180" height="90" fill="rgba(0,0,0,0.8)" stroke="${getStepColor('critic')}" stroke-width="1.5" rx="4"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold">CRITIC LITE</text>
+                    <text x="0" y="15" text-anchor="middle" fill="${colors.textDim}" font-size="11">(First Pass)</text>
+                </g>
+
+                <!-- Merge to Opus -->
+                <line x1="100" y1="900" x2="100" y2="940" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="900" x2="300" y2="940" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="500" y1="900" x2="500" y2="940" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="100" y1="940" x2="300" y2="970" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="300" y1="940" x2="300" y2="970" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <line x1="500" y1="940" x2="300" y2="970" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+
+                <!-- OPUS -->
+                <g class="node-box" onclick="showNodeDetails('opus')" transform="translate(300, 1030)">
+                    <rect x="-190" y="-50" width="380" height="100" fill="rgba(0,0,0,0.9)" stroke="${getStepColor('opus')}" stroke-width="2" rx="5"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${colors.text}" font-size="22" font-weight="bold">CRITIC OPUS</text>
+                    <text x="0" y="22" text-anchor="middle" fill="${colors.textDim}" font-size="13">(Final Judgment / Approval)</text>
+                </g>
+
+                <!-- Final Output -->
+                <line x1="300" y1="1080" x2="300" y2="1130" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
+                <text x="300" y="1170" text-anchor="middle" fill="${colors.text}" font-size="17" letter-spacing="0.2em">[ ACTION EXECUTED ]</text>
+
+            </svg>
+        </div>
+    </div>
+    
+    <!-- DETAILS PANEL (Fixed Overlay) -->
+    <div id="node-details-panel" class="fixed top-16 right-0 w-full md:w-[450px] h-[calc(100vh-4rem)] bg-black/95 border-l border-green-900/50 p-6 overflow-y-auto shadow-2xl z-[100]" style="transform: translateX(100%);">
+        <div class="flex justify-between items-center mb-6 border-b border-green-900/30 pb-4">
+            <h3 id="detail-title" class="text-xl font-bold text-green-500 font-mono uppercase tracking-wider">NODE DETAILS</h3>
+            <button onclick="closeNodeDetails()" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+        </div>
+        <div id="detail-content" class="prose prose-invert prose-green max-w-none font-mono text-sm leading-relaxed">
+            <p class="text-gray-500">Clique em um nó para ver detalhes.</p>
+        </div>
+    </div>
+    `;
+    
+    document.getElementById('gameboard-svg').innerHTML = html;
+    document.getElementById('gameboard-missions').innerHTML = '';
+    
+    // Expose functions globally
+    window.currentJob = activeJob;
+    
+    window.showNodeDetails = (stepKey) => {
+        const panel = document.getElementById('node-details-panel');
+        const title = document.getElementById('detail-title');
+        const content = document.getElementById('detail-content');
+        const stepData = window.currentJob.steps ? window.currentJob.steps[stepKey] : null;
+
+        title.textContent = stepKey.toUpperCase().replace('_', ' ');
+        
+        if (stepData && stepData.output) {
+            content.innerHTML = marked.parse(stepData.output);
+        } else {
+            content.innerHTML = '<p class="text-gray-500">Dados não disponíveis para esta etapa.</p>';
+        }
+
+        panel.style.transform = 'translateX(0)';
+    };
+
+    window.closeNodeDetails = () => {
+        const panel = document.getElementById('node-details-panel');
+        panel.style.transform = 'translateX(100%)';
+    };
+}
 
         function selectAgent(agentId) {
             console.log('Selected agent:', agentId);
