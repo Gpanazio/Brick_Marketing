@@ -6,29 +6,83 @@
     <title>BRICK AI // WAR ROOM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #050505; color: #e0e0e0; font-family: 'Courier New', Courier, monospace; }
-        .column { min-height: 80vh; background: #0a0a0a; border: 1px solid #333; }
-        .card { background: #111; border-left: 4px solid #333; transition: all 0.2s; }
-        .card:hover { border-left-color: #00ff00; transform: translateX(5px); }
-        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
-        .glitch-text { text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
-        .modal-bg { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        :root {
+            --brick-black: #050505;
+            --brick-red: #DC2626;
+            --brick-gray: #9CA3AF;
+            --brick-white: #E5E5E5;
+        }
+        body { 
+            background-color: var(--brick-black); 
+            color: var(--brick-white); 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-brick { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.04em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .column { min-height: 80vh; background: #0a0a0a; border: 1px solid #1a1a1a; }
+        .card { 
+            background: #0a0a0a; 
+            border: 1px solid #333; 
+            transition: all 0.2s; 
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 2px; height: 100%;
+            background: #333;
+            transition: background 0.2s;
+        }
+        .card:hover { border-color: var(--brick-red); }
+        .card:hover::before { background: var(--brick-red); }
+        
+        .modal-bg { background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); }
+        
+        /* Noise Texture */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brick-red); }
+
+        .animate-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body class="p-6">
+    <div class="noise-overlay"></div>
+    <div class="relative z-10">
 
     <!-- Header -->
-    <header class="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
+    <header class="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
         <div>
-            <h1 class="text-3xl font-bold tracking-tighter text-white">BRICK AI <span class="text-green-500 text-sm align-top">WAR ROOM</span></h1>
-            <p class="text-xs text-gray-500 mt-1">SQUAD STATUS: <span id="connection-status" class="text-yellow-500">CONNECTING...</span> // MODEL: GEMINI 3 FLASH + CLAUDE 4.5</p>
+            <h1 class="text-4xl font-brick tracking-tighter text-white flex items-baseline gap-2">
+                BRICK AI <span class="text-[#DC2626] text-lg font-mono tracking-widest opacity-80">WAR ROOM</span>
+            </h1>
+            <div class="flex items-center gap-3 mt-2 font-mono text-[10px] tracking-[0.2em] text-[#9CA3AF]">
+                <span id="connection-status" class="text-[#DC2626]">CONNECTING...</span>
+                <span class="text-[#333]">|</span>
+                <span>SYS.VER 3.2+</span>
+            </div>
         </div>
-        <div class="flex items-center gap-4">
-            <button onclick="openModal('architectureDiagram')" class="text-xs font-mono text-green-500 hover:text-white border border-green-900 px-3 py-1 rounded transition-colors uppercase tracking-widest">
+        <div class="flex items-center gap-6">
+            <button onclick="openModal('architectureDiagram')" class="text-[10px] font-mono text-[#9CA3AF] hover:text-white border-b border-transparent hover:border-[#DC2626] transition-colors uppercase tracking-widest pb-1">
                 View Protocols
             </button>
-            <button onclick="openModal('newBriefing')" class="bg-white text-black px-4 py-2 font-bold hover:bg-gray-200">
+            <button onclick="openModal('newBriefing')" class="bg-[#DC2626] text-white px-6 py-2 font-brick text-sm tracking-wide hover:bg-red-700 transition-colors">
                 + NEW BRIEFING
             </button>
         </div>
@@ -36,12 +90,12 @@
 
     <!-- Modal: Architecture Diagram -->
     <div id="modal-architectureDiagram" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-[60] p-4">
-        <div class="bg-black border border-green-900/50 p-8 w-full max-w-5xl max-h-[90vh] shadow-[0_0_50px_rgba(34,197,94,0.1)] rounded overflow-auto">
-            <div class="flex justify-between items-center mb-6 border-b border-green-900/30 pb-4">
-                <h2 class="text-xl font-bold text-green-500 uppercase tracking-tighter">System Architecture // Flow</h2>
-                <button onclick="closeModal('architectureDiagram')" class="text-gray-500 hover:text-white text-2xl">&times;</button>
+        <div class="bg-[#0a0a0a] border border-[#DC2626]/30 p-8 w-full max-w-5xl max-h-[90vh] shadow-[0_0_50px_rgba(220,38,38,0.1)] overflow-auto relative">
+            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                <h2 class="text-xl font-brick text-white uppercase tracking-tighter">System Architecture <span class="text-[#DC2626]">//</span> Flow</h2>
+                <button onclick="closeModal('architectureDiagram')" class="text-[#9CA3AF] hover:text-[#DC2626] text-2xl">&times;</button>
             </div>
-            <pre class="text-green-500 font-mono text-[11px] md:text-xs leading-tight whitespace-pre">
+            <pre class="text-[#9CA3AF] font-mono text-[11px] md:text-xs leading-tight whitespace-pre select-all">
 BRIEFING
     │
     ▼
@@ -92,52 +146,38 @@ BRIEFING
         ┌──────────────────┐
         │  APROVADO ≥80%   │──────────────► OUTPUT
         └──────────────────┘
-                   │
-                   │ REPROVADO
-                   ▼
-        ┌──────────────────┐
-        │  LOOP (max 3x)   │──► COPYWRITER (3ª vez = Gemini)
-        └──────────────────┘
-                   │
-                   │ 3 FALHAS
-                   ▼
-        ┌──────────────────┐
-        │  ESCALA HUMANO   │
-        └──────────────────┘</pre>
-            <div class="mt-8 pt-4 border-t border-green-900/30 flex justify-end">
-                <button onclick="closeModal('architectureDiagram')" class="text-xs font-mono text-gray-500 hover:text-white uppercase">Close Protocols</button>
-            </div>
+            </pre>
         </div>
     </div>
 
     <!-- Tabs -->
-    <div class="flex gap-4 mb-6 border-b border-gray-800 pb-2">
-        <button id="tab-board" onclick="showTab('board')" class="text-white font-bold border-b-2 border-green-500 pb-2">SQUAD BOARD</button>
-        <button id="tab-gameboard" onclick="showTab('gameboard')" class="text-gray-500 hover:text-white pb-2">GAME BOARD</button>
-        <button id="tab-history" onclick="showTab('history')" class="text-gray-500 hover:text-white pb-2">HISTÓRICO</button>
-        <button id="tab-architecture" onclick="showTab('architecture')" class="text-gray-500 hover:text-white pb-2">ARQUITETURA</button>
+    <div class="flex gap-8 mb-8 border-b border-white/10 pb-0">
+        <button id="tab-board" onclick="showTab('board')" class="text-white font-brick text-sm tracking-widest border-b-2 border-[#DC2626] pb-4 px-2 transition-colors">SQUAD BOARD</button>
+        <button id="tab-gameboard" onclick="showTab('gameboard')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">GAME BOARD</button>
+        <button id="tab-history" onclick="showTab('history')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">HISTORY</button>
+        <button id="tab-architecture" onclick="showTab('architecture')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest pb-4 px-2 border-b-2 border-transparent transition-colors">ARCH</button>
     </div>
 
     <!-- Board -->
-    <div id="view-board" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div id="view-board" class="grid grid-cols-1 md:grid-cols-3 gap-8">
         
         <!-- Column 1: Briefing -->
-        <div class="column p-4 rounded">
-            <h2 class="text-xl font-bold mb-4 text-gray-400 border-b border-gray-800 pb-2">01. BRIEFING (INPUT)</h2>
+        <div class="column p-6">
+            <h2 class="text-xs font-mono text-[#9CA3AF] border-b border-white/10 pb-4 mb-6 tracking-[0.2em]">01 // INPUT</h2>
             <div id="col-briefing" class="space-y-4">Loading...</div>
         </div>
 
         <!-- Column 2: WIP -->
-        <div class="column p-4 rounded relative">
-            <h2 class="text-xl font-bold mb-4 text-yellow-500 border-b border-yellow-900 pb-2">
-                <span class="animate-pulse">●</span> 02. WORKING (AGENTS)
+        <div class="column p-6 relative">
+            <h2 class="text-xs font-mono text-[#DC2626] border-b border-white/10 pb-4 mb-6 tracking-[0.2em] flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-[#DC2626] rounded-full animate-blink"></span> 02 // PROCESSING
             </h2>
             <div id="col-wip" class="space-y-4">Loading...</div>
         </div>
 
         <!-- Column 3: Done -->
-        <div class="column p-4 rounded">
-            <h2 class="text-xl font-bold mb-4 text-green-500 border-b border-green-900 pb-2">03. REVIEW / DONE</h2>
+        <div class="column p-6">
+            <h2 class="text-xs font-mono text-white border-b border-white/10 pb-4 mb-6 tracking-[0.2em]">03 // OUTPUT</h2>
             <div id="col-done" class="space-y-4">Loading...</div>
         </div>
 
@@ -145,12 +185,12 @@ BRIEFING
 
     <!-- History View -->
     <div id="view-history" class="hidden">
-        <div class="column p-6 rounded">
-            <div class="flex justify-between items-center mb-4 border-b border-purple-900 pb-2">
-                <h2 class="text-xl font-bold text-purple-400">📚 HISTÓRICO DE CAMPANHAS</h2>
+        <div class="column p-8 border-white/10">
+            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                <h2 class="text-2xl font-brick text-white tracking-tight">CAMPAIGN LOGS</h2>
                 <div class="flex gap-2">
-                    <button id="history-mode-list" onclick="setHistoryMode('list')" class="text-xs px-3 py-1 border border-purple-800 text-purple-400 rounded">Lista</button>
-                    <button id="history-mode-board" onclick="setHistoryMode('board')" class="text-xs px-3 py-1 border border-gray-700 text-gray-500 rounded">Board</button>
+                    <button id="history-mode-list" onclick="setHistoryMode('list')" class="text-[10px] font-mono px-3 py-1 border border-[#DC2626] text-[#DC2626]">LIST</button>
+                    <button id="history-mode-board" onclick="setHistoryMode('board')" class="text-[10px] font-mono px-3 py-1 border border-[#333] text-[#555]">BOARD</button>
                 </div>
             </div>
             <div id="history-list" class="space-y-4">Loading...</div>
@@ -158,110 +198,261 @@ BRIEFING
     </div>
 
     <!-- Game Board View -->
-    <div id="view-gameboard" class="hidden">
-        <div class="min-h-[90vh] relative overflow-hidden" style="background: linear-gradient(180deg, #0a0a12 0%, #0d1117 50%, #0a0a12 100%);">
+    <div id="view-gameboard" class="hidden border border-white/10 bg-[#0a0a0a]">
+        <div class="min-h-[90vh] relative overflow-hidden">
             <!-- Grid overlay -->
-            <div class="absolute inset-0 pointer-events-none opacity-10" style="background-image: linear-gradient(rgba(59,130,246,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+            <div class="absolute inset-0 pointer-events-none opacity-10" style="background-image: linear-gradient(rgba(220,38,38,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
             
             <!-- Header -->
-            <div class="relative z-10 p-6 border-b border-blue-900/30">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h1 class="text-xl font-mono text-blue-300 tracking-wider">AGENT ARCHITECTURE MAP</h1>
-                        <p class="text-[10px] text-blue-500/50 font-mono tracking-[0.3em] mt-1">BRICK PROTOCOL v3.2+ // MASON SYSTEM</p>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-[10px] text-gray-600 font-mono">STATUS: <span class="text-green-500">ONLINE</span></div>
-                        <div class="text-[10px] text-gray-700 font-mono" id="gameboard-time"></div>
-                    </div>
+            <div class="relative z-10 p-6 border-b border-white/10 flex justify-between items-center bg-[#050505]/80 backdrop-blur">
+                <div>
+                    <h1 class="text-lg font-mono text-white tracking-widest">SYSTEM ARCHITECTURE MAP</h1>
+                    <p class="text-[9px] text-[#9CA3AF] font-mono tracking-[0.3em] mt-1">MASON PROTOCOL v3.2</p>
+                </div>
+                <div class="text-right font-mono text-[9px] text-[#555]">
+                    <div id="gameboard-time">--:--:--</div>
                 </div>
             </div>
             
             <!-- Main SVG Board -->
-            <div id="gameboard-svg" class="relative z-10 flex justify-center items-center py-8">
-                <div class="text-blue-500/30 animate-pulse font-mono text-xs">[ CARREGANDO MAPA... ]</div>
+            <div id="gameboard-svg" class="relative z-10 flex justify-center items-center py-12">
+                <div class="text-[#DC2626] animate-blink font-mono text-xs tracking-widest">[ SYSTEM INITIALIZING ]</div>
             </div>
             
-            <!-- Mission List -->
-            <div id="gameboard-missions" class="relative z-10 px-6 pb-6">
-            </div>
+            <div id="gameboard-missions" class="hidden"></div>
         </div>
     </div>
 
     <!-- Architecture View -->
     <div id="view-architecture" class="hidden">
-        <div class="column p-10 rounded bg-[#050505] border-white/5">
+        <div class="column p-12 border-white/10 bg-[#050505]">
             <div class="max-w-4xl mx-auto">
-                <div class="flex items-center gap-4 mb-16 border-b border-white/10 pb-6">
-                    <div class="h-8 w-1 bg-red-600"></div>
+                <div class="flex items-center gap-6 mb-16 border-b border-white/10 pb-8">
+                    <div class="h-12 w-1 bg-[#DC2626]"></div>
                     <div>
-                        <h2 class="text-3xl font-brick text-white tracking-tighter">SQUAD ARCHITECTURE</h2>
-                        <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em] mt-1">Status: Neural Protocols Loaded // v3.1 (A Blindada)</p>
+                        <h2 class="text-4xl font-brick text-white tracking-tighter">SQUAD PROTOCOLS</h2>
+                        <p class="text-[10px] font-mono text-[#555] uppercase tracking-[0.4em] mt-2">Classified // Internal Use Only</p>
                     </div>
                 </div>
-
-                <div id="architecture-content" class="space-y-12">
-                    <!-- Content will be injected here with custom styling -->
-                    <div class="flex items-center justify-center py-20">
-                        <span class="text-xs font-mono text-gray-600 animate-pulse uppercase tracking-widest">Acessando Banco de Dados...</span>
-                    </div>
-                </div>
+                <div id="architecture-content" class="space-y-12"></div>
             </div>
         </div>
     </div>
 
     <!-- Modal: New Briefing -->
     <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-        <div class="bg-black border border-gray-700 p-8 w-full max-w-2xl shadow-2xl rounded">
-            <h2 class="text-2xl font-bold mb-4 text-white">NOVO BRIEFING</h2>
-            <input id="briefing-title" type="text" placeholder="Título (ex: Campanha Carnaval)" class="w-full bg-gray-900 border border-gray-700 p-3 text-white mb-4 focus:outline-none focus:border-green-500">
-            <textarea id="briefing-content" rows="6" placeholder="O que o squad deve fazer?" class="w-full bg-gray-900 border border-gray-700 p-3 text-white mb-4 focus:outline-none focus:border-green-500"></textarea>
-            <div class="flex justify-end gap-4">
-                <button onclick="closeModal('newBriefing')" class="text-gray-400 hover:text-white">CANCELAR</button>
-                <button onclick="submitBriefing()" class="bg-green-600 text-white px-6 py-2 font-bold hover:bg-green-500">ENVIAR PARA AGENTES</button>
+        <div class="bg-[#0a0a0a] border border-white/10 p-8 w-full max-w-2xl shadow-2xl relative">
+            <h2 class="text-2xl font-brick text-white mb-6 tracking-tight">NEW MISSION BRIEF</h2>
+            <input id="briefing-title" type="text" placeholder="Mission Codename" class="w-full bg-[#111] border border-[#333] p-4 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]">
+            <textarea id="briefing-content" rows="8" placeholder="Objectives, Targets, Constraints..." class="w-full bg-[#111] border border-[#333] p-4 text-white mb-6 focus:outline-none focus:border-[#DC2626] font-mono text-sm placeholder-[#555]"></textarea>
+            <div class="flex justify-end gap-6">
+                <button onclick="closeModal('newBriefing')" class="text-[#9CA3AF] hover:text-white font-mono text-xs tracking-widest">ABORT</button>
+                <button onclick="submitBriefing()" class="bg-white text-black px-8 py-3 font-brick text-sm hover:bg-[#DC2626] hover:text-white transition-colors tracking-wide">INITIATE SEQUENCE</button>
             </div>
         </div>
     </div>
 
     <!-- Modal: File Viewer -->
     <div id="modal-viewer" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-        <div class="bg-black border border-gray-700 w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl rounded">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800 bg-gray-900">
-                <h2 id="viewer-title" class="text-xl font-bold text-white">FILENAME</h2>
-                <button onclick="closeModal('viewer')" class="text-gray-400 hover:text-white text-xl">&times;</button>
+        <div class="bg-[#0a0a0a] border border-white/10 w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
+            <div class="flex justify-between items-center p-6 border-b border-white/10 bg-[#050505]">
+                <h2 id="viewer-title" class="text-lg font-mono text-white tracking-widest uppercase">FILENAME</h2>
+                <button onclick="closeModal('viewer')" class="text-[#555] hover:text-[#DC2626] text-2xl">&times;</button>
             </div>
-            <div id="viewer-content" class="p-6 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0d0d0d]"></div>
-            <div id="viewer-actions" class="p-4 border-t border-gray-800 bg-gray-900 flex justify-end gap-4">
-                <!-- Buttons injected by JS -->
-            </div>
+            <div id="viewer-content" class="p-8 overflow-y-auto prose prose-invert max-w-none flex-1 bg-[#0a0a0a] font-mono text-sm leading-relaxed text-[#ccc]"></div>
+            <div id="viewer-actions" class="p-6 border-t border-white/10 bg-[#050505] flex justify-end gap-4"></div>
         </div>
+    </div>
     </div>
 
     <script>
         const API_URL = '/api';
 
-        // Tab switching
+        // --- GAME BOARD RENDERER (UPDATED COLORS) ---
+        function renderGameBoard(data) {
+            const wipJob = data?.wip?.find(j => j.steps);
+            const activeJob = wipJob || { steps: {} }; // Fallback to empty
+            const missionTitle = activeJob.title || 'SYSTEM IDLE';
+            
+            document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
+
+            // BRICK COLOR PALETTE
+            const colors = {
+                text: '#E5E5E5',
+                textDim: '#555',
+                border: '#333',
+                line: '#222',
+                highlight: '#DC2626', // Brick Red
+                nodeBg: '#0a0a0a',
+                success: '#fff',      // White for done
+                active: '#DC2626'     // Red for active
+            };
+
+            const getStepColor = (stepKey) => {
+                const step = activeJob.steps ? activeJob.steps[stepKey] : null;
+                if (!step) return colors.border;
+                if (step.status === 'done') return colors.success;
+                if (step.status === 'active' || step.status === 'running') return colors.active;
+                return colors.border;
+            };
+
+            const W = 1400; 
+            const cx = W / 2;
+            const colLeft = cx - 350;
+            const colRight = cx + 350;
+            const boxW = 240;
+            const lgBoxW = 400;
+
+            const yMission = 100;
+            const yDouglas = 240;
+            const yValidator = 380;
+            const yResearch = 520;
+            const yClaims = 660;
+            const yCopy = 800;
+            const yReview = 940;
+            const yOpus = 1100;
+
+            let html = `
+            <style>
+                @keyframes flowPulse { 0% { stroke-dashoffset: 24; opacity: 0.3; } 100% { stroke-dashoffset: 0; opacity: 0.8; } }
+                .flow-line { stroke-dasharray: 4 4; animation: flowPulse 1s linear infinite; }
+                .node-rect { transition: all 0.3s; }
+                .node-group:hover .node-rect { stroke: #DC2626; stroke-width: 2; fill: #111; }
+                .tech-font { font-family: 'JetBrains Mono', monospace; }
+                .label-font { font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+            </style>
+            
+            <svg viewBox="0 0 ${W} 1350" preserveAspectRatio="xMidYMin meet" style="width: 100%; height: 100%;">
+                <defs>
+                    <linearGradient id="gradNode" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+
+                <!-- HEADER -->
+                <g transform="translate(${cx}, 50)">
+                    <text y="0" text-anchor="middle" fill="#333" font-size="20" letter-spacing="0.5em" font-weight="900" class="label-font">SQUAD ARCHITECTURE</text>
+                </g>
+                
+                <!-- 1. MISSION -->
+                <g class="node-group" onclick="showNodeDetails('mission')" transform="translate(${cx}, ${yMission})">
+                    <line x1="0" y1="30" x2="0" y2="${yDouglas - yMission - 60}" stroke="${colors.line}" stroke-width="1"/>
+                    <rect x="${-lgBoxW/2}" y="-30" width="${lgBoxW}" height="60" fill="${colors.nodeBg}" stroke="${colors.border}" stroke-width="1" class="node-rect"/>
+                    <text x="-180" y="-8" text-anchor="start" fill="${colors.textDim}" font-size="10" class="tech-font">MISSION OBJECTIVE</text>
+                    <text x="-180" y="12" text-anchor="start" fill="${colors.text}" font-size="14" class="tech-font font-bold">${missionTitle.substring(0,45)}</text>
+                </g>
+                
+                <!-- 2. DOUGLAS CORE -->
+                <g class="node-group" onclick="showNodeDetails('douglas')" transform="translate(${cx}, ${yDouglas})">
+                    <line x1="0" y1="50" x2="0" y2="${yValidator - yDouglas - 50}" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="#080808" stroke="${colors.highlight}" stroke-width="1" rx="2" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.highlight}" font-size="24" font-weight="900" letter-spacing="0.1em" class="label-font">DOUGLAS CORE</text>
+                    <text x="0" y="15" text-anchor="middle" fill="#555" font-size="10" class="tech-font tracking-widest">CENTRAL COGNITIVE AUTHORITY</text>
+                </g>
+
+                <!-- 3. VALIDATOR -->
+                <g class="node-group" onclick="showNodeDetails('validator')" transform="translate(${cx}, ${yValidator})">
+                    <path d="M0 50 L0 70 L${colLeft - cx} 70 L${colLeft - cx} ${yResearch - yValidator - 50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <path d="M0 50 L0 70 L${colRight - cx} 70 L${colRight - cx} ${yResearch - yValidator - 50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('validator')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">BRIEF VALIDATOR</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">GATEKEEPER</text>
+                </g>
+
+                <!-- 4. RESEARCH -->
+                <g class="node-group" onclick="showNodeDetails('audience')" transform="translate(${colLeft}, ${yResearch})">
+                    <path d="M0 50 L0 70 L${cx - colLeft} 70 L${cx - colLeft} ${yClaims - yResearch - 50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('audience')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">AUDIENCE ANALYST</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PSYCHOGRAPHICS</text>
+                </g>
+                <g class="node-group" onclick="showNodeDetails('research')" transform="translate(${colRight}, ${yResearch})">
+                    <path d="M0 50 L0 70 L${cx - colRight} 70 L${cx - colRight} ${yClaims - yResearch - 50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('research')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">TOPIC RESEARCHER</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">CONTEXT & FACTS</text>
+                </g>
+
+                <!-- 5. CLAIMS -->
+                <g class="node-group" onclick="showNodeDetails('claims')" transform="translate(${cx}, ${yClaims})">
+                    <line x1="0" y1="50" x2="0" y2="${yCopy - yClaims - 50}" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('claims')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">CLAIMS CHECKER</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">TRUTH FILTER</text>
+                </g>
+
+                <!-- 6. COPY -->
+                <g class="node-group" onclick="showNodeDetails('copy')" transform="translate(${cx}, ${yCopy})">
+                    <path d="M0 50 L0 70 L${colLeft - cx} 70 L${colLeft - cx} ${yReview - yCopy - 50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <path d="M0 50 L0 70 L${colRight - cx} 70 L${colRight - cx} ${yReview - yCopy - 50}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('copy')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">COPYWRITER</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">CREATION ENGINE</text>
+                </g>
+
+                <!-- 7. REVIEW -->
+                <g class="node-group" onclick="showNodeDetails('brand')" transform="translate(${colLeft}, ${yReview})">
+                    <path d="M0 50 L0 70 L${cx - colLeft} 70 L${cx - colLeft} ${yOpus - yReview - 70}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('brand')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">BRAND GUARDIAN</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">TONE & POSITION</text>
+                </g>
+                <g class="node-group" onclick="showNodeDetails('critic')" transform="translate(${colRight}, ${yReview})">
+                    <path d="M0 50 L0 70 L${cx - colRight} 70 L${cx - colRight} ${yOpus - yReview - 70}" fill="none" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('critic')}" stroke-width="1" class="node-rect"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="14" font-weight="bold" class="label-font">CRITIC LITE</text>
+                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PRE-CHECK (65%)</text>
+                </g>
+
+                <!-- 8. OPUS -->
+                <g class="node-group" onclick="showNodeDetails('opus')" transform="translate(${cx}, ${yOpus})">
+                    <line x1="0" y1="70" x2="0" y2="100" stroke="${colors.line}" stroke-width="1" class="flow-line"/>
+                    <rect x="${-lgBoxW/2}" y="-70" width="${lgBoxW}" height="140" fill="#050505" stroke="${getStepColor('opus')}" stroke-width="2" rx="4" class="node-rect"/>
+                    <text x="0" y="-15" text-anchor="middle" fill="${colors.text}" font-size="28" font-weight="900" letter-spacing="0.1em" class="label-font">CRITIC OPUS</text>
+                    <text x="0" y="25" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">FINAL VERDICT</text>
+                </g>
+
+                <!-- 9. FINAL -->
+                <g class="node-group" onclick="showNodeDetails('output')" transform="translate(${cx}, ${yOpus + 160})">
+                     <rect x="${-boxW}" y="-30" width="${boxW * 2}" height="60" fill="${activeJob.steps?.opus?.status === 'done' ? '#DC2626' : '#0a0a0a'}" stroke="${activeJob.steps?.opus?.status === 'done' ? '#fff' : '#333'}" stroke-width="1" rx="0" class="node-rect"/>
+                     <text x="0" y="5" text-anchor="middle" fill="${activeJob.steps?.opus?.status === 'done' ? '#fff' : '#555'}" font-size="12" letter-spacing="0.2em" font-bold class="label-font">
+                        ⚡ FINAL DELIVERY
+                    </text>
+                </g>
+            </svg>
+            
+            <div id="node-details-panel" class="fixed top-24 right-0 w-full md:w-[600px] h-[calc(100vh-6rem)] bg-[#050505]/95 border-l border-white/10 p-10 overflow-y-auto shadow-2xl z-[100] transform translate-x-full transition-transform duration-300">
+                <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
+                    <div>
+                        <h3 id="detail-title" class="text-3xl font-brick text-white uppercase tracking-tighter">NODE DETAILS</h3>
+                        <div class="h-1 w-20 bg-[#DC2626] mt-4"></div>
+                    </div>
+                    <button onclick="closeNodeDetails()" class="text-[#555] hover:text-white transition-colors text-2xl">&times;</button>
+                </div>
+                <div id="detail-content" class="prose prose-invert prose-p:text-[#ccc] prose-headings:font-brick prose-headings:text-white prose-pre:bg-[#111] prose-pre:border prose-pre:border-white/10 max-w-none font-mono text-sm leading-relaxed">
+                    <p class="text-[#555] italic">Select a system node to view logs.</p>
+                </div>
+            </div>
+            `;
+            
+            document.getElementById('gameboard-svg').innerHTML = html;
+            window.currentJob = activeJob;
+        }
+
+        // --- GENERAL LOGIC ---
         function showTab(tab) {
-            document.getElementById('view-board').classList.toggle('hidden', tab !== 'board');
-            document.getElementById('view-gameboard').classList.toggle('hidden', tab !== 'gameboard');
-            document.getElementById('view-history').classList.toggle('hidden', tab !== 'history');
-            document.getElementById('view-architecture').classList.toggle('hidden', tab !== 'architecture');
-
-            document.getElementById('tab-board').classList.toggle('border-green-500', tab === 'board');
-            document.getElementById('tab-board').classList.toggle('text-white', tab === 'board');
-            document.getElementById('tab-board').classList.toggle('text-gray-500', tab !== 'board');
-
-            document.getElementById('tab-gameboard').classList.toggle('border-cyan-500', tab === 'gameboard');
-            document.getElementById('tab-gameboard').classList.toggle('text-white', tab === 'gameboard');
-            document.getElementById('tab-gameboard').classList.toggle('text-gray-500', tab !== 'gameboard');
-
-            document.getElementById('tab-history').classList.toggle('border-purple-500', tab === 'history');
-            document.getElementById('tab-history').classList.toggle('text-white', tab === 'history');
-            document.getElementById('tab-history').classList.toggle('text-gray-500', tab !== 'history');
-
-            document.getElementById('tab-architecture').classList.toggle('border-green-500', tab === 'architecture');
-            document.getElementById('tab-architecture').classList.toggle('text-white', tab === 'architecture');
-            document.getElementById('tab-architecture').classList.toggle('text-gray-500', tab !== 'architecture');
+            ['board', 'gameboard', 'history', 'architecture'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}`);
+                btn.classList.remove('border-[#DC2626]', 'text-white');
+                btn.classList.add('border-transparent', 'text-[#9CA3AF]');
+            });
+            
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.remove('border-transparent', 'text-[#9CA3AF]');
+            activeBtn.classList.add('border-[#DC2626]', 'text-white');
 
             if (tab === 'history') fetchHistory();
             if (tab === 'architecture') fetchArchitecture();
@@ -276,547 +467,94 @@ BRIEFING
                 
                 const html = `
                     <style>
-                        .arch-content { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9CA3AF; line-height: 1.8; }
-                        .arch-content h1 { color: #fff; font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
-                        .arch-content h2 { color: #DC2626; font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
-                        .arch-content pre { background: #080808; padding: 1rem; border: 1px solid #1a1a1a; color: #22c55e; font-size: 0.7rem; overflow-x: auto; margin: 1rem 0; white-space: pre; line-height: 1.3; }
-                        .arch-content code { background: #1a1a1a; color: #22c55e; padding: 0.15rem 0.3rem; font-size: 0.85em; border-radius: 2px; }
-                        .arch-content pre code { background: none; padding: 0; }
+                        .arch-content { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #ccc; line-height: 1.8; }
+                        .arch-content h1 { color: #fff; font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+                        .arch-content h2 { color: #DC2626; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+                        .arch-content pre { background: #0a0a0a; padding: 1.5rem; border: 1px solid #222; color: #DC2626; font-size: 0.7rem; overflow-x: auto; margin: 1rem 0; white-space: pre; line-height: 1.3; }
+                        .arch-content code { background: #111; color: #fff; padding: 0.15rem 0.3rem; font-size: 0.9em; border-radius: 2px; }
+                        .arch-content pre code { background: none; padding: 0; color: inherit; }
                         .arch-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.8rem; }
-                        .arch-content th { text-align: left; padding: 0.5rem; border-bottom: 1px solid #333; color: #fff; }
-                        .arch-content td { padding: 0.5rem; border-bottom: 1px solid #111; }
+                        .arch-content th { text-align: left; padding: 0.75rem; border-bottom: 1px solid #333; color: #fff; font-weight: 700; text-transform: uppercase; }
+                        .arch-content td { padding: 0.75rem; border-bottom: 1px solid #111; }
                         .arch-content strong { color: #fff; }
                         .arch-content hr { border: none; border-top: 1px solid #333; margin: 2rem 0; }
-                        .arch-content ul, .arch-content ol { margin-left: 1.5rem; }
-                        .arch-content li { margin-bottom: 0.3rem; }
                     </style>
                     <div class="arch-content">${marked.parse(content)}</div>
                 `;
-
                 document.getElementById('architecture-content').innerHTML = html;
             } catch (e) {
-                console.error('Erro ao carregar arquitetura:', e);
-                document.getElementById('architecture-content').innerHTML = '<div class="text-red-500 text-center py-20">Erro ao carregar protocolos: ' + e.message + '</div>';
+                document.getElementById('architecture-content').innerHTML = '<div class="text-red-500 font-mono">ERROR LOADING PROTOCOLS</div>';
             }
         }
 
-        // Game Board
         async function fetchGameBoard() {
             try {
                 const res = await fetch(`${API_URL}/state`);
                 const data = await res.json();
                 renderGameBoard(data);
-            } catch (e) {
-                console.error('Erro game board:', e);
-            }
-        }
-
-// Dados Reais do Squad Run: "Quem não sabe, ensina"
-const previewJob = {
-    id: '1770068268705',
-    title: 'Quem não sabe, ensina',
-    status: 'done',
-    steps: {
-        'douglas': {
-            status: 'active',
-            output: "## DOUGLAS CORE LOG\\n\\n**Run ID:** 1770068268705\\n**Timestamp:** 2026-02-02T21:38:00Z\\n\\n### Briefing Recebido\\n- **Conceito:** Posicionamento anti vendedor de curso\\n- **Público:** LinkedIn — diretores de criação, CMOs, heads de marketing\\n- **Tom:** Bold, unapologetic, anti-guru\\n- **Contexto:** Aquecimento lançamento Brick AI (23/02)\\n\\n### Decisões de Roteamento\\n- Squad: Full Cycle (8 agentes)\\n- Prioridade: Alta\\n- Directive: Autoridade real > hype de vendas"
-        },
-        'validator': {
-            status: 'done',
-            output: "## BRIEF VALIDATOR ✅\\n**Modelo:** Gemini Flash\\n**Status:** PASS\\n\\n### Briefing Estruturado\\n- **Objetivo:** Posicionamento anti vendedor de curso\\n- **Público:** LinkedIn — diretores de criação, CMOs\\n- **Formato:** Post LinkedIn (texto bold)\\n- **Tom:** Bold, unapologetic, anti-guru\\n\\n### Assumptions\\n- Canal default: LinkedIn\\n- Quantidade: 3 variações\\n- CTA: Implícito (curiosidade)"
-        },
-        'audience': {
-            status: 'done',
-            output: "## AUDIENCE ANALYST 📊\\n**Modelo:** Gemini Flash\\n\\n### Perfil do Público\\n- **Cargo:** Diretores de Criação, CMOs, Heads de Marketing\\n- **Senioridade:** Pleno/Sênior (35-50 anos)\\n- **Dor Principal:** Cansados de ver 'especialistas' que nunca produziram nada vendendo curso\\n\\n### Insights\\n- Público rejeita linguagem de startup/growth hacker\\n- Valorizam experiência prática sobre teoria\\n- Respondem bem a tom direto e até provocativo\\n\\n### Gatilhos\\n- Autenticidade, track record, anti-hype, resultados tangíveis"
-        },
-        'research': {
-            status: 'done',
-            output: "## TOPIC RESEARCHER 🔍\\n**Modelo:** Gemini Flash\\n\\n### Contexto de Mercado\\n- Explosão de 'infoprodutores de IA' em 2025-2026\\n- Saturação de cursos de 'como criar vídeos com IA'\\n- Diferencial Brick: 10 anos de produção real\\n\\n### Referências de Tom (Anti-Guru)\\n- Naval Ravikant: 'Specific knowledge cannot be taught'\\n- Paul Graham: 'Startups = do things that don't scale'\\n- **Brick: 'Vision over Prompt'**\\n\\n### Angle\\nMercado começa a separar 'quem faz' de 'quem ensina'"
-        },
-        'claims': {
-            status: 'done',
-            output: "## CLAIMS CHECKER ✓\\n**Modelo:** Gemini Flash\\n\\n### Verificações\\n\\n| Claim | Status | Ação |\\n|-------|--------|------|\\n| '10 anos de set' | ✅ VÁLIDO | Mantém (verificável) |\\n| 'Nunca produziram um filme' | ⚠️ GENÉRICO | Ajustado: 'raramente pisaram num set' |\\n| 'Zero cursos vendidos' | ✅ VÁLIDO | Mantém |\\n\\n**Status Final:** Seguro para publicação"
-        },
-        'copy': {
-            status: 'done',
-            output: "## COPYWRITER ✍️\\n**Modelo:** Claude Sonnet 4\\n\\n### OUTPUT FINAL (Score: 91%)\\n\\n---\\n\\nA cada dia nasce um novo 'especialista em IA para vídeo'.\\n\\nCurso de 12 módulos. Comunidade exclusiva. Mentorias semanais.\\n\\nCurioso: raramente pisaram num set.\\nNunca coordenaram uma equipe de 20 pessoas às 4h da manhã.\\nNunca ouviram um cliente dizer 'ficou uma merda, refaz'.\\n\\nEu tenho 10 anos disso.\\n\\nE posso garantir: IA não substitui direção.\\nEla amplifica quem já sabe o que está fazendo.\\n\\n**Quem não sabe pintar, só faz sujeira — com ou sem pincel novo.**\\n\\n#ProductionEnhanced #BrickAI"
-        },
-        'brand': {
-            status: 'done',
-            output: "## BRAND GUARDIANS 🛡️\\n\\n### STYLE GUARDIAN\\n| Critério | Score |\\n|----------|-------|\\n| Tom Bold | ✅ 10/10 |\\n| Anti-jargão | ✅ 9/10 |\\n| Proibições | ✅ 10/10 |\\n| Personalidade | ✅ 9/10 |\\n\\n**Score Style:** 95%\\n\\n### POSITIONING GUARDIAN\\n| Critério | Score |\\n|----------|-------|\\n| Diferencial claro | ✅ 9/10 |\\n| Autoridade | ✅ 10/10 |\\n| Anti-hype | ✅ 10/10 |\\n| CTA implícito | ✅ 8/10 |\\n\\n**Score Positioning:** 93%"
-        },
-        'critic': {
-            status: 'done',
-            output: "## CRITIC LITE 🔍\\n**Modelo:** Gemini Flash\\n**Threshold:** 65%\\n\\n### Scores por Variação\\n\\n| Variação | Score | Status |\\n|----------|-------|--------|\\n| V1 (Curta) | 82% | ✅ Aprovado |\\n| V2 (Média) | **90%** | ✅ Aprovado |\\n| V3 (Story) | 87% | ✅ Aprovado |\\n\\n**Recomendação:** V2 é a mais forte.\\n\\n### Rubrica Aplicada\\n- Clareza da Oferta: 22/25\\n- Dor Reconhecível: 19/20\\n- Prova/Credibilidade: 18/20\\n- On-brand: 19/20\\n- CTA Específico: 12/15"
-        },
-        'opus': {
-            status: 'done',
-            output: "## CRITIC OPUS ⚖️\\n**Modelo:** Claude Opus\\n**Status:** APROVADO\\n\\n### Análise Final V2\\n\\n> Melhor equilíbrio. Contexto suficiente pra não parecer gratuito, punch no final. A frase 'Quem não sabe pintar, só faz sujeira' é memorável.\\n\\n**Score Opus: 91%**\\n\\n---\\n\\n### DECISÃO: ✅ PUBLICAR\\n\\n**Tempo total:** 2m 34s\\n**Loops:** 0\\n**Próximo passo:** Aguardando aprovação humana\\n\\n*Assinatura: DOUGLAS-OPUS-V4*"
-        }
-    }
-};
-
-function renderGameBoard(data) {
-    // Usa previewJob a menos que tenha um job real com estrutura de steps
-    const wipJob = data?.wip?.find(j => j.steps);
-    const activeJob = wipJob || previewJob;
-    const missionTitle = activeJob.title || 'Aguardando briefing...';
-    
-    document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
-
-    const colors = {
-        text: '#e0e0e0',
-        textDim: '#6b7280', // gray-500
-        border: '#333',
-        line: '#334155', // slate-700
-        lineActive: '#3b82f6', // blue-500
-        red: '#ef4444',
-        redDim: '#7f1d1d',
-        highlight: '#22c55e', // green-500
-        highlightDim: 'rgba(34, 197, 94, 0.2)',
-        blue: '#3b82f6',
-        blueDim: 'rgba(59, 130, 246, 0.2)',
-        nodeBg: '#0f0f0f'
-    };
-
-    const getStepColor = (stepKey) => {
-        const step = activeJob.steps ? activeJob.steps[stepKey] : null;
-        if (!step) return colors.border;
-        if (step.status === 'done') return colors.highlight;
-        if (step.status === 'active' || step.status === 'running') return '#eab308'; // yellow
-        return colors.border;
-    };
-
-    const getStepGlow = (stepKey) => {
-        const step = activeJob.steps ? activeJob.steps[stepKey] : null;
-        if (!step) return '';
-        if (step.status === 'done' || step.status === 'active') return 'filter: url(#glow)';
-        return '';
-    };
-
-    // SVG Layout Constants
-    const W = 1400; // Wider canvas
-    const cx = W / 2;
-    const colLeft = cx - 350;
-    const colRight = cx + 350;
-    
-    // Node dimensions
-    const boxW = 240;
-    const lgBoxW = 400; // For central nodes
-
-    // Y Positions (Vertical Flow)
-    const yMission = 100;
-    const yDouglas = 240;
-    const yValidator = 380; // Central Gate
-    const yResearch = 520;  // Split Layer (Audience/Topic)
-    const yClaims = 660;    // Central Gate
-    const yCopy = 800;      // Central Creator
-    const yReview = 940;    // Split Layer (Brand/Lite)
-    const yOpus = 1100;     // Final Gate
-
-    let html = `
-    <style>
-        @keyframes flowPulse { 
-            0% { stroke-dashoffset: 24; opacity: 0.4; } 
-            50% { opacity: 1; }
-            100% { stroke-dashoffset: 0; opacity: 0.4; } 
-        }
-        .flow-line { 
-            stroke-dasharray: 6 3; 
-            animation: flowPulse 1.5s linear infinite; 
-            vector-effect: non-scaling-stroke;
-        }
-        .node-group { cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .node-group:hover .node-rect { 
-            stroke: #fff !important; 
-            stroke-width: 2 !important; 
-            fill: #1a1a1a !important;
-            filter: url(#hoverGlow);
-        }
-        .node-group:hover .node-title { fill: #fff !important; }
-        
-        .tech-font { font-family: 'Courier New', monospace; letter-spacing: -0.02em; }
-        .label-font { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
-        
-        #node-details-panel { 
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            backdrop-filter: blur(12px);
-        }
-        #node-details-panel.show { transform: translateX(0) !important; }
-    </style>
-    
-    <div class="flex flex-col h-full w-full">
-        <div class="flex-grow w-full relative" style="min-height: 85vh;">
-            <svg viewBox="0 0 ${W} 1300" preserveAspectRatio="xMidYMin meet" style="width: 100%; height: 100%; max-width: 1600px; margin: 0 auto; display: block;">
-                
-                <defs>
-                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                        <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                    <filter id="hoverGlow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
-                        <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                    <linearGradient id="gradNode" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
-                    </linearGradient>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-                    </pattern>
-                </defs>
-
-                <rect width="100%" height="100%" fill="url(#grid)" />
-                
-                <!-- HEADER -->
-                <g transform="translate(${cx}, 50)">
-                    <text y="0" text-anchor="middle" fill="${colors.blue}" font-size="24" letter-spacing="0.8em" font-weight="900" class="label-font">SQUAD ARCHITECTURE</text>
-                    <line x1="-300" y1="20" x2="300" y2="20" stroke="${colors.blue}" stroke-width="1" stroke-opacity="0.3"/>
-                </g>
-                
-                <!-- 1. MISSION OBJECTIVE -->
-                <g class="node-group" onclick="showNodeDetails('mission')" transform="translate(${cx}, ${yMission})">
-                    <line x1="0" y1="30" x2="0" y2="${yDouglas - yMission - 60}" stroke="${colors.line}" stroke-width="2"/>
-                    <rect x="${-lgBoxW/2}" y="-30" width="${lgBoxW}" height="60" fill="${colors.nodeBg}" stroke="${colors.border}" stroke-width="1" class="node-rect"/>
-                    <rect x="${-lgBoxW/2}" y="-30" width="4" height="60" fill="${colors.textDim}" />
-                    <text x="-180" y="-8" text-anchor="start" fill="${colors.blue}" font-size="10" class="label-font">MISSION OBJECTIVE</text>
-                    <text x="-180" y="12" text-anchor="start" fill="${colors.text}" font-size="14" class="tech-font" font-weight="bold">${missionTitle.substring(0,45)}</text>
-                </g>
-                
-                <!-- 2. DOUGLAS CORE -->
-                <g class="node-group" onclick="showNodeDetails('douglas')" transform="translate(${cx}, ${yDouglas})">
-                    <line x1="0" y1="50" x2="0" y2="${yValidator - yDouglas - 50}" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="rgba(20,0,0,0.6)" stroke="${colors.red}" stroke-width="2" rx="2" stroke-dasharray="4 2" class="node-rect"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.red}" font-size="24" font-weight="900" letter-spacing="0.1em" class="label-font">DOUGLAS CORE</text>
-                    <text x="0" y="15" text-anchor="middle" fill="${colors.redDim}" font-size="12" class="tech-font">CENTRAL COGNITIVE AUTHORITY</text>
-                </g>
-
-                <!-- 3. BRIEF VALIDATOR (Central) -->
-                <g class="node-group" onclick="showNodeDetails('validator')" transform="translate(${cx}, ${yValidator})">
-                    <!-- Split Output Lines -->
-                    <path d="M0 50 L0 70 L${colLeft - cx} 70 L${colLeft - cx} ${yResearch - yValidator - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <path d="M0 50 L0 70 L${colRight - cx} 70 L${colRight - cx} ${yResearch - yValidator - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('validator')}" stroke-width="${activeJob.steps?.validator?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('validator')}"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">BRIEF VALIDATOR</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">GATEKEEPER</text>
-                </g>
-
-                <!-- 4. RESEARCH LAYER (Split) -->
-                <!-- Audience (Left) -->
-                <g class="node-group" onclick="showNodeDetails('audience')" transform="translate(${colLeft}, ${yResearch})">
-                     <!-- Merge to Claims -->
-                    <path d="M0 50 L0 70 L${cx - colLeft} 70 L${cx - colLeft} ${yClaims - yResearch - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('audience')}" stroke-width="${activeJob.steps?.audience?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('audience')}"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">AUDIENCE ANALYST</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">PSYCHOGRAPHICS</text>
-                </g>
-
-                <!-- Topic (Right) -->
-                <g class="node-group" onclick="showNodeDetails('research')" transform="translate(${colRight}, ${yResearch})">
-                    <!-- Merge to Claims -->
-                    <path d="M0 50 L0 70 L${cx - colRight} 70 L${cx - colRight} ${yClaims - yResearch - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('research')}" stroke-width="${activeJob.steps?.research?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('research')}"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="16" font-weight="bold" class="label-font">TOPIC RESEARCHER</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">CONTEXT & FACTS</text>
-                </g>
-
-                <!-- 5. CLAIMS CHECKER (Central) -->
-                <g class="node-group" onclick="showNodeDetails('claims')" transform="translate(${cx}, ${yClaims})">
-                    <line x1="0" y1="50" x2="0" y2="${yCopy - yClaims - 50}" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    
-                    <rect x="${-lgBoxW/2}" y="-50" width="${lgBoxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('claims')}" stroke-width="2" class="node-rect" style="${getStepGlow('claims')}"/>
-                    <rect x="${-lgBoxW/2 + 10}" y="-50" width="10" height="4" fill="${getStepColor('claims')}"/>
-                    <rect x="${lgBoxW/2 - 20}" y="-50" width="10" height="4" fill="${getStepColor('claims')}"/>
-                    
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="20" font-weight="bold" class="label-font">CLAIMS CHECKER</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">TRUTH FILTER</text>
-                </g>
-
-                <!-- 6. COPYWRITER (Central) -->
-                <g class="node-group" onclick="showNodeDetails('copy')" transform="translate(${cx}, ${yCopy})">
-                    <!-- Split Output Lines -->
-                    <path d="M0 50 L0 70 L${colLeft - cx} 70 L${colLeft - cx} ${yReview - yCopy - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    <path d="M0 50 L0 70 L${colRight - cx} 70 L${colRight - cx} ${yReview - yCopy - 50}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('copy')}" stroke-width="${activeJob.steps?.copy?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('copy')}"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">COPYWRITER</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="12" class="tech-font">CREATION ENGINE</text>
-                </g>
-
-                <!-- 7. REVIEW LAYER (Split) -->
-                <!-- Brand (Left) -->
-                <g class="node-group" onclick="showNodeDetails('brand')" transform="translate(${colLeft}, ${yReview})">
-                    <path d="M0 50 L0 70 L${cx - colLeft} 70 L${cx - colLeft} ${yOpus - yReview - 70}" fill="none" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-
-                    <rect x="${-boxW/2}" y="-50" width="${boxW}" height="100" fill="url(#gradNode)" stroke="${getStepColor('brand')}" stroke-width="${activeJob.steps?.brand?.status === 'done' ? 3 : 1}" class="node-rect" style="${getStepGlow('brand')}"/>
-                    <text x="0" y="-10" text-anchor="middle" fill="${colors.text}" font-size="18" font-weight="bold" class="label-font">BRAND GUARDIAN</text>
-                    <text x="0" y="20" text-anchor="middle" fill="${colors.textDim}" font-size="10" class="tech-font">TONE & POSITION</text>
-                </g>
-
-                <!-- 8. CRITIC OPUS (Final) -->
-                <g class="node-group" onclick="showNodeDetails('opus')" transform="translate(${cx}, ${yOpus})">
-                    <line x1="0" y1="70" x2="0" y2="100" stroke="${colors.line}" stroke-width="2" class="flow-line"/>
-                    
-                    <rect x="${-lgBoxW/2}" y="-70" width="${lgBoxW}" height="140" fill="#000" stroke="${getStepColor('opus')}" stroke-width="3" rx="4" class="node-rect"/>
-                    <rect x="${-lgBoxW/2 + 10}" y="-60" width="${lgBoxW - 20}" height="120" fill="none" stroke="${colors.line}" stroke-width="1" stroke-dasharray="2 2"/>
-                    
-                    <text x="0" y="-15" text-anchor="middle" fill="${colors.text}" font-size="32" font-weight="900" letter-spacing="0.1em" class="label-font">CRITIC OPUS</text>
-                    <text x="0" y="25" text-anchor="middle" fill="${colors.textDim}" font-size="14" class="tech-font">FINAL VERDICT</text>
-                    
-                     <circle cx="-160" cy="0" r="4" fill="${activeJob.steps?.opus?.status === 'done' ? colors.highlight : '#333'}">
-                        ${activeJob.steps?.opus?.status === 'done' ? '<animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />' : ''}
-                    </circle>
-                    <circle cx="160" cy="0" r="4" fill="${activeJob.steps?.opus?.status === 'done' ? colors.highlight : '#333'}">
-                         ${activeJob.steps?.opus?.status === 'done' ? '<animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />' : ''}
-                    </circle>
-                </g>
-
-                <!-- 9. FINAL OUTPUT (Delivery) -->
-                <g class="node-group" onclick="showNodeDetails('output')" transform="translate(${cx}, ${yOpus + 160})">
-                     <rect x="${-boxW}" y="-30" width="${boxW * 2}" height="60" fill="${activeJob.steps?.opus?.status === 'done' ? '#14532d' : '#0a0a0a'}" stroke="${activeJob.steps?.opus?.status === 'done' ? colors.highlight : '#333'}" stroke-width="1" rx="30" class="node-rect" style="${activeJob.steps?.opus?.status === 'done' ? 'filter: url(#glow)' : ''}"/>
-                     
-                     <text x="0" y="5" text-anchor="middle" fill="${activeJob.steps?.opus?.status === 'done' ? '#fff' : '#555'}" font-size="14" letter-spacing="0.2em" font-weight="bold" class="label-font">
-                        ⚡ FINAL DELIVERY ⚡
-                    </text>
-                </g>
-
-            </svg>
-        </div>
-    </div>
-    
-    <!-- DETAILS PANEL -->
-    <div id="node-details-panel" class="fixed top-16 right-0 w-full md:w-[500px] h-[calc(100vh-4rem)] bg-zinc-950/95 border-l border-zinc-800 p-8 overflow-y-auto shadow-2xl z-[100]" style="transform: translateX(100%);">
-        <div class="flex justify-between items-center mb-8 border-b border-zinc-800 pb-6">
-            <div>
-                <h3 id="detail-title" class="text-2xl font-black text-white font-mono uppercase tracking-tighter">NODE DETAILS</h3>
-                <div class="h-1 w-20 bg-green-600 mt-2"></div>
-            </div>
-            <button onclick="closeNodeDetails()" class="text-zinc-500 hover:text-white transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-        <div id="detail-content" class="prose prose-invert prose-zinc max-w-none font-mono text-sm leading-relaxed">
-            <p class="text-zinc-500 italic">Select a system node to view processing logs.</p>
-        </div>
-    </div>
-    `;
-    
-    document.getElementById('gameboard-svg').innerHTML = html;
-    document.getElementById('gameboard-missions').innerHTML = '';
-    
-    window.currentJob = activeJob;
-    
-    window.showNodeDetails = (stepKey) => {
-        const panel = document.getElementById('node-details-panel');
-        const title = document.getElementById('detail-title');
-        const content = document.getElementById('detail-content');
-        
-        // Handling for special "output" step (aggregated result)
-        if (stepKey === 'output') {
-            const copyStep = window.currentJob.steps ? window.currentJob.steps['copy'] : null;
-            const opusStep = window.currentJob.steps ? window.currentJob.steps['opus'] : null;
-            
-            title.textContent = 'FINAL DELIVERY';
-            
-            if (opusStep && opusStep.status === 'done') {
-                let finalContent = "### PRODUTO FINAL APROVADO\n\n";
-                if (copyStep && copyStep.output) {
-                     try {
-                        const jsonMatch = copyStep.output.match(/```json\n([\s\S]*?)\n```/) || copyStep.output.match(/\{[\s\S]*\}/);
-                        if (jsonMatch) {
-                            const copyData = JSON.parse(jsonMatch[1] || jsonMatch[0]);
-                            finalContent += "```json\n" + JSON.stringify(copyData, null, 2) + "\n```";
-                        } else {
-                            finalContent += copyStep.output;
-                        }
-                     } catch(e) {
-                         finalContent += copyStep.output;
-                     }
-                } else {
-                    finalContent += "Nenhum conteúdo gerado.";
-                }
-                content.innerHTML = marked.parse(finalContent);
-                const codes = content.querySelectorAll('code.language-json');
-                codes.forEach(block => {
-                    block.parentElement.classList.add('bg-[#111]', 'border', 'border-gray-800');
-                    block.classList.add('text-green-400', 'text-xs');
-                });
-            } else {
-                 content.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-20 opacity-50">
-                        <div class="text-4xl mb-4">🔒</div>
-                        <p class="text-zinc-500 uppercase tracking-widest">Processo não finalizado</p>
-                    </div>
-                `;
-            }
-            panel.style.transform = 'translateX(0)';
-            return;
-        }
-
-        const stepData = window.currentJob.steps ? window.currentJob.steps[stepKey] : null;
-
-        title.textContent = stepKey.toUpperCase().replace('_', ' ');
-        
-        if (stepData && stepData.output) {
-            let rawOutput = stepData.output;
-            try {
-                if (typeof rawOutput === 'object') {
-                    rawOutput = JSON.stringify(rawOutput, null, 2);
-                } else if (rawOutput.trim().startsWith('{') || rawOutput.trim().startsWith('[')) {
-                    const parsed = JSON.parse(rawOutput);
-                    rawOutput = JSON.stringify(parsed, null, 2);
-                    content.innerHTML = `<pre class="bg-[#111] p-4 rounded border border-gray-800 text-green-400 text-xs overflow-auto font-mono">${rawOutput}</pre>`;
-                    panel.style.transform = 'translateX(0)';
-                    return;
-                }
             } catch (e) {}
-
-            content.innerHTML = marked.parse(rawOutput);
-            const codes = content.querySelectorAll('code.language-json');
-            codes.forEach(block => {
-                try {
-                    const formatted = JSON.stringify(JSON.parse(block.textContent), null, 2);
-                    block.textContent = formatted;
-                    block.parentElement.classList.add('bg-[#111]', 'border', 'border-gray-800');
-                    block.classList.add('text-green-400', 'text-xs');
-                } catch(e) {}
-            });
-
-        } else {
-            content.innerHTML = `
-                <div class="flex flex-col items-center justify-center py-20 opacity-50">
-                    <div class="text-4xl mb-4">🔒</div>
-                    <p class="text-zinc-500 uppercase tracking-widest">Aguardando processamento...</p>
-                </div>
-            `;
         }
 
-        panel.style.transform = 'translateX(0)';
-    };
-
-    window.closeNodeDetails = () => {
-        const panel = document.getElementById('node-details-panel');
-        panel.style.transform = 'translateX(100%)';
-    };
-}
-
-        function selectAgent(agentId) { console.log('Selected agent:', agentId); }
-        function showBriefingDetail(briefingId) { showTab('board'); }
-
-        async function fetchHistory() {
-            try {
-                const res = await fetch(`${API_URL}/history`);
-                const data = await res.json();
-                renderHistory(data.history);
-            } catch (e) {
-                console.error("Error fetching history", e);
-            }
-        }
-
-        let historyMode = 'list';
-        let historyData = [];
-        
-        function setHistoryMode(mode) {
-            historyMode = mode;
-            document.getElementById('history-mode-list').className = mode === 'list' 
-                ? 'text-xs px-3 py-1 border border-purple-500 text-purple-400 bg-purple-900/30 rounded' 
-                : 'text-xs px-3 py-1 border border-gray-700 text-gray-500 rounded';
-            document.getElementById('history-mode-board').className = mode === 'board' 
-                ? 'text-xs px-3 py-1 border border-purple-500 text-purple-400 bg-purple-900/30 rounded' 
-                : 'text-xs px-3 py-1 border border-gray-700 text-gray-500 rounded';
-            renderHistory(historyData);
-        }
-
-        function renderHistory(files) {
-            historyData = files;
-            const container = document.getElementById('history-list');
-            if (files.length === 0) {
-                container.innerHTML = `<div class="text-gray-700 text-center italic mt-10">Nenhum histórico ainda...</div>`;
+        // Viewers & Modals
+        window.showNodeDetails = (stepKey) => {
+            const panel = document.getElementById('node-details-panel');
+            const title = document.getElementById('detail-title');
+            const content = document.getElementById('detail-content');
+            
+            // Output handling
+            if (stepKey === 'output') {
+                title.textContent = 'FINAL DELIVERY';
+                const opusStep = window.currentJob?.steps?.opus;
+                const copyStep = window.currentJob?.steps?.copy;
+                
+                if (opusStep && opusStep.status === 'done') {
+                    let finalContent = "### MISSION ACCOMPLISHED\n\n";
+                    if (copyStep && copyStep.output) {
+                        try {
+                            const jsonMatch = copyStep.output.match(/```json\n([\s\S]*?)\n```/) || copyStep.output.match(/\{[\s\S]*\}/);
+                            if (jsonMatch) {
+                                const copyData = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+                                finalContent += "```json\n" + JSON.stringify(copyData, null, 2) + "\n```";
+                            } else {
+                                finalContent += copyStep.output;
+                            }
+                        } catch(e) { finalContent += copyStep.output; }
+                    }
+                    content.innerHTML = marked.parse(finalContent);
+                } else {
+                    content.innerHTML = `<div class="py-20 text-center opacity-50 font-mono text-[#555]">AWAITING COMPLETION...</div>`;
+                }
+                panel.style.transform = 'translateX(0)';
                 return;
             }
+
+            // Normal Steps
+            const stepData = window.currentJob?.steps?.[stepKey];
+            title.textContent = stepKey.toUpperCase().replace('_', ' ');
             
-            const groups = {};
-            files.forEach(file => {
-                const nameParts = file.name.replace(/^\d{4}-\d{2}-\d{2}_/, '').split('__');
-                const briefingId = nameParts.length > 1 ? nameParts[0] : file.name.split('_').slice(0, -1).join('_') || 'outros';
-                if (!groups[briefingId]) groups[briefingId] = [];
-                groups[briefingId].push(file);
-            });
-            
-            if (historyMode === 'board') {
-                const agents = ['01', '02', '03', '04', '05', '06', '07', '08'];
-                let html = '<div class="space-y-4">';
-                Object.keys(groups).forEach(briefingId => {
-                    const groupFiles = groups[briefingId];
-                    const completedSteps = groupFiles.length;
-                    html += `<div class="border border-purple-900/50 rounded p-4 cursor-pointer hover:border-purple-500" onclick="viewBriefingFull('${briefingId}')">`;
-                    html += `<div class="flex justify-between items-center mb-2">`;
-                    html += `<span class="font-bold text-purple-300">${briefingId.replace(/_/g, ' ')}</span>`;
-                    html += `<span class="text-xs text-gray-500">${completedSteps} arquivos</span>`;
-                    html += `</div>`;
-                    html += '<div class="font-mono text-[10px]">';
-                    html += '<span class="text-gray-600">[</span>';
-                    agents.forEach((num) => {
-                        if (groupFiles.some(f => f.name.includes('__' + num) || f.name.includes('_' + num))) {
-                            html += '<span class="text-green-500">█</span>';
-                        } else {
-                            html += '<span class="text-gray-700">░</span>';
-                        }
-                    });
-                    html += '<span class="text-gray-600">]</span>';
-                    html += '</div></div>';
-                });
-                html += '</div>';
-                container.innerHTML = html;
+            if (stepData && stepData.output) {
+                let rawOutput = stepData.output;
+                try {
+                    if (typeof rawOutput === 'object' || rawOutput.trim().startsWith('{')) {
+                        const parsed = typeof rawOutput === 'string' ? JSON.parse(rawOutput) : rawOutput;
+                        content.innerHTML = `<pre class="bg-[#0a0a0a] p-6 border border-[#222] text-[#ccc] text-xs overflow-auto font-mono custom-scrollbar">${JSON.stringify(parsed, null, 2)}</pre>`;
+                        panel.style.transform = 'translateX(0)';
+                        return;
+                    }
+                } catch(e) {}
+                
+                content.innerHTML = marked.parse(rawOutput);
             } else {
-                let html = '<div class="space-y-4">';
-                Object.keys(groups).forEach(briefingId => {
-                    const groupFiles = groups[briefingId];
-                    html += `<div class="border border-gray-800 rounded overflow-hidden">`;
-                    html += `<div class="p-3 bg-purple-900/20 cursor-pointer flex justify-between items-center" onclick="viewBriefingFull('${briefingId}')">`;
-                    html += `<span class="font-bold text-sm text-purple-300">${briefingId.replace(/_/g, ' ')}</span>`;
-                    html += `<span class="text-xs text-gray-500">${groupFiles.length} etapas</span>`;
-                    html += `</div></div>`;
-                });
-                html += '</div>';
-                container.innerHTML = html;
+                content.innerHTML = `<div class="py-20 text-center opacity-50 font-mono text-[#555]">NO DATA AVAILABLE</div>`;
             }
-        }
+            panel.style.transform = 'translateX(0)';
+        };
 
-        async function viewBriefingFull(briefingId) {
-            const res = await fetch(`${API_URL}/history`);
-            const data = await res.json();
-            const files = data.history.filter(f => f.name.includes(briefingId) || f.name.replace(/^\d{4}-\d{2}-\d{2}_/, '').startsWith(briefingId));
-            
-            if (files.length === 0) return;
-            files.sort((a, b) => a.name.localeCompare(b.name));
-            
-            let fullContent = `# 📋 ${briefingId.replace(/_/g, ' ').toUpperCase()}\n\n---\n\n`;
-            files.forEach(file => {
-                const stepName = file.name.split('__').pop() || file.name;
-                fullContent += file.content + '\n\n---\n\n';
-            });
-            
-            document.getElementById('viewer-title').innerText = briefingId.replace(/_/g, ' ');
-            document.getElementById('viewer-content').innerHTML = marked.parse(fullContent);
-            document.getElementById('viewer-actions').innerHTML = `<span class="text-purple-400">📚 Job Completo (${files.length} etapas)</span>`;
-            openModal('viewer');
-        }
+        window.closeNodeDetails = () => {
+            document.getElementById('node-details-panel').style.transform = 'translateX(100%)';
+        };
 
-        let historyCache = {};
-
+        // Standard Fetch Logic
         async function fetchState() {
             try {
                 const res = await fetch(`${API_URL}/state`);
@@ -824,23 +562,21 @@ function renderGameBoard(data) {
                 renderColumn('briefing', data.briefing);
                 renderColumn('wip', data.wip);
                 renderColumn('done', data.done);
-                // Auto-refresh game board if active
                 if (!document.getElementById('view-gameboard').classList.contains('hidden')) {
                     renderGameBoard(data);
                 }
-                document.getElementById('connection-status').textContent = 'CONNECTED';
-                document.getElementById('connection-status').classList.replace('text-yellow-500', 'text-green-500');
+                document.getElementById('connection-status').textContent = 'ONLINE';
+                document.getElementById('connection-status').className = 'text-white';
             } catch (e) {
-                console.error("Connection lost", e);
                 document.getElementById('connection-status').textContent = 'OFFLINE';
-                document.getElementById('connection-status').classList.replace('text-green-500', 'text-red-500');
+                document.getElementById('connection-status').className = 'text-[#DC2626] animate-pulse';
             }
         }
 
         function renderColumn(id, files) {
             const container = document.getElementById(`col-${id}`);
             if (files.length === 0) {
-                container.innerHTML = `<div class="text-gray-700 text-center italic mt-10">System Idle...</div>`;
+                container.innerHTML = `<div class="text-[#333] text-center font-mono text-xs mt-10 tracking-widest">NO ACTIVE SIGNALS</div>`;
                 return;
             }
             
@@ -857,122 +593,133 @@ function renderGameBoard(data) {
                 Object.keys(groups).sort().reverse().forEach(briefingId => {
                     const groupFiles = groups[briefingId];
                     const briefingName = briefingId === 'outros' ? 'Outros' : briefingId.replace(/_/g, ' ');
-                    const stepCount = groupFiles.length;
                     
                     html += `
-                        <div class="mb-4 border border-gray-800 rounded">
-                            <div class="p-3 bg-gray-900 cursor-pointer flex justify-between items-center" onclick="toggleGroup('${briefingId}')">
+                        <div class="mb-4 border border-[#333] bg-[#0a0a0a]">
+                            <div class="p-4 cursor-pointer flex justify-between items-center group hover:bg-[#111]" onclick="toggleGroup('${briefingId}')">
                                 <div>
-                                    <span class="text-yellow-500 text-xs">▶</span>
-                                    <span class="font-bold text-sm text-gray-300 ml-2">${briefingName}</span>
+                                    <span class="text-[#DC2626] text-xs animate-pulse">●</span>
+                                    <span class="font-bold text-sm text-[#ccc] ml-2 group-hover:text-white uppercase tracking-tight">${briefingName}</span>
                                 </div>
-                                <span class="text-xs text-gray-500">${stepCount} etapas</span>
+                                <span class="text-[10px] font-mono text-[#555]">${groupFiles.length} NODES</span>
                             </div>
-                            <div id="group-${briefingId}" class="hidden">
+                            <div id="group-${briefingId}" class="hidden border-t border-[#222]">
                                 ${groups[briefingId].sort((a,b) => a.name.localeCompare(b.name)).map(file => `
-                                    <div class="p-3 border-t border-gray-800 cursor-pointer hover:bg-gray-900" onclick="viewFile('wip', '${file.name}')">
-                                        <span class="text-xs text-green-500">└─</span>
-                                        <span class="text-xs text-gray-400 ml-1">${file.name.split('__').pop() || file.name}</span>
+                                    <div class="p-3 pl-8 border-b border-[#1a1a1a] cursor-pointer hover:bg-[#111] hover:text-[#DC2626] transition-colors" onclick="viewFile('wip', '${file.name}')">
+                                        <span class="text-[10px] font-mono text-[#777]">└ ${file.name.split('__').pop()}</span>
                                     </div>
                                 `).join('')}
                             </div>
                         </div>
                     `;
                 });
-                container.innerHTML = html || `<div class="text-gray-700 text-center italic mt-10">System Idle...</div>`;
+                container.innerHTML = html;
                 restoreExpandedGroups();
                 return;
             }
             
             container.innerHTML = files.map(file => `
-                <div class="card p-4 mb-3 cursor-pointer hover:bg-gray-900" onclick="viewFile('${id}', '${file.name}')">
-                    <h3 class="font-bold text-sm text-gray-300 truncate">${file.name}</h3>
-                    <p class="text-xs text-gray-600 mt-2">${file.content.substring(0, 80)}...</p>
+                <div class="card p-5 mb-3 cursor-pointer group" onclick="viewFile('${id}', '${file.name}')">
+                    <h3 class="font-bold text-sm text-[#ccc] group-hover:text-white truncate font-mono">${file.name}</h3>
+                    <p class="text-[10px] text-[#555] mt-2 font-mono uppercase tracking-wide">RAW DATA // ${file.content.length} BYTES</p>
                 </div>
             `).join('');
         }
-        
-        const expandedGroups = new Set();
-        function toggleGroup(groupId) {
-            const el = document.getElementById('group-' + groupId);
-            if (expandedGroups.has(groupId)) {
-                expandedGroups.delete(groupId);
-                el.classList.add('hidden');
-            } else {
-                expandedGroups.add(groupId);
-                el.classList.remove('hidden');
-            }
-        }
-        function restoreExpandedGroups() {
-            expandedGroups.forEach(groupId => {
-                const el = document.getElementById('group-' + groupId);
-                if (el) el.classList.remove('hidden');
-            });
-        }
 
-        async function viewFile(category, filename) {
+        // Helpers
+        const expandedGroups = new Set();
+        function toggleGroup(id) {
+            const el = document.getElementById('group-' + id);
+            if (expandedGroups.has(id)) { expandedGroups.delete(id); el.classList.add('hidden'); }
+            else { expandedGroups.add(id); el.classList.remove('hidden'); }
+        }
+        function restoreExpandedGroups() { expandedGroups.forEach(id => document.getElementById('group-' + id)?.classList.remove('hidden')); }
+        
+        async function viewFile(cat, fname) {
             const res = await fetch(`${API_URL}/state`);
             const data = await res.json();
-            const file = data[category].find(f => f.name === filename);
+            const file = data[cat].find(f => f.name === fname);
             if (!file) return;
-
-            document.getElementById('viewer-title').innerText = filename;
+            document.getElementById('viewer-title').innerText = fname;
             document.getElementById('viewer-content').innerHTML = marked.parse(file.content);
-            
-            let actions = '';
-            if (category === 'briefing') {
-                actions = `<button onclick="clearBriefing('${filename}')" class="text-red-500 border border-red-900 px-4 py-2 rounded hover:bg-red-900/20">DELETAR</button>`;
-            } else if (category === 'wip') {
-                 actions = `<span class="text-gray-500 text-xs">Work in Progress...</span>`;
-            } else if (category === 'done') {
-                actions = `<button onclick="archiveFile('${filename}')" class="bg-purple-600 text-white px-4 py-2 font-bold hover:bg-purple-500">ARQUIVAR</button>`;
-            }
-            document.getElementById('viewer-actions').innerHTML = actions;
             openModal('viewer');
         }
 
         async function submitBriefing() {
             const title = document.getElementById('briefing-title').value;
             const content = document.getElementById('briefing-content').value;
-            if (!title || !content) return alert('Preencha tudo.');
-
+            if (!title || !content) return;
             await fetch(`${API_URL}/briefing`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
+                method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
                 body: JSON.stringify({ title, content })
             });
-            
             closeModal('newBriefing');
-            document.getElementById('briefing-title').value = '';
-            document.getElementById('briefing-content').value = '';
-            fetchState();
-        }
-
-        async function clearBriefing(filename) {
-            if (!confirm('Tem certeza?')) return;
-            await fetch(`${API_URL}/briefing/clear`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
-                body: JSON.stringify({ filename })
-            });
-            closeModal('viewer');
-            fetchState();
-        }
-
-        async function archiveFile(filename) {
-            await fetch(`${API_URL}/archive`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
-                body: JSON.stringify({ filename })
-            });
-            closeModal('viewer');
             fetchState();
         }
 
         function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
 
-        // Start
+        // History
+        async function fetchHistory() {
+            try {
+                const res = await fetch(`${API_URL}/history`);
+                const data = await res.json();
+                renderHistory(data.history);
+            } catch (e) {}
+        }
+        function setHistoryMode(mode) {
+            historyMode = mode;
+            document.getElementById('history-mode-list').className = mode === 'list' ? 'text-[10px] font-mono px-3 py-1 border border-[#DC2626] text-[#DC2626] bg-[#DC2626]/10' : 'text-[10px] font-mono px-3 py-1 border border-[#333] text-[#555] hover:text-white';
+            document.getElementById('history-mode-board').className = mode === 'board' ? 'text-[10px] font-mono px-3 py-1 border border-[#DC2626] text-[#DC2626] bg-[#DC2626]/10' : 'text-[10px] font-mono px-3 py-1 border border-[#333] text-[#555] hover:text-white';
+            renderHistory(historyData);
+        }
+        function renderHistory(files) {
+            historyData = files;
+            const container = document.getElementById('history-list');
+            if (!files.length) { container.innerHTML = `<div class="text-[#333] text-center font-mono text-xs mt-10">ARCHIVE EMPTY</div>`; return; }
+            
+            const groups = {};
+            files.forEach(file => {
+                const nameParts = file.name.replace(/^\d{4}-\d{2}-\d{2}_/, '').split('__');
+                const briefingId = nameParts.length > 1 ? nameParts[0] : file.name.split('_').slice(0, -1).join('_') || 'outros';
+                if (!groups[briefingId]) groups[briefingId] = [];
+                groups[briefingId].push(file);
+            });
+
+            let html = '<div class="space-y-4">';
+            Object.keys(groups).forEach(bid => {
+                const gFiles = groups[bid];
+                html += `<div class="border border-[#333] bg-[#0a0a0a] p-4 cursor-pointer hover:border-[#DC2626] transition-colors group" onclick="viewBriefingFull('${bid}')">`;
+                html += `<div class="flex justify-between items-center mb-2"><span class="font-bold text-[#ccc] group-hover:text-white uppercase tracking-tight">${bid.replace(/_/g, ' ')}</span><span class="text-[10px] font-mono text-[#555]">${gFiles.length} LOGS</span></div>`;
+                if (historyMode === 'board') {
+                    const agents = ['01', '02', '03', '04', '05', '06', '07', '08'];
+                    html += '<div class="font-mono text-[10px]"><span class="text-[#333] mr-2">STATUS:</span>';
+                    agents.forEach(num => {
+                        html += gFiles.some(f => f.name.includes(num)) ? '<span class="text-[#DC2626]">█</span>' : '<span class="text-[#222]">░</span>';
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        async function viewBriefingFull(briefingId) {
+            const res = await fetch(`${API_URL}/history`);
+            const data = await res.json();
+            const files = data.history.filter(f => f.name.includes(briefingId));
+            if (!files.length) return;
+            files.sort((a,b) => a.name.localeCompare(b.name));
+            let full = `# MISSION LOG: ${briefingId.toUpperCase()}\n\n---\n\n`;
+            files.forEach(f => full += f.content + '\n\n---\n\n');
+            document.getElementById('viewer-title').innerText = briefingId;
+            document.getElementById('viewer-content').innerHTML = marked.parse(full);
+            openModal('viewer');
+        }
+
+        // Init
         setInterval(fetchState, 5000);
         fetchState();
         showTab('board');
