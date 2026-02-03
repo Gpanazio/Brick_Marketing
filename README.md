@@ -8,6 +8,7 @@ Sistema de gestão de agentes autônomos para marketing.
 
 ## Deploy
 Deploy automático via Railway.
+Requer Node.js 20+.
 
 ---
 *Force Rebuild: 03/02/2026*
