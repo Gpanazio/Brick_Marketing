@@ -370,17 +370,41 @@
 
         <!-- Modals (New Briefing / Viewer) -->
         <div id="modal-newBriefing" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-50">
-            <div class="bg-[#0a0a0a] border border-white/10 p-6 w-full max-w-2xl shadow-2xl relative">
+            <div class="bg-[#0a0a0a] border border-white/10 p-6 w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
                 <h2 id="briefing-modal-title" class="text-xl font-brick text-white mb-4 tracking-tight">NEW BRIEFING</h2>
                 <input id="briefing-title" type="text" placeholder="Nome do projeto/campanha"
                     class="w-full bg-[#111] border border-[#333] p-3 text-white mb-3 focus:outline-none focus:border-[#DC2626] font-mono text-xs placeholder-[#555]">
-                <textarea id="briefing-content" rows="8" placeholder="Contexto, objetivos, referências..."
+                <textarea id="briefing-content" rows="6" placeholder="Contexto, objetivos, referências..."
                     class="w-full bg-[#111] border border-[#333] p-3 text-white mb-4 focus:outline-none focus:border-[#DC2626] font-mono text-xs placeholder-[#555]"></textarea>
-                <div class="flex justify-end gap-4">
-                    <button onclick="closeModal('newBriefing')"
-                        class="text-[#555] hover:text-white font-mono text-[10px] tracking-widest uppercase">CANCELAR</button>
-                    <button onclick="submitBriefing()"
-                        class="bg-[#DC2626] text-white px-6 py-2 font-bold text-[10px] hover:bg-red-700 transition-colors tracking-widest uppercase">CRIAR</button>
+                
+                <!-- File Upload Section -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-mono text-[#555] uppercase tracking-widest mb-2">
+                        ANEXOS (PDF, Imagem, Texto)
+                    </label>
+                    <div id="file-drop-zone" 
+                        class="border-2 border-dashed border-[#333] p-4 text-center cursor-pointer hover:border-[#DC2626] transition-colors"
+                        ondragover="event.preventDefault(); this.classList.add('border-[#DC2626]')"
+                        ondragleave="this.classList.remove('border-[#DC2626]')"
+                        ondrop="handleFileDrop(event)"
+                        onclick="document.getElementById('briefing-files').click()">
+                        <input type="file" id="briefing-files" multiple accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp" class="hidden" onchange="handleFileSelect(event)">
+                        <p class="text-[#555] font-mono text-xs">Arraste arquivos ou clique para selecionar</p>
+                        <p class="text-[#333] font-mono text-[10px] mt-1">PDF, imagens, texto (.txt, .md)</p>
+                    </div>
+                    <div id="file-list" class="mt-2 space-y-1"></div>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <p class="text-[10px] font-mono text-[#444]">
+                        <span class="text-[#DC2626]">Douglas</span> vai processar os anexos antes de passar pro squad
+                    </p>
+                    <div class="flex gap-4">
+                        <button onclick="closeModal('newBriefing')"
+                            class="text-[#555] hover:text-white font-mono text-[10px] tracking-widest uppercase">CANCELAR</button>
+                        <button onclick="submitBriefing()"
+                            class="bg-[#DC2626] text-white px-6 py-2 font-bold text-[10px] hover:bg-red-700 transition-colors tracking-widest uppercase">CRIAR</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1674,18 +1698,88 @@
         fetchState();
         showTab('board');
 
-        // Submit new briefing/projeto
+        // File upload handling
+        let selectedFiles = [];
+
+        function handleFileDrop(event) {
+            event.preventDefault();
+            event.target.classList.remove('border-[#DC2626]');
+            const files = Array.from(event.dataTransfer.files);
+            addFiles(files);
+        }
+
+        function handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            addFiles(files);
+        }
+
+        function addFiles(files) {
+            const allowed = ['application/pdf', 'text/plain', 'text/markdown', 'image/png', 'image/jpeg', 'image/webp'];
+            const valid = files.filter(f => allowed.includes(f.type) || f.name.endsWith('.md'));
+            selectedFiles = [...selectedFiles, ...valid];
+            renderFileList();
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+        }
+
+        function renderFileList() {
+            const list = document.getElementById('file-list');
+            if (selectedFiles.length === 0) {
+                list.innerHTML = '';
+                return;
+            }
+            list.innerHTML = selectedFiles.map((f, i) => `
+                <div class="flex items-center justify-between bg-[#111] border border-[#222] p-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-[#DC2626]">${f.type.includes('pdf') ? '📄' : f.type.includes('image') ? '🖼️' : '📝'}</span>
+                        <span class="text-xs text-[#999] font-mono truncate max-w-[300px]">${f.name}</span>
+                        <span class="text-[10px] text-[#555]">(${(f.size/1024).toFixed(1)}KB)</span>
+                    </div>
+                    <button onclick="removeFile(${i})" class="text-[#555] hover:text-[#DC2626] text-xs">✕</button>
+                </div>
+            `).join('');
+        }
+
+        // Submit new briefing/projeto with files
         async function submitBriefing() {
             const title = document.getElementById('briefing-title').value;
             const content = document.getElementById('briefing-content').value;
-            if (!title || !content) return;
-            await fetch(`${API_URL}/briefing`, {
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json', 'x-api-key': 'brick-squad-2026' },
-                body: JSON.stringify({ title, content, mode: currentMode || 'marketing' })
+            if (!title) { showToast('Preencha o título', 'error'); return; }
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content || '');
+            formData.append('mode', currentMode || 'marketing');
+            
+            selectedFiles.forEach((file, i) => {
+                formData.append('files', file);
             });
-            closeModal('newBriefing');
-            fetchState();
+
+            try {
+                const res = await fetch(`${API_URL}/briefing`, {
+                    method: 'POST',
+                    headers: { 'x-api-key': 'brick-squad-2026' },
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Briefing criado! Douglas vai processar os anexos.', 'success');
+                    closeModal('newBriefing');
+                    // Reset form
+                    document.getElementById('briefing-title').value = '';
+                    document.getElementById('briefing-content').value = '';
+                    selectedFiles = [];
+                    renderFileList();
+                    fetchState();
+                } else {
+                    showToast(data.error || 'Erro ao criar briefing', 'error');
+                }
+            } catch (e) {
+                showToast('Erro de conexão', 'error');
+            }
         }
     </script>
 </body>

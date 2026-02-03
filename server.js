@@ -4,10 +4,37 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
+const multer = require('multer');
 
 // Config e Contratos
 const CONFIG = require('./config/constants');
 const schemas = require('./contracts/schemas');
+
+// Multer config for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = path.join(__dirname, 'uploads');
+        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const timestamp = Date.now();
+        const safeName = file.originalname.replace(/[^a-z0-9.]/gi, '_');
+        cb(null, `${timestamp}_${safeName}`);
+    }
+});
+const upload = multer({ 
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+    fileFilter: (req, file, cb) => {
+        const allowed = ['application/pdf', 'text/plain', 'text/markdown', 'image/png', 'image/jpeg', 'image/webp'];
+        if (allowed.includes(file.mimetype) || file.originalname.endsWith('.md')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de arquivo não permitido'), false);
+        }
+    }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -213,29 +240,74 @@ async function notifyTelegram(message) {
     }
 }
 
-// API: Create Briefing (from dashboard)
-app.post('/api/briefing', async (req, res) => {
-    const { title, content, mode } = req.body;
-    const root = getModeRoot(mode || 'marketing');
-    const filename = `${Date.now()}_${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.md`;
-    const filePath = path.join(root, 'briefing', filename);
-    
-    // Ensure briefing dir exists for this mode
-    const briefingDir = path.join(root, 'briefing');
-    if (!fs.existsSync(briefingDir)) fs.mkdirSync(briefingDir, { recursive: true });
-    
-    const modeLabel = mode === 'projetos' ? 'PROJETO' : 'BRIEFING';
-    const fileContent = `# ${modeLabel}: ${title}\n**Date:** ${new Date().toISOString()}\n**Status:** PENDING\n**Mode:** ${mode || 'marketing'}\n\n${content}`;
-    fs.writeFileSync(filePath, fileContent);
-    
-    log('info', 'briefing_created', { filename, title, mode: mode || 'marketing' });
-    
-    // Notify Douglas via Telegram
-    const emoji = mode === 'projetos' ? '🎬' : '🚨';
-    const typeLabel = mode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
-    await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}\n\n_Douglas, aciona o squad!_`);
-    
-    res.json({ success: true, filename, mode: mode || 'marketing' });
+// API: Create Briefing (from dashboard) - supports file uploads
+app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
+    try {
+        const { title, content, mode } = req.body;
+        if (!title) return res.status(400).json({ error: 'Título obrigatório' });
+        
+        const root = getModeRoot(mode || 'marketing');
+        const timestamp = Date.now();
+        const jobId = `${timestamp}_${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
+        const filename = `${jobId}.md`;
+        const filePath = path.join(root, 'briefing', filename);
+        
+        // Ensure briefing dir exists
+        const briefingDir = path.join(root, 'briefing');
+        if (!fs.existsSync(briefingDir)) fs.mkdirSync(briefingDir, { recursive: true });
+        
+        // Build briefing content
+        const modeLabel = mode === 'projetos' ? 'PROJETO' : 'BRIEFING';
+        let fileContent = `# ${modeLabel}: ${title}\n`;
+        fileContent += `**Date:** ${new Date().toISOString()}\n`;
+        fileContent += `**Status:** PENDING\n`;
+        fileContent += `**Mode:** ${mode || 'marketing'}\n`;
+        fileContent += `**Job ID:** ${jobId}\n\n`;
+        fileContent += `## Descrição\n${content || '(sem descrição)'}\n\n`;
+        
+        // Process uploaded files
+        const uploadedFiles = req.files || [];
+        if (uploadedFiles.length > 0) {
+            fileContent += `## Anexos (${uploadedFiles.length} arquivo(s))\n`;
+            fileContent += `> ⚠️ Douglas precisa processar esses anexos antes de passar pro squad.\n\n`;
+            
+            uploadedFiles.forEach((file, i) => {
+                const fileInfo = {
+                    original: file.originalname,
+                    stored: file.filename,
+                    path: file.path,
+                    type: file.mimetype,
+                    size: file.size
+                };
+                fileContent += `### Anexo ${i+1}: ${file.originalname}\n`;
+                fileContent += `- **Tipo:** ${file.mimetype}\n`;
+                fileContent += `- **Tamanho:** ${(file.size/1024).toFixed(1)}KB\n`;
+                fileContent += `- **Path:** \`${file.path}\`\n\n`;
+            });
+            
+            fileContent += `---\n**AGUARDANDO PROCESSAMENTO POR DOUGLAS**\n`;
+        }
+        
+        fs.writeFileSync(filePath, fileContent);
+        
+        log('info', 'briefing_created', { 
+            filename, 
+            title, 
+            mode: mode || 'marketing',
+            filesCount: uploadedFiles.length 
+        });
+        
+        // Notify Douglas via Telegram
+        const emoji = mode === 'projetos' ? '🎬' : '🚨';
+        const typeLabel = mode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
+        const filesNote = uploadedFiles.length > 0 ? `\n📎 *${uploadedFiles.length} anexo(s)* para processar` : '';
+        await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}${filesNote}\n\n_Douglas, aciona o squad!_`);
+        
+        res.json({ success: true, filename, mode: mode || 'marketing', filesCount: uploadedFiles.length });
+    } catch (err) {
+        log('error', 'briefing_create_failed', { error: err.message });
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // API: Submit result from agent (com validação de schema)
