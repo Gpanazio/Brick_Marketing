@@ -890,26 +890,21 @@
                 steps: {}
             };
 
-            // Different step maps per mode
-            const stepMapMarketing = { 'validator': 'validator', 'audience': 'audience', 'research': 'research', 'claims': 'claims', 'copy': 'copy', 'brand': 'brand', 'critic': 'critic', 'opus': 'opus' };
-            const stepMapProjetos = { 
-                'brand_digest': 'brand_digest', 
-                'creative': 'creative_ideation', 
-                'ideation': 'creative_ideation', 
-                'concept_critic': 'concept_critic',
+            // Same step map for both modes - same pipeline structure
+            const stepMap = { 
+                'validator': 'validator', 
+                'audience': 'audience', 
+                'research': 'research', 
+                'claims': 'claims', 
+                'copy': 'copy', 
                 'copywriter': 'copy',
-                'copy': 'copy',
-                'brand_guardian': 'brand',
-                'brand': 'brand',
-                'critic_lite': 'critic_lite',
-                'lite': 'critic_lite',
-                'critic_opus': 'critic_opus',
-                'opus': 'critic_opus',
                 'proposta': 'copy',
-                'director': 'director'
+                'brand': 'brand', 
+                'brand_guardian': 'brand',
+                'critic': 'critic', 
+                'opus': 'opus',
+                'director': 'opus'
             };
-            
-            const stepMap = currentMode === 'projetos' ? stepMapProjetos : stepMapMarketing;
 
             files.forEach(f => {
                 for (const [key, step] of Object.entries(stepMap)) {
@@ -1153,60 +1148,45 @@
     │
     ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  01. BRAND DIGEST                             Gemini Flash  │
-│  ├─ Sintetiza materiais de marca em doc acionável           │
-│  └─ DNA + Posicionamento + Tom + Tensões + Assets           │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  02. CREATIVE IDEATION                   Claude Sonnet 4    │
-│  ├─ Gera 3 conceitos criativos com execução                 │
-│  └─ Cada conceito: título + ideia + porquê + risco          │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  03. CONCEPT CRITIC                      Claude Sonnet 4    │
-│  ├─ Avalia conceitos vs briefing/budget/prazo               │
-│  └─ Escolhe o melhor + ressalvas                            │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-        ┌──────────────────┐
-        │ HUMAN CHECKPOINT │ ← "Gostei do conceito X, segue"
-        └──────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  04. COPYWRITER                          Claude Sonnet 4    │
-│  ├─ Escreve proposta detalhada do conceito aprovado         │
-│  └─ Roteiro + Execução + Detalhamento técnico               │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  05. BRAND GUARDIAN                           Gemini Flash  │
-│  ├─ Verifica tom de voz e posicionamento                    │
-│  └─ Ajustes de linguagem se necessário                      │
+│  01. BRIEF VALIDATOR                          Gemini Flash  │
+│  ├─ Valida briefing + processa anexos (Douglas)             │
 └─────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────┐     ┌─────────────────────┐
-│  06. CRITIC LITE    │ ──► │  07. CRITIC OPUS    │
+│  02. AUDIENCE       │     │  03. TOPIC          │
+│  ANALYST            │ ══► │  RESEARCHER         │
+│  Gemini Flash       │     │  Gemini Flash       │
+└─────────────────────┘     └─────────────────────┘
+    │                             │
+    └──────────────┬──────────────┘
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  04. CLAIMS CHECKER                           Gemini Flash  │
+│  ├─ Valida dados e higieniza para Autoridade Segura         │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  05. COPYWRITER                          Claude Sonnet 4    │
+│  ├─ Escreve proposta criativa                               │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  06. BRAND GUARDIANS                          Gemini Flash  │
+│  ├─ STYLE (Tom, Voz) + POSITIONING (Oferta, Lógica)         │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────┐     ┌─────────────────────┐
+│  07. CRITIC LITE    │ ──► │  08. CRITIC OPUS    │
 │  Gemini Flash (65%) │     │  Claude Opus        │
 └─────────────────────┘     └─────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  08. DIRECTOR                                 Claude Opus   │
-│  ├─ Craft check final (cafona? clichê? genérico?)           │
-│  └─ Aprovação ou devolução com notas                        │
-└─────────────────────────────────────────────────────────────┘
-    │
-    ▼
+                   │
+                   ▼
         ┌──────────────────┐
-        │  PROPOSTA FINAL  │──────────────► ENTREGA
+        │  APROVADO ≥80%   │──────────────► PROPOSTA FINAL
         └──────────────────┘`
         };
 
