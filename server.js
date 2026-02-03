@@ -13,6 +13,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
 
+// Trust Proxy (Railway/Load Balancer support)
+app.set('trust proxy', 1);
+
 // Métricas em memória (persiste em arquivo a cada 5min)
 const METRICS_FILE = path.join(__dirname, '.metrics.json');
 let metrics = {
@@ -89,8 +92,11 @@ const PUBLIC_ROUTES = ['/api/health', '/api/architecture', '/'];
 
 // Auth middleware - IMPROVED: blocks GET except public routes
 const authMiddleware = (req, res, next) => {
+    // Clean url for matching (remove query params)
+    const cleanUrl = req.originalUrl.split('?')[0];
+    
     // Allow public routes
-    if (PUBLIC_ROUTES.some(r => req.path === r || req.path.startsWith(r + '/'))) {
+    if (PUBLIC_ROUTES.some(r => cleanUrl === r || cleanUrl.startsWith(r + '/'))) {
         return next();
     }
     
@@ -100,7 +106,8 @@ const authMiddleware = (req, res, next) => {
     }
     
     // API state is readable for dashboard (with optional auth)
-    if (req.method === 'GET' && req.path === '/api/state') {
+    // Note: req.originalUrl must be used because app.use('/api') strips prefix from req.path
+    if (req.method === 'GET' && cleanUrl === '/api/state') {
         return next();
     }
     
