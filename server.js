@@ -8,32 +8,63 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
 
-// Paths - use local dir in production (Railway)
+// Paths
 const MARKETING_ROOT = path.join(__dirname, 'marketing');
+const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
+
+// Structured logging
+const log = (level, event, data = {}) => {
+    console.log(JSON.stringify({ 
+        level, 
+        event, 
+        ...data, 
+        timestamp: new Date().toISOString() 
+    }));
+};
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Paths for history (persistent volume on Railway)
-const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
-
-// Ensure directories exist
-['briefing', 'wip', 'done'].forEach(dir => {
+// Ensure directories exist (including failed/)
+['briefing', 'wip', 'done', 'failed'].forEach(dir => {
     const dirPath = path.join(MARKETING_ROOT, dir);
     if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
 });
 if (!fs.existsSync(HISTORY_ROOT)) fs.mkdirSync(HISTORY_ROOT, { recursive: true });
 
-// Simple API Key auth middleware
+// Public routes (no auth required)
+const PUBLIC_ROUTES = ['/api/health', '/api/architecture', '/'];
+
+// Auth middleware - IMPROVED: blocks GET except public routes
 const authMiddleware = (req, res, next) => {
-    const key = req.headers['x-api-key'] || req.query.key;
-    if (key === API_KEY || req.method === 'GET') {
-        next();
-    } else {
-        res.status(401).json({ error: 'Unauthorized' });
+    // Allow public routes
+    if (PUBLIC_ROUTES.some(r => req.path === r || req.path.startsWith(r + '/'))) {
+        return next();
     }
+    
+    // For dashboard access (serves static HTML)
+    if (req.method === 'GET' && req.path === '/') {
+        return next();
+    }
+    
+    // API state is readable for dashboard (with optional auth)
+    if (req.method === 'GET' && req.path === '/api/state') {
+        return next();
+    }
+    
+    // All other routes require API key
+    const key = req.headers['x-api-key'] || req.query.key;
+    if (key === API_KEY) {
+        return next();
+    }
+    
+    log('warn', 'unauthorized_access', { path: req.path, method: req.method });
+    res.status(401).json({ error: 'Unauthorized' });
 };
+
+// Apply auth to all API routes
+app.use('/api', authMiddleware);
 
 // Helper to read directory
 const getFiles = (dir) => {
@@ -52,12 +83,13 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'online', timestamp: new Date().toISOString() });
 });
 
-// API: Get all state
+// API: Get all state (including failed)
 app.get('/api/state', (req, res) => {
     res.json({
         briefing: getFiles('briefing'),
         wip: getFiles('wip'),
-        done: getFiles('done')
+        done: getFiles('done'),
+        failed: getFiles('failed')
     });
 });
 
@@ -66,7 +98,7 @@ app.get('/api/pending', (req, res) => {
     res.json({ briefings: getFiles('briefing') });
 });
 
-// Telegram notification (optional - set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in env)
+// Telegram notification
 async function notifyTelegram(message) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -78,8 +110,9 @@ async function notifyTelegram(message) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
         });
+        log('info', 'telegram_notification_sent');
     } catch (e) {
-        console.error('Telegram notification failed:', e.message);
+        log('error', 'telegram_notification_failed', { error: e.message });
     }
 }
 
@@ -92,30 +125,34 @@ app.post('/api/briefing', async (req, res) => {
     const fileContent = `# BRIEFING: ${title}\n**Date:** ${new Date().toISOString()}\n**Status:** PENDING\n\n${content}`;
     fs.writeFileSync(filePath, fileContent);
     
+    log('info', 'briefing_created', { filename, title });
+    
     // Notify Douglas via Telegram
     await notifyTelegram(`🚨 *NOVO BRIEFING NO WAR ROOM*\n\n*Título:* ${title}\n\n_Douglas, aciona o squad!_`);
     
     res.json({ success: true, filename });
 });
 
-// API: Submit result from agent (watcher pushes here)
-app.post('/api/result', authMiddleware, (req, res) => {
+// API: Submit result from agent
+app.post('/api/result', (req, res) => {
     const { filename, content, category } = req.body;
     const targetCategory = category || 'wip';
     const filePath = path.join(MARKETING_ROOT, targetCategory, filename);
     
     fs.writeFileSync(filePath, content);
+    log('info', 'result_submitted', { filename, category: targetCategory });
     res.json({ success: true, filename, category: targetCategory });
 });
 
 // API: Move File (Approve/Reject)
-app.post('/api/move', authMiddleware, (req, res) => {
+app.post('/api/move', (req, res) => {
     const { filename, from, to } = req.body;
     const src = path.join(MARKETING_ROOT, from, filename);
     const dest = path.join(MARKETING_ROOT, to, filename);
     
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
+        log('info', 'file_moved', { filename, from, to });
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -123,11 +160,12 @@ app.post('/api/move', authMiddleware, (req, res) => {
 });
 
 // API: Delete File
-app.delete('/api/file', authMiddleware, (req, res) => {
+app.delete('/api/file', (req, res) => {
     const { category, filename } = req.body;
     const filePath = path.join(MARKETING_ROOT, category, filename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
+        log('info', 'file_deleted', { filename, category });
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -135,11 +173,55 @@ app.delete('/api/file', authMiddleware, (req, res) => {
 });
 
 // API: Clear briefing after processing
-app.post('/api/briefing/clear', authMiddleware, (req, res) => {
+app.post('/api/briefing/clear', (req, res) => {
     const { filename } = req.body;
     const filePath = path.join(MARKETING_ROOT, 'briefing', filename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
+        log('info', 'briefing_cleared', { filename });
+        res.json({ success: true });
+    } else {
+        res.status(404).json({ error: 'File not found' });
+    }
+});
+
+// API: Dead Letter Queue - move failed jobs with metadata
+app.post('/api/fail', (req, res) => {
+    const { filename, step, error, originalContent } = req.body;
+    const failedPath = path.join(MARKETING_ROOT, 'failed');
+    
+    // Save error metadata
+    const meta = {
+        originalFile: filename,
+        failedAt: step,
+        error: error,
+        timestamp: new Date().toISOString()
+    };
+    
+    const metaFilename = `${Date.now()}_${filename}.error.json`;
+    fs.writeFileSync(path.join(failedPath, metaFilename), JSON.stringify(meta, null, 2));
+    
+    // Optionally save original content
+    if (originalContent) {
+        fs.writeFileSync(path.join(failedPath, filename), originalContent);
+    }
+    
+    log('error', 'job_failed', { filename, step, error });
+    res.json({ success: true, errorFile: metaFilename });
+});
+
+// API: Retry failed job (move back to briefing)
+app.post('/api/retry', (req, res) => {
+    const { filename } = req.body;
+    const src = path.join(MARKETING_ROOT, 'failed', filename);
+    const dest = path.join(MARKETING_ROOT, 'briefing', filename);
+    
+    if (fs.existsSync(src)) {
+        fs.renameSync(src, dest);
+        // Clean up error metadata
+        const errorFile = src + '.error.json';
+        if (fs.existsSync(errorFile)) fs.unlinkSync(errorFile);
+        log('info', 'job_retried', { filename });
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -156,7 +238,6 @@ app.get('/api/history', (req, res) => {
         content: fs.readFileSync(path.join(HISTORY_ROOT, f), 'utf-8'),
         mtime: fs.statSync(path.join(HISTORY_ROOT, f)).mtime.toISOString()
     }));
-    // Sort by date descending
     files.sort((a, b) => new Date(b.mtime) - new Date(a.mtime));
     res.json({ history: files });
 });
@@ -171,8 +252,8 @@ app.get('/api/architecture', (req, res) => {
     res.json({ content });
 });
 
-// API: Archive to history (move from done to history)
-app.post('/api/archive', authMiddleware, (req, res) => {
+// API: Archive to history
+app.post('/api/archive', (req, res) => {
     const { filename } = req.body;
     const src = path.join(MARKETING_ROOT, 'done', filename);
     const timestamp = new Date().toISOString().split('T')[0];
@@ -181,6 +262,7 @@ app.post('/api/archive', authMiddleware, (req, res) => {
     
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
+        log('info', 'file_archived', { filename, archived: destFilename });
         res.json({ success: true, archived: destFilename });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -188,6 +270,7 @@ app.post('/api/archive', authMiddleware, (req, res) => {
 });
 
 app.listen(PORT, () => {
+    log('info', 'server_started', { port: PORT, marketingRoot: MARKETING_ROOT });
     console.log(`🚀 Brick AI War Room running on port ${PORT}`);
     console.log(`📁 Marketing folder: ${MARKETING_ROOT}`);
 });

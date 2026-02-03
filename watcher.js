@@ -1,9 +1,8 @@
 /**
- * BRICK AI WATCHER
+ * BRICK AI WATCHER v2.0
  * 
- * Este script roda LOCAL no Mac e monitora o Railway.
- * Quando detecta um briefing novo, cria um arquivo local para o Douglas processar.
- * Quando o Douglas termina, este script envia o resultado de volta pro Railway.
+ * Monitora Railway, detecta briefings, notifica Douglas.
+ * MELHORIAS: Retry com backoff, persistência de estado, logs estruturados.
  * 
  * Uso: RAILWAY_URL=https://seu-app.up.railway.app node watcher.js
  */
@@ -15,50 +14,121 @@ const RAILWAY_URL = process.env.RAILWAY_URL || 'http://localhost:3000';
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
 const POLL_INTERVAL = 10000; // 10 segundos
 const LOCAL_MARKETING = path.join(__dirname);
+const STATE_FILE = path.join(__dirname, '.watcher_state.json');
+const MAX_RETRIES = 3;
 
 let processedBriefings = new Set();
 let lastWipFiles = new Set();
 
-console.log('🔗 Brick AI Watcher iniciado');
-console.log(`📡 Conectando ao Railway: ${RAILWAY_URL}`);
-console.log(`📁 Pasta local: ${LOCAL_MARKETING}`);
+// Structured logging
+const log = (level, event, data = {}) => {
+    const entry = { level, event, ...data, timestamp: new Date().toISOString() };
+    console.log(JSON.stringify(entry));
+};
+
+// State persistence
+function saveState() {
+    try {
+        fs.writeFileSync(STATE_FILE, JSON.stringify({
+            processedBriefings: [...processedBriefings],
+            lastWipFiles: [...lastWipFiles],
+            savedAt: new Date().toISOString()
+        }, null, 2));
+    } catch (e) {
+        log('error', 'state_save_failed', { error: e.message });
+    }
+}
+
+function loadState() {
+    try {
+        if (fs.existsSync(STATE_FILE)) {
+            const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf-8'));
+            processedBriefings = new Set(data.processedBriefings || []);
+            lastWipFiles = new Set(data.lastWipFiles || []);
+            log('info', 'state_loaded', { 
+                processedBriefings: processedBriefings.size, 
+                lastWipFiles: lastWipFiles.size 
+            });
+        }
+    } catch (e) {
+        log('warn', 'state_load_failed', { error: e.message });
+    }
+}
+
+// Sleep helper
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Fetch with exponential backoff retry
+async function fetchWithRetry(url, options = {}, maxRetries = MAX_RETRIES) {
+    let lastError;
+    
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (res.ok) return await res.json();
+            throw new Error(`HTTP ${res.status}`);
+        } catch (e) {
+            lastError = e;
+            if (i < maxRetries - 1) {
+                const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s
+                log('warn', 'fetch_retry', { url, attempt: i + 1, delay, error: e.message });
+                await sleep(delay);
+            }
+        }
+    }
+    
+    log('error', 'fetch_failed', { url, attempts: maxRetries, error: lastError.message });
+    return null;
+}
+
+console.log('🔗 Brick AI Watcher v2.0 iniciado');
+console.log(`📡 Railway: ${RAILWAY_URL}`);
+console.log(`📁 Local: ${LOCAL_MARKETING}`);
 console.log('---');
 
 // Ensure local dirs exist
-['briefing', 'wip', 'done'].forEach(dir => {
-    const dirPath = path.join(LOCAL_MARKETING, dir);
+['briefing', 'wip', 'done', 'failed'].forEach(dir => {
+    const dirPath = path.join(LOCAL_MARKETING, 'marketing', dir);
     if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
 });
 
 // Fetch from Railway
 async function fetchState() {
-    try {
-        const res = await fetch(`${RAILWAY_URL}/api/state`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return await res.json();
-    } catch (e) {
-        console.error('❌ Erro ao conectar no Railway:', e.message);
-        return null;
-    }
+    return await fetchWithRetry(`${RAILWAY_URL}/api/state`);
 }
 
-// Send result to Railway
+// Send result to Railway with retry
 async function sendResult(filename, content, category = 'wip') {
+    const result = await fetchWithRetry(`${RAILWAY_URL}/api/result`, {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-API-Key': API_KEY
+        },
+        body: JSON.stringify({ filename, content, category })
+    });
+    
+    if (result) {
+        log('info', 'result_sent', { filename, category });
+        return true;
+    }
+    return false;
+}
+
+// Report failure to Railway
+async function reportFailure(filename, step, error) {
     try {
-        const res = await fetch(`${RAILWAY_URL}/api/result`, {
+        await fetch(`${RAILWAY_URL}/api/fail`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
                 'X-API-Key': API_KEY
             },
-            body: JSON.stringify({ filename, content, category })
+            body: JSON.stringify({ filename, step, error })
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        console.log(`✅ Enviado pro Railway: ${filename}`);
-        return true;
+        log('info', 'failure_reported', { filename, step });
     } catch (e) {
-        console.error('❌ Erro ao enviar resultado:', e.message);
-        return false;
+        log('error', 'failure_report_failed', { error: e.message });
     }
 }
 
@@ -83,10 +153,10 @@ async function clearBriefing(filename) {
 async function checkBriefings(state) {
     for (const briefing of state.briefing) {
         if (!processedBriefings.has(briefing.name)) {
-            console.log(`📥 NOVO BRIEFING DETECTADO: ${briefing.name}`);
+            log('info', 'briefing_detected', { name: briefing.name });
             
             // Save locally for Douglas to process
-            const localPath = path.join(LOCAL_MARKETING, 'briefing', briefing.name);
+            const localPath = path.join(LOCAL_MARKETING, 'marketing', 'briefing', briefing.name);
             fs.writeFileSync(localPath, briefing.content);
             
             // Create signal file for Douglas
@@ -94,14 +164,16 @@ async function checkBriefings(state) {
             fs.writeFileSync(signalPath, `NOVO BRIEFING: ${briefing.name}\nDATA: ${new Date().toISOString()}\n\nDouglas, processe este briefing!`);
             
             processedBriefings.add(briefing.name);
-            console.log(`💾 Briefing salvo localmente. Aguardando Douglas processar...`);
+            saveState();
+            
+            log('info', 'briefing_saved_locally', { name: briefing.name });
         }
     }
 }
 
 // Check for new local WIP files to sync to Railway
 async function syncLocalToRailway() {
-    const wipPath = path.join(LOCAL_MARKETING, 'wip');
+    const wipPath = path.join(LOCAL_MARKETING, 'marketing', 'wip');
     if (!fs.existsSync(wipPath)) return;
     
     const localFiles = fs.readdirSync(wipPath).filter(f => !f.startsWith('.'));
@@ -109,8 +181,11 @@ async function syncLocalToRailway() {
     for (const file of localFiles) {
         if (!lastWipFiles.has(file)) {
             const content = fs.readFileSync(path.join(wipPath, file), 'utf-8');
-            await sendResult(file, content, 'wip');
-            lastWipFiles.add(file);
+            const success = await sendResult(file, content, 'wip');
+            if (success) {
+                lastWipFiles.add(file);
+                saveState();
+            }
         }
     }
 }
@@ -126,15 +201,31 @@ async function poll() {
 
 // Initial sync of existing files
 function initialSync() {
-    const wipPath = path.join(LOCAL_MARKETING, 'wip');
+    loadState();
+    
+    const wipPath = path.join(LOCAL_MARKETING, 'marketing', 'wip');
     if (fs.existsSync(wipPath)) {
         const files = fs.readdirSync(wipPath).filter(f => !f.startsWith('.'));
         files.forEach(f => lastWipFiles.add(f));
     }
+    saveState();
 }
+
+// Graceful shutdown
+process.on('SIGINT', () => {
+    log('info', 'watcher_stopping');
+    saveState();
+    process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+    log('info', 'watcher_stopping');
+    saveState();
+    process.exit(0);
+});
 
 initialSync();
 poll();
 setInterval(poll, POLL_INTERVAL);
 
-console.log(`🔄 Polling a cada ${POLL_INTERVAL/1000}s...`);
+log('info', 'watcher_started', { pollInterval: POLL_INTERVAL, railwayUrl: RAILWAY_URL });
