@@ -84,11 +84,13 @@ setInterval(saveMetrics, 5 * 60 * 1000); // Salva a cada 5min
 // Paths
 const MARKETING_ROOT = path.join(__dirname, 'marketing');
 const PROJETOS_ROOT = path.join(__dirname, 'projetos');
+const IDEIAS_ROOT = path.join(__dirname, 'ideias');
 const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
 
 // Helper to get root by mode
 const getModeRoot = (mode) => {
     if (mode === 'projetos') return PROJETOS_ROOT;
+    if (mode === 'ideias') return IDEIAS_ROOT;
     return MARKETING_ROOT; // default: marketing
 };
 
@@ -126,9 +128,11 @@ const stateLimiter = rateLimit({
 app.use('/api/state', stateLimiter);
 
 // Ensure directories exist (including failed/)
-['briefing', 'wip', 'done', 'failed'].forEach(dir => {
-    const dirPath = path.join(MARKETING_ROOT, dir);
-    if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+[MARKETING_ROOT, PROJETOS_ROOT, IDEIAS_ROOT].forEach(root => {
+    ['briefing', 'wip', 'done', 'failed'].forEach(dir => {
+        const dirPath = path.join(root, dir);
+        if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+    });
 });
 if (!fs.existsSync(HISTORY_ROOT)) fs.mkdirSync(HISTORY_ROOT, { recursive: true });
 
