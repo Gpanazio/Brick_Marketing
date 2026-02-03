@@ -607,9 +607,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('validator')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('validator') === 'done' ? c.text : (stepStatus('validator') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">VALIDATOR</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">VALIDAÇÃO</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">GATEKEEPER</text>
+                          font-size="10" font-family="JetBrains Mono">Briefing OK?</text>
                 </g>
                 
                 <path class="${getFlowClass('validator')}" d="M${cx} ${y.val + bh / 2} L${cx} ${y.val + bh / 2 + 25} L${colL} ${y.val + bh / 2 + 25} L${colL} ${y.research - bh / 2}" fill="none"/>
@@ -620,9 +620,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('audience')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('audience') === 'done' ? c.text : (stepStatus('audience') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">AUDIENCE</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">PÚBLICO</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">PSYCHOGRAPHICS</text>
+                          font-size="10" font-family="JetBrains Mono">Pra quem?</text>
                 </g>
                 
                 <!-- ====== RESEARCH (Right) ====== -->
@@ -630,9 +630,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('research')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('research') === 'done' ? c.text : (stepStatus('research') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">RESEARCH</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">PESQUISA</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">CONTEXT</text>
+                          font-size="10" font-family="JetBrains Mono">Contexto</text>
                 </g>
 
                 <path class="${getFlowClass('audience')}" d="M${colL} ${y.research + bh / 2} L${colL} ${y.research + bh / 2 + 25} L${cx} ${y.research + bh / 2 + 25} L${cx} ${y.claims - bh / 2}" fill="none"/>
@@ -643,9 +643,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('claims')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('claims') === 'done' ? c.text : (stepStatus('claims') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CLAIMS</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CHECAGEM</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">TRUTH FILTER</text>
+                          font-size="10" font-family="JetBrains Mono">Dados OK?</text>
                 </g>
                 <line class="${getFlowClass('claims')}" x1="${cx}" y1="${y.claims + bh / 2}" x2="${cx}" y2="${y.copy - bh / 2}"/>
                 
@@ -654,9 +654,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('copy')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('copy') === 'done' ? c.text : (stepStatus('copy') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">COPYWRITER</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CRIAÇÃO</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">CREATION</text>
+                          font-size="10" font-family="JetBrains Mono">Texto</text>
                 </g>
 
                 <path class="${getFlowClass('copy')}" d="M${cx} ${y.copy + bh / 2} L${cx} ${y.copy + bh / 2 + 25} L${colL} ${y.copy + bh / 2 + 25} L${colL} ${y.review - bh / 2}" fill="none"/>
@@ -667,9 +667,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('brand')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('brand') === 'done' ? c.text : (stepStatus('brand') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">BRAND</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">TOM</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">GUARDIAN</text>
+                          font-size="10" font-family="JetBrains Mono">Voz Brick</text>
                 </g>
                 
                 <!-- ====== CRITIC (Right) ====== -->
@@ -677,9 +677,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bw / 2}" y="${-bh / 2}" width="${bw}" height="${bh}" 
                           fill="#000" stroke="${stepColor('critic')}" stroke-width="1"/>
                     <text x="0" y="-6" text-anchor="middle" fill="${stepStatus('critic') === 'done' ? c.text : (stepStatus('critic') === 'active' ? c.red : c.sub)}" 
-                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">CRITIC</text>
+                          font-size="14" font-weight="900" font-family="Inter" letter-spacing="-0.05em">REVISÃO</text>
                     <text x="0" y="14" text-anchor="middle" fill="${c.sub}" 
-                          font-size="10" font-family="JetBrains Mono">PRE-CHECK</text>
+                          font-size="10" font-family="JetBrains Mono">Qualidade</text>
                 </g>
 
                 <path class="${getFlowClass('brand')}" d="M${colL} ${y.review + bh / 2} L${colL} ${y.review + bh / 2 + 25} L${cx} ${y.review + bh / 2 + 25} L${cx} ${y.opus - bhLg / 2}" fill="none"/>
@@ -690,9 +690,9 @@ BRIEFING
                     <rect class="gb-box" x="${-bwLg / 2 + 20}" y="${-bhLg / 2}" width="${bwLg - 40}" height="${bhLg}" 
                           fill="#000" stroke="${stepColor('opus')}" stroke-width="2"/>
                     <text x="0" y="-8" text-anchor="middle" fill="${stepStatus('opus') === 'done' ? c.done : (stepStatus('opus') === 'active' ? c.red : c.sub)}" 
-                          font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">OPUS</text>
+                          font-size="22" font-weight="900" font-family="Inter" letter-spacing="-0.05em">APROVAÇÃO</text>
                     <text x="0" y="18" text-anchor="middle" fill="${c.sub}" 
-                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">FINAL VERDICT</text>
+                          font-size="11" font-family="JetBrains Mono" letter-spacing="0.2em">Decisão Final</text>
                 </g>
                 <line class="${getFlowClass('opus')}" x1="${cx}" y1="${y.opus + bhLg / 2}" x2="${cx}" y2="${y.out - 24}"/>
                 
