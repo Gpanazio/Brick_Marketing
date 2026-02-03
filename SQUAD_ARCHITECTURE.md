@@ -266,4 +266,64 @@ BRIEFING
 
 ---
 
-*Última atualização: 02/02/2026 - v3.2*
+## ARQUITETURA TÉCNICA
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    BRICK AI SQUAD v3.2+                     │
+├─────────────────────────────────────────────────────────────┤
+│  CONFIG (constants.js)                                      │
+│  ├─ THRESHOLDS: CRITIC_LITE(65%), CRITIC_OPUS(80%)         │
+│  ├─ MODELS: gemini-flash, claude-sonnet-4, claude-opus-4   │
+│  └─ RETRY: maxAttempts=3, baseDelay=1000ms                 │
+├─────────────────────────────────────────────────────────────┤
+│  CONTRACTS (schemas.js)                                     │
+│  ├─ briefValidator  → status: PASS|FAIL                    │
+│  ├─ audienceAnalyst → perfil, dores, gatilhos              │
+│  ├─ claimsChecker   → claims_ok[], claims_risky[]          │
+│  ├─ copywriter      → variacoes[] (min 1)                  │
+│  ├─ criticLite      → scores, recomendacao                 │
+│  └─ criticOpus      → decisao: PUBLICAR|REVISAR|REJEITAR   │
+├─────────────────────────────────────────────────────────────┤
+│  SERVER (server.js)                                         │
+│  ├─ Auth: API Key + Public Routes                          │
+│  ├─ Rate Limit: 60/min no /api/state                       │
+│  ├─ Metrics: runs, success, failed, avgMs, fallbacks       │
+│  ├─ DLQ: /api/fail + /api/retry                            │
+│  └─ Logs: JSON estruturado                                 │
+├─────────────────────────────────────────────────────────────┤
+│  WATCHER (watcher.js)                                       │
+│  ├─ Retry: exponential backoff (1s, 2s, 4s)                │
+│  ├─ Estado: .watcher_state.json                            │
+│  └─ Graceful shutdown: SIGINT/SIGTERM                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Endpoints da API
+
+| Endpoint | Método | Auth | Descrição |
+|----------|--------|------|-----------|
+| `/api/health` | GET | - | Health check |
+| `/api/state` | GET | - | Estado completo (briefing, wip, done, failed) |
+| `/api/metrics` | GET | - | Métricas do pipeline |
+| `/api/config` | GET | - | Thresholds e models |
+| `/api/briefing` | POST | API Key | Criar novo briefing |
+| `/api/result` | POST | API Key | Submeter resultado de bot |
+| `/api/fail` | POST | API Key | Reportar falha (DLQ) |
+| `/api/retry` | POST | API Key | Reprocessar job falhado |
+| `/api/move` | POST | API Key | Mover arquivo entre pastas |
+| `/api/archive` | POST | API Key | Arquivar para history |
+
+### Diretórios
+
+```
+marketing/
+├── briefing/   # Input: aguardando processamento
+├── wip/        # Work in Progress
+├── done/       # Aprovados
+└── failed/     # Dead Letter Queue
+```
+
+---
+
+*Última atualização: 03/02/2026 - v3.2+*
