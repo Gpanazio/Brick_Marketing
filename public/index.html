@@ -822,6 +822,144 @@
             window.currentJob = job;
         }
 
+        // Game Board for PROJETOS mode (simpler linear pipeline)
+        function renderGameBoardProjetos(job) {
+            document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
+
+            const c = {
+                text: '#FFFFFF', sub: '#666666', border: '#333333', 
+                line: '#333333', red: '#DC2626', bg: '#000000',
+                done: '#FFFFFF', pending: '#222222'
+            };
+
+            const stepStatus = (k) => {
+                if (job.steps?.[k]?.status === 'done') return 'done';
+                if (job.steps?.[k]) return 'active';
+                return 'pending';
+            };
+            const stepColor = (k) => {
+                const status = stepStatus(k);
+                if (status === 'done') return c.done;
+                if (status === 'active') return c.red;
+                return c.border;
+            };
+            const getFlowClass = (fromKey) => {
+                const s = stepStatus(fromKey);
+                if (s === 'done' || s === 'active') return 'gb-line gb-flow animate-flow';
+                return 'gb-line gb-flow';
+            };
+            const getNodeClass = (key) => stepStatus(key) === 'active' ? 'gb-node node-active' : 'gb-node';
+            const textColor = (key) => stepStatus(key) === 'done' ? c.text : (stepStatus(key) === 'active' ? c.red : c.sub);
+
+            const W = 1200, H = 900;
+            const cx = W / 2;
+            const bw = 240, bh = 70;
+            const bwLg = 320, bhLg = 80;
+            
+            const y = { mission: 80, douglas: 180, digest: 300, creative: 420, critic: 540, proposal: 660, director: 780, out: 870 };
+
+            const html = `
+            <style>
+                .gb-node { cursor: pointer; transition: all 0.2s; }
+                .gb-node:hover .gb-box { stroke: ${c.red}; stroke-width: 2; }
+                .gb-node:hover text { fill: #ffffff; }
+                .gb-box { transition: stroke 0.2s; }
+                .gb-line { stroke: ${c.line}; stroke-width: 1; }
+                .gb-flow { stroke-dasharray: 4 4; }
+                .animate-flow { animation: flow 1s linear infinite; opacity: 0.8; stroke: #555; }
+                .node-active .gb-box { animation: breathe 4s ease-in-out infinite; }
+            </style>
+            <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:1200px;height:auto; background: #000;">
+                <defs>
+                    <pattern id="gbGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M40 0L0 0 0 40" fill="none" stroke="#111" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#gbGrid)"/>
+                
+                <!-- MISSION HEADER -->
+                <g class="${getNodeClass('mission')}" onclick="showNodeDetails('mission')" transform="translate(${cx},${y.mission})">
+                    <rect class="gb-box" x="${-bwLg/2}" y="-28" width="${bwLg}" height="56" fill="#000" stroke="${c.border}" stroke-width="1"/>
+                    <text x="0" y="-4" text-anchor="middle" fill="${c.text}" font-size="16" font-weight="900" font-family="Inter" letter-spacing="-0.05em">
+                        ${(job.title || 'PROJETO CLIENTE').substring(0,30).toUpperCase()}
+                    </text>
+                    <text x="0" y="16" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono" letter-spacing="0.2em">BRIEFING + ANEXOS</text>
+                </g>
+                
+                <!-- Status Legend -->
+                <g transform="translate(40, 40)">
+                    <text x="0" y="0" fill="${c.sub}" font-size="10" font-family="JetBrains Mono" letter-spacing="0.15em">PROPOSTA PIPELINE</text>
+                    <circle cx="0" cy="20" r="4" fill="${c.border}"/><text x="14" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">PENDING</text>
+                    <circle cx="100" cy="20" r="4" fill="${c.red}"/><text x="114" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">ACTIVE</text>
+                    <circle cx="190" cy="20" r="4" fill="${c.done}"/><text x="204" y="24" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">DONE</text>
+                </g>
+
+                <line class="${getFlowClass('mission')}" x1="${cx}" y1="${y.mission+28}" x2="${cx}" y2="${y.douglas-bhLg/2}"/>
+                
+                <!-- DOUGLAS CORE -->
+                <g class="${getNodeClass('douglas')}" onclick="showNodeDetails('douglas')" transform="translate(${cx},${y.douglas})">
+                    <rect class="gb-box" x="${-bwLg/2}" y="${-bhLg/2}" width="${bwLg}" height="${bhLg}" fill="#000" stroke="${c.red}" stroke-width="2"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${c.red}" font-size="24" font-weight="900" font-family="Inter" letter-spacing="-0.05em">DOUGLAS</text>
+                    <text x="0" y="18" text-anchor="middle" fill="${c.sub}" font-size="11" font-family="JetBrains Mono" letter-spacing="0.25em">PROCESSA ANEXOS</text>
+                </g>
+                <line class="${getFlowClass('douglas')}" x1="${cx}" y1="${y.douglas+bhLg/2}" x2="${cx}" y2="${y.digest-bh/2}"/>
+                
+                <!-- BRAND DIGEST -->
+                <g class="${getNodeClass('brand_digest')}" onclick="showNodeDetails('brand_digest')" transform="translate(${cx},${y.digest})">
+                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('brand_digest')}" stroke-width="1"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${textColor('brand_digest')}" font-size="14" font-weight="900" font-family="Inter">BRAND DIGEST</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">Síntese da Marca</text>
+                </g>
+                <line class="${getFlowClass('brand_digest')}" x1="${cx}" y1="${y.digest+bh/2}" x2="${cx}" y2="${y.creative-bh/2}"/>
+                
+                <!-- CREATIVE IDEATION -->
+                <g class="${getNodeClass('creative_ideation')}" onclick="showNodeDetails('creative_ideation')" transform="translate(${cx},${y.creative})">
+                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('creative_ideation')}" stroke-width="1"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${textColor('creative_ideation')}" font-size="14" font-weight="900" font-family="Inter">CREATIVE IDEATION</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">3 Conceitos</text>
+                </g>
+                <line class="${getFlowClass('creative_ideation')}" x1="${cx}" y1="${y.creative+bh/2}" x2="${cx}" y2="${y.critic-bh/2}"/>
+                
+                <!-- CRITIC -->
+                <g class="${getNodeClass('critic')}" onclick="showNodeDetails('critic')" transform="translate(${cx},${y.critic})">
+                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('critic')}" stroke-width="1"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${textColor('critic')}" font-size="14" font-weight="900" font-family="Inter">CRITIC</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">Avaliação</text>
+                </g>
+                <line class="${getFlowClass('critic')}" x1="${cx}" y1="${y.critic+bh/2}" x2="${cx}" y2="${y.proposal-bh/2}"/>
+                
+                <!-- PROPOSAL WRITER -->
+                <g class="${getNodeClass('proposal')}" onclick="showNodeDetails('proposal')" transform="translate(${cx},${y.proposal})">
+                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('proposal')}" stroke-width="1"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${textColor('proposal')}" font-size="14" font-weight="900" font-family="Inter">PROPOSTA</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">Doc Comercial</text>
+                </g>
+                <line class="${getFlowClass('proposal')}" x1="${cx}" y1="${y.proposal+bh/2}" x2="${cx}" y2="${y.director-bh/2}"/>
+                
+                <!-- DIRECTOR -->
+                <g class="${getNodeClass('director')}" onclick="showNodeDetails('director')" transform="translate(${cx},${y.director})">
+                    <rect class="gb-box" x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" fill="#000" stroke="${stepColor('director')}" stroke-width="2"/>
+                    <text x="0" y="-8" text-anchor="middle" fill="${textColor('director')}" font-size="14" font-weight="900" font-family="Inter">DIRECTOR</text>
+                    <text x="0" y="14" text-anchor="middle" fill="${c.sub}" font-size="10" font-family="JetBrains Mono">Craft Check</text>
+                </g>
+                <line class="${getFlowClass('director')}" x1="${cx}" y1="${y.director+bh/2}" x2="${cx}" y2="${y.out-24}"/>
+                
+                <!-- OUTPUT -->
+                <g class="gb-node" onclick="showNodeDetails('output')" transform="translate(${cx},${y.out})">
+                    <rect class="gb-box" x="${-bwLg/2+10}" y="-24" width="${bwLg-20}" height="48" 
+                          fill="${job.steps?.director?.status === 'done' ? c.red : '#000'}" 
+                          stroke="${job.steps?.director?.status === 'done' ? c.red : c.border}" stroke-width="1"/>
+                    <text x="0" y="6" text-anchor="middle" fill="${job.steps?.director?.status === 'done' ? '#FFFFFF' : c.sub}" 
+                          font-size="14" font-weight="700" font-family="Inter" letter-spacing="0.2em">
+                        ${job.steps?.director?.status === 'done' ? 'PROPOSTA PRONTA' : 'AGUARDANDO APROVAÇÃO'}
+                    </text>
+                </g>
+            </svg>`;
+
+            document.getElementById('gameboard-svg').innerHTML = html;
+            window.currentJob = job;
+        }
+
         // --- NAVIGATION LOGIC ---
         function showTab(tab) {
             ['board', 'gameboard', 'approved', 'history', 'architecture'].forEach(t => {
@@ -876,7 +1014,6 @@
         }
 
         async function loadGameJob(jobId) {
-            // Build job object from files
             const files = [...currentState.wip, ...currentState.done].filter(f => f.name.includes(jobId));
             const isDone = currentState.done.some(f => f.name.includes(jobId));
 
@@ -885,8 +1022,11 @@
                 steps: {}
             };
 
-            // Map files to steps based on filename conventions (e.g. 05_copy)
-            const stepMap = { 'validator': 'validator', 'audience': 'audience', 'research': 'research', 'claims': 'claims', 'copy': 'copy', 'brand': 'brand', 'critic': 'critic', 'opus': 'opus' };
+            // Different step maps per mode
+            const stepMapMarketing = { 'validator': 'validator', 'audience': 'audience', 'research': 'research', 'claims': 'claims', 'copy': 'copy', 'brand': 'brand', 'critic': 'critic', 'opus': 'opus' };
+            const stepMapProjetos = { 'brand_digest': 'brand_digest', 'creative': 'creative_ideation', 'ideation': 'creative_ideation', 'critic': 'critic', 'proposta': 'proposal', 'proposal': 'proposal', 'director': 'director' };
+            
+            const stepMap = currentMode === 'projetos' ? stepMapProjetos : stepMapMarketing;
 
             files.forEach(f => {
                 for (const [key, step] of Object.entries(stepMap)) {
@@ -896,7 +1036,6 @@
                 }
             });
 
-            // If done, assume successful path
             if (isDone) {
                 Object.values(stepMap).forEach(s => {
                     if (!job.steps[s]) job.steps[s] = { status: 'done', output: 'Simulated History' };
@@ -906,7 +1045,13 @@
             document.getElementById('gameboard-lobby').classList.add('hidden');
             document.getElementById('gameboard-svg').classList.remove('hidden');
             document.getElementById('back-to-lobby').classList.remove('hidden');
-            renderGameBoard(job);
+            
+            // Render different board per mode
+            if (currentMode === 'projetos') {
+                renderGameBoardProjetos(job);
+            } else {
+                renderGameBoard(job);
+            }
         }
 
         // --- APPROVED TAB ---
@@ -1188,6 +1333,7 @@
             const contentEl = document.getElementById('detail-content');
 
             const nodeInfo = {
+                // Marketing mode
                 'mission': { name: 'BRIEFING', icon: 'TARGET', desc: 'O que precisa ser feito', friendly: 'Briefing' },
                 'douglas': { name: 'ORQUESTRADOR', icon: 'CPU', desc: 'Coordena o fluxo de trabalho', friendly: 'Coordenação' },
                 'validator': { name: 'VALIDAÇÃO', icon: 'GATE', desc: 'Verifica se o briefing está completo', friendly: 'Validação' },
@@ -1196,10 +1342,14 @@
                 'claims': { name: 'VERIFICAÇÃO', icon: 'SHIELD', desc: 'Checa se os dados estão corretos', friendly: 'Verificação' },
                 'copy': { name: 'CRIAÇÃO', icon: 'WRITE', desc: 'Escreve o conteúdo', friendly: 'Texto' },
                 'brand': { name: 'TOM DE VOZ', icon: 'LOCK', desc: 'Garante que soa como a Brick', friendly: 'Tom' },
-                'critic': { name: 'REVISÃO', icon: 'SCAN', desc: 'Primeira checagem de qualidade', friendly: 'Revisão' },
+                'critic': { name: 'REVISÃO', icon: 'SCAN', desc: 'Checagem de qualidade', friendly: 'Revisão' },
                 'opus': { name: 'APROVAÇÃO', icon: 'STAR', desc: 'Revisão final detalhada', friendly: 'Aprovação' },
                 'director': { name: 'DIREÇÃO', icon: 'EYE', desc: 'Refina a execução e o craft', friendly: 'Direção' },
-                'output': { name: 'PRONTO', icon: 'BOX', desc: 'Conteúdo aprovado para uso', friendly: 'Finalizado' }
+                'output': { name: 'PRONTO', icon: 'BOX', desc: 'Conteúdo aprovado para uso', friendly: 'Finalizado' },
+                // Projetos mode
+                'brand_digest': { name: 'BRAND DIGEST', icon: 'DNA', desc: 'Sintetiza materiais de marca do cliente', friendly: 'Síntese' },
+                'creative_ideation': { name: 'CREATIVE IDEATION', icon: 'BULB', desc: 'Gera 3 conceitos criativos', friendly: 'Conceitos' },
+                'proposal': { name: 'PROPOSTA', icon: 'DOC', desc: 'Formata documento comercial', friendly: 'Proposta' }
             };
 
             const info = nodeInfo[nodeKey] || { name: nodeKey.toUpperCase(), icon: 'FILE', desc: '' };
