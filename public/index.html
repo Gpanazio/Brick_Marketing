@@ -299,6 +299,9 @@
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
             
+            // Check if project is complete (has FINAL or OUTPUT file)
+            const isComplete = projectFiles.some(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
+            
             container.innerHTML = '';
             svg.innerHTML = '';
 
@@ -309,11 +312,13 @@
                 el.style.left = `calc(50% + ${n.x}px - 160px)`;
                 el.style.top = `${n.y}px`;
 
-                const hasFile = projectFiles.some(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
-                if(!hasFile && !n.douglas && n.id !== 'n0') el.classList.add('disabled');
+                // If project is complete, enable all nodes; otherwise check for individual files
+                const hasFile = isComplete || projectFiles.some(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
+                const isInputOutput = n.title.includes('INPUT') || n.title.includes('OUTPUT') || n.title.includes('READY');
+                if(!hasFile && !n.douglas && !isInputOutput) el.classList.add('disabled');
 
                 el.innerHTML = `
-                    ${!n.douglas && !n.human && n.id !== 'n0' && n.id !== 'n10' ? '<div class="node-toggle" onclick="toggleNode(event, \''+n.id+'\')"></div>' : ''}
+                    ${!n.douglas && !n.human && !isInputOutput ? '<div class="node-toggle" onclick="toggleNode(event, \''+n.id+'\')"></div>' : ''}
                     <div class="node-led"></div>
                     <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
                     <div class="node-title">${n.title}</div>
@@ -372,7 +377,33 @@
             };
         }
 
-        function openPanel(n) { document.getElementById('panel-title').textContent = n.title; document.getElementById('agent-panel').classList.add('open'); }
+        function openPanel(n) { 
+            document.getElementById('panel-title').textContent = n.title;
+            
+            // Find file related to this node
+            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
+            
+            let content = '';
+            
+            // Try to find specific file for this node
+            const nodeFile = projectFiles.find(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
+            
+            if (nodeFile) {
+                content = `<div class="mb-4"><strong>FILE:</strong> ${nodeFile.name}</div><pre class="whitespace-pre-wrap">${nodeFile.content}</pre>`;
+            } else {
+                // If no specific file, show FINAL/OUTPUT if exists
+                const finalFile = projectFiles.find(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
+                if (finalFile) {
+                    content = `<div class="mb-4"><strong>FINAL OUTPUT:</strong> ${finalFile.name}</div><pre class="whitespace-pre-wrap">${finalFile.content}</pre>`;
+                } else {
+                    content = `<div class="text-[#444]">No output file found for this node.</div>`;
+                }
+            }
+            
+            document.getElementById('panel-body').innerHTML = content;
+            document.getElementById('agent-panel').classList.add('open'); 
+        }
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
         function openNewBriefing() { alert("Opening Briefing Module..."); }
 
