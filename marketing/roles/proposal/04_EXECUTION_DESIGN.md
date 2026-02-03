@@ -108,6 +108,7 @@ Definir a DIREÇÃO VISUAL antes de qualquer roteiro ser escrito. Responder:
 3. **Referências são obrigatórias.** No mínimo 2, com técnica específica pra roubar.
 4. **Constraints são obrigatórias.** Diga ao COPYWRITER o que ele NÃO pode fazer.
 5. **Pense no budget.** Suas escolhas precisam ser filmáveis com o dinheiro disponível.
+6. **REGRA DOS 3 SEGUNDOS (REDE SOCIAL):** Os primeiros 3 segundos precisam ter gancho visual forte. Nada de abertura lenta, logo, ou tela preta. Máximo 5-8 segundos sem fala — 25 segundos de silêncio são 5 horas em rede social.
 
 ## EXEMPLOS DE CONSTRAINTS BEM ESCRITAS
 
