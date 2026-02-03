@@ -357,7 +357,9 @@ const previewJob = {
 };
 
 function renderGameBoard(data) {
-    const activeJob = (data?.wip && data.wip.length > 0) ? data.wip[0] : previewJob;
+    // Usa previewJob a menos que tenha um job real com estrutura de steps
+    const wipJob = data?.wip?.find(j => j.steps);
+    const activeJob = wipJob || previewJob;
     const missionTitle = activeJob.title || 'Aguardando briefing...';
     
     document.getElementById('gameboard-time').textContent = new Date().toLocaleString('pt-BR');
