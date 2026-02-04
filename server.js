@@ -253,13 +253,13 @@ async function notifyTelegram(message) {
     }
 }
 
-// OpenClaw Wake notification (triggers Douglas via system event)
+// Douglas notification via Telegram command
 async function notifyDouglas(data) {
-    const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL;
-    const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
     
-    if (!gatewayUrl || !gatewayToken) {
-        log('warn', 'openclaw_wake_not_configured');
+    if (!token || !chatId) {
+        log('warn', 'telegram_not_configured');
         return;
     }
     
@@ -267,39 +267,34 @@ async function notifyDouglas(data) {
     
     // Check if it's feedback or new briefing
     if (data.feedbackAction) {
-        message = `FEEDBACK HUMANO NO WAR ROOM
+        message = `/feedback ${data.mode} ${data.feedbackAction} ${data.targetFile || 'N/A'}
+
 Ação: ${data.feedbackAction}
 Tipo: ${data.feedbackType || 'N/A'}
-Arquivo: ${data.targetFile || 'N/A'}
-Modo: ${data.mode}
 Texto: ${data.feedbackText || '(sem texto)'}
 
-Consultar API: https://brickmarketing-production.up.railway.app/api/feedback?mode=${data.mode}`;
+API: https://brickmarketing-production.up.railway.app/api/feedback?mode=${data.mode}`;
     } else {
-        message = `NOVO BRIEFING NO WAR ROOM
-Título: ${data.title}
-Modo: ${data.mode}
-Arquivos: ${data.filesCount || 0}
-JobID: ${data.jobId}
+        message = `/briefing ${data.mode} ${data.jobId}
 
-Consultar API: https://brickmarketing-production.up.railway.app/api/state?mode=${data.mode}`;
+Título: ${data.title}
+Arquivos: ${data.filesCount || 0}
+
+API: https://brickmarketing-production.up.railway.app/api/state?mode=${data.mode}`;
     }
     
     try {
-        await fetch(`${gatewayUrl}/api/cron/wake`, {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${gatewayToken}`
-            },
-            body: JSON.stringify({
-                text: message,
-                mode: 'now'
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                chat_id: chatId, 
+                text: message
             })
         });
-        log('info', 'openclaw_wake_sent', { jobId: data.jobId, type: data.feedbackAction ? 'feedback' : 'briefing' });
+        log('info', 'douglas_command_sent', { jobId: data.jobId, type: data.feedbackAction ? 'feedback' : 'briefing' });
     } catch (e) {
-        log('error', 'openclaw_wake_failed', { error: e.message });
+        log('error', 'douglas_command_failed', { error: e.message });
     }
 }
 
