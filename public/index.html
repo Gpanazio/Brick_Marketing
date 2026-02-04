@@ -506,6 +506,40 @@ OUTPUT (Copy Final)`;
             };
         }
 
+        function formatJSON(json) {
+            let html = '<div class="space-y-4">';
+            
+            for (const [key, value] of Object.entries(json)) {
+                html += `<div class="border-b border-[#222] pb-3">`;
+                html += `<div class="text-[10px] font-mono text-[#DC2626] uppercase tracking-wider mb-2">${key.replace(/_/g, ' ')}</div>`;
+                
+                if (Array.isArray(value)) {
+                    html += '<ul class="space-y-1 pl-4">';
+                    value.forEach(item => {
+                        if (typeof item === 'object') {
+                            html += `<li class="text-[11px] text-[#aaa] border-l-2 border-[#333] pl-3 py-1">${JSON.stringify(item, null, 2).replace(/[{}"]/g, '').replace(/,/g, '<br>')}</li>`;
+                        } else {
+                            html += `<li class="text-[11px] text-[#aaa]">• ${item}</li>`;
+                        }
+                    });
+                    html += '</ul>';
+                } else if (typeof value === 'object' && value !== null) {
+                    html += '<div class="pl-4 space-y-2">';
+                    for (const [subKey, subValue] of Object.entries(value)) {
+                        html += `<div class="text-[10px]"><span class="text-[#888] font-mono">${subKey}:</span> <span class="text-[#ccc]">${typeof subValue === 'object' ? JSON.stringify(subValue) : subValue}</span></div>`;
+                    }
+                    html += '</div>';
+                } else {
+                    html += `<div class="text-[12px] text-[#ddd] font-medium">${value}</div>`;
+                }
+                
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
         function openPanel(n, files) {
             const searchTerms = fileMapping[n.title] || [n.title];
             const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
@@ -515,7 +549,7 @@ OUTPUT (Copy Final)`;
                 let content = file.content;
                 try {
                     const json = JSON.parse(content);
-                    content = `<div class="bg-[#0a0a0a] border border-[#222] p-4 rounded"><div class="text-[9px] font-mono text-[#DC2626] mb-2 uppercase tracking-wider">RAW_DATA</div><pre class="text-[10px] text-gray-400 overflow-x-auto">${JSON.stringify(json, null, 2)}</pre></div>`;
+                    content = formatJSON(json);
                 } catch(e) {
                     content = marked.parse(content);
                 }
