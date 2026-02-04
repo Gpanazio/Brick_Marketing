@@ -240,13 +240,20 @@
             container.innerHTML = '';
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const projectFiles = allFiles.filter(f => f.name.startsWith(selectedJobId));
+            const nodes = currentMode === 'projetos' ? nodeDefProjetos : nodeDefMarketing;
 
-            nodeDefMarketing.forEach(n => {
+            // Load saved positions
+            const savedPositions = JSON.parse(localStorage.getItem(`pos_${selectedJobId}_${currentMode}`) || '{}');
+
+            nodes.forEach(n => {
                 const el = document.createElement('div');
                 el.className = 'node';
+                
+                // Position logic: Saved > Default
+                const pos = savedPositions[n.id] || { x: n.x, y: n.y };
                 if (window.innerWidth > 768) {
-                    el.style.left = `calc(50% + ${n.x}px - 160px)`;
-                    el.style.top = `${n.y}px`;
+                    el.style.left = `calc(50% + ${pos.x}px - 160px)`;
+                    el.style.top = `${pos.y}px`;
                 }
 
                 const searchTerms = fileMapping[n.title] || [n.title];
@@ -256,10 +263,48 @@
                 else el.classList.add('pending-execution');
 
                 el.innerHTML = `<div class="node-led"></div><div class="node-id">${n.label}</div><div class="node-title">${n.title}</div><div class="node-subtext">${hasFile ? 'DATA_SYNC_COMPLETE' : 'STANDBY_DATA_SYNC'}</div>`;
-                el.onclick = () => openPanel(n, projectFiles);
+                el.onclick = (e) => { if(!el.dataset.dragging) openPanel(n, projectFiles); };
+                
                 container.appendChild(el);
+                makeDraggable(el, n.id);
             });
             updateConnections();
+        }
+
+        function makeDraggable(el, nodeId) {
+            let p1=0, p2=0, p3=0, p4=0;
+            el.onmousedown = (e) => {
+                e.preventDefault();
+                el.dataset.dragging = "";
+                p3 = e.clientX;
+                p4 = e.clientY;
+                document.onmouseup = () => {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                    setTimeout(() => delete el.dataset.dragging, 100);
+                    
+                    // Save position
+                    const savedPositions = JSON.parse(localStorage.getItem(`pos_${selectedJobId}_${currentMode}`) || '{}');
+                    const containerRect = document.getElementById('node-container').getBoundingClientRect();
+                    const centerX = containerRect.width / 2;
+                    
+                    savedPositions[nodeId] = {
+                        x: el.offsetLeft + 160 - centerX,
+                        y: el.offsetTop
+                    };
+                    localStorage.setItem(`pos_${selectedJobId}_${currentMode}`, JSON.stringify(savedPositions));
+                };
+                document.onmousemove = (e) => {
+                    p1 = p3 - e.clientX;
+                    p2 = p4 - e.clientY;
+                    p3 = e.clientX;
+                    p4 = e.clientY;
+                    el.style.top = (el.offsetTop - p2) + "px";
+                    el.style.left = (el.offsetLeft - p1) + "px";
+                    el.dataset.dragging = "true";
+                    updateConnections();
+                };
+            };
         }
 
         function updateConnections() {
