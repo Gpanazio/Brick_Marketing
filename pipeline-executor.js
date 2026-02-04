@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 // CONFIG
-const GATEWAY_URL = process.env.GATEWAY_URL || 'http://localhost:18789';
+const GATEWAY_URL = process.env.GATEWAY_URL || 'http://localhost:18789/api';
 const GATEWAY_TOKEN = process.env.GATEWAY_TOKEN || '';
 const HISTORY_ROOT = path.join(__dirname, 'history');
 const BRIEFING_DIR = path.join(__dirname, 'marketing', 'briefing');

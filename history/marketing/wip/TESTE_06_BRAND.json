@@ -1,0 +1,22 @@
+{
+  "status": "BRAND_OK",
+  "notas": "As três versões seguem a voz Bold, Diretor e Anti-Slop da Brick AI. A terminologia oficial (Vision over Prompt, Production Enhanced, Mason) foi aplicada corretamente. A versão B (Flash) se destacou no Storytelling ao usar os logs do MASON para diferenciar as vozes.",
+  "validacao_detalhada": {
+    "TESTE_05A_COPY_GPT": {
+      "status": "PASSA",
+      "pontos_fortes": "Uso consistente de termos como 'Production Enhanced by Mason' e 'Vision over Prompt'. Tom de diretor sênior bem estabelecido.",
+      "observacoes": "Equilíbrio bom entre dados (Artlist) e craft."
+    },
+    "TESTE_05B_COPY_FLASH": {
+      "status": "PASSA",
+      "pontos_fortes": "Excelente dualidade de vozes no Storytelling (logs do MASON vs voz do Diretor). Tom 'Bold' e 'Anti-Slop' muito forte ('O craft não é opcional').",
+      "observacoes": "A melhor aplicação da identidade visual de texto (logs) solicitada no branding."
+    },
+    "TESTE_05C_COPY_SONNET": {
+      "status": "PASSA",
+      "pontos_fortes": "Foco claro em 'Vision over Prompt'. Storytelling humanizado focando na 'alma' da direção vs velocidade da IA.",
+      "observacoes": "Tom direto e profissional, sem clichês de IA genérica."
+    }
+  },
+  "proximo_passo": "Enviar para CRITIC"
+}

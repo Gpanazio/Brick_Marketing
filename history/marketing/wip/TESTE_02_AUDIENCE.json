@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou brands in-house",
+    "experiencia": "10+ anos no mercado"
+  },
+  "dores": [
+    "Orçamento apertado - Cliente quer mais por menos",
+    "Deadline impossível - 'Pra ontem' virou o normal",
+    "Pressão pra inovar - 'Cadê a IA?' mas sem perder qualidade",
+    "Medo de parecer ultrapassado - Concorrência já usa IA",
+    "Ceticismo com IA - Já testou ferramentas e ficou decepcionado (quality issues)"
+  ],
+  "linguagem_comum": [
+    "brief",
+    "deck",
+    "approach",
+    "key visual",
+    "budget",
+    "deadline",
+    "entrega",
+    "aprovação",
+    "craft",
+    "qualidade",
+    "produção premium",
+    "ROI",
+    "performance",
+    "conversão"
+  ],
+  "objecoes": [
+    "IA não tem craft/alma",
+    "Cliente não vai aceitar qualidade de IA",
+    "Ainda não tá bom o suficiente",
+    "Meu time vai ficar inseguro",
+    "Parece fake/artificial"
+  ],
+  "motivadores_de_acao": [
+    "Status profissional - Ser visto como inovador",
+    "Eficiência operacional - Entregar mais rápido",
+    "Economia (sem perder qualidade) - Budget liberado pro criativo",
+    "Competitividade - Não ficar pra trás"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (principal - posts + artigos)",
+    "Newsletters: B9, Meio & Mensagem, Marketing Dive",
+    "Eventos: Cannes Lions, Wave Festival, SXSW",
+    "Podcasts: Projeto Draft, B9Cast, Creators"
+  ],
+  "fontes_consultadas": [
+    "ROLE: AUDIENCE ANALYST (Persona Hardcoded)"
+  ]
+}

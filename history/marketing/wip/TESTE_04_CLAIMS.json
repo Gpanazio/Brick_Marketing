@@ -1,0 +1,60 @@
+{
+  "claims_validados": [
+    {
+      "claim": "O mercado de análise de vídeo com IA deve crescer de $32.04 bilhões em 2025 para $133.34 bilhões em 2030 (CAGR de 33%).",
+      "status": "VERIFICADO",
+      "fonte_original": "LTX Studio / Market Reports 2026",
+      "fonte_verificacao": "https://www.researchandmarkets.com/reports/5624503/ai-video-analytics-market-share-analysis",
+      "confianca": "alta",
+      "notas": "Dado exato encontrado em relatórios de mercado consolidados (Research and Markets)."
+    },
+    {
+      "claim": "87% dos profissionais criativos já utilizam ferramentas de IA na criação de vídeos, com 66% usando semanalmente.",
+      "status": "VERIFICADO",
+      "fonte_original": "Artlist Creative Trend Report 2026",
+      "fonte_verificacao": "https://tutorialsdojo.com/the-age-of-taste-why-creative-direction-is-the-new-technical-skill/",
+      "confianca": "alta",
+      "notas": "Dado confirmado como parte do Artlist Creative Trend Report 2026."
+    },
+    {
+      "claim": "Redução de custos de 80-95% na produção por vídeo ao comparar ferramentas de IA com produção tradicional.",
+      "status": "DUVIDOSO",
+      "fonte_original": "Clippie.ai Market Study 2025/2026",
+      "fonte_verificacao": null,
+      "confianca": "baixa",
+      "notas": "[NEEDS SOURCE] - Clippie.ai parece ser uma ferramenta de automação de nicho; a estatística de 95% é extremamente agressiva e não foi corroborada por fontes independentes. Sugestão: usar 'redução drástica de custos' ou citar como 'estimativa de mercado para automação'."
+    },
+    {
+      "claim": "A IA economiza em média 34% do tempo gasto em ferramentas de edição de vídeo.",
+      "status": "PARCIAL",
+      "fonte_original": "Gudsho Video Editing Statistics 2026",
+      "fonte_verificacao": "https://www.gudsho.com/blog/video-editing-statistics/",
+      "confianca": "media",
+      "notas": "Embora o post do blog exista, o número exato de 34% varia entre fontes (algumas citam economia de 'até 50%' em tarefas específicas). O valor é razoável, mas a fonte original é um blog de plataforma e não um estudo acadêmico."
+    },
+    {
+      "claim": "73% dos espectadores não conseguem distinguir vídeos de alta qualidade assistidos por IA de produções tradicionais em testes cegos.",
+      "status": "DUVIDOSO",
+      "fonte_original": "Clippie.ai Research",
+      "fonte_verificacao": null,
+      "confianca": "baixa",
+      "notas": "[NEEDS SOURCE] - Não foram encontrados detalhes metodológicos desse 'teste cego'. Dado parece ser marketing proprietário da ferramenta."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "Mercado de AI Video Analytics: $133B até 2030 (CAGR 33%)",
+    "Adoção de IA: 87% dos profissionais criativos já utilizam ferramentas de IA (Artlist 2026)",
+    "Frequência: 66% dos criativos usam IA semanalmente (Artlist 2026)"
+  ],
+  "estatisticas_evitar": [
+    "Redução de 95% nos custos (estatística sem base externa sólida)",
+    "73% de indistinguibilidade em testes cegos (falta de transparência na fonte)"
+  ],
+  "resumo": {
+    "total_claims": 5,
+    "verificados": 2,
+    "parciais": 1,
+    "duvidosos": 2,
+    "recomendacao": "Priorizar os dados da Artlist e Research and Markets. Evitar os números específicos da Clippie.ai, pois carecem de verificação independente e podem soar como 'fake news' de marketing."
+  }
+}

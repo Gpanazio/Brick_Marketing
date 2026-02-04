@@ -1,0 +1,10 @@
+{
+  "status": "INCOMPLETO",
+  "faltando": [
+    "FORMATO - Qual o entregável específico? (ex: 3 posts de LinkedIn, 1 artigo de blog, etc)"
+  ],
+  "perguntas_para_humano": [
+    "Qual o formato e a quantidade dos entregáveis? (Ex: Posts para rede social, Landing Page, Roteiro de Vídeo?)"
+  ],
+  "proximo_passo": "Aguardar input humano"
+}
