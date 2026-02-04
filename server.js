@@ -621,7 +621,8 @@ app.post('/api/archive', (req, res) => {
 
 // Feedback route - recebe feedback humano e salva para processamento
 app.post('/api/feedback', async (req, res) => {
-    const { file, action, type, text, routedTo, mode } = req.body;
+    // Support both old format (file, action, type, text) and new format (jobId, feedback)
+    const { file, action, type, text, routedTo, mode, jobId, feedback } = req.body;
     const timestamp = Date.now();
     
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
@@ -642,38 +643,26 @@ app.post('/api/feedback', async (req, res) => {
         }
     }
     
-    const feedback = {
+    const feedbackData = {
         timestamp: new Date().toISOString(),
+        jobId: jobId || file,
         file,
-        action,
-        type,
-        text,
+        action: action || 'revision',
+        type: type || 'human_feedback',
+        text: text || feedback,
         routedTo,
         mode,
         status: 'pending'
     };
     
     const feedbackFile = path.join(feedbackDir, `${timestamp}_feedback.json`);
-    fs.writeFileSync(feedbackFile, JSON.stringify(feedback, null, 2));
+    fs.writeFileSync(feedbackFile, JSON.stringify(feedbackData, null, 2));
     
     // Create signal file for Douglas to pick up
     const signalFile = path.join(baseDir, 'FEEDBACK_SIGNAL.txt');
-    fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nArquivo: ${file}\nAção: ${action}\nTipo: ${type}\nTexto: ${text}\nRoteado para: ${routedTo}\nTimestamp: ${new Date().toISOString()}`);
+    fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nJobID: ${jobId || file}\nTexto: ${text || feedback}\nTimestamp: ${new Date().toISOString()}`);
     
-    // Notify Douglas via OpenClaw Wake
-    const feedbackData = {
-        title: `FEEDBACK HUMANO: ${action}`,
-        mode: mode || 'marketing',
-        filesCount: 0,
-        jobId: `feedback_${timestamp}`,
-        feedbackAction: action,
-        feedbackType: type,
-        feedbackText: text,
-        targetFile: file
-    };
-    await notifyDouglas(feedbackData);
-    
-    log('info', 'feedback_received', { file, action, type, routedTo, mode });
+    log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     res.json({ success: true, saved: feedbackFile, archived: true });
 });
 
@@ -696,6 +685,30 @@ app.get('/api/feedback', (req, res) => {
         .filter(f => f.status === 'pending');
     
     res.json({ pending: files });
+});
+
+// Approval endpoint (from War Room UI)
+app.post('/api/approve', async (req, res) => {
+    const { jobId, mode, timestamp } = req.body;
+    const ts = Date.now();
+    
+    const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
+    const approvalDir = path.join(baseDir, 'approved');
+    if (!fs.existsSync(approvalDir)) fs.mkdirSync(approvalDir, { recursive: true });
+    
+    const approval = {
+        timestamp: timestamp || new Date().toISOString(),
+        jobId,
+        mode,
+        status: 'approved',
+        approvedBy: 'human'
+    };
+    
+    const approvalFile = path.join(approvalDir, `${jobId}_APPROVED_${ts}.json`);
+    fs.writeFileSync(approvalFile, JSON.stringify(approval, null, 2));
+    
+    log('info', 'campaign_approved', { jobId, mode });
+    res.json({ success: true, saved: approvalFile });
 });
 
 // Graceful shutdown handler (Railway sends SIGTERM)
