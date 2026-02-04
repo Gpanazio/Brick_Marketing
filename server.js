@@ -156,7 +156,13 @@ const authMiddleware = (req, res, next) => {
         return next();
     }
     
-    // For Write operations (POST/DELETE), require API Key
+    // Allow human actions from UI (approve/feedback) without API key
+    const publicWritePaths = ['/approve', '/feedback'];
+    if (req.method === 'POST' && publicWritePaths.includes(req.path)) {
+        return next();
+    }
+    
+    // For other Write operations (POST/DELETE), require API Key
     const key = req.headers['x-api-key'] || req.query.key;
     if (key === API_KEY) {
         return next();
