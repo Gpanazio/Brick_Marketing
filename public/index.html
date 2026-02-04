@@ -50,8 +50,8 @@
         /* ANGULAR CONNECTIONS */
         .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
         .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
-        .conn-line.refine { stroke: #22c55e; opacity: 0.4; }
-        .conn-line.refine.active { opacity: 0.8; stroke-width: 2; }
+        .conn-line.refine { stroke: #3b82f6; opacity: 0.5; }
+        .conn-line.refine.active { opacity: 0.9; stroke-width: 2; }
 
         .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
 
@@ -305,10 +305,10 @@
             { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
             { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'GEMINI FLASH' },
             { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad', model: 'GPT-5.2' },
-            { id: 'n7b', x: 0, y: 1650, title: 'COPY_FINAL', label: 'Final_Polish', model: 'DYNAMIC' },
-            { id: 'n8', x: 0, y: 1850, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
-            { id: 'n9', x: 0, y: 2050, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n10', x: 0, y: 2250, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n7b', x: 0, y: 1750, title: 'COPY_FINAL', label: 'Final_Polish', model: 'DYNAMIC' },
+            { id: 'n8', x: 0, y: 1950, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
+            { id: 'n9', x: 0, y: 2150, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
+            { id: 'n10', x: 0, y: 2350, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
         const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n7b'],['n7b','n8'],['n8','n9'],['n9','n10']];
 
@@ -620,7 +620,8 @@ OUTPUT (Copy Final)`;
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
-                if(!hasFile && !n.douglas && n.id !== 'n0') el.classList.add('disabled');
+                // Não desabilitar: BRIEFING_INPUT (n0), Douglas, e COPY_FINAL (n7b - em construção)
+                if(!hasFile && !n.douglas && n.id !== 'n0' && n.id !== 'n7b') el.classList.add('disabled');
 
                 el.innerHTML = `
                     <div class="node-led"></div>
