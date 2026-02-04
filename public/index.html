@@ -128,83 +128,36 @@
             #main-ui > header { 
                 margin-bottom: 8px; padding-bottom: 8px; 
                 flex-wrap: wrap; gap: 8px;
+                background: #000;
+                position: relative;
+                z-index: 100;
             }
             #main-ui > header h1 { font-size: 18px; }
-            #main-ui > header h1 span { display: none; } /* Hide COMMAND_CENTER */
+            #main-ui > header h1 span { display: none; }
             #connection-status { display: none; }
             #btn-back-lobby { font-size: 8px !important; padding: 6px 10px !important; }
             #btn-save-config { font-size: 9px !important; padding: 8px 12px !important; }
             
-            /* Hide log on mobile */
-            .absolute.bottom-8 { display: none !important; }
+            /* KILL LOG ON MOBILE */
+            .fixed.bottom-8.left-8, 
+            .absolute.bottom-8, 
+            [id*="log"], 
+            .font-mono.text-\[9px\].text-gray-600 { 
+                display: none !important; 
+            }
             
-            /* Lobby as drawer */
-            #view-lobby { 
-                position: fixed; left: -100%; 
-                width: 85%; max-width: 320px; height: 100vh; 
-                z-index: 200; transition: left 0.3s; 
-                box-shadow: 20px 0 50px rgba(0,0,0,0.9);
-            }
-            #view-lobby.open { left: 0; }
-            
-            /* Hamburguer button */
-            #lobby-toggle { 
-                position: fixed; top: 12px; left: 12px; z-index: 150; 
-                width: 40px; height: 40px; 
-                background: rgba(5,5,5,0.95); border: 1px solid #222; 
-                display: flex; align-items: center; justify-content: center; 
-                cursor: pointer; backdrop-filter: blur(10px);
-            }
-            #lobby-toggle span { 
-                display: block; width: 18px; height: 2px; background: #DC2626; 
-                position: relative; transition: all 0.3s;
-            }
-            #lobby-toggle span::before, #lobby-toggle span::after { 
-                content: ''; display: block; width: 18px; height: 2px; 
-                background: #DC2626; position: absolute; transition: all 0.3s;
-            }
-            #lobby-toggle span::before { top: -5px; }
-            #lobby-toggle span::after { top: 5px; }
-            #lobby-toggle.open span { background: transparent; }
-            #lobby-toggle.open span::before { transform: rotate(45deg); top: 0; }
-            #lobby-toggle.open span::after { transform: rotate(-45deg); top: 0; }
-            
-            /* Overlay */
-            #lobby-overlay { 
-                display: none; position: fixed; inset: 0; 
-                background: rgba(0,0,0,0.8); z-index: 199; 
-            }
-            #lobby-overlay.active { display: block; }
-            
-            /* Pipeline view - scrollable container */
+            /* Pipeline view - scrollable list */
             #view-nodegraphic { 
                 width: 100vw !important; left: 0 !important;
+                height: calc(100vh - 80px) !important;
                 overflow-y: auto !important;
                 overflow-x: hidden !important;
                 -webkit-overflow-scrolling: touch;
+                padding: 10px 0 100px 0 !important;
+                display: block !important;
             }
             
-            /* SVG/Canvas container needs to allow scroll */
-            #view-nodegraphic > div { 
-                min-width: 500px; 
-                transform: scale(0.6); 
-                transform-origin: top center;
-            }
-            
-            /* Nodes smaller */
-            .node { 
-                position: relative !important;
-                left: 0 !important;
-                top: 0 !important;
-                margin: 0 auto 20px auto !important;
-                width: 90% !important;
-                max-width: 320px !important;
-                transform: none !important;
-                padding: 16px; 
-            }
-            .node-title { font-size: 14px; }
-            .node-subtext { font-size: 7px; margin-top: 8px; padding-top: 8px; }
-            
+            /* Force nodes into a simple clean list */
             #view-nodegraphic > div { 
                 display: flex !important;
                 flex-direction: column !important;
@@ -212,16 +165,29 @@
                 width: 100% !important;
                 min-width: unset !important;
                 transform: none !important;
-                padding: 20px !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+            
+            .node { 
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                margin: 0 auto 12px auto !important;
+                width: 90% !important;
+                max-width: 340px !important;
+                transform: none !important;
+                padding: 16px;
+                border: 1px solid #333 !important;
+                background: #050505 !important;
+                box-shadow: none !important;
             }
 
-            /* Hide SVG lines on mobile */
-            #node-canvas { display: none !important; }
+            /* Disable lines/canvas on mobile */
+            canvas, svg, #node-canvas { display: none !important; }
             
             /* Agent panel full-screen */
-            .side-panel { 
-                width: 100vw; right: -100vw; 
-            }
+            .side-panel { width: 100vw; right: -100vw; }
             .side-panel.open { right: 0; }
             .panel-header { padding: 16px; }
             .panel-content { padding: 16px; }
@@ -238,12 +204,9 @@
             }
             
             /* Text readable */
-            .md-content { font-size: 13px; }
+            .md-content { font-size: 14px; }
             .md-content h1 { font-size: 18px; }
             .md-content h2 { font-size: 15px; }
-            
-            /* Section boxes tighter */
-            .section-box { padding: 16px; margin-bottom: 16px; }
         }
     </style>
 </head>
@@ -511,9 +474,12 @@ OUTPUT ≥80%</pre>
         // Hide hamburger on desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
-                document.getElementById('view-lobby').classList.remove('open');
-                document.getElementById('lobby-toggle').classList.remove('open');
-                document.getElementById('lobby-overlay').classList.remove('active');
+                const lobby = document.getElementById('view-lobby');
+                const toggle = document.getElementById('lobby-toggle');
+                const overlay = document.getElementById('lobby-overlay');
+                if (lobby) lobby.classList.remove('open');
+                if (toggle) toggle.classList.remove('open');
+                if (overlay) overlay.classList.remove('active');
             }
         });
 
@@ -553,7 +519,7 @@ OUTPUT ≥80%</pre>
 
         const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
 
-        // IDEIAS PIPELINE v1.1 (Universal Validator)
+        // IDEIAS PIPELINE v1.1
         const nodeDefIdeias = [
             { id: 'i0', x: 0, y: 150, title: 'IDEA_INPUT', label: 'Raw_Ingestion', model: 'CORE' },
             { id: 'id', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
@@ -567,7 +533,6 @@ OUTPUT ≥80%</pre>
 
         const linksIdeias = [['i0','id'],['id','i1'],['i1','i2'],['i2','i3a'],['i2','i3b'],['i3a','i4'],['i3b','i4'],['i4','i5']];
 
-        // Active pipeline (muda com currentMode)
         let nodeDef = nodeDefMarketing;
         let links = linksMarketing;
 
@@ -582,22 +547,13 @@ OUTPUT ≥80%</pre>
 
         function enterMode(mode) {
             currentMode = mode;
-            
-            // Switch pipeline definition based on mode
             if (mode === 'projetos') {
-                nodeDef = nodeDefProjetos;
-                links = linksProjetos;
-                nodeConfigMap = nodeConfigMapProjetos;
+                nodeDef = nodeDefProjetos; links = linksProjetos;
             } else if (mode === 'ideias') {
-                nodeDef = nodeDefIdeias;
-                links = linksIdeias;
-                nodeConfigMap = nodeConfigMapIdeias;
+                nodeDef = nodeDefIdeias; links = linksIdeias;
             } else {
-                nodeDef = nodeDefMarketing;
-                links = linksMarketing;
-                nodeConfigMap = nodeConfigMapMarketing;
+                nodeDef = nodeDefMarketing; links = linksMarketing;
             }
-            
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('project-lobby').classList.remove('hidden');
             document.getElementById('btn-back-lobby').classList.remove('hidden');
@@ -620,75 +576,40 @@ OUTPUT ≥80%</pre>
             list.innerHTML = '';
             const all = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const groups = {};
-            
-            // Known suffixes to strip for grouping
-            const suffixes = [
-                '_BRAND_DIGEST', '_CREATIVE_IDEATION', '_CONCEPT_CRITIC', 
-                '_EXECUTION_DESIGN', '_COPYWRITER', '_DIRECTOR', 
-                '_BRIEF_VALIDATOR', '_AUDIENCE', '_TOPIC', '_CLAIMS', 
-                '_BRAND', '_CRITIC_LITE', '_CRITIC_OPUS',
-                '_FINAL', '_OUTPUT', '_READY'
-            ];
+            const suffixes = ['_BRAND_DIGEST', '_CREATIVE_IDEATION', '_CONCEPT_CRITIC', '_EXECUTION_DESIGN', '_COPYWRITER', '_DIRECTOR', '_BRIEF_VALIDATOR', '_AUDIENCE', '_TOPIC', '_CLAIMS', '_BRAND', '_CRITIC_LITE', '_CRITIC_OPUS', '_FINAL', '_OUTPUT', '_READY'];
 
             all.forEach(f => {
                 let id = f.name;
-                
-                // 1. Try Timestamp
                 const tsMatch = f.name.match(/^(\d{13,})_/);
-                if (tsMatch) {
-                    id = tsMatch[1]; // Use timestamp as unique ID
-                } else {
-                    // 2. Try stripping known suffixes to find project slug
+                if (tsMatch) { id = tsMatch[1]; } 
+                else {
                     let cleanName = f.name.replace(/\.(md|json|txt|pdf)$/i, '');
-                    
-                    // Sort suffixes by length desc to match longest first
                     const sortedSuffixes = suffixes.sort((a,b) => b.length - a.length);
-                    
                     for (const suffix of sortedSuffixes) {
                         if (cleanName.toUpperCase().endsWith(suffix)) {
                             cleanName = cleanName.substring(0, cleanName.length - suffix.length);
                             break;
                         }
                     }
-                    
-                    // Remove trailing underscores/numbers if any (e.g. _01)
-                    cleanName = cleanName.replace(/_\d{2}$/, '').replace(/_$/, '');
-                    
-                    id = cleanName;
+                    id = cleanName.replace(/_\d{2}$/, '').replace(/_$/, '');
                 }
-
                 if(!groups[id]) groups[id] = []; 
                 groups[id].push(f);
             });
 
             Object.keys(groups).sort().reverse().forEach(id => {
                 const files = groups[id];
-                // Use the cleanest title possible (remove timestamp if displayed)
-                const title = id.match(/^\d{13,}$/) 
-                    ? files[0].name.replace(/^(\d{13,})_/, '').split('.')[0].replace(/_/g, ' ') 
-                    : id.replace(/_/g, ' ');
-
+                const title = id.match(/^\d{13,}$/) ? files[0].name.replace(/^(\d{13,})_/, '').split('.')[0].replace(/_/g, ' ') : id.replace(/_/g, ' ');
                 const card = document.createElement('div');
                 card.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all relative overflow-hidden group';
                 card.onclick = () => openNodeGraphic(id, title);
-                
-                // Count active stages
-                const stages = files.length;
                 const isDone = files.some(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
-                
                 card.innerHTML = `
-                    <div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-[9px] font-mono text-[#444] border border-[#222] px-2 py-1">${files.length} FILES</span>
-                    </div>
                     <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,12).toUpperCase()}</div>
-                    <h3 class="text-2xl font-brick text-white uppercase mb-4 truncate" title="${title}">${title}</h3>
+                    <h3 class="text-2xl font-brick text-white uppercase mb-4 truncate">${title}</h3>
                     <div class="flex items-center gap-2">
-                        <div class="h-1.5 flex-1 bg-[#111] overflow-hidden">
-                            <div class="h-full bg-[#DC2626]" style="width: ${isDone ? '100%' : (stages*10)+'%'}"></div>
-                        </div>
-                        <div class="text-[9px] font-mono ${isDone ? 'text-green-500' : 'text-[#DC2626]'} tracking-widest">
-                            ${isDone ? 'COMPLETED' : 'IN_PROGRESS'}
-                        </div>
+                        <div class="h-1.5 flex-1 bg-[#111] overflow-hidden"><div class="h-full bg-[#DC2626]" style="width: ${isDone ? '100%' : (files.length*10)+'%'}"></div></div>
+                        <div class="text-[9px] font-mono ${isDone ? 'text-green-500' : 'text-[#DC2626]'} tracking-widest">${isDone ? 'COMPLETED' : 'IN_PROGRESS'}</div>
                     </div>
                 `;
                 list.appendChild(card);
@@ -700,7 +621,7 @@ OUTPUT ≥80%</pre>
             document.getElementById('ng-title').textContent = title;
             document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
-            loadPipelineConfig().then(() => renderNodeGraphic());
+            renderNodeGraphic();
         }
 
         function closeNodeGraphic() {
@@ -708,318 +629,6 @@ OUTPUT ≥80%</pre>
             selectedJobId = null;
         }
 
-        function renderNodeGraphic() {
-            const container = document.getElementById('node-container');
-            const svg = document.getElementById('conn-svg');
-            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
-            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
-            
-            // Check if project is complete (has FINAL or OUTPUT file)
-            const isComplete = projectFiles.some(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
-            
-            container.innerHTML = '';
-            svg.innerHTML = '';
-
-            nodeDef.forEach(n => {
-                const el = document.createElement('div');
-                el.className = `node ${n.douglas?'node-douglas':''}`;
-                el.id = n.id;
-                el.style.left = `calc(50% + ${n.x}px - 160px)`;
-                el.style.top = `${n.y}px`;
-
-                // If project is complete, enable all nodes; otherwise check for individual files
-                const hasFile = isComplete || projectFiles.some(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
-                const isInputOutput = n.title.includes('INPUT') || n.title.includes('OUTPUT') || n.title.includes('READY');
-                
-                // FORCE ENABLE ALL NODES FOR INSPECTION (USER REQUEST)
-                // if(!hasFile && !n.douglas && !isInputOutput) el.classList.add('disabled');
-                
-                // Add visual indicator if file exists, but keep node clickable
-                if (!hasFile && !n.douglas && !isInputOutput) {
-                    el.classList.add('pending-execution'); // New class for "waiting" state instead of disabled
-                } else {
-                    el.classList.add('active-node');
-                }
-
-                el.innerHTML = `
-                    ${!n.douglas && !n.human && !isInputOutput ? '<div class="node-toggle" onclick="toggleNode(event, \''+n.id+'\')"></div>' : ''}
-                    <div class="node-led"></div>
-                    <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
-                    <div class="node-title">${n.title}</div>
-                    <div class="node-subtext">${n.douglas ? 'ANALYZING_FLOW_STATE' : (n.human ? 'AWAITING_USER_INPUT' : 'STANDBY_DATA_SYNC')}</div>
-                    ${n.human ? `
-                        <div class="flex gap-2 mt-4 pt-4 border-t border-[#111]">
-                            <button class="flex-1 bg-white text-black font-brick text-[9px] py-2 hover:bg-[#DC2626] hover:text-white transition-colors">APROVAR</button>
-                            <button class="flex-1 border border-[#222] text-[#444] font-brick text-[9px] py-2 hover:border-white hover:text-white transition-colors">REVISAR</button>
-                        </div>
-                    ` : ''}
-                `;
-                el.onclick = (e) => { if (!e.target.classList.contains('node-toggle')) openPanel(n); };
-                container.appendChild(el);
-                makeDraggable(el);
-            });
-
-            applyConfigToNodes();
-            updateConnections();
-        }
-
-        function updateConnections() {
-            const svg = document.getElementById('conn-svg');
-            svg.innerHTML = '';
-            links.forEach(([fId, tId]) => {
-                const f = document.getElementById(fId), t = document.getElementById(tId);
-                if(!f || !t) return;
-                const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
-                const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
-                const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
-                
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
-                line.setAttribute("class", `conn-line ${!f.classList.contains('disabled') && !t.classList.contains('disabled') ? 'active' : ''}`);
-                svg.appendChild(line);
-
-                if(!f.classList.contains('disabled') && !t.classList.contains('disabled')) {
-                    const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    pulse.setAttribute("r", "2"); pulse.setAttribute("class", "pulse-dot");
-                    const anim = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
-                    anim.setAttribute("path", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
-                    anim.setAttribute("dur", "3s"); anim.setAttribute("repeatCount", "indefinite");
-                    pulse.appendChild(anim); svg.appendChild(pulse);
-                }
-            });
-        }
-
-        function makeDraggable(el) {
-            let p1=0,p2=0,p3=0,p4=0; el.onmousedown = (e) => {
-                e.preventDefault(); p3=e.clientX; p4=e.clientY;
-                document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
-                document.onmousemove = (e) => {
-                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
-                    updateConnections();
-                };
-            };
-        }
-
-        function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
-        function openNewBriefing() { 
-            document.getElementById('briefing-modal').classList.remove('hidden');
-            document.getElementById('bf-title').focus();
-        }
-        
-        function closeBriefingModal() {
-            document.getElementById('briefing-modal').classList.add('hidden');
-            document.getElementById('briefing-form').reset();
-        }
-
-        function openScheme() {
-            const modal = document.getElementById('scheme-modal');
-            const title = document.getElementById('scheme-mode-title');
-            const diagram = document.getElementById('scheme-diagram');
-            const info = document.getElementById('scheme-info');
-            
-            // Define diagrams for each mode
-            const schemes = {
-                marketing: {
-                    title: 'MARKETING',
-                    diagram: `BRIEFING (raw + anexos)
-│
-▼
-00. DOUGLAS - Pré-processador
-    → Lê PDFs/imagens/links
-    → Consolida briefing estruturado
-    → Economiza tokens downstream
-│
-▼
-01. BRIEF VALIDATOR (Flash)
-│
-▼
-02. AUDIENCE (Flash) ══► 03. RESEARCHER (Flash)
-    usa persona hardcoded
-│
-▼
-04. CLAIMS CHECKER (Flash)
-│
-├──────────┼──────────┐
-▼          ▼          ▼
-┌────────┐ ┌────────┐ ┌────────┐
-│COPY A  │ │COPY B  │ │COPY C  │
-│GPT-5.2 │ │ FLASH  │ │SONNET  │
-│temp=1.0│ │temp=1.0│ │temp=1.0│
-└────────┘ └────────┘ └────────┘
-│          │          │
-└──────────┼──────────┘
-           ▼
-06. BRAND GUARDIANS (Flash) - valida as 3
-│
-▼
-07. CRITICS (GPT-5.2) - escolhem a melhor
-│
-▼
-08. FILTRO FINAL (Claude Opus)
-    ├─ score ≥80 → segue
-    └─ score <80 → VOLTA PRO COPY (05) com feedback
-       (máx 3 loops, depois escala pra HUMAN)
-│
-▼
-09. HUMAN - Aprovação Final
-│
-▼
-OUTPUT READY`,
-                    info: `<div>• <strong>Douglas (etapa 0):</strong> Processa anexos e consolida briefing</div>
-<div>• <strong>Audience:</strong> Usa persona hardcoded (não faz pesquisa genérica)</div>
-<div>• <strong>Três versões criativas paralelas (A/B/C)</strong> com temperatura 1.0</div>
-<div>• Brand Guardians valida todas as versões</div>
-<div>• Critics escolhem a melhor</div>
-<div>• <strong>Filtro final com Claude Opus:</strong> Se reprovar, volta pro COPYWRITER com feedback (máx 3 loops)</div>
-<div>• <strong>HUMAN:</strong> Aprovação final no War Room antes de output</div>`
-                },
-                projetos: {
-                    title: 'PROJETOS',
-                    diagram: `BRIEFING (raw + anexos)
-│
-▼
-00. DOUGLAS - Pré-processador
-    → Processa anexos e cria contexto consolidado
-│
-▼
-01. BRAND DIGEST (Flash)
-│
-▼
-02. CREATIVE IDEATION (GPT-5.2) - 3 conceitos
-│
-▼
-03. CONCEPT CRITIC (Flash) - escolhe melhor
-│
-▼
-04. EXECUTION DESIGN (Gemini Pro) - direção visual
-│
-▼
-05. COPYWRITER (Sonnet) - roteiro final
-│
-▼
-06. DIRECTOR (Gemini Pro) - avalia execução
-    → inclui conceito_completo no output
-    ├─ score ≥85 → segue
-    └─ score <85 → VOLTA PRO COPYWRITER (05) com feedback
-       (máx 3 loops, depois escala pra HUMAN)
-│
-▼
-07. HUMAN - Aprovação Final
-│
-▼
-OUTPUT READY`,
-                    info: `<div>• <strong>Douglas (etapa 0):</strong> Processa anexos e consolida briefing</div>
-<div>• Pipeline focado em projetos internos</div>
-<div>• Extrai DNA da marca e gera 3 conceitos</div>
-<div>• Concept Critic escolhe o melhor conceito</div>
-<div>• Execution Design define direção visual</div>
-<div>• <strong>Director:</strong> Se reprovar, volta pro COPYWRITER com feedback (máx 3 loops)</div>
-<div>• <strong>HUMAN:</strong> Aprovação final no War Room antes de output</div>`
-                },
-                ideias: {
-                    title: 'IDEIAS',
-                    diagram: `BRIEFING
-│
-▼
-01. IDEA PARSER (Flash) - estrutura a ideia
-│
-▼
-02. CONTEXT SCOUT (Flash + Web) - pesquisa contexto
-│
-├──────────────────┐
-▼                  ▼
-DEVILS ADVOCATE    ANGELS ADVOCATE
-(Sonnet)           (Sonnet)
-│                  │
-└──────────────────┘
-           ▼
-04. VERDICT JUDGE (Gemini Pro) - decisão final
-│
-▼
-05. OUTPUT REPORT`,
-                    info: `<div>• Pipeline de validação rápida de ideias</div>
-<div>• Context Scout faz research automático</div>
-<div>• Devils vs Angels debate a viabilidade</div>
-<div>• Verdict Judge toma decisão final</div>
-<div>• Relatório estruturado com recomendação</div>`
-                }
-            };
-            
-            const scheme = schemes[currentMode] || schemes.marketing;
-            title.textContent = scheme.title;
-            diagram.textContent = scheme.diagram;
-            info.innerHTML = scheme.info;
-            
-            modal.style.display = 'flex';
-        }
-
-        function closeScheme() {
-            document.getElementById('scheme-modal').style.display = 'none';
-        }
-
-        async function submitBriefing(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            const originalText = btn.textContent;
-            btn.textContent = 'UPLOADING...';
-            btn.disabled = true;
-
-            const formData = new FormData();
-            formData.append('title', document.getElementById('bf-title').value);
-            formData.append('content', document.getElementById('bf-content').value);
-            formData.append('mode', document.querySelector('input[name="bf-mode"]:checked').value);
-            
-            const files = document.getElementById('bf-files').files;
-            for(let i=0; i<files.length; i++) {
-                formData.append('files', files[i]);
-            }
-
-            try {
-                const res = await fetch(`${API_URL}/briefing`, {
-                    method: 'POST',
-                    headers: { 'X-API-Key': 'brick-squad-2026' }, // Auto-auth for dashboard
-                    body: formData
-                });
-                
-                if(res.ok) {
-                    closeBriefingModal();
-                    showNotification('BRIEFING INGESTED SUCCESSFULLY', 'success');
-                    
-                    // Auto-switch to the mode where briefing was created
-                    const mode = document.querySelector('input[name="bf-mode"]:checked').value;
-                    if(currentMode !== mode) enterMode(mode);
-                    
-                    fetchState(); // Refresh lobby
-                } else {
-                    const err = await res.json();
-                    showNotification('ERROR: ' + err.error, 'error');
-                }
-            } catch(error) {
-                showNotification('NETWORK ERROR: ' + error.message, 'error');
-            } finally {
-                btn.textContent = originalText;
-                btn.disabled = false;
-            }
-        }
-
-        // NODE CONFIG MAPPING
-        const nodeConfigMapMarketing = {
-            'n1': 'validator', 'n2': 'audience', 'n3': 'researcher', 'n4': 'claims',
-            'n5a': 'copy_gpt', 'n5b': 'copy_flash', 'n5c': 'copy_sonnet',
-            'n6': 'guardian', 'n7': 'critics', 'n8': 'opus'
-        };
-
-        const nodeConfigMapProjetos = {
-            'p1': 'brand_digest', 'p2': 'creative_ideation', 'p3': 'concept_critic',
-            'p4': 'execution_design', 'p5': 'copywriter', 'p6': 'director'
-        };
-
-        const nodeConfigMapIdeias = {
-            'i1': 'parser', 'i2': 'scout', 'i3a': 'devil', 'i3b': 'angel', 'i4': 'judge'
-        };
-
-        // FILE MAPPING (Fix: Map Node Titles to Real Filenames)
         const fileMapping = {
             'BRIEFING_INPUT': ['BRIEFING', 'INPUT'],
             'VALIDATOR': ['01_BRIEF_VALIDATOR', 'BRIEF_VALIDATOR', 'VALIDATOR'],
@@ -1033,17 +642,12 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
             'STRATEGY': ['07_CRITIC_LITE', 'CRITIC_LITE', 'STRATEGY'],
             'WALL': ['08_CRITIC_OPUS', 'CRITIC_OPUS', 'CRITIC'],
             'OUTPUT_ASSETS': ['FINAL', 'OUTPUT', 'READY'],
-            
-            // Projetos v2.0 - Relaxed Matching (With or Without Numbers)
             'BRAND_DIGEST': ['01_BRAND_DIGEST', 'BRAND_DIGEST'],
             'CREATIVE_IDEATION': ['02_CREATIVE_IDEATION', 'CREATIVE_IDEATION'],
             'CONCEPT_CRITIC': ['03_CONCEPT_CRITIC', 'CONCEPT_CRITIC'],
             'EXECUTION_DESIGN': ['04_EXECUTION_DESIGN', 'EXECUTION_DESIGN'],
             'COPYWRITER': ['05_COPYWRITER', 'COPYWRITER'],
             'DIRECTOR': ['06_DIRECTOR', 'DIRECTOR'],
-            'OUTPUT_FINAL': ['FINAL', 'OUTPUT', 'READY'],
-
-            // Ideias v1.1 - Universal Validator
             'IDEA_INPUT': ['BRIEFING', 'INPUT', 'IDEA'],
             'IDEA_PARSER': ['01_IDEA_PARSER', 'PARSER', 'IDEA_PARSER'],
             'CONTEXT_SCOUT': ['02_CONTEXT_SCOUT', 'SCOUT', 'CONTEXT'],
@@ -1053,380 +657,153 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
             'OUTPUT_REPORT': ['FINAL', 'OUTPUT', 'REPORT', 'READY']
         };
 
-        function openPanel(n) { 
-            document.getElementById('panel-title').textContent = n.title;
-            
-            // Safety check
-            if (!currentState) {
-                document.getElementById('panel-body').innerHTML = '<div class="text-red-500 p-4">Error: State not loaded</div>';
-                document.getElementById('agent-panel').classList.add('open');
-                return;
-            }
-            
-            // Auto-detect JobID if not selected yet
+        function renderNodeGraphic() {
+            const container = document.getElementById('node-container');
+            const svg = document.getElementById('conn-svg');
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
+            const isComplete = projectFiles.some(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
+            
+            container.innerHTML = '';
+            svg.innerHTML = '';
+
+            nodeDef.forEach(n => {
+                const el = document.createElement('div');
+                el.className = `node ${n.douglas?'node-douglas':''}`;
+                el.id = n.id;
+                el.style.left = `calc(50% + ${n.x}px - 160px)`;
+                el.style.top = `${n.y}px`;
+
+                const hasFile = isComplete || projectFiles.some(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
+                if (!hasFile && !n.douglas && !n.title.includes('INPUT') && !n.title.includes('READY')) {
+                    el.classList.add('pending-execution');
+                } else {
+                    el.classList.add('active-node');
+                }
+
+                el.innerHTML = `
+                    <div class="node-led"></div>
+                    <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
+                    <div class="node-title">${n.title}</div>
+                    <div class="node-subtext">${n.douglas ? 'ANALYZING_FLOW_STATE' : (n.human ? 'AWAITING_USER_INPUT' : 'STANDBY_DATA_SYNC')}</div>
+                `;
+                el.onclick = () => openPanel(n);
+                container.appendChild(el);
+            });
+            updateConnections();
+        }
+
+        function updateConnections() {
+            const svg = document.getElementById('conn-svg');
+            svg.innerHTML = '';
+            links.forEach(([fId, tId]) => {
+                const f = document.getElementById(fId), t = document.getElementById(tId);
+                if(!f || !t) return;
+                const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
+                const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
+                const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
+                line.setAttribute("class", "conn-line active");
+                svg.appendChild(line);
+            });
+        }
+
+        function openPanel(n) {
+            document.getElementById('panel-title').textContent = n.title;
+            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            
             if (!selectedJobId && allFiles.length > 0) {
-                // Extract all unique job IDs from filenames
                 const jobIds = [...new Set(allFiles.map(f => {
                     const match = f.name.match(/^(\d+)_/);
                     return match ? match[1] : null;
                 }).filter(Boolean))];
-                
-                // Pick the job with most files (most likely the active one)
                 if (jobIds.length > 0) {
-                    const counts = jobIds.map(id => ({
-                        id,
-                        count: allFiles.filter(f => f.name.startsWith(id)).length
-                    }));
+                    const counts = jobIds.map(id => ({ id, count: allFiles.filter(f => f.name.startsWith(id)).length }));
                     selectedJobId = counts.sort((a, b) => b.count - a.count)[0].id;
-                    console.log('[AUTO-DETECT] Selected JobID:', selectedJobId);
                 }
             }
             
-            // Find file related to this node
-            const projectFiles = selectedJobId 
-                ? allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()))
-                : allFiles;
+            const projectFiles = selectedJobId ? allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase())) : allFiles;
             
-            let content = '';
             let nodeFile = null;
-
-            // SPECIAL CASE: HUMAN NODE - Show Final Output for Approval
-            if (n.human) {
-                const finalFile = projectFiles.find(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
-                if (finalFile) {
-                    const rawContent = finalFile.content;
-                    let htmlContent = '';
-                    try {
-                        htmlContent = marked.parse(rawContent);
-                    } catch (e) {
-                        htmlContent = `<pre class="whitespace-pre-wrap">${rawContent}</pre>`;
-                    }
-                    content = `
-                        <div class="section-box border-yellow-900/30 bg-yellow-900/5">
-                            <span class="section-label text-yellow-500">⚠️ AWAITING_APPROVAL</span>
-                            <div class="text-[10px] font-mono text-white mb-2">${finalFile.name}</div>
-                            <div class="text-[9px] font-mono text-[#666]">Review the proposal below and click APROVAR when ready.</div>
-                        </div>
-                        <div class="md-content">${htmlContent}</div>
-                    `;
-                    document.getElementById('panel-body').innerHTML = content;
-                    document.getElementById('agent-panel').classList.add('open');
-                    return; // Exit early
-                } else {
-                    content = `
-                        <div class="flex flex-col items-center justify-center h-full text-[#666] font-mono text-xs">
-                            <div class="mb-4 text-2xl">⏳</div>
-                            <div class="italic">Pipeline still running...</div>
-                            <div class="mt-2 text-[10px] opacity-50">Waiting for final output to approve</div>
-                        </div>
-                    `;
-                    document.getElementById('panel-body').innerHTML = content;
-                    document.getElementById('agent-panel').classList.add('open');
-                    return; // Exit early
-                }
-            }
-
-            // 1. Try mapping lookup
             const searchTerms = fileMapping[n.title] || [n.title];
             for (const term of searchTerms) {
                 nodeFile = projectFiles.find(f => f.name.toUpperCase().includes(term.toUpperCase()));
                 if (nodeFile) break;
             }
-            
-            // 2. Fallback: Try exact title match if no mapping found
-            if (!nodeFile) {
-                nodeFile = projectFiles.find(f => f.name.toUpperCase().includes(n.title.toUpperCase()));
-            }
-            
+
             if (nodeFile) {
                 const rawContent = nodeFile.content;
                 let htmlContent = '';
-                
-                // Try to parse as JSON first
                 let jsonData = null;
-                try {
-                    jsonData = JSON.parse(rawContent);
-                } catch (e) {
-                    // Not JSON, will render as markdown below
-                }
-                
+                try { jsonData = JSON.parse(rawContent); } catch (e) {}
+
                 if (jsonData) {
-                    // It's JSON - structure it nicely
                     htmlContent = '<div class="json-structured">';
-                    
-                    // Helper to render any object generically
                     const renderObject = (obj, depth = 0) => {
                         let html = '';
                         Object.entries(obj).forEach(([key, value]) => {
                             const indent = depth * 16;
-                            html += `<div style="margin-left: ${indent}px" class="mb-2">`;
-                            html += `<span class="text-gray-400 text-xs font-mono">${key}:</span> `;
-                            
+                            html += `<div style="margin-left: ${indent}px" class="mb-2"><span class="text-gray-400 text-xs font-mono">${key}:</span> `;
                             if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
                                 html += '<div class="ml-4">' + renderObject(value, depth + 1) + '</div>';
                             } else if (Array.isArray(value)) {
                                 html += `<span class="text-gray-600 text-xs">[${value.length} items]</span>`;
-                                value.forEach((item, i) => {
-                                    if (typeof item === 'object') {
-                                        html += '<div class="ml-4 border-l border-gray-700 pl-2 mt-1">' + renderObject(item, depth + 1) + '</div>';
-                                    } else {
-                                        html += `<div class="ml-4 text-sm text-gray-300">• ${item}</div>`;
-                                    }
+                                value.forEach(item => {
+                                    if (typeof item === 'object') { html += '<div class="ml-4 border-l border-gray-700 pl-2 mt-1">' + renderObject(item, depth + 1) + '</div>'; }
+                                    else { html += `<div class="ml-4 text-sm text-gray-300">• ${item}</div>`; }
                                 });
-                            } else {
-                                html += `<span class="text-white text-sm">${value}</span>`;
-                            }
+                            } else { html += `<span class="text-white text-sm">${value}</span>`; }
                             html += '</div>';
                         });
                         return html;
                     };
                     
-                    let hasKnownSections = false;
-                    
-                    // CONCEITO section (if exists)
+                    let hasKnown = false;
                     if (jsonData.conceito || jsonData.conceitos || jsonData.conceito_completo) {
-                        hasKnownSections = true;
-                        htmlContent += '<div class="section-box border-purple-900/30 bg-purple-900/5 mb-4">';
-                        htmlContent += '<span class="section-label text-purple-400">💡 CONCEITO</span>';
-                        
-                        // Priority: conceito_completo (from DIRECTOR/CRITIC with full details)
-                        const fullConcept = jsonData.conceito_completo || (typeof jsonData.conceito === 'object' ? jsonData.conceito : null);
-                        
-                        if (fullConcept && fullConcept.nome) {
-                            htmlContent += `<div class="text-lg font-bold text-white mb-3">${fullConcept.nome}</div>`;
-                            if (fullConcept.premissa) {
-                                htmlContent += `<div class="text-sm text-gray-300 mb-3 leading-relaxed">${fullConcept.premissa}</div>`;
-                            }
-                            if (fullConcept.porque_esse_cliente) {
-                                htmlContent += `<div class="text-xs text-gray-400 italic border-l-2 border-purple-700 pl-3 py-2">→ ${fullConcept.porque_esse_cliente}</div>`;
-                            }
-                        } else if (typeof jsonData.conceito === 'string') {
-                            // Simple string concept name
-                            htmlContent += `<div class="text-lg font-bold text-white mb-2">${jsonData.conceito}</div>`;
-                        } else if (jsonData.conceitos && Array.isArray(jsonData.conceitos)) {
-                            // Multiple concepts (from CREATIVE_IDEATION)
-                            jsonData.conceitos.forEach((c, i) => {
-                                htmlContent += `<div class="mb-3 pb-3 ${i < jsonData.conceitos.length - 1 ? 'border-b border-gray-700' : ''}">`;
-                                htmlContent += `<div class="text-md font-bold text-white mb-1">${i+1}. ${c.nome}</div>`;
-                                if (c.premissa) htmlContent += `<div class="text-xs text-gray-400 mb-1">${c.premissa}</div>`;
-                                if (c.porque_esse_cliente) htmlContent += `<div class="text-xs text-gray-500 italic">→ ${c.porque_esse_cliente}</div>`;
-                                htmlContent += '</div>';
-                            });
+                        hasKnown = true;
+                        htmlContent += '<div class="section-box border-purple-900/30 bg-purple-900/5 mb-4"><span class="section-label text-purple-400">💡 CONCEITO</span>';
+                        const c = jsonData.conceito_completo || jsonData.conceito;
+                        if (c && c.nome) {
+                            htmlContent += `<div class="text-lg font-bold text-white mb-3">${c.nome}</div>`;
+                            if (c.premissa) htmlContent += `<div class="text-sm text-gray-300 mb-3 leading-relaxed">${c.premissa}</div>`;
                         }
                         htmlContent += '</div>';
                     }
-                    
-                    // SCORES/AVALIACOES section (if exists)
-                    if (jsonData.scores || jsonData.avaliacoes) {
-                        hasKnownSections = true;
-                        htmlContent += '<div class="section-box border-blue-900/30 bg-blue-900/5 mb-4">';
-                        htmlContent += '<span class="section-label text-blue-400">📊 AVALIAÇÃO</span>';
-                        
-                        if (jsonData.scores) {
-                            Object.entries(jsonData.scores).forEach(([key, val]) => {
-                                htmlContent += `<div class="flex justify-between mb-1 text-xs">`;
-                                htmlContent += `<span class="text-gray-400">${key}:</span>`;
-                                htmlContent += `<span class="text-white font-mono">${val.nota || val}/100</span>`;
-                                htmlContent += `</div>`;
-                            });
-                        }
-                        
-                        if (jsonData.nota_final || jsonData.score_craft) {
-                            const score = jsonData.nota_final || jsonData.score_craft;
-                            htmlContent += `<div class="mt-2 pt-2 border-t border-gray-700 flex justify-between font-bold">`;
-                            htmlContent += `<span class="text-gray-300">FINAL:</span>`;
-                            htmlContent += `<span class="text-white text-lg">${score}/100</span>`;
-                            htmlContent += `</div>`;
-                        }
-                        
-                        htmlContent += '</div>';
+                    if (!hasKnown) {
+                        htmlContent += '<div class="section-box border-gray-700 bg-gray-900/5 mb-4"><span class="section-label text-gray-400">📄 AGENT_OUTPUT</span>';
+                        htmlContent += '<div class="text-xs">' + renderObject(jsonData) + '</div></div>';
                     }
-                    
-                    // RECOMENDACAO/VEREDITO section (if exists)
-                    if (jsonData.veredito || jsonData.recomendacao || jsonData.recomendacao_final) {
-                        hasKnownSections = true;
-                        const rec = jsonData.recomendacao_final || jsonData.recomendacao || {};
-                        const veredito = jsonData.veredito;
-                        
-                        htmlContent += '<div class="section-box border-green-900/30 bg-green-900/5 mb-4">';
-                        htmlContent += '<span class="section-label text-green-400">✓ RECOMENDAÇÃO</span>';
-                        
-                        if (veredito) {
-                            const color = veredito === 'APROVAR' ? 'text-green-400' : veredito === 'REVISAR' ? 'text-yellow-400' : 'text-red-400';
-                            htmlContent += `<div class="text-lg font-bold ${color} mb-2">${veredito}</div>`;
-                        }
-                        
-                        if (rec.conceito) {
-                            htmlContent += `<div class="text-white font-semibold mb-1">${rec.conceito}</div>`;
-                        }
-                        
-                        if (rec.justificativa) {
-                            htmlContent += `<div class="text-sm text-gray-300">${rec.justificativa}</div>`;
-                        }
-                        
-                        if (rec.condicoes) {
-                            htmlContent += `<div class="text-xs text-gray-400 mt-2 italic">Condições: ${rec.condicoes}</div>`;
-                        }
-                        
-                        htmlContent += '</div>';
-                        hasKnownSections = true;
-                    }
-                    
-                    // If no known sections found, render generic JSON view
-                    if (!hasKnownSections) {
-                        htmlContent += '<div class="section-box border-gray-700 bg-gray-900/5 mb-4">';
-                        htmlContent += '<span class="section-label text-gray-400">📄 AGENT_OUTPUT</span>';
-                        htmlContent += '<div class="text-xs">' + renderObject(jsonData) + '</div>';
-                        htmlContent += '</div>';
-                    }
-                    
-                    // RAW JSON section (collapsed by default)
-                    htmlContent += '<details class="section-box border-gray-700 bg-gray-900/20">';
-                    htmlContent += '<summary class="section-label cursor-pointer hover:text-white">🔍 RAW_JSON</summary>';
-                    htmlContent += `<pre class="text-[10px] text-gray-400 mt-2 overflow-x-auto">${JSON.stringify(jsonData, null, 2)}</pre>`;
-                    htmlContent += '</details>';
-                    
-                    htmlContent += '</div>';
+                    htmlContent += '<details class="section-box border-gray-700 bg-gray-900/20"><summary class="section-label">🔍 RAW_JSON</summary><pre class="text-[10px] text-gray-400 mt-2">' + JSON.stringify(jsonData, null, 2) + '</pre></details></div>';
                 } else {
-                    // Not JSON - render as Markdown
-                    try {
-                        if (typeof marked !== 'undefined' && marked.parse) {
-                            htmlContent = marked.parse(rawContent);
-                        } else {
-                            htmlContent = `<pre class="whitespace-pre-wrap text-[11px] text-[#ccc] p-4">${rawContent}</pre>`;
-                        }
-                    } catch (e) {
-                        console.error('Marked parse error:', e);
-                        htmlContent = `<pre class="whitespace-pre-wrap text-[11px] text-[#ccc] p-4">${rawContent}</pre>`;
-                    }
+                    htmlContent = marked.parse(rawContent);
                 }
-                
-                content = `
-                    <div class="section-box">
-                        <span class="section-label">FILE_METADATA</span>
-                        <div class="grid grid-cols-2 gap-4 text-[10px] font-mono text-[#888]">
-                            <div>NAME: <span class="text-white">${nodeFile.name}</span></div>
-                            <div>SIZE: <span class="text-white">${(rawContent.length/1024).toFixed(1)} KB</span></div>
-                            <div>MODIFIED: <span class="text-white">${new Date(nodeFile.mtime).toLocaleString()}</span></div>
-                        </div>
-                    </div>
-                    <div class="md-content">${htmlContent}</div>
-                `;
+                document.getElementById('panel-body').innerHTML = htmlContent;
             } else {
-                // If no specific file, show FINAL/OUTPUT if exists and node is output
-                const isOutputNode = n.title.includes('OUTPUT') || n.title.includes('FINAL') || n.title.includes('READY');
-                if (isOutputNode) {
-                    const finalFile = projectFiles.find(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
-                    if (finalFile) {
-                        let htmlContent = '';
-                        try {
-                            htmlContent = marked.parse(finalFile.content);
-                        } catch (e) {
-                            htmlContent = `<pre class="whitespace-pre-wrap">${finalFile.content}</pre>`;
-                        }
-                        content = `
-                            <div class="section-box border-green-900/30 bg-green-900/5">
-                                <span class="section-label text-green-500">FINAL_DELIVERABLE</span>
-                                <div class="text-[10px] font-mono text-white mb-4">${finalFile.name}</div>
-                            </div>
-                            <div class="md-content">${htmlContent}</div>
-                        `;
-                    } else {
-                        content = `<div class="text-[#444] font-mono text-xs text-center mt-20">No output file generated yet.</div>`;
-                    }
-                } else {
-                    // Debug: Show what files exist for this project
-                    const debugFiles = projectFiles.map(f => f.name).join('<br>');
-                    content = `
-                        <div class="flex flex-col items-center justify-center h-full text-[#444] font-mono text-xs p-8">
-                            <div class="mb-4 opacity-20 text-4xl">∅</div>
-                            <div class="italic mb-4">Waiting for agent execution...</div>
-                            <div class="text-[10px] opacity-50 mb-4">Searching for: ${searchTerms.join(', ')}</div>
-                            <div class="text-[9px] text-left w-full border-t border-[#222] pt-4 mt-4">
-                                <div class="text-[#666] mb-2">DEBUG: Files in this project:</div>
-                                <div class="text-[#888]">${debugFiles || 'No files found'}</div>
-                            </div>
-                        </div>
-                    `;
-                }
+                document.getElementById('panel-body').innerHTML = '<div class="p-8 text-center text-[#444] font-mono italic">Waiting for agent execution...</div>';
             }
+            document.getElementById('agent-panel').classList.add('open');
+        }
+
+        async function submitBriefing(e) {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('title', document.getElementById('bf-title').value);
+            formData.append('content', document.getElementById('bf-content').value);
+            formData.append('mode', document.querySelector('input[name="bf-mode"]:checked').value);
+            const files = document.getElementById('bf-files').files;
+            for (let i = 0; i < files.length; i++) { formData.append('files', files[i]); }
             
-            document.getElementById('panel-body').innerHTML = content;
-            document.getElementById('agent-panel').classList.add('open'); 
+            const res = await fetch(`${API_URL}/briefing`, { method: 'POST', body: formData });
+            if (res.ok) { closeBriefingModal(); fetchState(); showNotification('PROTOCOL INITIATED'); }
         }
 
-        let pipelineConfig = null;
-
-        async function loadPipelineConfig() {
-            try {
-                const mode = currentMode || 'marketing';
-                const res = await fetch(`${API_URL}/pipeline?mode=${mode}`);
-                if (res.ok) {
-                    pipelineConfig = await res.json();
-                    applyConfigToNodes();
-                }
-            } catch(e) {
-                console.warn('Pipeline config not found, using defaults');
-            }
-        }
-
-        function applyConfigToNodes() {
-            if (!pipelineConfig || !pipelineConfig.nodes) return;
-            Object.entries(nodeConfigMap).forEach(([nodeId, configKey]) => {
-                const node = document.getElementById(nodeId);
-                if (node && pipelineConfig.nodes[configKey]) {
-                    const enabled = pipelineConfig.nodes[configKey].enabled;
-                    if (!enabled) {
-                        node.classList.add('disabled');
-                    } else {
-                        node.classList.remove('disabled');
-                    }
-                }
-            });
-            updateConnections();
-        }
-
-        function toggleNode(e, nodeId) {
-            e.stopPropagation();
-            const node = document.getElementById(nodeId);
-            if (!node) return;
-            node.classList.toggle('disabled');
-            updateConnections();
-        }
-
-        async function savePipelineConfig() {
-            const nodes = {};
-            Object.entries(nodeConfigMap).forEach(([nodeId, configKey]) => {
-                const node = document.getElementById(nodeId);
-                const enabled = node ? !node.classList.contains('disabled') : true;
-                nodes[configKey] = { enabled, model: 'auto' };
-            });
-
-            const mode = currentMode || 'marketing';
-
-            try {
-                const res = await fetch(`${API_URL}/pipeline`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
-                    body: JSON.stringify({ nodes, mode })
-                });
-                if (res.ok) {
-                    const result = await res.json();
-                    showNotification(`${mode.toUpperCase()} pipeline configuration saved!`, 'success');
-                    pipelineConfig = result.config;
-                } else {
-                    showNotification('Failed to save configuration', 'error');
-                }
-            } catch(e) {
-                showNotification('Error: ' + e.message, 'error');
-            }
-        }
-
-        window.onload = () => { 
-            setInterval(fetchState, 5000); 
-            loadPipelineConfig();
-        };
+        function openScheme() { document.getElementById('scheme-modal').style.display = 'flex'; }
+        function closeScheme() { document.getElementById('scheme-modal').style.display = 'none'; }
+        
+        setInterval(fetchState, 10000);
+        fetchState();
     </script>
 </body>
 </html>
