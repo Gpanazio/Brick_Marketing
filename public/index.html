@@ -720,31 +720,35 @@ OUTPUT (Copy Final)`;
                         html += '</ul>';
                     }
                 } else if (typeof value === 'object' && value !== null) {
-                    html += '<div class="pl-4 space-y-3">';
+                    html += '<div class="pl-4 space-y-4">';
                     for (const [subKey, subValue] of Object.entries(value)) {
                         let formattedValue;
                         
                         if (Array.isArray(subValue)) {
-                            // Arrays dentro de objetos
+                            // Arrays dentro de objetos → sempre quebra linha
                             if (subValue.length === 0) {
                                 formattedValue = '<span class="text-[#666] italic">Nenhum</span>';
                             } else {
-                                formattedValue = subValue.map(item => `• ${item}`).join('<br>');
+                                formattedValue = '<div class="mt-2 space-y-1">' + 
+                                    subValue.map(item => `<div class="text-[#aaa]">• ${item}</div>`).join('') + 
+                                    '</div>';
                             }
                         } else if (typeof subValue === 'object' && subValue !== null) {
                             // Objetos aninhados
-                            formattedValue = JSON.stringify(subValue, null, 2)
-                                .replace(/[\[\]{}"]/g, '')
-                                .replace(/^\s+/gm, '')
-                                .replace(/,\s*$/gm, '')
-                                .split('\n')
-                                .filter(line => line.trim())
-                                .join('<br>');
+                            formattedValue = '<div class="mt-2 space-y-1">';
+                            for (const [nestedKey, nestedValue] of Object.entries(subValue)) {
+                                const cleanKey = nestedKey.replace(/_/g, ' ');
+                                const cleanValue = Array.isArray(nestedValue) 
+                                    ? '<div class="ml-4 mt-1">' + nestedValue.map(v => `<div>• ${v}</div>`).join('') + '</div>'
+                                    : formatValue(nestedValue);
+                                formattedValue += `<div class="text-[#aaa]"><span class="text-[#666] font-mono">${cleanKey}:</span> ${cleanValue}</div>`;
+                            }
+                            formattedValue += '</div>';
                         } else {
                             formattedValue = formatValue(subValue);
                         }
                         
-                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono">${subKey.replace(/_/g, ' ')}:</span> <span class="text-[#ccc]">${formattedValue}</span></div>`;
+                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${subKey.replace(/_/g, ' ')}:</span> <span class="text-[#ccc]">${formattedValue}</span></div>`;
                     }
                     html += '</div>';
                 } else {
