@@ -237,6 +237,43 @@
         </div>
     </div>
 
+    <!-- APPROVAL MODAL -->
+    <div id="approval-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'approval-modal') closeApprovalModal()">
+        <div class="bg-[#050505] border border-[#DC2626] w-full max-w-xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
+            <div class="p-8 border-b border-[#222]">
+                <button onclick="closeApprovalModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <h2 class="text-2xl font-brick text-white uppercase">APROVAR CAMPANHA</h2>
+                <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Confirme para liberar para execução</div>
+            </div>
+            
+            <div class="p-8">
+                <div class="bg-[#0a0a0a] border border-[#222] p-6 space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-[#666] font-mono">PROJETO:</span>
+                        <span id="approval-project" class="text-white font-semibold">--</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-[#666] font-mono">SCORE FINAL:</span>
+                        <span class="text-green-500 font-mono font-bold">94/100</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-[#666] font-mono">APROVADO POR:</span>
+                        <span class="text-[#DC2626] font-mono">CLAUDE OPUS 4.5</span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-xs text-[#666] font-mono leading-relaxed">
+                    Ao aprovar, você confirma que revisou o conteúdo e autoriza a execução da campanha conforme planejado.
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-[#222] flex justify-end gap-4">
+                <button onclick="closeApprovalModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
+                <button onclick="confirmApproval()" class="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-widest px-6 py-3 font-bold">✓ APROVAR</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_URL = '/api';
         let currentState = null;
@@ -644,7 +681,9 @@ OUTPUT (Copy Final)`;
         }
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
-        function openNewBriefing() { alert("Opening Briefing Module..."); }
+        function openNewBriefing() { 
+            showNotification('📋 Módulo de briefing em desenvolvimento.', 'error');
+        }
 
         function openFeedbackModal(e) {
             e.stopPropagation();
@@ -660,7 +699,7 @@ OUTPUT (Copy Final)`;
         async function submitFeedback() {
             const feedback = document.getElementById('feedback-text').value.trim();
             if (!feedback) {
-                alert('Por favor, escreva o feedback antes de enviar.');
+                showNotification('⚠️ Escreva o feedback antes de enviar.', 'error');
                 return;
             }
 
@@ -677,23 +716,59 @@ OUTPUT (Copy Final)`;
                 });
 
                 if (res.ok) {
-                    alert('✅ Feedback enviado! O pipeline será reiniciado com suas instruções.');
                     closeFeedbackModal();
+                    showNotification('✅ FEEDBACK ENVIADO! Pipeline será reiniciado.');
                 } else {
-                    alert('❌ Erro ao enviar feedback. Tente novamente.');
+                    showNotification('❌ Erro ao enviar feedback. Tente novamente.', 'error');
                 }
             } catch(e) {
                 console.error('Erro ao enviar feedback:', e);
-                alert('❌ Erro ao enviar feedback. Tente novamente.');
+                showNotification('❌ Erro ao enviar feedback. Tente novamente.', 'error');
             }
         }
 
         function aprovarCampanha(e) {
             e.stopPropagation();
-            if (confirm('✅ Aprovar esta campanha para execução?')) {
-                alert('🎉 Campanha aprovada! Os próximos passos serão iniciados.');
-                // TODO: Implementar lógica de aprovação
+            const projectTitle = document.getElementById('ng-title').textContent;
+            document.getElementById('approval-project').textContent = projectTitle;
+            document.getElementById('approval-modal').classList.remove('hidden');
+        }
+
+        function closeApprovalModal() {
+            document.getElementById('approval-modal').classList.add('hidden');
+        }
+
+        async function confirmApproval() {
+            try {
+                const res = await fetch(`${API_URL}/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jobId: selectedJobId,
+                        mode: currentMode,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (res.ok) {
+                    closeApprovalModal();
+                    showNotification('🎉 CAMPANHA APROVADA! Pronta para execução.');
+                } else {
+                    showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
+                }
+            } catch(e) {
+                console.error('Erro ao aprovar:', e);
+                showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
             }
+        }
+
+        function showNotification(msg, type = 'success') {
+            // Simple notification (can be enhanced later)
+            const notification = document.createElement('div');
+            notification.className = `fixed top-8 right-8 z-[400] bg-${type === 'error' ? 'red' : 'green'}-600 text-white px-6 py-4 font-mono text-sm border border-${type === 'error' ? 'red' : 'green'}-500 shadow-2xl`;
+            notification.textContent = msg;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 4000);
         }
 
         window.onload = () => { setInterval(fetchState, 5000); };
