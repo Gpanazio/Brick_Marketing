@@ -65,6 +65,20 @@
 
         #view-nodegraphic { display: none; }
         #view-nodegraphic.active { display: block; }
+
+        /* MARKDOWN STYLING IN PANEL */
+        #panel-body h1 { font-size: 20px; font-weight: 900; color: #fff; margin: 24px 0 12px; text-transform: uppercase; }
+        #panel-body h2 { font-size: 16px; font-weight: 700; color: #DC2626; margin: 20px 0 10px; text-transform: uppercase; }
+        #panel-body h3 { font-size: 14px; font-weight: 600; color: #888; margin: 16px 0 8px; }
+        #panel-body p { margin: 12px 0; line-height: 1.6; color: #aaa; }
+        #panel-body ul, #panel-body ol { margin: 12px 0; padding-left: 24px; color: #aaa; }
+        #panel-body li { margin: 6px 0; }
+        #panel-body code { background: #0a0a0a; padding: 2px 6px; border-radius: 3px; color: #DC2626; font-size: 10px; }
+        #panel-body pre { background: #0a0a0a; border: 1px solid #222; padding: 12px; border-radius: 4px; overflow-x: auto; margin: 12px 0; }
+        #panel-body pre code { background: transparent; padding: 0; }
+        #panel-body strong { color: #fff; font-weight: 700; }
+        #panel-body em { color: #DC2626; font-style: italic; }
+        #panel-body blockquote { border-left: 2px solid #DC2626; padding-left: 16px; margin: 12px 0; color: #666; font-style: italic; }
     </style>
 </head>
 <body>
@@ -179,6 +193,23 @@
 
         const links = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
 
+        const fileMapping = {
+            'BRIEFING_INPUT': ['BRIEFING', 'INPUT'], 
+            'DOUGLAS': ['PROCESSED'], 
+            'VALIDATOR': ['01_BRIEF_VALIDATOR', 'VALIDATOR'],
+            'AUDIENCE': ['02_AUDIENCE', 'AUDIENCE'], 
+            'RESEARCH': ['03_TOPIC', 'RESEARCH'], 
+            'FACT_CHECK': ['04_CLAIMS', 'CLAIMS', 'FACT_CHECK'],
+            'COPY_A': ['05_COPYWRITER_GPT', 'COPY_A'], 
+            'COPY_B': ['05_COPYWRITER_FLASH', 'COPY_B'], 
+            'COPY_C': ['05_COPYWRITER_SONNET', 'COPY_C'],
+            'BRAND': ['06_BRAND', 'BRAND'], 
+            'STRATEGY': ['07_CRITIC', 'STRATEGY'], 
+            'WALL': ['08_FILTRO', 'WALL'], 
+            'HUMAN': ['FINAL', 'READY'],
+            'OUTPUT_ASSETS': ['FINAL', 'READY']
+        };
+
         async function fetchState() {
             try {
                 const res = await fetch(`${API_URL}/state${currentMode ? '?mode='+currentMode : ''}`);
@@ -280,7 +311,7 @@
                         </div>
                     ` : ''}
                 `;
-                el.onclick = () => openPanel(n);
+                el.onclick = () => openPanel(n, projectFiles);
                 container.appendChild(el);
                 makeDraggable(el);
             });
@@ -326,7 +357,28 @@
             };
         }
 
-        function openPanel(n) { document.getElementById('panel-title').textContent = n.title; document.getElementById('agent-panel').classList.add('open'); }
+        function openPanel(n, files) {
+            const searchTerms = fileMapping[n.title] || [n.title];
+            const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
+            const body = document.getElementById('panel-body');
+            
+            if (file) {
+                let content = file.content;
+                try {
+                    const json = JSON.parse(content);
+                    content = `<div class="bg-[#0a0a0a] border border-[#222] p-4 rounded"><div class="text-[9px] font-mono text-[#DC2626] mb-2 uppercase tracking-wider">RAW_DATA</div><pre class="text-[10px] text-gray-400 overflow-x-auto">${JSON.stringify(json, null, 2)}</pre></div>`;
+                } catch(e) {
+                    content = marked.parse(content);
+                }
+                body.innerHTML = content;
+            } else {
+                body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Aguardando execução do agente...</div>';
+            }
+            
+            document.getElementById('panel-title').textContent = n.title;
+            document.getElementById('agent-panel').classList.add('open');
+        }
+
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
         function openNewBriefing() { alert("Opening Briefing Module..."); }
 
