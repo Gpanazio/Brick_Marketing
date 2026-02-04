@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BRICK AI // WAR ROOM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
@@ -16,49 +16,73 @@
         .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px); background-size: 25px 25px; pointer-events: none; z-index: -1; }
         .vignette { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%); pointer-events: none; z-index: -1; }
 
-        .node { position: absolute; width: 320px; background: rgba(5, 5, 5, 0.9); border: 1px solid #222; padding: 24px; cursor: pointer; z-index: 10; transition: border-color 0.3s; }
+        /* NODE STYLING - RESTORED PREMIUM */
+        .node { 
+            position: absolute; width: 320px;
+            background: rgba(5, 5, 5, 0.95); border: 1px solid #222; 
+            padding: 24px; cursor: grab; z-index: 10;
+            transition: border-color 0.3s;
+        }
+        .node:active { cursor: grabbing; }
         .node:hover { border-color: #444; }
-        .node.node-douglas { border: 1px solid var(--brick-red); box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
-        .node.pending-execution { opacity: 0.6; border-style: dashed; }
-        .node.active-node { border-color: #666; }
-        .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
-        .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
+        .node.node-douglas { border: 1px solid var(--brick-red); box-shadow: 0 0 20px rgba(220, 38, 38, 0.15); }
+        .node.pending-execution { opacity: 0.5; border-style: dashed; }
+        .node.active-node { border-color: #555; }
+        
+        .node-led { position: absolute; top: 12px; right: 12px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
+        .pending-execution .node-led { background: #333; box-shadow: none; }
+        
+        .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase; }
         .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
-        .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
+        .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #333; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
 
-        .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
+        /* CONNECTIONS - RESTORED PRECISE */
+        .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.15; }
         .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
 
+        /* SIDE PANEL - RESTORED PREMIUM */
         .side-panel { position: fixed; top: 0; right: -600px; width: 550px; height: 100vh; background: #050505; border-left: 1px solid #222; z-index: 250; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
         .side-panel.open { right: 0; }
-        .panel-header { padding: 32px; border-bottom: 1px solid #111; }
+        .panel-header { padding: 32px; border-bottom: 1px solid #111; background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); }
         .panel-content { flex: 1; overflow-y: auto; padding: 32px; }
-        .panel-footer { padding: 24px 32px; border-top: 1px solid #111; display: flex; gap: 16px; justify-content: flex-end; }
+        .panel-footer { padding: 24px 32px; border-top: 1px solid #111; display: flex; gap: 16px; justify-content: flex-end; background: #050505; }
 
+        /* MOBILE RESPONSIVE OVERRIDES - CLEAN VERSION */
         @media (max-width: 768px) {
             body { overflow: hidden; }
             #main-ui { padding: 16px; }
-            header { flex-direction: column; gap: 16px; margin-bottom: 24px !important; }
+            header { flex-direction: column !important; align-items: flex-start !important; gap: 12px; margin-bottom: 20px !important; border-bottom: 1px solid #222 !important; padding-bottom: 16px !important; }
             header h1 { font-size: 20px !important; }
+            #header-sector { margin-left: 0 !important; display: block; margin-top: 2px; font-size: 10px; }
             .side-panel { width: 100vw; right: -100vw; }
-            .node { position: relative !important; left: 0 !important; top: 0 !important; width: 100% !important; margin-bottom: 16px; transform: none !important; }
             #view-nodegraphic { overflow-y: auto !important; padding-top: 120px !important; }
             #canvas-container { height: auto !important; overflow: visible !important; }
             #node-container { height: auto !important; padding: 20px !important; display: flex; flex-direction: column; align-items: center; }
-            #conn-svg { display: none !important; }
-            .fixed.bottom-10 { display: none !important; }
+            .node { position: relative !important; left: 0 !important; top: 0 !important; width: 95% !important; max-width: 340px; margin-bottom: 12px; transform: none !important; }
+            #conn-svg, .fixed.bottom-10 { display: none !important; }
+            #view-nodegraphic header { padding: 16px !important; border-bottom: 1px solid #222 !important; }
+            .btn-brick { padding: 12px 18px !important; font-size: 11px !important; }
         }
 
-        .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 8px 16px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; cursor: pointer; }
+        /* BUTTONS & TOASTS */
+        .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 8px 20px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; cursor: pointer; border: none; }
         .btn-brick:hover { background: #fff; color: #000; }
-        .section-box { border: 1px solid #222; background: #080808; padding: 24px; margin-bottom: 24px; }
-        .section-label { font-family: 'JetBrains Mono'; font-size: 9px; color: #666; text-transform: uppercase; margin-bottom: 12px; display: block; }
-        .md-content { color: #ccc; font-size: 13px; line-height: 1.6; }
-        .md-content h1, .md-content h2 { font-weight: 900; text-transform: uppercase; color: #fff; margin: 24px 0 12px 0; }
-        .md-content h2 { color: var(--brick-red); }
         #notification-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .notification-toast { background: #050505; border: 1px solid #222; padding: 16px 24px; min-width: 300px; animation: slideInRight 0.3s ease-out; }
+        .notification-toast { background: #050505; border: 1px solid #222; padding: 16px 24px; min-width: 300px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); animation: slideInRight 0.3s ease-out; }
+        .notification-toast.success { border-color: #22c55e; }
+        .notification-toast .toast-title { font-family: 'Inter'; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
         @keyframes slideInRight { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* MARKDOWN - RESTORED RICH STYLING */
+        .md-content { color: #ccc; font-size: 14px; line-height: 1.6; }
+        .md-content h1 { font-size: 24px; font-weight: 900; color: #fff; margin: 32px 0 16px 0; border-bottom: 1px solid #222; padding-bottom: 12px; text-transform: uppercase; }
+        .md-content h2 { font-size: 18px; font-weight: 900; color: var(--brick-red); margin: 24px 0 12px 0; text-transform: uppercase; }
+        .md-content p { margin-bottom: 16px; }
+        .md-content ul { margin-bottom: 24px; }
+        .md-content li { position: relative; padding-left: 20px; margin-bottom: 8px; color: #aaa; }
+        .md-content li::before { content: '■'; position: absolute; left: 0; color: #DC2626; font-size: 8px; top: 6px; }
+        .section-box { border: 1px solid #222; background: #080808; padding: 24px; margin-bottom: 24px; }
+        .section-label { font-family: 'JetBrains Mono'; font-size: 9px; color: #555; margin-bottom: 12px; display: block; text-transform: uppercase; letter-spacing: 0.1em; }
     </style>
 </head>
 <body>
@@ -66,25 +90,32 @@
     <div class="vignette"></div>
     <div id="notification-container"></div>
 
+    <!-- MAIN UI -->
     <div id="main-ui" class="h-screen flex flex-col p-8">
         <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8 relative z-50">
-            <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">BRICK AI <span id="header-sector" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span></h1>
+            <div>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">BRICK AI <span id="header-sector" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span></h1>
+                <div class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">System_Active</div>
+            </div>
             <div class="flex gap-4">
-                <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-4 py-2 uppercase">← Sectors</button>
+                <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-4 py-2 uppercase tracking-widest">← Sectors</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
 
         <div id="welcome-screen" class="flex-1 flex items-center justify-center">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
-                <div onclick="enterMode('marketing')" class="border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] cursor-pointer group">
-                    <h3 class="text-3xl font-brick text-white uppercase group-hover:text-[#DC2626]">Marketing</h3>
+                <div onclick="enterMode('marketing')" class="border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] cursor-pointer group transition-all">
+                    <div class="text-[9px] font-mono text-[#333] mb-8 uppercase">SEC // 01</div>
+                    <h3 class="text-3xl font-brick text-white uppercase group-hover:text-[#DC2626] transition-colors">Marketing</h3>
                 </div>
-                <div onclick="enterMode('projetos')" class="border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] cursor-pointer group">
-                    <h3 class="text-3xl font-brick text-white uppercase group-hover:text-[#DC2626]">Projetos</h3>
+                <div onclick="enterMode('projetos')" class="border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] cursor-pointer group transition-all">
+                    <div class="text-[9px] font-mono text-[#333] mb-8 uppercase">SEC // 02</div>
+                    <h3 class="text-3xl font-brick text-white uppercase group-hover:text-[#DC2626] transition-colors">Projetos</h3>
                 </div>
-                <div onclick="enterMode('ideias')" class="border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] cursor-pointer group">
-                    <h3 class="text-3xl font-brick text-white uppercase group-hover:text-[#DC2626]">Ideias</h3>
+                <div onclick="enterMode('ideias')" class="border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] cursor-pointer group transition-all">
+                    <div class="text-[9px] font-mono text-[#333] mb-8 uppercase">SEC // 03</div>
+                    <h3 class="text-3xl font-brick text-white uppercase group-hover:text-[#DC2626] transition-colors">Ideias</h3>
                 </div>
             </div>
         </div>
@@ -94,42 +125,52 @@
         </div>
     </div>
 
+    <!-- THE FAVORITE WAR ROOM (NODES) -->
     <div id="view-nodegraphic" class="fixed inset-0 z-[100] bg-black hidden">
-        <header class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
+        <header class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/90 backdrop-blur-md z-[110]">
             <div>
                 <h1 class="text-2xl font-brick text-white uppercase"><span id="ng-title">PROJETO</span></h1>
                 <div id="ng-sector-title" class="text-[9px] font-mono text-[#DC2626] uppercase">MARKETING</div>
             </div>
-            <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-4 py-2">← Back</button>
+            <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-6 py-2 uppercase tracking-widest mt-1">← Back_To_Lobby</button>
         </header>
-        <div id="canvas-container" class="w-full h-full overflow-auto cursor-grab">
+
+        <div id="canvas-container" class="relative w-full h-full overflow-auto cursor-grab">
             <svg id="conn-svg" class="absolute inset-0 w-full h-[3000px] pointer-events-none"></svg>
             <div id="node-container" class="relative w-full h-[3000px]"></div>
         </div>
     </div>
 
+    <!-- AGENT PANEL -->
     <div id="agent-panel" class="side-panel">
-        <div class="panel-header flex justify-between">
-            <h2 id="panel-title" class="text-3xl font-brick text-white uppercase">AGENTE</h2>
-            <button onclick="closePanel()" class="text-2xl text-[#444] hover:text-white">×</button>
+        <div class="panel-header flex justify-between items-start">
+            <div>
+                <div class="text-[9px] font-mono text-[#DC2626] uppercase tracking-widest mb-2">AGENT_OUTPUT_LOG</div>
+                <h2 id="panel-title" class="text-3xl font-brick text-white uppercase leading-none">AGENTE</h2>
+            </div>
+            <button onclick="closePanel()" class="text-[#444] hover:text-white font-mono text-2xl leading-none">×</button>
         </div>
         <div id="panel-body" class="panel-content md-content"></div>
+        <div class="panel-footer">
+            <button class="btn-brick flex items-center gap-2"><span>APROVAR</span><span class="text-xs">✓</span></button>
+        </div>
     </div>
 
-    <div id="briefing-modal" class="fixed inset-0 z-[300] bg-black/95 hidden flex items-center justify-center p-4">
-        <div class="bg-[#050505] border border-[#222] w-full max-w-xl p-8">
-            <h2 class="text-xl font-brick text-white uppercase mb-6">New Briefing</h2>
-            <form onsubmit="submitBriefing(event)" class="space-y-4">
-                <input type="text" id="bf-title" class="w-full bg-[#111] border border-[#222] p-3 text-white font-mono text-sm" placeholder="Title" required>
-                <select id="bf-mode" class="w-full bg-[#111] border border-[#222] p-3 text-white font-mono text-sm">
+    <!-- MODAL -->
+    <div id="briefing-modal" class="fixed inset-0 z-[300] bg-black/95 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#050505] border border-[#222] w-full max-w-xl p-10 shadow-2xl">
+            <h2 class="text-2xl font-brick text-white uppercase mb-8">New Briefing // Ingestion</h2>
+            <form onsubmit="submitBriefing(event)" class="space-y-6">
+                <input type="text" id="bf-title" class="w-full bg-[#111] border border-[#222] p-4 text-white font-mono text-sm focus:border-[#DC2626] outline-none" placeholder="Project Name" required>
+                <select id="bf-mode" class="w-full bg-[#111] border border-[#222] p-4 text-white font-mono text-sm focus:border-[#DC2626] outline-none">
                     <option value="marketing">Marketing</option>
                     <option value="projetos">Projetos</option>
                     <option value="ideias">Ideias</option>
                 </select>
-                <textarea id="bf-content" class="w-full bg-[#111] border border-[#222] p-3 text-white font-mono text-sm h-32" placeholder="Content"></textarea>
-                <div class="flex justify-end gap-4 pt-4">
-                    <button type="button" onclick="closeBriefingModal()" class="text-[#444] font-mono text-xs uppercase">CANCEL</button>
-                    <button type="submit" class="btn-brick">START</button>
+                <textarea id="bf-content" class="w-full bg-[#111] border border-[#222] p-4 text-white font-mono text-sm h-40 focus:border-[#DC2626] outline-none" placeholder="Describe the briefing..."></textarea>
+                <div class="flex justify-end gap-6 pt-4">
+                    <button type="button" onclick="closeBriefingModal()" class="text-[#444] hover:text-white font-mono text-xs uppercase tracking-widest">CANCEL</button>
+                    <button type="submit" class="btn-brick">INITIATE_PROTOCOL</button>
                 </div>
             </form>
         </div>
@@ -154,8 +195,20 @@
             { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter' },
             { id: 'n9', x: 0, y: 1950, title: 'HUMAN', label: 'User_Control' }
         ];
-
         const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9']];
+
+        const nodeDefProjetos = [
+            { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion' },
+            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator' },
+            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor' },
+            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Gen' },
+            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge' },
+            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director' },
+            { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer' },
+            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge' },
+            { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control' }
+        ];
+        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9']];
 
         async function fetchState() {
             try {
@@ -184,12 +237,11 @@
         }
 
         function renderLobby() {
-            const list = document.getElementById('lobby-list');
-            list.innerHTML = '';
+            const list = document.getElementById('lobby-list'); list.innerHTML = '';
             const all = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const groups = {};
             all.forEach(f => {
-                const id = f.name.split('_')[0];
+                const id = f.name.match(/^\d+/) ? f.name.split('_')[0] : f.name;
                 if(!groups[id]) groups[id] = [];
                 groups[id].push(f);
             });
@@ -197,8 +249,8 @@
                 const files = groups[id];
                 const title = files[0].name.replace(/^\d+_/, '').replace('.md','').replace('.json','').replace(/_/g,' ').split(' PROCESSED')[0];
                 const div = document.createElement('div');
-                div.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all group';
-                div.innerHTML = `<div class="text-[8px] font-mono text-[#222] mb-4">${id}</div><h3 class="text-xl font-brick text-white uppercase group-hover:text-white">${title}</h3>`;
+                div.className = 'border border-[#111] bg-[#050505] p-10 cursor-pointer hover:border-[#DC2626] transition-all group relative overflow-hidden';
+                div.innerHTML = `<div class="text-[8px] font-mono text-[#222] mb-6 tracking-widest uppercase">PROJ // ${id.substring(0,8)}</div><h3 class="text-2xl font-brick text-white uppercase group-hover:text-[#DC2626] transition-colors">${title}</h3>`;
                 div.onclick = () => openNodeGraphic(id, title);
                 list.appendChild(div);
             });
@@ -220,98 +272,44 @@
         }
 
         const fileMapping = {
-            'BRIEFING_INPUT': ['BRIEFING', 'INPUT'],
-            'DOUGLAS': ['PROCESSED'],
-            'VALIDATOR': ['01_BRIEF_VALIDATOR', 'VALIDATOR'],
-            'AUDIENCE': ['02_AUDIENCE', 'AUDIENCE'],
-            'RESEARCH': ['03_TOPIC', 'RESEARCH'],
-            'FACT_CHECK': ['04_CLAIMS', 'CLAIMS', 'FACT_CHECK'],
-            'COPY_A': ['COPYWRITER_GPT', 'COPY_A'],
-            'COPY_B': ['COPYWRITER_FLASH', 'COPY_B'],
-            'COPY_C': ['COPYWRITER_SONNET', 'COPY_C'],
-            'BRAND': ['06_BRAND', 'BRAND'],
-            'STRATEGY': ['CRITIC_LITE', 'STRATEGY'],
-            'WALL': ['CRITIC_OPUS', 'WALL'],
-            'HUMAN': ['FINAL', 'READY']
+            'BRIEFING_INPUT': ['BRIEFING', 'INPUT'], 'DOUGLAS': ['PROCESSED'], 'VALIDATOR': ['01_BRIEF_VALIDATOR', 'VALIDATOR'],
+            'AUDIENCE': ['02_AUDIENCE', 'AUDIENCE'], 'RESEARCH': ['03_TOPIC', 'RESEARCH'], 'FACT_CHECK': ['04_CLAIMS', 'CLAIMS', 'FACT_CHECK'],
+            'COPY_A': ['COPYWRITER_GPT', 'COPY_A'], 'COPY_B': ['COPYWRITER_FLASH', 'COPY_B'], 'COPY_C': ['COPYWRITER_SONNET', 'COPY_C'],
+            'BRAND': ['06_BRAND', 'BRAND'], 'STRATEGY': ['CRITIC_LITE', 'STRATEGY'], 'WALL': ['CRITIC_OPUS', 'WALL'], 'HUMAN': ['FINAL', 'READY'],
+            'BRAND_DIGEST': ['BRAND_DIGEST'], 'CREATIVE_IDEATION': ['CREATIVE_IDEATION'], 'CONCEPT_CRITIC': ['CONCEPT_CRITIC'],
+            'EXECUTION_DESIGN': ['EXECUTION_DESIGN'], 'COPYWRITER': ['COPYWRITER'], 'DIRECTOR': ['DIRECTOR']
         };
 
         function renderNodeGraphic() {
-            const container = document.getElementById('node-container');
-            container.innerHTML = '';
+            const container = document.getElementById('node-container'); container.innerHTML = '';
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const projectFiles = allFiles.filter(f => f.name.startsWith(selectedJobId));
             const nodes = currentMode === 'projetos' ? nodeDefProjetos : nodeDefMarketing;
-
-            // Load saved positions
             const savedPositions = JSON.parse(localStorage.getItem(`pos_${selectedJobId}_${currentMode}`) || '{}');
 
             nodes.forEach(n => {
                 const el = document.createElement('div');
-                el.className = 'node';
-                
-                // Position logic: Saved > Default
+                el.className = `node ${n.title==='DOUGLAS'?'node-douglas':''}`;
                 const pos = savedPositions[n.id] || { x: n.x, y: n.y };
-                if (window.innerWidth > 768) {
-                    el.style.left = `calc(50% + ${pos.x}px - 160px)`;
-                    el.style.top = `${pos.y}px`;
-                }
+                if (window.innerWidth > 768) { el.style.left = `calc(50% + ${pos.x}px - 160px)`; el.style.top = `${pos.y}px`; }
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
-                
-                if (hasFile) el.classList.add('active-node');
-                else el.classList.add('pending-execution');
+                if (hasFile) el.classList.add('active-node'); else el.classList.add('pending-execution');
 
-                el.innerHTML = `<div class="node-led"></div><div class="node-id">${n.label}</div><div class="node-title">${n.title}</div><div class="node-subtext">${hasFile ? 'DATA_SYNC_COMPLETE' : 'STANDBY_DATA_SYNC'}</div>`;
+                el.innerHTML = `<div class="node-led"></div><div class="node-id">${n.id.toUpperCase()} // ${n.label}</div><div class="node-title">${n.title}</div><div class="node-subtext">${hasFile ? 'DATA_SYNC_COMPLETE' : 'STANDBY_DATA_SYNC'}</div>`;
                 el.onclick = (e) => { if(!el.dataset.dragging) openPanel(n, projectFiles); };
-                
                 container.appendChild(el);
                 makeDraggable(el, n.id);
             });
             updateConnections();
         }
 
-        function makeDraggable(el, nodeId) {
-            let p1=0, p2=0, p3=0, p4=0;
-            el.onmousedown = (e) => {
-                e.preventDefault();
-                el.dataset.dragging = "";
-                p3 = e.clientX;
-                p4 = e.clientY;
-                document.onmouseup = () => {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                    setTimeout(() => delete el.dataset.dragging, 100);
-                    
-                    // Save position
-                    const savedPositions = JSON.parse(localStorage.getItem(`pos_${selectedJobId}_${currentMode}`) || '{}');
-                    const containerRect = document.getElementById('node-container').getBoundingClientRect();
-                    const centerX = containerRect.width / 2;
-                    
-                    savedPositions[nodeId] = {
-                        x: el.offsetLeft + 160 - centerX,
-                        y: el.offsetTop
-                    };
-                    localStorage.setItem(`pos_${selectedJobId}_${currentMode}`, JSON.stringify(savedPositions));
-                };
-                document.onmousemove = (e) => {
-                    p1 = p3 - e.clientX;
-                    p2 = p4 - e.clientY;
-                    p3 = e.clientX;
-                    p4 = e.clientY;
-                    el.style.top = (el.offsetTop - p2) + "px";
-                    el.style.left = (el.offsetLeft - p1) + "px";
-                    el.dataset.dragging = "true";
-                    updateConnections();
-                };
-            };
-        }
-
         function updateConnections() {
-            const svg = document.getElementById('conn-svg');
-            svg.innerHTML = '';
+            const svg = document.getElementById('conn-svg'); svg.innerHTML = '';
             if (window.innerWidth <= 768) return;
-            linksMarketing.forEach(([fId, tId]) => {
+            const currentLinks = currentMode === 'projetos' ? linksProjetos : linksMarketing;
+            currentLinks.forEach(([fId, tId]) => {
                 const f = document.getElementById(fId), t = document.getElementById(tId);
                 if(!f || !t) return;
                 const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
@@ -324,23 +322,37 @@
             });
         }
 
+        function makeDraggable(el, nodeId) {
+            let p1=0, p2=0, p3=0, p4=0;
+            el.onmousedown = (e) => {
+                e.preventDefault(); el.dataset.dragging = ""; p3 = e.clientX; p4 = e.clientY;
+                document.onmouseup = () => {
+                    document.onmouseup = null; document.onmousemove = null;
+                    setTimeout(() => delete el.dataset.dragging, 100);
+                    const savedPositions = JSON.parse(localStorage.getItem(`pos_${selectedJobId}_${currentMode}`) || '{}');
+                    const containerRect = document.getElementById('node-container').getBoundingClientRect();
+                    const centerX = containerRect.width / 2;
+                    savedPositions[nodeId] = { x: el.offsetLeft + 160 - centerX, y: el.offsetTop };
+                    localStorage.setItem(`pos_${selectedJobId}_${currentMode}`, JSON.stringify(savedPositions));
+                };
+                document.onmousemove = (e) => {
+                    p1 = p3 - e.clientX; p2 = p4 - e.clientY; p3 = e.clientX; p4 = e.clientY;
+                    el.style.top = (el.offsetTop - p2) + "px"; el.style.left = (el.offsetLeft - p1) + "px";
+                    el.dataset.dragging = "true"; updateConnections();
+                };
+            };
+        }
+
         function openPanel(n, files) {
             const searchTerms = fileMapping[n.title] || [n.title];
             const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
             const body = document.getElementById('panel-body');
-            
             if (file) {
                 let content = file.content;
-                try {
-                    const json = JSON.parse(content);
-                    content = `<div class="section-box"><span class="section-label">RAW_DATA</span><pre class="text-[10px] text-gray-500 overflow-x-auto">${JSON.stringify(json, null, 2)}</pre></div>`;
-                } catch(e) {
-                    content = marked.parse(content);
-                }
+                try { const json = JSON.parse(content); content = `<div class="section-box"><span class="section-label">RAW_DATA</span><pre class="text-[10px] text-gray-500 overflow-x-auto">${JSON.stringify(json, null, 2)}</pre></div>`; }
+                catch(e) { content = marked.parse(content); }
                 body.innerHTML = content;
-            } else {
-                body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Waiting for agent execution...</div>';
-            }
+            } else { body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Waiting for agent execution...</div>'; }
             document.getElementById('panel-title').textContent = n.title;
             document.getElementById('agent-panel').classList.add('open');
         }
@@ -355,8 +367,18 @@
             formData.append('title', document.getElementById('bf-title').value);
             formData.append('content', document.getElementById('bf-content').value);
             formData.append('mode', document.getElementById('bf-mode').value);
-            const res = await fetch(`${API_URL}/briefing`, { method: 'POST', body: formData });
-            if(res.ok) { closeBriefingModal(); fetchState(); }
+            try {
+                const res = await fetch(`${API_URL}/briefing`, { method: 'POST', body: formData });
+                if(res.ok) { closeBriefingModal(); fetchState(); showNotification('PROTOCOL INITIATED'); }
+            } catch(e) { showNotification('UPLOAD FAILED', 'error'); }
+        }
+
+        function showNotification(msg, type='success') {
+            const container = document.getElementById('notification-container');
+            const toast = document.createElement('div');
+            toast.className = `notification-toast ${type}`;
+            toast.innerHTML = `<div class="toast-title">${type.toUpperCase()}</div><div class="text-[10px] font-mono text-[#666] mt-1">${msg}</div>`;
+            container.appendChild(toast); setTimeout(() => toast.remove(), 4000);
         }
 
         window.onresize = updateConnections;
