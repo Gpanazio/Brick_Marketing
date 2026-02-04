@@ -85,7 +85,9 @@ loadMetrics();
 setInterval(saveMetrics, 5 * 60 * 1000); // Salva a cada 5min
 
 // Paths - Use persistent volume for Railway
-const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
+// Force persistent volume path on Railway (detect via RAILWAY_ENVIRONMENT or Railway-specific PORT behavior)
+const IS_RAILWAY = process.env.RAILWAY_ENVIRONMENT || (process.env.PORT && !process.env.HOME?.includes('gabrielpanazio'));
+const HISTORY_ROOT = IS_RAILWAY ? '/api/history' : (process.env.HISTORY_PATH || path.join(__dirname, 'history'));
 const MARKETING_ROOT = path.join(HISTORY_ROOT, 'marketing');
 const PROJETOS_ROOT = path.join(HISTORY_ROOT, 'projetos');
 const IDEIAS_ROOT = path.join(HISTORY_ROOT, 'ideias');
@@ -138,6 +140,7 @@ app.use('/api/state', stateLimiter);
     });
 });
 if (!fs.existsSync(HISTORY_ROOT)) fs.mkdirSync(HISTORY_ROOT, { recursive: true });
+console.log(`[STORAGE] History root: ${HISTORY_ROOT} (Railway: ${IS_RAILWAY ? 'YES' : 'NO'})`);
 
 // Auth middleware - ALLOW ALL READ-ONLY ACCESS FOR DASHBOARD
 const authMiddleware = (req, res, next) => {
