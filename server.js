@@ -235,7 +235,7 @@ app.get('/api/pending', (req, res) => {
     res.json({ briefings: getFiles('briefing', mode) });
 });
 
-// Telegram notification
+// Telegram notification (legacy - keep for direct messages)
 async function notifyTelegram(message) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -250,6 +250,42 @@ async function notifyTelegram(message) {
         log('info', 'telegram_notification_sent');
     } catch (e) {
         log('error', 'telegram_notification_failed', { error: e.message });
+    }
+}
+
+// OpenClaw Wake notification (triggers Douglas via system event)
+async function notifyDouglas(briefingData) {
+    const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL;
+    const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
+    
+    if (!gatewayUrl || !gatewayToken) {
+        log('warn', 'openclaw_wake_not_configured');
+        return;
+    }
+    
+    const message = `NOVO BRIEFING NO WAR ROOM
+Título: ${briefingData.title}
+Modo: ${briefingData.mode}
+Arquivos: ${briefingData.filesCount || 0}
+JobID: ${briefingData.jobId}
+
+Consultar API: https://brickmarketing-production.up.railway.app/api/state?mode=${briefingData.mode}`;
+    
+    try {
+        await fetch(`${gatewayUrl}/api/cron/wake`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${gatewayToken}`
+            },
+            body: JSON.stringify({
+                text: message,
+                mode: 'now'
+            })
+        });
+        log('info', 'openclaw_wake_sent', { jobId: briefingData.jobId });
+    } catch (e) {
+        log('error', 'openclaw_wake_failed', { error: e.message });
     }
 }
 
@@ -310,11 +346,20 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
             filesCount: uploadedFiles.length 
         });
         
-        // Notify Douglas via Telegram
+        // Notify Douglas via OpenClaw Wake + Telegram
+        const briefingData = {
+            title,
+            mode: mode || 'marketing',
+            filesCount: uploadedFiles.length,
+            jobId
+        };
+        
+        await notifyDouglas(briefingData); // Primary: OpenClaw system event
+        
         const emoji = mode === 'projetos' ? '🎬' : '🚨';
         const typeLabel = mode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
         const filesNote = uploadedFiles.length > 0 ? `\n📎 *${uploadedFiles.length} anexo(s)* para processar` : '';
-        await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}${filesNote}\n\n_Douglas, aciona o squad!_`);
+        await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}${filesNote}\n\n_Douglas, aciona o squad!_`); // Fallback
         
         res.json({ success: true, filename, mode: mode || 'marketing', filesCount: uploadedFiles.length });
     } catch (err) {
