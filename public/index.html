@@ -50,8 +50,6 @@
         /* ANGULAR CONNECTIONS */
         .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
         .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
-        .conn-line.refine { stroke: #3b82f6; opacity: 0.5; }
-        .conn-line.refine.active { opacity: 0.9; stroke-width: 2; }
 
         .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
 
@@ -310,10 +308,10 @@
             { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
             { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'GEMINI FLASH' },
             { id: 'n7', x: 0, y: 1550, title: 'CRITICS', label: 'Judge_Squad', model: 'CLAUDE OPUS' },
-            { id: 'n7b', x: 0, y: 1750, title: 'DIRECTOR', label: 'Refiner', model: 'GPT-5.2' },
-            { id: 'n8', x: 0, y: 1950, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
-            { id: 'n9', x: 0, y: 2150, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n10', x: 0, y: 2350, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n7b', x: 0, y: 1800, title: 'DIRECTOR', label: 'Refiner', model: 'GPT-5.2' },
+            { id: 'n8', x: 0, y: 2050, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
+            { id: 'n9', x: 0, y: 2300, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
+            { id: 'n10', x: 0, y: 2550, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
         const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n7b'],['n7b','n8'],['n8','n9'],['n9','n10']];
 
@@ -338,13 +336,13 @@
             'AUDIENCE': ['02_', 'AUDIENCE'],
             'RESEARCH': ['03_', 'RESEARCH'],
             'FACT_CHECK': ['04_', 'CLAIMS', 'FACT_CHECK'],
-            'COPY_A': ['05A_', 'COPY_GPT'],
-            'COPY_B': ['05B_', 'COPY_FLASH'],
-            'COPY_C': ['05C_', 'COPY_SONNET'],
+            'COPY_A': ['05A_', 'COPY_GPT', 'COPY_A'],
+            'COPY_B': ['05B_', 'COPY_FLASH', 'COPY_B'],
+            'COPY_C': ['05C_', 'COPY_SONNET', 'COPY_C'],
             'BRAND': ['06_', 'BRAND'],
             'CRITICS': ['07_', 'CRITIC'],
             'DIRECTOR': ['07B_', 'DIRECTOR', 'REFINED'],
-            'WALL': ['08_', 'FILTRO'],
+            'WALL': ['08_', 'FILTRO', 'WALL'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
@@ -767,7 +765,7 @@ OUTPUT (Copy Final)`;
                         </div>
                     ` : ''}
                 `;
-                el.onclick = () => openPanel(n, projectFiles);
+                el.ondblclick = () => openPanel(n, projectFiles);
                 container.appendChild(el);
                 makeDraggable(el);
             });
@@ -799,10 +797,8 @@ OUTPUT (Copy Final)`;
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
                 
-                // Linha especial verde entre Strategy → Copy Final
-                const isRefineLine = (fId === 'n7' && tId === 'n7b');
                 const isActive = !f.classList.contains('disabled') && !t.classList.contains('disabled');
-                const lineClass = `conn-line ${isRefineLine ? 'refine' : ''} ${isActive ? 'active' : ''}`;
+                const lineClass = `conn-line ${isActive ? 'active' : ''}`;
                 line.setAttribute("class", lineClass);
                 svg.appendChild(line);
 
