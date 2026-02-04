@@ -1,0 +1,63 @@
+# BRIEFING PROCESSADO: Lançamento da Brick AI
+
+**Data:** 2026-02-04  
+**Modo:** Marketing  
+**JobID:** 1770218015849_lan_amento_da_brick_ai  
+**Processado por:** Douglas (Etapa 0)
+
+---
+
+## OBJETIVO
+
+Traçar estratégia completa de lançamento da **Brick AI** (produtora de vídeo com IA) para logo após o Carnaval 2026.
+
+---
+
+## ESCOPO
+
+### Plataformas
+- Instagram
+- TikTok
+- LinkedIn
+
+### Budget
+- Máximo: R$ 1.000,00
+- Considerar orgânico + anúncios pagos (opcional)
+
+### Timing
+- Lançamento: Pós-Carnaval (23/02/2026 em diante)
+
+---
+
+## CONTEXTO BRICK AI
+
+**Diferencial:**
+- Produtora de elite com 10 anos de experiência
+- "Production Enhanced" - não substituímos realidade, viabilizamos o impossível
+- Foco em projetos impossíveis/caros via IA (não é SaaS/ferramenta)
+- Gabriel Panazio + Lufe (sócios)
+- Experiência: storytelling + técnico
+
+**Posicionamento:**
+- Artistas com Armas Nucleares
+- Não é sobre "fazer fácil", é sobre "fazer o impossível"
+- Service Premium, não ferramenta de massa
+
+**Público-alvo:**
+- Diretores de Marketing/Criação (agências médias/grandes)
+- Produtoras que precisam viabilizar projetos complexos
+- Marcas que querem destacar em 2026
+
+---
+
+## DELIVERABLES ESPERADOS
+
+1. Estratégia de conteúdo por plataforma
+2. Calendário de posts (primeira semana)
+3. Sugestões de copy/criativos
+4. Plano de anúncios (se aplicável dentro do budget)
+5. KPIs e métricas de sucesso
+
+---
+
+**PRÓXIMO PASSO:** Enviar para BRIEF VALIDATOR (Etapa 01)
