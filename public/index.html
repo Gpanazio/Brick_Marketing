@@ -591,11 +591,13 @@ OUTPUT (Copy Final)`;
             document.getElementById('ng-title').textContent = title;
             document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
+            document.getElementById('main-ui').style.display = 'none';
             renderNodeGraphic();
         }
 
         function closeNodeGraphic() {
             document.getElementById('view-nodegraphic').classList.remove('active');
+            document.getElementById('main-ui').style.display = 'flex';
             selectedJobId = null;
         }
 
