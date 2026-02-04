@@ -4,6 +4,15 @@
   "input_de": ["02_creative_ideation.json", "03_critic.json"],
   
   "conceito": "OS ROSTOS DA 180",
+  
+  "conceito_completo": {
+    "nome": "OS ROSTOS DA 180",
+    "premissa": "O maior ativo da 180 não é a tecnologia - são as pessoas que a fazem funcionar. Em vez de falar SOBRE agilidade, proximidade e confiança, MOSTRAR através do time real.",
+    "porque_esse_cliente": "A 180 já tem material gravado do time em 2024. O diagnóstico mostra que 'proximidade/atendimento' é o atributo mais forte nas pessoas-chave (linha de frente). O vídeo institucional de seguradora tradicional mostra prédios e gráficos. A 180 mostra pessoas.",
+    "nivel_originalidade": 8,
+    "viabilidade_budget": "alta"
+  },
+  
   "score_craft": 62,
   "veredito": "REFINAR",
   
