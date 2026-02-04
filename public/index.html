@@ -977,8 +977,38 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                     // It's JSON - structure it nicely
                     htmlContent = '<div class="json-structured">';
                     
+                    // Helper to render any object generically
+                    const renderObject = (obj, depth = 0) => {
+                        let html = '';
+                        Object.entries(obj).forEach(([key, value]) => {
+                            const indent = depth * 16;
+                            html += `<div style="margin-left: ${indent}px" class="mb-2">`;
+                            html += `<span class="text-gray-400 text-xs font-mono">${key}:</span> `;
+                            
+                            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                                html += '<div class="ml-4">' + renderObject(value, depth + 1) + '</div>';
+                            } else if (Array.isArray(value)) {
+                                html += `<span class="text-gray-600 text-xs">[${value.length} items]</span>`;
+                                value.forEach((item, i) => {
+                                    if (typeof item === 'object') {
+                                        html += '<div class="ml-4 border-l border-gray-700 pl-2 mt-1">' + renderObject(item, depth + 1) + '</div>';
+                                    } else {
+                                        html += `<div class="ml-4 text-sm text-gray-300">• ${item}</div>`;
+                                    }
+                                });
+                            } else {
+                                html += `<span class="text-white text-sm">${value}</span>`;
+                            }
+                            html += '</div>';
+                        });
+                        return html;
+                    };
+                    
+                    let hasKnownSections = false;
+                    
                     // CONCEITO section (if exists)
                     if (jsonData.conceito || jsonData.conceitos || jsonData.conceito_completo) {
+                        hasKnownSections = true;
                         htmlContent += '<div class="section-box border-purple-900/30 bg-purple-900/5 mb-4">';
                         htmlContent += '<span class="section-label text-purple-400">💡 CONCEITO</span>';
                         
@@ -1011,6 +1041,7 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                     
                     // SCORES/AVALIACOES section (if exists)
                     if (jsonData.scores || jsonData.avaliacoes) {
+                        hasKnownSections = true;
                         htmlContent += '<div class="section-box border-blue-900/30 bg-blue-900/5 mb-4">';
                         htmlContent += '<span class="section-label text-blue-400">📊 AVALIAÇÃO</span>';
                         
@@ -1036,6 +1067,7 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                     
                     // RECOMENDACAO/VEREDITO section (if exists)
                     if (jsonData.veredito || jsonData.recomendacao || jsonData.recomendacao_final) {
+                        hasKnownSections = true;
                         const rec = jsonData.recomendacao_final || jsonData.recomendacao || {};
                         const veredito = jsonData.veredito;
                         
@@ -1059,6 +1091,15 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                             htmlContent += `<div class="text-xs text-gray-400 mt-2 italic">Condições: ${rec.condicoes}</div>`;
                         }
                         
+                        htmlContent += '</div>';
+                        hasKnownSections = true;
+                    }
+                    
+                    // If no known sections found, render generic JSON view
+                    if (!hasKnownSections) {
+                        htmlContent += '<div class="section-box border-gray-700 bg-gray-900/5 mb-4">';
+                        htmlContent += '<span class="section-label text-gray-400">📄 AGENT_OUTPUT</span>';
+                        htmlContent += '<div class="text-xs">' + renderObject(jsonData) + '</div>';
                         htmlContent += '</div>';
                     }
                     
