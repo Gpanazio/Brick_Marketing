@@ -262,27 +262,45 @@ async function notifyTelegram(message) {
     }
 }
 
-// Douglas notification via Telegram command
+// Douglas notification via OpenClaw Wake API
 async function notifyDouglas(data) {
+    // OpenClaw Wake: send system event to Douglas session via Gateway API
+    const wakeMessage = data.feedbackAction 
+        ? `🔄 FEEDBACK HUMANO RECEBIDO - Projeto ${data.jobId || 'N/A'} (${data.mode || 'marketing'}): "${data.feedbackText || '(vazio)'}". Feedback salvo em history/${data.mode}/feedback/. Aguardando processamento.`
+        : `📋 NOVO BRIEFING RECEBIDO - ${data.title || 'Sem título'} (${data.mode || 'marketing'}, ${data.filesCount || 0} anexos). JobID: ${data.jobId}. Aguardando processamento via War Room.`;
+
+    // Try OpenClaw Gateway Wake API (local gateway)
+    try {
+        const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL || 'http://localhost:18888';
+        await fetch(`${gatewayUrl}/api/cron/wake`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                text: wakeMessage,
+                mode: 'now'
+            })
+        });
+        log('info', 'openclaw_wake_sent', { jobId: data.jobId, type: data.feedbackAction ? 'feedback' : 'briefing' });
+    } catch (e) {
+        log('warn', 'openclaw_wake_failed', { error: e.message });
+    }
+
+    // Fallback: Telegram notification (legacy)
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
     
     if (!token || !chatId) {
-        log('warn', 'telegram_not_configured');
-        return;
+        return; // OpenClaw wake is enough
     }
     
     let message = '';
     
     // Check if it's feedback or new briefing
     if (data.feedbackAction) {
-        message = `/feedback ${data.mode} ${data.feedbackAction} ${data.targetFile || 'N/A'}
+        message = `🔄 FEEDBACK: ${data.feedbackText}
 
-Ação: ${data.feedbackAction}
-Tipo: ${data.feedbackType || 'N/A'}
-Texto: ${data.feedbackText || '(sem texto)'}
-
-API: https://brickmarketing-production.up.railway.app/api/feedback?mode=${data.mode}`;
+Projeto: ${data.jobId}
+Modo: ${data.mode}`;
     } else {
         message = `/briefing ${data.mode} ${data.jobId}
 
@@ -667,6 +685,16 @@ app.post('/api/feedback', async (req, res) => {
     // Create signal file for Douglas to pick up
     const signalFile = path.join(baseDir, 'FEEDBACK_SIGNAL.txt');
     fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nJobID: ${jobId || file}\nTexto: ${text || feedback}\nTimestamp: ${new Date().toISOString()}`);
+    
+    // Notify Douglas via OpenClaw Wake
+    const notifyData = {
+        jobId: jobId || file,
+        mode: mode || 'marketing',
+        feedbackAction: action || 'revision',
+        feedbackType: type || 'human_feedback',
+        feedbackText: text || feedback
+    };
+    await notifyDouglas(notifyData);
     
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     res.json({ success: true, saved: feedbackFile, archived: true });
