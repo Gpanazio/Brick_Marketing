@@ -84,11 +84,11 @@ function trackStep(botName, success, durationMs, model = null) {
 loadMetrics();
 setInterval(saveMetrics, 5 * 60 * 1000); // Salva a cada 5min
 
-// Paths
-const MARKETING_ROOT = path.join(__dirname, 'marketing');
-const PROJETOS_ROOT = path.join(__dirname, 'projetos');
-const IDEIAS_ROOT = path.join(__dirname, 'ideias');
+// Paths - Use persistent volume for Railway
 const HISTORY_ROOT = process.env.HISTORY_PATH || path.join(__dirname, 'history');
+const MARKETING_ROOT = path.join(HISTORY_ROOT, 'marketing');
+const PROJETOS_ROOT = path.join(HISTORY_ROOT, 'projetos');
+const IDEIAS_ROOT = path.join(HISTORY_ROOT, 'ideias');
 
 // Helper to get root by mode
 const getModeRoot = (mode) => {
