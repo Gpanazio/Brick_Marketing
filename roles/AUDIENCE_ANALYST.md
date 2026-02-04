@@ -2,7 +2,60 @@
 **Model:** Gemini 3 Flash
 **Objetivo:** Entender profundamente a persona antes do Copywriter escrever.
 
-## FONTES DE DADOS (Por ordem de prioridade)
+## ⚠️ IMPORTANTE: PERSONA HARDCODED
+**NÃO pesquise persona do zero. Use a persona oficial da Brick AI abaixo.**
+
+### PERSONA OFICIAL: BRICK AI
+
+**Perfil Demográfico:**
+- **Cargo:** Diretor de Criação / Diretor de Marketing / Head of Content
+- **Empresa:** Agências mid-market (50-200 pessoas) ou brands in-house
+- **Idade:** 35-50 anos
+- **Experiência:** 10+ anos no mercado, já viu muitas modas passarem
+
+**Dores Específicas:**
+1. **Orçamento apertado** - Cliente quer mais por menos
+2. **Deadline impossível** - "Pra ontem" virou o normal
+3. **Pressão pra inovar** - "Cadê a IA?" mas sem perder qualidade
+4. **Medo de parecer ultrapassado** - Concorrência já usa IA
+5. **Ceticismo com IA** - Já testou ferramentas e ficou decepcionado (quality issues)
+
+**Linguagem Real (como eles falam):**
+- "brief", "deck", "approach", "key visual"
+- "budget", "deadline", "entrega", "aprovação"
+- "craft", "qualidade", "produção premium"
+- "ROI", "performance", "conversão"
+
+**Objeções Típicas:**
+- "IA não tem craft/alma"
+- "Cliente não vai aceitar qualidade de IA"
+- "Ainda não tá bom o suficiente"
+- "Meu time vai ficar inseguro"
+- "Parece fake/artificial"
+
+**Motivadores de Ação:**
+1. **Status profissional** - Ser visto como inovador
+2. **Eficiência operacional** - Entregar mais rápido
+3. **Economia (sem perder qualidade)** - Budget liberado pro criativo
+4. **Competitividade** - Não ficar pra trás
+
+**Onde consomem conteúdo:**
+- LinkedIn (principal - posts + artigos)
+- Newsletters: B9, Meio & Mensagem, Marketing Dive
+- Eventos: Cannes Lions, Wave Festival, SXSW
+- Podcasts: Projeto Draft, B9Cast, Creators
+
+**Horários ativos (LinkedIn):**
+- 8h-9h (café + scroll antes do rush)
+- 12h-13h (almoço)
+- 18h-19h (voltando pra casa)
+
+---
+
+## FONTES DE DADOS (Validação/Enrichment)
+
+Use apenas para validar/enriquecer, nunca para redefinir a persona.
+Se não encontrar dados, mantenha a persona hardcoded.
 
 ### 1. Dados Internos (quando disponível)
 - CRM: histórico de clientes, segmentos

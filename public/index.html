@@ -97,9 +97,13 @@
                 </h1>
                 <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">System_Active</div>
             </div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 items-center">
                 <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
                 <button id="btn-scheme" onclick="openScheme()" class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
+                <div id="layout-indicator" class="hidden text-[10px] font-mono text-green-500/60 tracking-widest">
+                    <span id="saved-positions-count">0</span> POSIÇÕES SALVAS
+                </div>
+                <button id="btn-clear-layout" onclick="clearLayoutQuick()" class="hidden text-[#666] hover:text-[#DC2626] font-mono text-[9px] uppercase tracking-widest px-3 py-2 hover:underline" title="Limpar TODAS as posições salvas e resetar layout">✕ Limpar</button>
                 <button id="btn-reset-layout" onclick="resetLayout()" class="hidden text-[#444] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">⟲ Reset</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
@@ -454,13 +458,22 @@ OUTPUT (Proposta Completa)`;
 ▼
 07. CRITICS (GPT-5.2) - escolhem a melhor
 │
-▼ (verde)
-07B. COPY FINAL (Dynamic) - aplica ajustes sugeridos
+├─► (SE ajustes_sugeridos existir)
+│   │
+│   ▼
+│   07B. COPY FINAL (Dynamic) - aplica ajustes
+│   │
+├───┘
+▼
+08. WALL (Claude Opus) - score final
 │
-▼
-08. FILTRO FINAL (Claude Opus) - loop até ≥80
-│    └─► (se reprovar) ─► DOUGLAS (refeed + 3x máx)
-▼
+├─► (SE score < 80) ──┐
+│                     │
+│   ┌─────────────────┘
+│   ▼
+│   REINICIA DO DOUGLAS (max 3 tentativas)
+│
+▼ (score ≥ 80)
 09. HUMAN - aprovação final
 │
 ▼
@@ -472,8 +485,9 @@ OUTPUT (Copy Final)`;
                     <div>• Três versões criativas paralelas (A/B/C)</div>
                     <div>• Brand Guardians valida todas as versões</div>
                     <div>• Critics escolhem a melhor</div>
-                    <div>• <strong>Copy Final aplica ajustes sugeridos</strong></div>
-                    <div>• Filtro final com Claude Opus (score ≥80, loop até 3x via Douglas)</div>
+                    <div>• <strong class="text-green-400">Copy Final é CONDICIONAL</strong> - só executa se Critics sugerirem ajustes</div>
+                    <div>• Wall (Claude Opus) score final: ≥80 passa, &lt;80 reinicia do Douglas</div>
+                    <div>• Loop de rejeição: máximo 3 tentativas antes de escalar pra humano</div>
                     <div>• Aprovação humana obrigatória</div>
                 `;
             }
@@ -594,21 +608,81 @@ OUTPUT (Copy Final)`;
             document.getElementById('view-nodegraphic').classList.add('active');
             document.getElementById('main-ui').style.display = 'none';
             document.getElementById('btn-reset-layout').classList.remove('hidden');
+            document.getElementById('btn-clear-layout').classList.remove('hidden');
+            document.getElementById('layout-indicator').classList.remove('hidden');
+            updateLayoutIndicator();
             renderNodeGraphic();
+        }
+
+        function updateLayoutIndicator() {
+            const savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
+            const count = Object.keys(savedPositions).length;
+            document.getElementById('saved-positions-count').textContent = count;
+            
+            // Mostrar/esconder botão de limpeza baseado se tem posições salvas
+            const clearBtn = document.getElementById('btn-clear-layout');
+            if (clearBtn) {
+                if (count > 0) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
         }
 
         function closeNodeGraphic() {
             document.getElementById('view-nodegraphic').classList.remove('active');
             document.getElementById('main-ui').style.display = 'flex';
             document.getElementById('btn-reset-layout').classList.add('hidden');
+            document.getElementById('btn-clear-layout').classList.add('hidden');
+            document.getElementById('layout-indicator').classList.add('hidden');
             selectedJobId = null;
         }
 
         function resetLayout() {
-            if (confirm('Resetar todas as posições dos nós para o layout padrão?')) {
-                localStorage.removeItem(`node_positions_${currentMode}`);
-                renderNodeGraphic();
-            }
+            // Custom modal ao invés de browser confirm
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-[300]';
+            modal.innerHTML = `
+                <div class="bg-[#050505] border border-[#DC2626] p-8 max-w-md">
+                    <h3 class="font-brick text-xl text-white uppercase mb-4">⚠️ RESETAR LAYOUT</h3>
+                    <p class="text-sm text-[#aaa] mb-6 leading-relaxed">
+                        Isso vai <strong class="text-[#DC2626]">apagar todas as posições salvas</strong> dos nós do modo <strong class="text-white">${currentMode.toUpperCase()}</strong> e restaurar o layout padrão.
+                    </p>
+                    <p class="text-sm text-[#666] mb-6 italic">
+                        Essa ação não pode ser desfeita.
+                    </p>
+                    <div class="flex gap-3">
+                        <button onclick="this.closest('.fixed').remove()" class="flex-1 border border-[#333] text-[#aaa] font-mono text-xs py-2 px-4 hover:border-white hover:text-white transition-colors">
+                            CANCELAR
+                        </button>
+                        <button onclick="confirmResetLayout(); this.closest('.fixed').remove();" class="flex-1 bg-[#DC2626] text-white font-mono text-xs py-2 px-4 hover:bg-white hover:text-black transition-colors">
+                            CONFIRMAR RESET
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function confirmResetLayout() {
+            localStorage.removeItem(`node_positions_${currentMode}`);
+            updateLayoutIndicator();
+            renderNodeGraphic();
+        }
+
+        function clearLayoutQuick() {
+            // Limpar SEM confirmação (rápido)
+            localStorage.removeItem(`node_positions_${currentMode}`);
+            updateLayoutIndicator();
+            renderNodeGraphic();
+            
+            // Feedback visual: toast rápido
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 right-8 bg-[#DC2626] text-white px-6 py-3 font-mono text-xs uppercase tracking-wider z-[300]';
+            toast.textContent = `✓ Layout ${currentMode} resetado`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
         }
 
         function renderNodeGraphic() {
@@ -622,20 +696,57 @@ OUTPUT (Copy Final)`;
 
             const nodes = currentMode === 'projetos' ? nodeDefProjetos : nodeDefMarketing;
             // Carregar posições salvas do localStorage
-            const savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
+            let savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
+            
+            // VALIDAÇÃO DE EMERGÊNCIA: Detectar e limpar posições malucas
+            let hasInvalidPositions = false;
+            for (const [nodeId, pos] of Object.entries(savedPositions)) {
+                // Extrair valores numéricos (remover "px")
+                const leftVal = parseInt(pos.left);
+                const topVal = parseInt(pos.top);
+                
+                // Se valores são absurdos ou inválidos, marcar pra limpeza
+                if (isNaN(leftVal) || isNaN(topVal) || 
+                    leftVal < -1000 || leftVal > 10000 || 
+                    topVal < -1000 || topVal > 10000 ||
+                    pos.left.includes('calc')) {
+                    console.warn(`Posição inválida detectada para ${nodeId}:`, pos);
+                    hasInvalidPositions = true;
+                }
+            }
+            
+            // Se detectou posições inválidas, LIMPAR TUDO
+            if (hasInvalidPositions) {
+                console.warn('⚠️ Posições malucas detectadas! Limpando localStorage automaticamente...');
+                localStorage.removeItem(`node_positions_${currentMode}`);
+                savedPositions = {}; // Resetar pra objeto vazio
+                
+                // Toast de emergência
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-8 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black px-6 py-3 font-mono text-xs uppercase tracking-wider z-[300] border-2 border-yellow-400';
+                toast.innerHTML = '⚠️ Posições inválidas detectadas e removidas automaticamente';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 4000);
+            }
+            
+            // Calcular centro da tela UMA VEZ (antes do loop)
+            const centerX = container.offsetWidth / 2;
             
             nodes.forEach(n => {
                 const el = document.createElement('div');
                 el.className = `node ${n.douglas?'node-douglas':''}`;
                 el.id = n.id;
-                
-                // Se tem posição salva, usar ela. Senão, usar padrão do def
                 el.style.position = 'absolute';
-                if (savedPositions[n.id]) {
+                
+                // Se tem posição salva E é válida, usar ela
+                if (savedPositions[n.id] && savedPositions[n.id].left && savedPositions[n.id].top) {
+                    // Garantir que sejam strings com "px"
                     el.style.left = savedPositions[n.id].left;
                     el.style.top = savedPositions[n.id].top;
                 } else {
-                    el.style.left = `calc(50% + ${n.x}px - 160px)`;
+                    // Usar posição padrão (SEMPRE em pixels puros, nunca calc)
+                    const defaultLeft = centerX + n.x - 160; // 160 = metade da largura do nó (320/2)
+                    el.style.left = `${defaultLeft}px`;
                     el.style.top = `${n.y}px`;
                 }
                 el.style.transform = 'none';
@@ -673,9 +784,18 @@ OUTPUT (Copy Final)`;
             currentLinks.forEach(([fId, tId]) => {
                 const f = document.getElementById(fId), t = document.getElementById(tId);
                 if(!f || !t) return;
+                
                 const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
                 const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
                 const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
+                
+                // Validar que as coordenadas não são absurdas (NaN, Infinity, ou fora da viewport razoável)
+                if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2) || 
+                    !isFinite(x1) || !isFinite(y1) || !isFinite(x2) || !isFinite(y2) ||
+                    Math.abs(x1) > 10000 || Math.abs(y1) > 10000 || Math.abs(x2) > 10000 || Math.abs(y2) > 10000) {
+                    console.warn(`Coordenadas inválidas detectadas para link ${fId} → ${tId}:`, {x1, y1, x2, y2});
+                    return;
+                }
 
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
@@ -699,23 +819,57 @@ OUTPUT (Copy Final)`;
         }
 
         function makeDraggable(el) {
-            let p1=0,p2=0,p3=0,p4=0; el.onmousedown = (e) => {
-                e.preventDefault(); p3=e.clientX; p4=e.clientY;
+            let p1=0,p2=0,p3=0,p4=0; 
+            el.onmousedown = (e) => {
+                // Não arrastar se clicou num botão
+                if (e.target.tagName === 'BUTTON') return;
+                
+                e.preventDefault(); 
+                p3=e.clientX; 
+                p4=e.clientY;
+                el.style.zIndex = '100'; // Trazer pra frente enquanto arrasta
+                
                 document.onmouseup = () => { 
-                    // Salvar posição final no localStorage
+                    el.style.zIndex = '10'; // Voltar z-index normal
+                    
+                    // Salvar posição final no localStorage (SEMPRE em pixels puros)
                     const nodePositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
-                    nodePositions[el.id] = {
-                        left: el.style.left,
-                        top: el.style.top
-                    };
-                    localStorage.setItem(`node_positions_${currentMode}`, JSON.stringify(nodePositions));
+                    
+                    // Garantir que sejam valores numéricos puros com "px"
+                    const finalLeft = el.offsetLeft;
+                    const finalTop = el.offsetTop;
+                    
+                    // Validar que não são valores absurdos (fora da viewport)
+                    if (finalLeft < -500 || finalLeft > 5000 || finalTop < -500 || finalTop > 5000) {
+                        console.warn(`Posição inválida detectada para ${el.id}: left=${finalLeft}, top=${finalTop}. Não salvando.`);
+                        el.style.borderColor = '#DC2626'; // Flash vermelho = erro
+                        setTimeout(() => { el.style.borderColor = ''; }, 400);
+                    } else {
+                        nodePositions[el.id] = {
+                            left: `${finalLeft}px`,
+                            top: `${finalTop}px`
+                        };
+                        localStorage.setItem(`node_positions_${currentMode}`, JSON.stringify(nodePositions));
+                        
+                        // Atualizar contador de posições salvas
+                        updateLayoutIndicator();
+                        
+                        // Feedback visual: flash verde = salvou com sucesso
+                        el.style.borderColor = '#4ade80';
+                        setTimeout(() => { el.style.borderColor = ''; }, 200);
+                    }
                     
                     document.onmouseup = null; 
                     document.onmousemove = null; 
                 };
+                
                 document.onmousemove = (e) => {
-                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
+                    p1=p3-e.clientX; 
+                    p2=p4-e.clientY; 
+                    p3=e.clientX; 
+                    p4=e.clientY;
+                    el.style.top = (el.offsetTop-p2)+"px"; 
+                    el.style.left = (el.offsetLeft-p1)+"px";
                     updateConnections();
                 };
             };
