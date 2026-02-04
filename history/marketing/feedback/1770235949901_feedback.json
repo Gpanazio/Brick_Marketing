@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-02-04T20:12:29.901Z",
+  "jobId": "test_douglas_wake",
+  "action": "revision",
+  "type": "human_feedback",
+  "text": "TESTE AUTOMÁTICO - Se você está lendo isso, o wake funcionou!",
+  "mode": "marketing",
+  "status": "pending"
+}

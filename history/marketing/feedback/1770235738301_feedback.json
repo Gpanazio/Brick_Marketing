@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-02-04T20:08:58.301Z",
+  "jobId": "test_wake",
+  "action": "revision",
+  "type": "human_feedback",
+  "text": "teste de notificação",
+  "mode": "marketing",
+  "status": "pending"
+}

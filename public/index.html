@@ -673,6 +673,24 @@ OUTPUT (Copy Final)`;
         }
 
         function formatJSON(json) {
+            // Helper: Formata valores individuais
+            function formatValue(val) {
+                // Booleanos → ✓/✗
+                if (typeof val === 'boolean') return val ? '<span class="text-green-500">✓ Sim</span>' : '<span class="text-red-500">✗ Não</span>';
+                
+                // Números → detecta scores e formata
+                if (typeof val === 'number') {
+                    if (val <= 100 && val >= 0) {
+                        const stars = '⭐'.repeat(Math.floor(val / 20));
+                        const color = val >= 80 ? 'text-green-500' : val >= 60 ? 'text-yellow-500' : 'text-red-500';
+                        return `<span class="${color} font-bold">${val}/100</span> ${stars}`;
+                    }
+                    return val;
+                }
+                
+                return val;
+            }
+
             let html = '<div class="space-y-6">';
 
             for (const [key, value] of Object.entries(json)) {
@@ -680,34 +698,57 @@ OUTPUT (Copy Final)`;
                 html += `<div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>`;
 
                 if (Array.isArray(value)) {
-                    html += '<ul class="space-y-2 pl-0">';
-                    value.forEach(item => {
-                        if (typeof item === 'object') {
-                            html += `<li class="text-sm text-[#aaa] border-l-2 border-[#333] pl-4 py-2 leading-relaxed">${JSON.stringify(item, null, 2).replace(/[{}"]/g, '').replace(/,/g, '<br>')}</li>`;
-                        } else {
-                            html += `<li class="text-sm text-[#aaa] leading-relaxed">• ${item}</li>`;
-                        }
-                    });
-                    html += '</ul>';
+                    if (value.length === 0) {
+                        html += '<div class="text-sm text-[#666] italic">Nenhum item</div>';
+                    } else {
+                        html += '<ul class="space-y-2 pl-0">';
+                        value.forEach(item => {
+                            if (typeof item === 'object') {
+                                // Remove colchetes, chaves, aspas
+                                const cleaned = JSON.stringify(item, null, 2)
+                                    .replace(/[\[\]{}"]/g, '')
+                                    .replace(/^\s+/gm, '')
+                                    .replace(/,\s*$/gm, '')
+                                    .split('\n')
+                                    .filter(line => line.trim())
+                                    .join('<br>');
+                                html += `<li class="text-sm text-[#aaa] border-l-2 border-[#333] pl-4 py-2 leading-relaxed">${cleaned}</li>`;
+                            } else {
+                                html += `<li class="text-sm text-[#aaa] leading-relaxed">• ${item}</li>`;
+                            }
+                        });
+                        html += '</ul>';
+                    }
                 } else if (typeof value === 'object' && value !== null) {
                     html += '<div class="pl-4 space-y-3">';
                     for (const [subKey, subValue] of Object.entries(value)) {
-                        let formattedValue = subValue;
-                        if (typeof subValue === 'object' && subValue !== null) {
-                            // Remove {", etc. e formata cada linha
+                        let formattedValue;
+                        
+                        if (Array.isArray(subValue)) {
+                            // Arrays dentro de objetos
+                            if (subValue.length === 0) {
+                                formattedValue = '<span class="text-[#666] italic">Nenhum</span>';
+                            } else {
+                                formattedValue = subValue.map(item => `• ${item}`).join('<br>');
+                            }
+                        } else if (typeof subValue === 'object' && subValue !== null) {
+                            // Objetos aninhados
                             formattedValue = JSON.stringify(subValue, null, 2)
-                                .replace(/[{}"]/g, '')
+                                .replace(/[\[\]{}"]/g, '')
                                 .replace(/^\s+/gm, '')
                                 .replace(/,\s*$/gm, '')
                                 .split('\n')
                                 .filter(line => line.trim())
                                 .join('<br>');
+                        } else {
+                            formattedValue = formatValue(subValue);
                         }
-                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono">${subKey}:</span> <span class="text-[#ccc]">${formattedValue}</span></div>`;
+                        
+                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono">${subKey.replace(/_/g, ' ')}:</span> <span class="text-[#ccc]">${formattedValue}</span></div>`;
                     }
                     html += '</div>';
                 } else {
-                    html += `<div class="text-sm text-[#ddd] leading-relaxed">${value}</div>`;
+                    html += `<div class="text-sm text-[#ddd] leading-relaxed">${formatValue(value)}</div>`;
                 }
 
                 html += '</div>';
