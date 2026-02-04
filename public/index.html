@@ -68,18 +68,18 @@
         #view-nodegraphic.active { display: block; }
 
         /* MARKDOWN STYLING IN PANEL */
-        #panel-body h1 { font-size: 20px; font-weight: 900; color: #fff; margin: 24px 0 12px; text-transform: uppercase; }
-        #panel-body h2 { font-size: 16px; font-weight: 700; color: #DC2626; margin: 20px 0 10px; text-transform: uppercase; }
-        #panel-body h3 { font-size: 14px; font-weight: 600; color: #888; margin: 16px 0 8px; }
-        #panel-body p { margin: 12px 0; line-height: 1.6; color: #aaa; }
+        #panel-body h1 { font-size: 20px; font-weight: 900; color: #fff; margin: 24px 0 12px; text-transform: uppercase; line-height: 1.3; }
+        #panel-body h2 { font-size: 16px; font-weight: 700; color: #DC2626; margin: 20px 0 12px; text-transform: uppercase; line-height: 1.3; }
+        #panel-body h3 { font-size: 14px; font-weight: 600; color: #888; margin: 16px 0 10px; line-height: 1.4; }
+        #panel-body p { margin: 12px 0; line-height: 1.7; color: #aaa; font-size: 14px; }
         #panel-body ul, #panel-body ol { margin: 12px 0; padding-left: 24px; color: #aaa; }
-        #panel-body li { margin: 6px 0; }
-        #panel-body code { background: #0a0a0a; padding: 2px 6px; border-radius: 3px; color: #DC2626; font-size: 10px; }
-        #panel-body pre { background: #0a0a0a; border: 1px solid #222; padding: 12px; border-radius: 4px; overflow-x: auto; margin: 12px 0; }
+        #panel-body li { margin: 8px 0; font-size: 14px; line-height: 1.6; }
+        #panel-body code { background: #0a0a0a; padding: 2px 6px; border-radius: 3px; color: #DC2626; font-size: 12px; }
+        #panel-body pre { background: #0a0a0a; border: 1px solid #222; padding: 12px; border-radius: 4px; overflow-x: auto; margin: 12px 0; font-size: 13px; line-height: 1.5; }
         #panel-body pre code { background: transparent; padding: 0; }
         #panel-body strong { color: #fff; font-weight: 700; }
         #panel-body em { color: #DC2626; font-style: italic; }
-        #panel-body blockquote { border-left: 2px solid #DC2626; padding-left: 16px; margin: 12px 0; color: #666; font-style: italic; }
+        #panel-body blockquote { border-left: 2px solid #DC2626; padding-left: 16px; margin: 12px 0; color: #666; font-style: italic; font-size: 14px; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -238,18 +238,18 @@
         const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
 
         const fileMapping = {
-            'BRIEFING_INPUT': ['BRIEFING_INPUT', 'lan_amento'], 
+            'BRIEFING_INPUT': ['BRIEFING_INPUT', 'lan_amento'],
             'DOUGLAS': ['PROCESSED'],
             'VALIDATOR': ['01_', 'VALIDATOR'],
-            'AUDIENCE': ['02_', 'AUDIENCE'], 
-            'RESEARCH': ['03_', 'RESEARCH'], 
+            'AUDIENCE': ['02_', 'AUDIENCE'],
+            'RESEARCH': ['03_', 'RESEARCH'],
             'FACT_CHECK': ['04_', 'CLAIMS', 'FACT_CHECK'],
-            'COPY_A': ['05A_', 'COPY_GPT'], 
-            'COPY_B': ['05B_', 'COPY_FLASH'], 
+            'COPY_A': ['05A_', 'COPY_GPT'],
+            'COPY_B': ['05B_', 'COPY_FLASH'],
             'COPY_C': ['05C_', 'COPY_SONNET'],
-            'BRAND': ['06_', 'BRAND'], 
-            'STRATEGY': ['07_', 'CRITIC'], 
-            'WALL': ['08_', 'FILTRO'], 
+            'BRAND': ['06_', 'BRAND'],
+            'STRATEGY': ['07_', 'CRITIC'],
+            'WALL': ['08_', 'FILTRO'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
@@ -509,35 +509,35 @@ OUTPUT (Copy Final)`;
         }
 
         function formatJSON(json) {
-            let html = '<div class="space-y-4">';
-
+            let html = '<div class="space-y-6">';
+            
             for (const [key, value] of Object.entries(json)) {
-                html += `<div class="border-b border-[#222] pb-3">`;
-                html += `<div class="text-[10px] font-mono text-[#DC2626] uppercase tracking-wider mb-2">${key.replace(/_/g, ' ')}</div>`;
-
+                html += `<div class="border-b border-[#222] pb-4">`;
+                html += `<div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>`;
+                
                 if (Array.isArray(value)) {
-                    html += '<ul class="space-y-1 pl-4">';
+                    html += '<ul class="space-y-2 pl-0">';
                     value.forEach(item => {
                         if (typeof item === 'object') {
-                            html += `<li class="text-[11px] text-[#aaa] border-l-2 border-[#333] pl-3 py-1">${JSON.stringify(item, null, 2).replace(/[{}"]/g, '').replace(/,/g, '<br>')}</li>`;
+                            html += `<li class="text-sm text-[#aaa] border-l-2 border-[#333] pl-4 py-2 leading-relaxed">${JSON.stringify(item, null, 2).replace(/[{}"]/g, '').replace(/,/g, '<br>')}</li>`;
                         } else {
-                            html += `<li class="text-[11px] text-[#aaa]">• ${item}</li>`;
+                            html += `<li class="text-sm text-[#aaa] leading-relaxed">• ${item}</li>`;
                         }
                     });
                     html += '</ul>';
                 } else if (typeof value === 'object' && value !== null) {
-                    html += '<div class="pl-4 space-y-2">';
+                    html += '<div class="pl-4 space-y-3">';
                     for (const [subKey, subValue] of Object.entries(value)) {
-                        html += `<div class="text-[10px]"><span class="text-[#888] font-mono">${subKey}:</span> <span class="text-[#ccc]">${typeof subValue === 'object' ? JSON.stringify(subValue) : subValue}</span></div>`;
+                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono">${subKey}:</span> <span class="text-[#ccc]">${typeof subValue === 'object' ? JSON.stringify(subValue) : subValue}</span></div>`;
                     }
                     html += '</div>';
                 } else {
-                    html += `<div class="text-[12px] text-[#ddd] font-medium">${value}</div>`;
+                    html += `<div class="text-sm text-[#ddd] leading-relaxed">${value}</div>`;
                 }
-
+                
                 html += '</div>';
             }
-
+            
             html += '</div>';
             return html;
         }
