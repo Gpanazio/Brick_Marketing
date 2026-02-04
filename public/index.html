@@ -12,16 +12,16 @@
         body { background-color: var(--brick-black); color: var(--brick-white); font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; height: 100vh; }
         .font-brick { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.05em; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
+
         /* THE FAVORITE BACKGROUND */
-        .grid-bg { 
-            position: fixed; inset: 0; 
-            background-image: 
+        .grid-bg {
+            position: fixed; inset: 0;
+            background-image:
                 radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.12) 0%, transparent 60%),
-                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px); 
-            background-size: 100% 100%, 50px 50px, 50px 50px; 
-            pointer-events: none; z-index: -1; 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 50px 50px, 50px 50px;
+            pointer-events: none; z-index: -1;
         }
         .vignette {
             position: fixed; inset: 0;
@@ -30,19 +30,19 @@
         }
 
         /* NODE STYLING (MATCHING IMAGE) */
-        .node { 
+        .node {
             position: absolute; width: 320px;
-            background: rgba(5, 5, 5, 0.9); border: 1px solid #222; 
+            background: rgba(5, 5, 5, 0.9); border: 1px solid #222;
             padding: 24px; cursor: move; z-index: 10;
             transition: border-color 0.3s;
         }
         .node:hover { border-color: #444; }
         .node.node-douglas { border: 1px solid var(--brick-red); box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
         .node.disabled { opacity: 0.3; filter: grayscale(1); }
-        
+
         .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
         .disabled .node-led { background: #333; box-shadow: none; }
-        
+
         .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
         .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
         .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
@@ -50,17 +50,17 @@
         /* ANGULAR CONNECTIONS */
         .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
         .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
-        
+
         .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
 
         /* SIDE PANEL */
         .side-panel { position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: #050505; border-left: 1px solid #222; z-index: 250; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .side-panel.open { right: 0; }
-        
+
         /* INTERFACE ELEMENTS */
         .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 8px 16px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
         .btn-brick:hover { background: #fff; color: #000; }
-        
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #222; }
 
@@ -181,18 +181,18 @@
                 <button onclick="closeScheme()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title" class="text-[#DC2626]">MARKETING</span></h2>
             </div>
-            
+
             <div class="flex-1 overflow-y-auto p-8">
                 <div class="bg-[#0a0a0a] border border-[#222] p-6 font-mono text-xs text-[#888] overflow-x-auto mb-6">
                     <pre id="scheme-diagram" class="leading-relaxed"></pre>
                 </div>
-                
+
                 <div class="text-[10px] font-mono text-[#444] border-t border-[#222] pt-4 mt-4">
                     <div class="mb-2 text-[#666]">PROTOCOL_INFO:</div>
                     <div id="scheme-info"></div>
                 </div>
             </div>
-            
+
             <div class="p-4 border-t border-[#222] flex justify-end flex-shrink-0">
                 <button onclick="closeScheme()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
             </div>
@@ -206,38 +206,40 @@
         let selectedJobId = null;
 
         const nodeDefMarketing = [
-            { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion' },
-            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', douglas: true },
-            { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator' },
-            { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst' },
-            { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher' },
-            { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker' },
-            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha' },
-            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta' },
-            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma' },
-            { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian' },
-            { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad' },
-            { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter' },
-            { id: 'n9', x: 0, y: 1950, title: 'HUMAN', label: 'User_Control', human: true }
+            { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
+            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
+            { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator', model: 'GEMINI FLASH' },
+            { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'GEMINI FLASH' },
+            { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'GEMINI FLASH' },
+            { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker', model: 'GEMINI FLASH' },
+            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5.2' },
+            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'GEMINI FLASH' },
+            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
+            { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'GEMINI FLASH' },
+            { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad', model: 'GPT-5.2' },
+            { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
+            { id: 'n9', x: 0, y: 1950, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
+            { id: 'n10', x: 0, y: 2150, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
 
         const nodeDefProjetos = [
-            { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion' },
-            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', douglas: true },
-            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor' },
-            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Gen' },
-            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge' },
-            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director' },
-            { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer' },
-            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge' },
-            { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', human: true }
+            { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
+            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
+            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'GEMINI FLASH' },
+            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Gen', model: 'CLAUDE SONNET' },
+            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI FLASH' },
+            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI PRO' },
+            { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer', model: 'CLAUDE SONNET' },
+            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI PRO' },
+            { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
+            { id: 'p10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9']];
+        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
 
         const fileMapping = {
             'BRIEFING_INPUT': ['BRIEFING_INPUT', 'lan_amento'], 
-            'DOUGLAS': ['PROCESSED'], 
+            'DOUGLAS': ['PROCESSED'],
             'VALIDATOR': ['01_', 'VALIDATOR'],
             'AUDIENCE': ['02_', 'AUDIENCE'], 
             'RESEARCH': ['03_', 'RESEARCH'], 
@@ -249,7 +251,7 @@
             'STRATEGY': ['07_', 'CRITIC'], 
             'WALL': ['08_', 'FILTRO'], 
             'HUMAN': ['FINAL', 'READY'],
-            'OUTPUT_ASSETS': ['FINAL', 'READY'],
+            'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
             'CREATIVE_IDEATION': ['CREATIVE_IDEATION'],
             'CONCEPT_CRITIC': ['CONCEPT_CRITIC'],
@@ -291,9 +293,9 @@
             const title = document.getElementById('scheme-mode-title');
             const diagram = document.getElementById('scheme-diagram');
             const info = document.getElementById('scheme-info');
-            
+
             title.textContent = (currentMode || 'MARKETING').toUpperCase();
-            
+
             if (currentMode === 'projetos') {
                 diagram.textContent = `BRIEFING
 │
@@ -323,7 +325,7 @@
 │
 ▼
 OUTPUT (Proposta Completa)`;
-                
+
                 info.innerHTML = `
                     <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
                     <div>• Brand Digest extrai DNA da marca</div>
@@ -369,7 +371,7 @@ OUTPUT (Proposta Completa)`;
 │
 ▼
 OUTPUT (Copy Final)`;
-                
+
                 info.innerHTML = `
                     <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
                     <div>• Validação automática em cada nó</div>
@@ -380,7 +382,7 @@ OUTPUT (Copy Final)`;
                     <div>• Aprovação humana obrigatória</div>
                 `;
             }
-            
+
             modal.classList.remove('hidden');
         }
 
@@ -431,7 +433,7 @@ OUTPUT (Copy Final)`;
             const svg = document.getElementById('conn-svg');
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
-            
+
             container.innerHTML = '';
             svg.innerHTML = '';
 
@@ -451,7 +453,7 @@ OUTPUT (Copy Final)`;
                     <div class="node-led"></div>
                     <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
                     <div class="node-title">${n.title}</div>
-                    <div class="node-subtext">${n.douglas ? 'ANALYZING_FLOW_STATE' : (n.human ? 'AWAITING_USER_INPUT' : 'STANDBY_DATA_SYNC')}</div>
+                    <div class="node-subtext">${n.model || 'PROCESSING'}</div>
                     ${n.human ? `
                         <div class="flex gap-2 mt-4 pt-4 border-t border-[#111]">
                             <button class="flex-1 bg-white text-black font-brick text-[9px] py-2 hover:bg-[#DC2626] hover:text-white transition-colors">APROVAR</button>
@@ -477,7 +479,7 @@ OUTPUT (Copy Final)`;
                 const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
                 const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
                 const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
-                
+
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
                 line.setAttribute("class", `conn-line ${!f.classList.contains('disabled') && !t.classList.contains('disabled') ? 'active' : ''}`);
@@ -508,11 +510,11 @@ OUTPUT (Copy Final)`;
 
         function formatJSON(json) {
             let html = '<div class="space-y-4">';
-            
+
             for (const [key, value] of Object.entries(json)) {
                 html += `<div class="border-b border-[#222] pb-3">`;
                 html += `<div class="text-[10px] font-mono text-[#DC2626] uppercase tracking-wider mb-2">${key.replace(/_/g, ' ')}</div>`;
-                
+
                 if (Array.isArray(value)) {
                     html += '<ul class="space-y-1 pl-4">';
                     value.forEach(item => {
@@ -532,10 +534,10 @@ OUTPUT (Copy Final)`;
                 } else {
                     html += `<div class="text-[12px] text-[#ddd] font-medium">${value}</div>`;
                 }
-                
+
                 html += '</div>';
             }
-            
+
             html += '</div>';
             return html;
         }
@@ -544,7 +546,7 @@ OUTPUT (Copy Final)`;
             const searchTerms = fileMapping[n.title] || [n.title];
             const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
             const body = document.getElementById('panel-body');
-            
+
             if (file) {
                 let content = file.content;
                 try {
@@ -557,7 +559,7 @@ OUTPUT (Copy Final)`;
             } else {
                 body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Aguardando execução do agente...</div>';
             }
-            
+
             document.getElementById('panel-title').textContent = n.title;
             document.getElementById('agent-panel').classList.add('open');
         }
