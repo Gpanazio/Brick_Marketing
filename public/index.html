@@ -195,18 +195,18 @@
                 <button onclick="closeScheme()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title" class="text-[#DC2626]">MARKETING</span></h2>
             </div>
-            
+
             <div class="flex-1 overflow-y-auto p-8">
                 <div class="bg-[#0a0a0a] border border-[#222] p-6 font-mono text-xs text-[#888] overflow-x-auto mb-6">
                     <pre id="scheme-diagram" class="leading-relaxed"></pre>
                 </div>
-                
+
                 <div class="text-[10px] font-mono text-[#444] border-t border-[#222] pt-4 mt-4">
                     <div class="mb-2 text-[#666]">PROTOCOL_INFO:</div>
                     <div id="scheme-info"></div>
                 </div>
             </div>
-            
+
             <div class="p-4 border-t border-[#222] flex justify-end flex-shrink-0">
                 <button onclick="closeScheme()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
             </div>
@@ -221,15 +221,15 @@
                 <h2 class="text-2xl font-brick text-white uppercase">FEEDBACK DE REVISÃO</h2>
                 <div class="text-[10px] font-mono text-[#666] mt-2 uppercase tracking-wider">Explique o que precisa ser ajustado</div>
             </div>
-            
+
             <div class="p-8">
-                <textarea 
-                    id="feedback-text" 
-                    class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-48 focus:border-[#DC2626] outline-none resize-none" 
+                <textarea
+                    id="feedback-text"
+                    class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-48 focus:border-[#DC2626] outline-none resize-none"
                     placeholder="Exemplo: O tom está muito técnico. Precisa ser mais acessível para o público-alvo..."
                 ></textarea>
             </div>
-            
+
             <div class="p-6 border-t border-[#222] flex justify-end gap-4">
                 <button onclick="closeFeedbackModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
                 <button onclick="submitFeedback()" class="btn-brick px-6 py-3">ENVIAR FEEDBACK</button>
@@ -245,7 +245,7 @@
                 <h2 class="text-2xl font-brick text-white uppercase">APROVAR CAMPANHA</h2>
                 <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Confirme para liberar para execução</div>
             </div>
-            
+
             <div class="p-8">
                 <div class="bg-[#0a0a0a] border border-[#222] p-6 space-y-3">
                     <div class="flex justify-between text-sm">
@@ -261,12 +261,12 @@
                         <span class="text-[#DC2626] font-mono">CLAUDE OPUS 4.5</span>
                     </div>
                 </div>
-                
+
                 <div class="mt-6 text-xs text-[#666] font-mono leading-relaxed">
                     Ao aprovar, você confirma que revisou o conteúdo e autoriza a execução da campanha conforme planejado.
                 </div>
             </div>
-            
+
             <div class="p-6 border-t border-[#222] flex justify-end gap-4">
                 <button onclick="closeApprovalModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
                 <button onclick="confirmApproval()" class="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-widest px-6 py-3 font-bold">✓ APROVAR</button>
@@ -469,7 +469,7 @@ OUTPUT (Copy Final)`;
             // Procura por BRIEFING_INPUT ou PROCESSED
             const briefingFile = files.find(f => f.name.includes('BRIEFING_INPUT') || f.name.includes('PROCESSED'));
             if (!briefingFile || !briefingFile.content) return null;
-            
+
             // Extrai título da primeira linha markdown (# BRIEFING: Título)
             const match = briefingFile.content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:)?\s*(.+)$/m);
             return match ? match[1].trim() : null;
@@ -489,7 +489,7 @@ OUTPUT (Copy Final)`;
                 const files = groups[id];
                 const extractedTitle = extractTitle(files);
                 const title = extractedTitle || id.replace(/_/g, ' ');
-                
+
                 const card = document.createElement('div');
                 card.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all';
                 card.onclick = () => openNodeGraphic(id, title);
@@ -505,7 +505,7 @@ OUTPUT (Copy Final)`;
         function updateTelemetry(projectFiles) {
             const agentsCount = projectFiles.filter(f => !f.name.includes('BRIEFING') && !f.name.includes('PROCESSED') && !f.name.includes('FINAL')).length;
             const filesCount = projectFiles.length;
-            
+
             // Calcular duração baseado nos timestamps dos arquivos
             const timestamps = projectFiles.map(f => new Date(f.mtime).getTime()).filter(t => !isNaN(t));
             let duration = '--';
@@ -517,11 +517,11 @@ OUTPUT (Copy Final)`;
                 const diffMin = Math.floor(diffSec / 60);
                 duration = diffMin > 0 ? `${diffMin}m ${diffSec % 60}s` : `${diffSec}s`;
             }
-            
+
             // Detectar estágio atual
             const hasFinal = projectFiles.some(f => f.name.includes('FINAL'));
             const stage = hasFinal ? 'READY FOR APPROVAL' : 'PROCESSING';
-            
+
             document.getElementById('tel-agents').textContent = agentsCount;
             document.getElementById('tel-duration').textContent = duration;
             document.getElementById('tel-files').textContent = filesCount;
@@ -662,26 +662,47 @@ OUTPUT (Copy Final)`;
             const searchTerms = fileMapping[n.title] || [n.title];
             const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
             const body = document.getElementById('panel-body');
-
+            
             if (file) {
                 let content = file.content;
+                const isApproved = localStorage.getItem(`approved_${selectedJobId}`) === 'true';
+                
                 try {
                     const json = JSON.parse(content);
                     content = formatJSON(json);
                 } catch(e) {
                     content = marked.parse(content);
+                    // Remover linha "Aguardando aprovação" se foi aprovado
+                    if (isApproved && (n.title === 'OUTPUT' || n.title === 'HUMAN')) {
+                        content = content.replace(/\*\*Aguardando sua aprovação para prosseguir\.\*\*/gi, '');
+                    }
                 }
+                
+                // Adicionar banner de aprovação se foi aprovado
+                if (isApproved && (n.title === 'OUTPUT' || n.title === 'HUMAN')) {
+                    const approvalBanner = `<div class="bg-green-900/30 border border-green-600 p-4 mb-6 font-mono text-sm text-green-400">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">✅</span>
+                            <div>
+                                <div class="font-bold uppercase tracking-wide">CAMPANHA APROVADA</div>
+                                <div class="text-xs text-green-500 mt-1">Aprovado em ${new Date(parseInt(localStorage.getItem(`approved_${selectedJobId}_timestamp`))).toLocaleString('pt-BR')}</div>
+                            </div>
+                        </div>
+                    </div>`;
+                    content = approvalBanner + content;
+                }
+                
                 body.innerHTML = content;
             } else {
                 body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Aguardando execução do agente...</div>';
             }
-
+            
             document.getElementById('panel-title').textContent = n.title;
             document.getElementById('agent-panel').classList.add('open');
         }
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
-        function openNewBriefing() { 
+        function openNewBriefing() {
             showNotification('📋 Módulo de briefing em desenvolvimento.', 'error');
         }
 
@@ -751,8 +772,15 @@ OUTPUT (Copy Final)`;
                 });
 
                 if (res.ok) {
+                    // Salvar aprovação no localStorage
+                    localStorage.setItem(`approved_${selectedJobId}`, 'true');
+                    localStorage.setItem(`approved_${selectedJobId}_timestamp`, Date.now().toString());
+                    
                     closeApprovalModal();
                     showNotification('🎉 CAMPANHA APROVADA! Pronta para execução.');
+                    
+                    // Atualizar telemetria e re-renderizar
+                    renderNodeGraphic();
                 } else {
                     showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
                 }
