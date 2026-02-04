@@ -112,11 +112,101 @@
         .notification-toast.error .toast-title { color: #DC2626; }
         .notification-toast .toast-message { font-family: 'JetBrains Mono'; font-size: 11px; color: #888; }
         @keyframes slideInRight { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        /* Hide mobile elements on desktop */
+        #lobby-toggle, #lobby-overlay { display: none; }
+
+        /* MOBILE RESPONSIVE (≤768px) */
+        @media (max-width: 768px) {
+            body { overflow: auto; }
+            
+            /* Show mobile controls */
+            #lobby-toggle, #lobby-overlay { display: flex; }
+            
+            /* Lobby as drawer */
+            #view-lobby { 
+                position: fixed; left: -100%; 
+                width: 85%; max-width: 320px; height: 100vh; 
+                z-index: 200; transition: left 0.3s; 
+                box-shadow: 20px 0 50px rgba(0,0,0,0.9);
+            }
+            #view-lobby.open { left: 0; }
+            
+            /* Hamburguer button */
+            #lobby-toggle { 
+                position: fixed; top: 16px; left: 16px; z-index: 150; 
+                width: 44px; height: 44px; 
+                background: rgba(5,5,5,0.95); border: 1px solid #222; 
+                display: flex; align-items: center; justify-content: center; 
+                cursor: pointer; backdrop-filter: blur(10px);
+            }
+            #lobby-toggle span { 
+                display: block; width: 20px; height: 2px; background: #DC2626; 
+                position: relative; transition: all 0.3s;
+            }
+            #lobby-toggle span::before, #lobby-toggle span::after { 
+                content: ''; display: block; width: 20px; height: 2px; 
+                background: #DC2626; position: absolute; transition: all 0.3s;
+            }
+            #lobby-toggle span::before { top: -6px; }
+            #lobby-toggle span::after { top: 6px; }
+            #lobby-toggle.open span { background: transparent; }
+            #lobby-toggle.open span::before { transform: rotate(45deg); top: 0; }
+            #lobby-toggle.open span::after { transform: rotate(-45deg); top: 0; }
+            
+            /* Overlay */
+            #lobby-overlay { 
+                display: none; position: fixed; inset: 0; 
+                background: rgba(0,0,0,0.8); z-index: 199; 
+            }
+            #lobby-overlay.active { display: block; }
+            
+            /* Pipeline view */
+            #view-nodegraphic { 
+                width: 100vw !important; left: 0 !important; 
+                padding-top: 70px; /* space for hamburger */
+            }
+            
+            /* Nodes smaller */
+            .node { 
+                width: 240px; padding: 16px; 
+                transform: scale(0.85); transform-origin: center;
+            }
+            .node-title { font-size: 14px; }
+            .node-subtext { font-size: 7px; margin-top: 8px; padding-top: 8px; }
+            
+            /* Agent panel full-screen */
+            .side-panel { 
+                width: 100vw; right: -100vw; 
+            }
+            .side-panel.open { right: 0; }
+            .panel-header, .panel-content { padding: 24px; }
+            .panel-footer { padding: 16px 24px; flex-direction: column; }
+            .panel-footer button { width: 100%; padding: 16px; font-size: 13px; }
+            
+            /* Buttons touch-friendly */
+            .btn-brick { padding: 12px 20px; font-size: 12px; min-height: 48px; }
+            .project-card { padding: 16px; }
+            
+            /* Modals */
+            #briefing-modal > div, #scheme-modal > div { 
+                width: 95vw; max-width: 95vw; max-height: 85vh; 
+            }
+            
+            /* Text readable */
+            .md-content { font-size: 14px; }
+            .md-content h1 { font-size: 20px; }
+            .md-content h2 { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
     <div class="grid-bg"></div>
     <div class="vignette"></div>
+    
+    <!-- MOBILE LOBBY TOGGLE -->
+    <div id="lobby-toggle" onclick="toggleLobby()"><span></span></div>
+    <div id="lobby-overlay" onclick="toggleLobby()"></div>
     
     <!-- NOTIFICATION CONTAINER -->
     <div id="notification-container"></div>
@@ -359,6 +449,26 @@ OUTPUT ≥80%</pre>
                 setTimeout(() => toast.remove(), 300);
             }, 4000);
         }
+
+        // MOBILE LOBBY TOGGLE
+        function toggleLobby() {
+            const lobby = document.getElementById('view-lobby');
+            const toggle = document.getElementById('lobby-toggle');
+            const overlay = document.getElementById('lobby-overlay');
+            
+            lobby.classList.toggle('open');
+            toggle.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        
+        // Hide hamburger on desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.getElementById('view-lobby').classList.remove('open');
+                document.getElementById('lobby-toggle').classList.remove('open');
+                document.getElementById('lobby-overlay').classList.remove('active');
+            }
+        });
 
         // MARKETING PIPELINE v3.3
         const nodeDefMarketing = [
