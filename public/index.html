@@ -615,6 +615,8 @@ OUTPUT (Copy Final)`;
                 const el = document.createElement('div');
                 el.className = `node ${n.douglas?'node-douglas':''}`;
                 el.id = n.id;
+                // Forçar reset de position inline (limpa drag anterior)
+                el.style.cssText = '';
                 el.style.left = `calc(50% + ${n.x}px - 160px)`;
                 el.style.top = `${n.y}px`;
 
