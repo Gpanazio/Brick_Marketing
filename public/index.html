@@ -152,15 +152,29 @@
             <div id="node-container" class="relative w-full h-[3000px]"></div>
         </div>
 
-        <!-- TACTICAL LOG -->
-        <div class="fixed bottom-10 left-10 w-80 h-32 bg-black/90 border border-[#111] p-4 z-[120] font-mono text-[9px]">
-            <div class="flex justify-between text-[#444] mb-2 border-b border-[#111] pb-2">
-                <span>WAR_ROOM_LOG</span>
-                <span class="animate-pulse">SQUAD_READY</span>
+        <!-- TELEMETRY -->
+        <div class="fixed bottom-10 left-10 w-80 bg-black/90 border border-[#111] p-4 z-[120] font-mono text-[9px]">
+            <div class="flex justify-between text-[#444] mb-3 border-b border-[#111] pb-2">
+                <span class="uppercase tracking-wider">TELEMETRY</span>
+                <span id="telemetry-status" class="text-green-500">ACTIVE</span>
             </div>
-            <div id="tactical-log" class="text-[#666] space-y-1">
-                <div>> INITIALIZING_MASON_PROTOCOL...</div>
-                <div>> MAPPING_AGENT_NETWORK...</div>
+            <div id="telemetry-data" class="space-y-2 text-[10px]">
+                <div class="flex justify-between">
+                    <span class="text-[#666]">AGENTS:</span>
+                    <span id="tel-agents" class="text-[#DC2626]">--</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-[#666]">DURATION:</span>
+                    <span id="tel-duration" class="text-[#DC2626]">--</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-[#666]">FILES:</span>
+                    <span id="tel-files" class="text-[#DC2626]">--</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-[#666]">STATUS:</span>
+                    <span id="tel-stage" class="text-[#DC2626]">--</span>
+                </div>
             </div>
         </div>
     </div>
@@ -451,6 +465,34 @@ OUTPUT (Copy Final)`;
             });
         }
 
+        function updateTelemetry(projectFiles) {
+            const agentsCount = projectFiles.filter(f => !f.name.includes('BRIEFING') && !f.name.includes('PROCESSED') && !f.name.includes('FINAL')).length;
+            const filesCount = projectFiles.length;
+            
+            // Calcular duração baseado nos timestamps dos arquivos
+            const timestamps = projectFiles.map(f => new Date(f.mtime).getTime()).filter(t => !isNaN(t));
+            let duration = '--';
+            if (timestamps.length > 1) {
+                const start = Math.min(...timestamps);
+                const end = Math.max(...timestamps);
+                const diffMs = end - start;
+                const diffSec = Math.floor(diffMs / 1000);
+                const diffMin = Math.floor(diffSec / 60);
+                duration = diffMin > 0 ? `${diffMin}m ${diffSec % 60}s` : `${diffSec}s`;
+            }
+            
+            // Detectar estágio atual
+            const hasFinal = projectFiles.some(f => f.name.includes('FINAL'));
+            const stage = hasFinal ? 'READY FOR APPROVAL' : 'PROCESSING';
+            
+            document.getElementById('tel-agents').textContent = agentsCount;
+            document.getElementById('tel-duration').textContent = duration;
+            document.getElementById('tel-files').textContent = filesCount;
+            document.getElementById('tel-stage').textContent = stage;
+            document.getElementById('telemetry-status').textContent = hasFinal ? 'COMPLETE' : 'ACTIVE';
+            document.getElementById('telemetry-status').className = hasFinal ? 'text-green-500' : 'text-yellow-500 animate-pulse';
+        }
+
         function openNodeGraphic(id, title) {
             selectedJobId = id;
             document.getElementById('ng-title').textContent = title;
@@ -503,6 +545,7 @@ OUTPUT (Copy Final)`;
             });
 
             updateConnections();
+            updateTelemetry(projectFiles);
         }
 
         function updateConnections() {
