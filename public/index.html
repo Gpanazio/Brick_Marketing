@@ -906,9 +906,30 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                 return;
             }
             
-            // Find file related to this node
+            // Auto-detect JobID if not selected yet
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
-            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
+            if (!selectedJobId && allFiles.length > 0) {
+                // Extract all unique job IDs from filenames
+                const jobIds = [...new Set(allFiles.map(f => {
+                    const match = f.name.match(/^(\d+)_/);
+                    return match ? match[1] : null;
+                }).filter(Boolean))];
+                
+                // Pick the job with most files (most likely the active one)
+                if (jobIds.length > 0) {
+                    const counts = jobIds.map(id => ({
+                        id,
+                        count: allFiles.filter(f => f.name.startsWith(id)).length
+                    }));
+                    selectedJobId = counts.sort((a, b) => b.count - a.count)[0].id;
+                    console.log('[AUTO-DETECT] Selected JobID:', selectedJobId);
+                }
+            }
+            
+            // Find file related to this node
+            const projectFiles = selectedJobId 
+                ? allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()))
+                : allFiles;
             
             let content = '';
             let nodeFile = null;
