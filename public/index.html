@@ -17,14 +17,15 @@
         .grid-bg { 
             position: fixed; inset: 0; 
             background-image: 
-                linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px); 
-            background-size: 25px 25px; 
+                radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); 
+            background-size: 100% 100%, 25px 25px, 25px 25px; 
             pointer-events: none; z-index: -1; 
         }
         .vignette {
             position: fixed; inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.85) 100%);
             pointer-events: none; z-index: -1;
         }
 
@@ -96,6 +97,7 @@
             </div>
             <div class="flex gap-4">
                 <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
+                <button id="btn-scheme" onclick="openScheme()" class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
@@ -166,6 +168,31 @@
             <button onclick="closePanel()" class="text-[#444] hover:text-white font-mono text-[10px]">CLOSE_</button>
         </div>
         <div id="panel-body" class="p-10 overflow-y-auto h-[calc(100vh-150px)] font-mono text-[11px] text-[#888]"></div>
+    </div>
+
+    <!-- SCHEME MODAL -->
+    <div id="scheme-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'scheme-modal') closeScheme()">
+        <div class="bg-[#050505] border border-[#222] w-full max-w-3xl max-h-[90vh] flex flex-col relative shadow-2xl shadow-red-900/10" onclick="event.stopPropagation()">
+            <div class="p-8 border-b border-[#222] flex-shrink-0">
+                <button onclick="closeScheme()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title" class="text-[#DC2626]">MARKETING</span></h2>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="bg-[#0a0a0a] border border-[#222] p-6 font-mono text-xs text-[#888] overflow-x-auto mb-6">
+                    <pre id="scheme-diagram" class="leading-relaxed"></pre>
+                </div>
+                
+                <div class="text-[10px] font-mono text-[#444] border-t border-[#222] pt-4 mt-4">
+                    <div class="mb-2 text-[#666]">PROTOCOL_INFO:</div>
+                    <div id="scheme-info"></div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-[#222] flex justify-end flex-shrink-0">
+                <button onclick="closeScheme()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -241,6 +268,7 @@
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('project-lobby').classList.remove('hidden');
             document.getElementById('btn-back-lobby').classList.remove('hidden');
+            document.getElementById('btn-scheme').classList.remove('hidden');
             document.getElementById('header-sector').textContent = mode.toUpperCase();
             fetchState();
         }
@@ -250,7 +278,110 @@
             document.getElementById('welcome-screen').classList.remove('hidden');
             document.getElementById('project-lobby').classList.add('hidden');
             document.getElementById('btn-back-lobby').classList.add('hidden');
+            document.getElementById('btn-scheme').classList.add('hidden');
             document.getElementById('header-sector').textContent = 'COMMAND_CENTER';
+        }
+
+        function openScheme() {
+            const modal = document.getElementById('scheme-modal');
+            const title = document.getElementById('scheme-mode-title');
+            const diagram = document.getElementById('scheme-diagram');
+            const info = document.getElementById('scheme-info');
+            
+            title.textContent = (currentMode || 'MARKETING').toUpperCase();
+            
+            if (currentMode === 'projetos') {
+                diagram.textContent = `BRIEFING
+│
+▼
+00. DOUGLAS (Pré-processador) - lê PDFs/imagens/anexos
+│
+▼
+01. BRAND DIGEST (Flash) - extrai DNA/tom/assets
+│
+▼
+02. CREATIVE IDEATION (Sonnet) - 3 conceitos
+│
+▼
+03. CONCEPT CRITIC (Flash) - escolhe melhor
+│
+▼
+04. EXECUTION DESIGN (Gemini Pro) - direção visual
+│
+▼
+05. COPYWRITER (Sonnet) - roteiro com constraints
+│
+▼
+06. DIRECTOR (Gemini Pro) - avalia execução (loop até ≥85)
+│
+▼
+07. HUMAN - aprovação final
+│
+▼
+OUTPUT (Proposta Completa)`;
+                
+                info.innerHTML = `
+                    <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
+                    <div>• Brand Digest extrai DNA da marca</div>
+                    <div>• 3 conceitos criativos paralelos</div>
+                    <div>• Critic escolhe o melhor conceito</div>
+                    <div>• Director loop até score ≥85</div>
+                    <div>• Aprovação humana obrigatória</div>
+                `;
+            } else {
+                diagram.textContent = `BRIEFING
+│
+▼
+00. DOUGLAS (Pré-processador) - lê PDFs/imagens/anexos
+│
+▼
+01. BRIEF VALIDATOR (Flash)
+│
+▼
+02. AUDIENCE ══► 03. RESEARCHER (Flash)
+│
+▼
+04. CLAIMS CHECKER (Flash)
+│
+├──────────┼──────────┐
+▼          ▼          ▼
+┌────────┐ ┌────────┐ ┌────────┐
+│COPY A  │ │COPY B  │ │COPY C  │
+│GPT-5.2 │ │ FLASH  │ │SONNET  │
+└────────┘ └────────┘ └────────┘
+│          │          │
+└──────────┼──────────┘
+           ▼
+06. BRAND GUARDIANS (Flash) - valida as 3
+│
+▼
+07. CRITICS (GPT-5.2) - escolhem a melhor
+│
+▼
+08. FILTRO FINAL (Claude Opus) - loop até ≥80
+│
+▼
+09. HUMAN - aprovação final
+│
+▼
+OUTPUT (Copy Final)`;
+                
+                info.innerHTML = `
+                    <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
+                    <div>• Validação automática em cada nó</div>
+                    <div>• Três versões criativas paralelas (A/B/C)</div>
+                    <div>• Brand Guardians valida todas as versões</div>
+                    <div>• Critics escolhem a melhor</div>
+                    <div>• Filtro final com Claude Opus (score ≥80)</div>
+                    <div>• Aprovação humana obrigatória</div>
+                `;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeScheme() {
+            document.getElementById('scheme-modal').classList.add('hidden');
         }
 
         function renderLobby() {
