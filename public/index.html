@@ -179,7 +179,8 @@
             /* Pipeline view - scrollable container */
             #view-nodegraphic { 
                 width: 100vw !important; left: 0 !important;
-                overflow: auto !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
                 -webkit-overflow-scrolling: touch;
             }
             
@@ -192,14 +193,30 @@
             
             /* Nodes smaller */
             .node { 
-                width: 200px; padding: 12px; 
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                margin: 0 auto 20px auto !important;
+                width: 90% !important;
+                max-width: 320px !important;
+                transform: none !important;
+                padding: 16px; 
             }
-            .node-title { font-size: 12px; }
-            .node-id { font-size: 7px; }
-            .node-subtext { font-size: 6px; margin-top: 6px; padding-top: 6px; }
-            .node-toggle { width: 24px; height: 12px; }
-            .node-toggle::after { width: 8px; height: 8px; }
-            .node:not(.disabled) .node-toggle::after { transform: translateX(10px); }
+            .node-title { font-size: 14px; }
+            .node-subtext { font-size: 7px; margin-top: 8px; padding-top: 8px; }
+            
+            #view-nodegraphic > div { 
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                min-width: unset !important;
+                transform: none !important;
+                padding: 20px !important;
+            }
+
+            /* Hide SVG lines on mobile */
+            #node-canvas { display: none !important; }
             
             /* Agent panel full-screen */
             .side-panel { 
