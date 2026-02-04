@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-02-04T20:01:19.127Z",
+  "jobId": "test",
+  "action": "revision",
+  "type": "human_feedback",
+  "text": "teste",
+  "mode": "marketing",
+  "status": "pending"
+}

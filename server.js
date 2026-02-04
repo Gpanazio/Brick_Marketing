@@ -700,21 +700,38 @@ app.post('/api/approve', async (req, res) => {
     
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
     const approvalDir = path.join(baseDir, 'approved');
+    const wipDir = path.join(baseDir, 'wip');
+    const doneDir = path.join(baseDir, 'done');
+    
     if (!fs.existsSync(approvalDir)) fs.mkdirSync(approvalDir, { recursive: true });
+    if (!fs.existsSync(doneDir)) fs.mkdirSync(doneDir, { recursive: true });
+    
+    // Move all project files from wip/ to done/
+    const movedFiles = [];
+    if (fs.existsSync(wipDir)) {
+        const files = fs.readdirSync(wipDir).filter(f => f.startsWith(jobId));
+        files.forEach(file => {
+            const srcPath = path.join(wipDir, file);
+            const destPath = path.join(doneDir, file);
+            fs.renameSync(srcPath, destPath);
+            movedFiles.push(file);
+        });
+    }
     
     const approval = {
         timestamp: timestamp || new Date().toISOString(),
         jobId,
         mode,
         status: 'approved',
-        approvedBy: 'human'
+        approvedBy: 'human',
+        filesMovedToDone: movedFiles.length
     };
     
     const approvalFile = path.join(approvalDir, `${jobId}_APPROVED_${ts}.json`);
     fs.writeFileSync(approvalFile, JSON.stringify(approval, null, 2));
     
-    log('info', 'campaign_approved', { jobId, mode });
-    res.json({ success: true, saved: approvalFile });
+    log('info', 'campaign_approved', { jobId, mode, filesMoved: movedFiles.length });
+    res.json({ success: true, saved: approvalFile, filesMoved: movedFiles.length });
 });
 
 // Graceful shutdown handler (Railway sends SIGTERM)

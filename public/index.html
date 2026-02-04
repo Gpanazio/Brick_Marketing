@@ -125,7 +125,18 @@
 
         <!-- LOBBY -->
         <div id="project-lobby" class="hidden flex-1 overflow-y-auto pr-4">
-            <div id="lobby-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-20"></div>
+            <div id="lobby-approved" class="mb-16">
+                <h2 class="text-lg font-brick text-green-500 uppercase mb-6 tracking-wider flex items-center gap-3">
+                    <span class="text-2xl">✓</span> APROVADOS
+                </h2>
+                <div id="lobby-approved-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+            </div>
+            <div id="lobby-active">
+                <h2 class="text-lg font-brick text-[#DC2626] uppercase mb-6 tracking-wider flex items-center gap-3">
+                    <span class="text-2xl">●</span> EM ANDAMENTO
+                </h2>
+                <div id="lobby-active-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+            </div>
         </div>
     </div>
 
@@ -476,17 +487,50 @@ OUTPUT (Copy Final)`;
         }
 
         function renderLobby() {
-            const list = document.getElementById('lobby-list');
-            list.innerHTML = '';
-            const all = [...currentState.briefing, ...currentState.wip, ...currentState.done];
-            const groups = {};
-            all.forEach(f => {
+            const activeList = document.getElementById('lobby-active-list');
+            const approvedList = document.getElementById('lobby-approved-list');
+            activeList.innerHTML = '';
+            approvedList.innerHTML = '';
+            
+            // Separar projetos em andamento (briefing + wip) vs aprovados (done)
+            const wipFiles = [...currentState.briefing, ...currentState.wip];
+            const doneFiles = [...currentState.done];
+            
+            const wipGroups = {};
+            const doneGroups = {};
+            
+            wipFiles.forEach(f => {
                 const id = f.name.match(/^(\d{13,})/) ? f.name.match(/^(\d{13,})/)[1] : f.name.split('__')[0];
-                if(!groups[id]) groups[id] = []; groups[id].push(f);
+                if(!wipGroups[id]) wipGroups[id] = []; wipGroups[id].push(f);
+            });
+            
+            doneFiles.forEach(f => {
+                const id = f.name.match(/^(\d{13,})/) ? f.name.match(/^(\d{13,})/)[1] : f.name.split('__')[0];
+                if(!doneGroups[id]) doneGroups[id] = []; doneGroups[id].push(f);
             });
 
-            Object.keys(groups).sort().reverse().forEach(id => {
-                const files = groups[id];
+            // Renderizar projetos aprovados (verde)
+            Object.keys(doneGroups).sort().reverse().forEach(id => {
+                const files = doneGroups[id];
+                const extractedTitle = extractTitle(files);
+                const title = extractedTitle || id.replace(/_/g, ' ');
+
+                const card = document.createElement('div');
+                card.className = 'border border-green-600 bg-[#050505] p-8 cursor-pointer hover:border-green-400 transition-all';
+                card.onclick = () => openNodeGraphic(id, title);
+                card.innerHTML = `
+                    <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                    <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
+                    <div class="text-[9px] font-mono text-green-500 tracking-widest flex items-center gap-2">
+                        <span>✓</span> APROVADO
+                    </div>
+                `;
+                approvedList.appendChild(card);
+            });
+            
+            // Renderizar projetos em andamento (vermelho)
+            Object.keys(wipGroups).sort().reverse().forEach(id => {
+                const files = wipGroups[id];
                 const extractedTitle = extractTitle(files);
                 const title = extractedTitle || id.replace(/_/g, ' ');
 
@@ -498,8 +542,12 @@ OUTPUT (Copy Final)`;
                     <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
                     <div class="text-[9px] font-mono text-[#DC2626] tracking-widest">ACTIVE_NETWORK</div>
                 `;
-                list.appendChild(card);
+                activeList.appendChild(card);
             });
+            
+            // Esconder seções vazias
+            document.getElementById('lobby-approved').style.display = Object.keys(doneGroups).length > 0 ? 'block' : 'none';
+            document.getElementById('lobby-active').style.display = Object.keys(wipGroups).length > 0 ? 'block' : 'none';
         }
 
         function updateTelemetry(projectFiles) {
@@ -777,10 +825,15 @@ OUTPUT (Copy Final)`;
                     localStorage.setItem(`approved_${selectedJobId}_timestamp`, Date.now().toString());
                     
                     closeApprovalModal();
-                    showNotification('🎉 CAMPANHA APROVADA! Pronta para execução.');
+                    showNotification('🎉 CAMPANHA APROVADA! Movida para APROVADOS.');
                     
-                    // Atualizar telemetria e re-renderizar
-                    renderNodeGraphic();
+                    // Fechar node graphic e voltar pro lobby
+                    closeNodeGraphic();
+                    
+                    // Atualizar estado (os arquivos foram movidos para done/)
+                    setTimeout(() => {
+                        fetchState();
+                    }, 1000);
                 } else {
                     showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
                 }
