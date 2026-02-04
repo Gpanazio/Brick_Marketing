@@ -254,7 +254,7 @@ async function notifyTelegram(message) {
 }
 
 // OpenClaw Wake notification (triggers Douglas via system event)
-async function notifyDouglas(briefingData) {
+async function notifyDouglas(data) {
     const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL;
     const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
     
@@ -263,13 +263,27 @@ async function notifyDouglas(briefingData) {
         return;
     }
     
-    const message = `NOVO BRIEFING NO WAR ROOM
-Título: ${briefingData.title}
-Modo: ${briefingData.mode}
-Arquivos: ${briefingData.filesCount || 0}
-JobID: ${briefingData.jobId}
+    let message = '';
+    
+    // Check if it's feedback or new briefing
+    if (data.feedbackAction) {
+        message = `FEEDBACK HUMANO NO WAR ROOM
+Ação: ${data.feedbackAction}
+Tipo: ${data.feedbackType || 'N/A'}
+Arquivo: ${data.targetFile || 'N/A'}
+Modo: ${data.mode}
+Texto: ${data.feedbackText || '(sem texto)'}
 
-Consultar API: https://brickmarketing-production.up.railway.app/api/state?mode=${briefingData.mode}`;
+Consultar API: https://brickmarketing-production.up.railway.app/api/feedback?mode=${data.mode}`;
+    } else {
+        message = `NOVO BRIEFING NO WAR ROOM
+Título: ${data.title}
+Modo: ${data.mode}
+Arquivos: ${data.filesCount || 0}
+JobID: ${data.jobId}
+
+Consultar API: https://brickmarketing-production.up.railway.app/api/state?mode=${data.mode}`;
+    }
     
     try {
         await fetch(`${gatewayUrl}/api/cron/wake`, {
@@ -283,7 +297,7 @@ Consultar API: https://brickmarketing-production.up.railway.app/api/state?mode=$
                 mode: 'now'
             })
         });
-        log('info', 'openclaw_wake_sent', { jobId: briefingData.jobId });
+        log('info', 'openclaw_wake_sent', { jobId: data.jobId, type: data.feedbackAction ? 'feedback' : 'briefing' });
     } catch (e) {
         log('error', 'openclaw_wake_failed', { error: e.message });
     }
@@ -647,6 +661,19 @@ app.post('/api/feedback', (req, res) => {
     // Create signal file for Douglas to pick up
     const signalFile = path.join(baseDir, 'FEEDBACK_SIGNAL.txt');
     fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nArquivo: ${file}\nAção: ${action}\nTipo: ${type}\nTexto: ${text}\nRoteado para: ${routedTo}\nTimestamp: ${new Date().toISOString()}`);
+    
+    // Notify Douglas via OpenClaw Wake
+    const feedbackData = {
+        title: `FEEDBACK HUMANO: ${action}`,
+        mode: mode || 'marketing',
+        filesCount: 0,
+        jobId: `feedback_${timestamp}`,
+        feedbackAction: action,
+        feedbackType: type,
+        feedbackText: text,
+        targetFile: file
+    };
+    await notifyDouglas(feedbackData);
     
     log('info', 'feedback_received', { file, action, type, routedTo, mode });
     res.json({ success: true, saved: feedbackFile, archived: true });
