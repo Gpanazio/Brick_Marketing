@@ -617,7 +617,7 @@ app.post('/api/archive', (req, res) => {
 });
 
 // Feedback route - recebe feedback humano e salva para processamento
-app.post('/api/feedback', (req, res) => {
+app.post('/api/feedback', async (req, res) => {
     const { file, action, type, text, routedTo, mode } = req.body;
     const timestamp = Date.now();
     
