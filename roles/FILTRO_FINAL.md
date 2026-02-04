@@ -107,7 +107,8 @@ Consultar: `roles/BRAND_GUARDIAN.md`
     "Credibilidade pode ser mais forte com case visual"
   ],
   "veredito": "APROVADO - Copy está pronta para aprovação humana. Ajustes sugeridos são opcionais.",
-  "proximo_passo": "HUMAN_APPROVAL"
+  "proximo_passo": "HUMAN_APPROVAL",
+  "recomendar_retorno": null
 }
 ```
 
@@ -123,7 +124,8 @@ Consultar: `roles/BRAND_GUARDIAN.md`
     "CTA inexistente (0/15)"
   ],
   "feedback_para_douglas": "Copy precisa de retrabalho. Focar em: 1) Clareza da oferta - especificar EXATAMENTE o que vendemos, 2) Adicionar CTA claro com próximo passo.",
-  "proximo_passo": "REINICIAR_PIPELINE_COM_FEEDBACK"
+  "proximo_passo": "REINICIAR_PIPELINE_COM_FEEDBACK",
+  "recomendar_retorno": "COPYWRITER" 
 }
 ```
 
@@ -133,6 +135,9 @@ Consultar: `roles/BRAND_GUARDIAN.md`
 3. **Priorizar** - Se tem 10 problemas, listar os 3 críticos
 4. **Consultar brand guidelines** - Sempre checar `BRAND_GUARDIAN.md`
 5. **Não inventar requisitos** - Seguir apenas a rubrica acima
+6. **Definir `recomendar_retorno`**:
+   - `COPYWRITER` se o problema é estrutura/clareza/oferta
+   - `DIRECTOR` se o problema é ajuste fino (CTA/tom/polimento)
 
 ## CRITÉRIO DE APROVAÇÃO
 - **Score ≥ 80:** APROVADO → segue pra HUMAN

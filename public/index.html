@@ -309,8 +309,8 @@
             { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'GEMINI FLASH' },
             { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
             { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'GEMINI FLASH' },
-            { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad', model: 'GPT-5.2' },
-            { id: 'n7b', x: 0, y: 1750, title: 'COPY_FINAL', label: 'Final_Polish', model: 'DYNAMIC' },
+            { id: 'n7', x: 0, y: 1550, title: 'CRITICS', label: 'Judge_Squad', model: 'CLAUDE OPUS' },
+            { id: 'n7b', x: 0, y: 1750, title: 'DIRECTOR', label: 'Refiner', model: 'GPT-5.2' },
             { id: 'n8', x: 0, y: 1950, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
             { id: 'n9', x: 0, y: 2150, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'n10', x: 0, y: 2350, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
@@ -342,8 +342,8 @@
             'COPY_B': ['05B_', 'COPY_FLASH'],
             'COPY_C': ['05C_', 'COPY_SONNET'],
             'BRAND': ['06_', 'BRAND'],
-            'STRATEGY': ['07_', 'CRITIC'],
-            'COPY_FINAL': ['07B_', 'COPY_FINAL', 'REFINED'],
+            'CRITICS': ['07_', 'CRITIC'],
+            'DIRECTOR': ['07B_', 'DIRECTOR', 'REFINED'],
             'WALL': ['08_', 'FILTRO'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
@@ -456,22 +456,21 @@ OUTPUT (Proposta Completa)`;
 06. BRAND GUARDIANS (Flash) - valida as 3
 │
 ▼
-07. CRITICS (GPT-5.2) - escolhem a melhor
+07. CRITICS (Opus) - escolhem a melhor
 │
 ├─► (SE ajustes_sugeridos existir)
 │   │
 │   ▼
-│   07B. COPY FINAL (Dynamic) - aplica ajustes
+│   07B. DIRECTOR (GPT-5.2) - aplica ajustes
 │   │
 ├───┘
 ▼
-08. WALL (Claude Opus) - score final
+08. WALL (Opus) - score final
 │
 ├─► (SE score < 80) ──┐
 │                     │
-│   ┌─────────────────┘
-│   ▼
-│   REINICIA DO DOUGLAS (max 3 tentativas)
+│   ├─► problemas de ESTRUTURA → volta COPYWRITER (05)
+│   └─► ajustes finos/CTA → volta DIRECTOR (07B)
 │
 ▼ (score ≥ 80)
 09. HUMAN - aprovação final
@@ -485,9 +484,9 @@ OUTPUT (Copy Final)`;
                     <div>• Três versões criativas paralelas (A/B/C)</div>
                     <div>• Brand Guardians valida todas as versões</div>
                     <div>• Critics escolhem a melhor</div>
-                    <div>• <strong class="text-green-400">Copy Final é CONDICIONAL</strong> - só executa se Critics sugerirem ajustes</div>
-                    <div>• Wall (Claude Opus) score final: ≥80 passa, &lt;80 reinicia do Douglas</div>
-                    <div>• Loop de rejeição: máximo 3 tentativas antes de escalar pra humano</div>
+                    <div>• <strong class="text-green-400">Director é CONDICIONAL</strong> - só executa se Critics sugerirem ajustes</div>
+                    <div>• Wall (Opus) score final: ≥80 passa, &lt;80 volta p/ Copywriter ou Director</div>
+                    <div>• Loop inteligente: máximo 3 tentativas antes de escalar pra humano</div>
                     <div>• Aprovação humana obrigatória</div>
                 `;
             }
@@ -753,7 +752,7 @@ OUTPUT (Copy Final)`;
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
-                // Não desabilitar: BRIEFING_INPUT (n0), Douglas, e COPY_FINAL (n7b - em construção)
+                // Não desabilitar: BRIEFING_INPUT (n0), Douglas, e DIRECTOR (n7b - em construção)
                 if(!hasFile && !n.douglas && n.id !== 'n0' && n.id !== 'n7b') el.classList.add('disabled');
 
                 el.innerHTML = `

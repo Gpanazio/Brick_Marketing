@@ -206,9 +206,9 @@ Você é o BRAND_GUARDIANS do pipeline Brick AI.
 
 echo "✅ Brand Guardians concluído"
 
-# ETAPA 7: CRITICS (GPT-5.2)
+# ETAPA 7: CRITICS (Opus - juiz padrão)
 echo ""
-echo "⏳ ETAPA 7: Critics (GPT-5.2)"
+echo "⏳ ETAPA 7: Critics (Opus)"
 openclaw sessions spawn --task "
 Você é o CRITICS do pipeline Brick AI.
 
@@ -225,34 +225,32 @@ Você é o CRITICS do pipeline Brick AI.
 **Output:**
 - Salve resultado JSON em: $WIP_DIR/${JOB_ID}_07_CRITICS.json
 - Formato: { \"vencedor\": \"A|B|C\", \"copy_vencedora\": \"...\", \"ajustes_sugeridos\": [...], \"modelo_vencedor\": \"gpt|flash|sonnet\" }
-" --model gpt --timeout 120 --cleanup delete
+" --model opus --timeout 120 --cleanup delete
 
 echo "✅ Critics concluído"
 
-# ETAPA 7B: COPY FINAL (condicional - só se ajustes_sugeridos existir)
+# ETAPA 7B: DIRECTOR (condicional - só se ajustes_sugeridos existir)
 if grep -q '"ajustes_sugeridos"' "$WIP_DIR/${JOB_ID}_07_CRITICS.json" 2>/dev/null; then
-    MODELO_VENCEDOR=$(jq -r '.modelo_vencedor // "sonnet"' "$WIP_DIR/${JOB_ID}_07_CRITICS.json")
-    
     echo ""
-    echo "⏳ ETAPA 7B: Copy Final ($MODELO_VENCEDOR - aplicando ajustes)"
+    echo "⏳ ETAPA 7B: Director (refino com ajustes)"
     openclaw sessions spawn --task "
-Você é o COPY_FINAL do pipeline Brick AI.
+Você é o DIRECTOR do pipeline Brick AI.
 
 **Job ID:** $JOB_ID
 
 **Leia:**
-1. Critics: $WIP_DIR/${JOB_ID}_07_CRITICS.json
-2. Copy vencedora original (do Critics)
+1. Role: $ROLES_DIR/DIRECTOR.md
+2. Critics: $WIP_DIR/${JOB_ID}_07_CRITICS.json
 
 **Sua missão:**
 - Aplicar os ajustes sugeridos pelos Critics
 - Manter essência da copy vencedora
-- Salvar resultado em: $WIP_DIR/${JOB_ID}_07B_COPY_FINAL.md
-" --model "$MODELO_VENCEDOR" --timeout 180 --cleanup delete
+- Salvar resultado em: $WIP_DIR/${JOB_ID}_07B_DIRECTOR.md
+" --model gpt --timeout 180 --cleanup delete
 
-    echo "✅ Copy Final concluído"
+    echo "✅ Director concluído"
 else
-    echo "ℹ️  ETAPA 7B: Copy Final (SKIP - sem ajustes sugeridos)"
+    echo "ℹ️  ETAPA 7B: Director (SKIP - sem ajustes sugeridos)"
 fi
 
 # ETAPA 8: WALL (Claude Opus)
@@ -260,8 +258,8 @@ echo ""
 echo "⏳ ETAPA 8: Wall (Claude Opus - filtro final)"
 
 # Determinar qual copy avaliar
-if [ -f "$WIP_DIR/${JOB_ID}_07B_COPY_FINAL.md" ]; then
-    FINAL_COPY="$WIP_DIR/${JOB_ID}_07B_COPY_FINAL.md"
+if [ -f "$WIP_DIR/${JOB_ID}_07B_DIRECTOR.md" ]; then
+    FINAL_COPY="$WIP_DIR/${JOB_ID}_07B_DIRECTOR.md"
 else
     FINAL_COPY=$(jq -r '.copy_vencedora' "$WIP_DIR/${JOB_ID}_07_CRITICS.json")
 fi
@@ -288,7 +286,7 @@ Você é o WALL (Filtro Final) do pipeline Brick AI.
 
 **Critério:**
 - Score >= 80: APROVADO
-- Score < 80: REPROVADO (pipeline reinicia do Douglas)
+- Score < 80: REPROVADO (loop inteligente no executor)
 " --model opus --timeout 120 --cleanup delete
 
 echo "✅ Wall concluído"
@@ -301,8 +299,8 @@ if [ "$SCORE" -ge 80 ]; then
     echo "✅ PIPELINE APROVADO (Score: $SCORE)"
     
     # Criar FINAL.md
-    if [ -f "$WIP_DIR/${JOB_ID}_07B_COPY_FINAL.md" ]; then
-        cp "$WIP_DIR/${JOB_ID}_07B_COPY_FINAL.md" "$WIP_DIR/${JOB_ID}_FINAL.md"
+    if [ -f "$WIP_DIR/${JOB_ID}_07B_DIRECTOR.md" ]; then
+        cp "$WIP_DIR/${JOB_ID}_07B_DIRECTOR.md" "$WIP_DIR/${JOB_ID}_FINAL.md"
     else
         jq -r '.copy_vencedora' "$WIP_DIR/${JOB_ID}_07_CRITICS.json" > "$WIP_DIR/${JOB_ID}_FINAL.md"
     fi

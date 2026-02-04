@@ -50,8 +50,14 @@ BRIEFING
                    ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  07. CRITICS (escolhem a melhor das 3)                      │
-│  ├─ CRITIC LITE (Gemini Flash) - triagem 65%                │
-│  └─ CRITIC HEAVY (GPT-5.2) - avaliação detalhada            │
+│  ├─ JUIZ PADRÃO: CLAUDE OPUS                                │
+│  └─ FALLBACKS: GEMINI 3 PRO → GPT‑5.2                       │
+└─────────────────────────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  07B. DIRECTOR (refino condicional)                         │
+│  └─ Só se ajustes_sugeridos > 0                             │
 └─────────────────────────────────────────────────────────────┘
                    │
                    ▼
@@ -243,81 +249,66 @@ As 3 versões passam pelo Brand Guardian e os Critics escolhem a melhor.
 
 ---
 
-## 07. CRITIC LITE
+## 07. CRITICS (Seleção Final)
 
-**Modelo:** Gemini Flash  
-**Threshold:** 65%  
-**Função:** Triagem barata.
+**Modelo padrão:** Claude Opus  
+**Fallbacks:** Gemini 3 Pro → GPT‑5.2  
+**Função:** Escolher a melhor versão A/B/C e sugerir ajustes.
 
-**Rubrica:**
-
-| Critério | Peso |
-|----------|------|
-| Clareza da Oferta | 25% |
-| Dor Reconhecível | 20% |
-| Prova/Credibilidade | 20% |
-| On-brand | 20% |
-| CTA Específico | 15% |
-
-**Output:**
+**Output (JSON):**
 ```json
 {
-  "scores": { "v1": 82, "v2": 90, "v3": 87 },
-  "recomendacao": "V2 é a mais forte",
-  "liberado_para_opus": true
+  "vencedor": "A",
+  "modelo_vencedor": "gpt",
+  "copy_vencedora": "...",
+  "pontos_fortes": ["..."],
+  "pontos_fracos": ["..."],
+  "ajustes_sugeridos": ["..."],
+  "veredito": "APROVADO_COM_AJUSTES"
 }
 ```
 
 ---
 
-## 08. CRITIC OPUS
+## 07B. DIRECTOR (Refiner)
 
-**Modelo:** Claude Opus  
-**Função:** Juiz supremo.
+**Modelo:** GPT‑5.2 (default) | fallback: Sonnet  
+**Função:** Refinar a copy vencedora aplicando ajustes sugeridos **sem reescrever do zero**.
 
-**Output:**
-```json
-{
-  "analise": {
-    "v1": { "score": 78, "nota": "Punch forte, mas arrogante isolado" },
-    "v2": { "score": 91, "nota": "Melhor equilíbrio. Recomendado." },
-    "v3": { "score": 85, "nota": "Narrativa forte, longa demais." }
-  },
-  "vencedor": "v2",
-  "status": "APROVADO"
-}
+**Output (Markdown):**
+```markdown
+# TÍTULO
+
+Corpo do texto refinado...
+
+## CTA
+Novo CTA aqui...
 ```
+
+**Executa apenas se** `ajustes_sugeridos.length > 0`.
 
 ---
 
-## 09. DIRECTOR (Copy)
+## 08. WALL (Filtro Final)
 
-**Modelo:** GPT-5.2  
-**Função:** Filtro de craft. O copy está certo, mas está BOM?
+**Modelo padrão:** Claude Opus  
+**Fallbacks:** Gemini 3 Pro → GPT‑5.2  
+**Função:** Score final (rubrica 0–100). Decide o loop.
 
-**Checklist Anti-Genérico:**
-- Primeira frase prende?
-- Tem clichês? ("No mundo atual...", "Mais que um X, somos Y")
-- Ritmo varia? (frases curtas + longas)
-- Tem especificidade? (números, nomes, exemplos concretos)
-- Punch final é memorável?
-
-**Output:**
+**Output (JSON):**
 ```json
 {
-  "variacao": "v2",
-  "score_craft": 72,
-  "veredito": "REFINAR",
-  "cliches_encontrados": [...],
-  "reescrita": "Copy refinado aqui",
-  "nota_final": "Estrutura boa, primeira frase genérica. Reescrita acima."
+  "score_final": 68,
+  "aprovado": false,
+  "razoes_reprovacao": ["..."],
+  "feedback_para_douglas": "...",
+  "recomendar_retorno": "COPYWRITER"
 }
 ```
 
-**Critérios:**
-- **APROVAR (≥85):** Copy tem voz, pode publicar
-- **REFINAR (60-84):** Ajustes pontuais, DIRECTOR dá a reescrita
-- **REESCREVER (<60):** Volta pro COPYWRITER
+**Loop inteligente:**
+- `COPYWRITER` se falha é estrutura/clareza/oferta
+- `DIRECTOR` se falha é ajuste fino/CTA/tom
 
 ---
 

@@ -27,9 +27,9 @@ const MARKETING_PIPELINE = [
     { id: '05B', name: 'COPY_FLASH', role: 'COPYWRITER', model: 'flash', timeout: 120 },
     { id: '05C', name: 'COPY_SONNET', role: 'COPYWRITER', model: 'sonnet', timeout: 180 },
     { id: '06', name: 'BRAND_GUARDIANS', role: 'BRAND_GUARDIAN', model: 'flash', timeout: 90 },
-    { id: '07', name: 'CRITICS', role: 'CRITIC', model: 'gpt', timeout: 120 },
-    { id: '07B', name: 'COPY_FINAL', role: 'COPYWRITER', model: 'dynamic', timeout: 180, conditional: true }, // SÓ se ajustes_sugeridos
-    { id: '08', name: 'WALL', role: 'FILTRO_FINAL', model: 'opus', timeout: 120 },
+    { id: '07', name: 'CRITICS', role: 'CRITIC', model: 'opus', timeout: 120, isJudge: true, fallbackModels: ['gemini', 'gpt'] },
+    { id: '07B', name: 'DIRECTOR', role: 'DIRECTOR', model: 'gpt', timeout: 180, conditional: true }, // SÓ se ajustes_sugeridos
+    { id: '08', name: 'WALL', role: 'FILTRO_FINAL', model: 'opus', timeout: 120, isJudge: true, fallbackModels: ['gemini', 'gpt'] },
     { id: '09', name: 'HUMAN', role: null, model: null, timeout: 0 } // Aprovação manual
 ];
 
@@ -107,6 +107,39 @@ async function spawnAgent(role, model, task, jobId, timeout = 120) {
     }
 }
 
+// Spawn com fallback (juiz padrão: opus → gemini → gpt)
+async function spawnWithFallback(role, models, task, jobId, timeout) {
+    for (const model of models) {
+        const result = await spawnAgent(role, model, task, jobId, timeout);
+        if (result) return { result, model };
+        log('warn', 'agent_fallback', { role, model, jobId });
+    }
+    return { result: null, model: null };
+}
+
+function getOutputExt(step) {
+    if (!step || !step.role) return 'json';
+    if (step.role === 'COPYWRITER' || step.role === 'DIRECTOR') return 'md';
+    if (step.name && step.name.includes('COPY')) return 'md';
+    return 'json';
+}
+
+function getLatestCopyMarkdown(jobId) {
+    const directorPath = path.join(WIP_DIR, `${jobId}_07B_DIRECTOR.md`);
+    if (fs.existsSync(directorPath)) return readFile(directorPath);
+
+    const criticsPath = path.join(WIP_DIR, `${jobId}_07_CRITICS.json`);
+    const criticsData = readFile(criticsPath);
+    if (criticsData && criticsData.copy_vencedora) return criticsData.copy_vencedora;
+
+    return null;
+}
+
+function getStepIndex(stepId) {
+    return MARKETING_PIPELINE.findIndex(s => s.id === stepId);
+}
+
+
 // ETAPA 0: DOUGLAS PRÉ-PROCESSAMENTO (eu faço isso via prompt normal, não spawn)
 async function douglasPreProcess(briefingPath, jobId) {
     log('info', 'douglas_preprocessing', { briefingPath, jobId });
@@ -143,38 +176,51 @@ async function runPipeline(briefingPath, mode = 'marketing') {
     let context = processedBriefing;
     let attempts = 0;
     const MAX_ATTEMPTS = 3;
+    let startIndex = 0;
 
-    while (attempts < MAX_ATTEMPTS) {
+    attemptLoop: while (attempts < MAX_ATTEMPTS) {
         attempts++;
-        log('info', 'pipeline_attempt', { attempt: attempts, jobId });
+        log('info', 'pipeline_attempt', { attempt: attempts, jobId, startIndex });
 
-        // Executar cada etapa do pipeline
-        for (const step of MARKETING_PIPELINE) {
+        // Executar cada etapa do pipeline (com retomada inteligente)
+        for (let i = startIndex; i < MARKETING_PIPELINE.length; i++) {
+            const step = MARKETING_PIPELINE[i];
+
             // Skip HUMAN (aprovação manual)
             if (step.name === 'HUMAN') {
                 log('info', 'pipeline_awaiting_approval', { jobId });
                 return; // Aguardar aprovação manual
             }
 
-            // Skip COPY_FINAL se não tiver ajustes_sugeridos
-            if (step.conditional && step.name === 'COPY_FINAL') {
-                // Verificar se o arquivo CRITICS tem ajustes_sugeridos
+            // Skip DIRECTOR se não tiver ajustes_sugeridos
+            if (step.conditional && step.name === 'DIRECTOR') {
                 const criticsPath = path.join(WIP_DIR, `${jobId}_07_CRITICS.json`);
                 const criticsData = readFile(criticsPath);
-                
+
                 if (!criticsData || !criticsData.ajustes_sugeridos || criticsData.ajustes_sugeridos.length === 0) {
-                    log('info', 'copy_final_skipped', { jobId, reason: 'no_adjustments' });
+                    log('info', 'director_skipped', { jobId, reason: 'no_adjustments' });
                     continue;
                 }
-                
-                // Se chegou aqui, tem ajustes → executar COPY_FINAL
-                // Modelo dinâmico = usar o modelo vencedor do CRITICS
-                const winningModel = criticsData.modelo_vencedor || 'sonnet';
+
+                const winningModel = criticsData.modelo_vencedor || 'gpt';
                 step.model = winningModel;
-                log('info', 'copy_final_executing', { jobId, model: winningModel });
+                log('info', 'director_executing', { jobId, model: winningModel });
             }
 
-            // Montar task pro agente
+            // Construir task prompt (Wall precisa receber markdown)
+            let taskContext = context;
+            if (step.name === 'WALL') {
+                const latestCopy = getLatestCopyMarkdown(jobId);
+                if (!latestCopy) {
+                    log('error', 'wall_missing_copy', { jobId });
+                    break;
+                }
+                taskContext = latestCopy;
+            }
+
+            const outputExt = getOutputExt(step);
+            const outputPath = path.join(WIP_DIR, `${jobId}_${step.id}_${step.name}.${outputExt}`);
+
             const taskPrompt = `
 Você é o agente ${step.role} do pipeline Brick AI.
 
@@ -182,13 +228,13 @@ Você é o agente ${step.role} do pipeline Brick AI.
 **Etapa:** ${step.id} - ${step.name}
 
 **Contexto do briefing:**
-${context}
+${taskContext}
 
 **Sua missão:**
 1. Ler o arquivo de role em ~/projects/Brick_Marketing/roles/${step.role}.md
 2. Seguir as instruções da role RIGOROSAMENTE
 3. Gerar output no formato especificado (JSON ou Markdown)
-4. Salvar o resultado em ~/projects/Brick_Marketing/history/marketing/wip/${jobId}_${step.id}_${step.name}.${step.role.includes('COPY') ? 'md' : 'json'}
+4. Salvar o resultado em ~/projects/Brick_Marketing/history/marketing/wip/${jobId}_${step.id}_${step.name}.${outputExt}
 
 **IMPORTANTE:**
 - Não invente informações
@@ -196,42 +242,59 @@ ${context}
 - Output deve ser auto-contido (próximo agente só lerá seu arquivo)
 `.trim();
 
-            const result = await spawnAgent(step.role, step.model, taskPrompt, jobId, step.timeout);
-            
-            if (!result) {
+            let spawnResult = null;
+            if (step.isJudge) {
+                const models = [step.model, ...(step.fallbackModels || [])];
+                const { result, model } = await spawnWithFallback(step.role, models, taskPrompt, jobId, step.timeout);
+                spawnResult = result;
+                if (model) log('info', 'judge_model_used', { jobId, step: step.name, model });
+            } else {
+                spawnResult = await spawnAgent(step.role, step.model, taskPrompt, jobId, step.timeout);
+            }
+
+            if (!spawnResult) {
                 log('error', 'pipeline_step_failed', { step: step.name, jobId, attempt: attempts });
                 break; // Falhou, tentar novamente
             }
 
             // Atualizar contexto com output da etapa
-            const outputPath = path.join(WIP_DIR, `${jobId}_${step.id}_${step.name}.${step.role.includes('COPY') ? 'md' : 'json'}`);
             const outputData = readFile(outputPath);
-            
             if (outputData) {
                 context = typeof outputData === 'string' ? outputData : JSON.stringify(outputData, null, 2);
             }
 
+            // Brand Guardian lock (auto-cicatrizável)
+            if (step.name === 'BRAND_GUARDIANS' && outputData && outputData.status === 'BRAND_FAIL') {
+                log('warn', 'brand_guardian_failed', { jobId, attempt: attempts });
+                startIndex = getStepIndex('05A');
+                context = `${processedBriefing}\n\n---\n\n**FEEDBACK BRAND GUARDIAN:**\n${JSON.stringify(outputData, null, 2)}`;
+                continue attemptLoop;
+            }
+
             // Se chegou no WALL, verificar score
             if (step.name === 'WALL') {
-                const wallData = readFile(outputPath);
-                
+                const wallData = outputData;
+
                 if (wallData && wallData.score_final >= 80) {
                     log('info', 'pipeline_wall_approved', { jobId, score: wallData.score_final });
-                    // Pipeline passou! Criar FINAL.md e aguardar aprovação HUMAN
                     const finalPath = path.join(WIP_DIR, `${jobId}_FINAL.md`);
-                    const copyFinalPath = path.join(WIP_DIR, `${jobId}_07B_COPY_FINAL.md`);
-                    const finalContent = fs.existsSync(copyFinalPath) 
-                        ? readFile(copyFinalPath) 
+                    const directorPath = path.join(WIP_DIR, `${jobId}_07B_DIRECTOR.md`);
+                    const finalContent = fs.existsSync(directorPath)
+                        ? readFile(directorPath)
                         : readFile(path.join(WIP_DIR, `${jobId}_07_CRITICS.json`))?.copy_vencedora || 'Erro ao gerar FINAL';
-                    
+
                     saveFile(finalPath, finalContent);
                     return; // Sucesso! Aguardar aprovação HUMAN
-                } else {
-                    log('warn', 'pipeline_wall_rejected', { jobId, score: wallData?.score_final || 0, attempt: attempts });
-                    // Score < 80 → reiniciar do DOUGLAS
-                    context = `${processedBriefing}\n\n---\n\n**FEEDBACK DO WALL (Tentativa ${attempts}):**\n${JSON.stringify(wallData, null, 2)}`;
-                    break; // Sai do loop de etapas e reinicia
                 }
+
+                log('warn', 'pipeline_wall_rejected', { jobId, score: wallData?.score_final || 0, attempt: attempts });
+
+                // Score < 80 → loop inteligente (Copywriter ou Director)
+                const recommend = wallData?.recomendar_retorno || 'COPYWRITER';
+                startIndex = recommend === 'DIRECTOR' ? getStepIndex('07B') : getStepIndex('05A');
+
+                context = `${processedBriefing}\n\n---\n\n**FEEDBACK DO WALL (Tentativa ${attempts}):**\n${JSON.stringify(wallData, null, 2)}`;
+                continue attemptLoop;
             }
         }
 

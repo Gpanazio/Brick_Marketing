@@ -30,11 +30,11 @@ BRIEFING
     ↓
 06. BRAND_GUARDIANS (Flash) → valida tom + posicionamento
     ↓
-07. CRITICS (GPT-5.2) → escolhe melhor versão + sugere ajustes
+07. CRITICS (Opus) → escolhe melhor versão + sugere ajustes
     ↓
-07B. COPY_FINAL (Dynamic) → SÓ SE ajustes_sugeridos existir
-    ↓                         (usa modelo vencedor do Critics)
-08. WALL (Opus) → score final (≥80 passa, <80 reinicia)
+07B. DIRECTOR (GPT-5.2) → SÓ SE ajustes_sugeridos existir
+    ↓                         (refina a copy vencedora)
+08. WALL (Opus) → score final (≥80 passa, <80 volta 05 ou 07B)
     ↓
 09. HUMAN → aprovação manual
     ↓
@@ -94,9 +94,9 @@ sessions_spawn({
 | 05B | COPYWRITER_B | Flash | 120s |
 | 05C | COPYWRITER_C | Sonnet | 180s |
 | 06 | BRAND_GUARDIANS | Flash | 90s |
-| 07 | CRITICS | GPT-5.2 | 120s |
-| 07B | COPY_FINAL | Dynamic* | 180s |
-| 08 | WALL | Opus | 120s |
+| 07 | CRITICS | Opus (juiz) → fallback: Gemini 3 Pro → GPT‑5.2 | 120s |
+| 07B | DIRECTOR | GPT‑5.2 (default) → fallback: Sonnet | 180s |
+| 08 | WALL | Opus (juiz) → fallback: Gemini 3 Pro → GPT‑5.2 | 120s |
 | 09 | HUMAN | - | manual |
 
 _*Dynamic = usa modelo vencedor do Critics (gpt/flash/sonnet)_
@@ -105,16 +105,15 @@ _*Dynamic = usa modelo vencedor do Critics (gpt/flash/sonnet)_
 
 ## Lógica Condicional
 
-### Copy Final (07B)
+### Director (07B)
 
 **Executa SE:**
 - `ajustes_sugeridos` existe no output do CRITICS (07)
 - `ajustes_sugeridos.length > 0`
 
 **Modelo usado:**
-- Lê `modelo_vencedor` do CRITICS
-- Roda COPYWRITER com esse modelo
-- Aplica ajustes mantendo essência
+- GPT‑5.2 (default)
+- Fallback: Sonnet
 
 **Pula SE:**
 - Critics não sugeriu ajustes
@@ -129,8 +128,11 @@ _*Dynamic = usa modelo vencedor do Critics (gpt/flash/sonnet)_
 
 **Score < 80:**
 - ❌ REPROVADO
-- Loop de rejeição (max 3 tentativas)
-- Reinicia do DOUGLAS com feedback
+- Loop inteligente (max 3 tentativas)
+- Retorna para:
+  - **COPYWRITER (05)** se problema é estrutura/clareza/oferta
+  - **DIRECTOR (07B)** se problema é ajuste fino/CTA/tom
+- Wall define `recomendar_retorno` no JSON
 
 ---
 
