@@ -181,20 +181,44 @@
                 <button onclick="closeScheme()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title" class="text-[#DC2626]">MARKETING</span></h2>
             </div>
-
+            
             <div class="flex-1 overflow-y-auto p-8">
                 <div class="bg-[#0a0a0a] border border-[#222] p-6 font-mono text-xs text-[#888] overflow-x-auto mb-6">
                     <pre id="scheme-diagram" class="leading-relaxed"></pre>
                 </div>
-
+                
                 <div class="text-[10px] font-mono text-[#444] border-t border-[#222] pt-4 mt-4">
                     <div class="mb-2 text-[#666]">PROTOCOL_INFO:</div>
                     <div id="scheme-info"></div>
                 </div>
             </div>
-
+            
             <div class="p-4 border-t border-[#222] flex justify-end flex-shrink-0">
                 <button onclick="closeScheme()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEEDBACK MODAL -->
+    <div id="feedback-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'feedback-modal') closeFeedbackModal()">
+        <div class="bg-[#050505] border border-[#222] w-full max-w-2xl flex flex-col relative shadow-2xl shadow-red-900/10" onclick="event.stopPropagation()">
+            <div class="p-8 border-b border-[#222]">
+                <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <h2 class="text-2xl font-brick text-white uppercase">FEEDBACK DE REVISÃO</h2>
+                <div class="text-[10px] font-mono text-[#666] mt-2 uppercase tracking-wider">Explique o que precisa ser ajustado</div>
+            </div>
+            
+            <div class="p-8">
+                <textarea 
+                    id="feedback-text" 
+                    class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-48 focus:border-[#DC2626] outline-none resize-none" 
+                    placeholder="Exemplo: O tom está muito técnico. Precisa ser mais acessível para o público-alvo..."
+                ></textarea>
+            </div>
+            
+            <div class="p-6 border-t border-[#222] flex justify-end gap-4">
+                <button onclick="closeFeedbackModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
+                <button onclick="submitFeedback()" class="btn-brick px-6 py-3">ENVIAR FEEDBACK</button>
             </div>
         </div>
     </div>
@@ -456,8 +480,8 @@ OUTPUT (Copy Final)`;
                     <div class="node-subtext">${n.model || 'PROCESSING'}</div>
                     ${n.human ? `
                         <div class="flex gap-2 mt-4 pt-4 border-t border-[#111]">
-                            <button class="flex-1 bg-white text-black font-brick text-[9px] py-2 hover:bg-[#DC2626] hover:text-white transition-colors">APROVAR</button>
-                            <button class="flex-1 border border-[#222] text-[#444] font-brick text-[9px] py-2 hover:border-white hover:text-white transition-colors">REVISAR</button>
+                            <button onclick="aprovarCampanha(event)" class="flex-1 bg-white text-black font-brick text-[9px] py-2 hover:bg-[#DC2626] hover:text-white transition-colors">APROVAR</button>
+                            <button onclick="openFeedbackModal(event)" class="flex-1 border border-[#222] text-[#444] font-brick text-[9px] py-2 hover:border-white hover:text-white transition-colors">REVISAR</button>
                         </div>
                     ` : ''}
                 `;
@@ -510,11 +534,11 @@ OUTPUT (Copy Final)`;
 
         function formatJSON(json) {
             let html = '<div class="space-y-6">';
-            
+
             for (const [key, value] of Object.entries(json)) {
                 html += `<div class="border-b border-[#222] pb-4">`;
                 html += `<div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>`;
-                
+
                 if (Array.isArray(value)) {
                     html += '<ul class="space-y-2 pl-0">';
                     value.forEach(item => {
@@ -534,10 +558,10 @@ OUTPUT (Copy Final)`;
                 } else {
                     html += `<div class="text-sm text-[#ddd] leading-relaxed">${value}</div>`;
                 }
-                
+
                 html += '</div>';
             }
-            
+
             html += '</div>';
             return html;
         }
@@ -566,6 +590,56 @@ OUTPUT (Copy Final)`;
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
         function openNewBriefing() { alert("Opening Briefing Module..."); }
+
+        function openFeedbackModal(e) {
+            e.stopPropagation();
+            document.getElementById('feedback-modal').classList.remove('hidden');
+            document.getElementById('feedback-text').value = '';
+            document.getElementById('feedback-text').focus();
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedback-modal').classList.add('hidden');
+        }
+
+        async function submitFeedback() {
+            const feedback = document.getElementById('feedback-text').value.trim();
+            if (!feedback) {
+                alert('Por favor, escreva o feedback antes de enviar.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/feedback`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jobId: selectedJobId,
+                        mode: currentMode,
+                        feedback: feedback,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (res.ok) {
+                    alert('✅ Feedback enviado! O pipeline será reiniciado com suas instruções.');
+                    closeFeedbackModal();
+                } else {
+                    alert('❌ Erro ao enviar feedback. Tente novamente.');
+                }
+            } catch(e) {
+                console.error('Erro ao enviar feedback:', e);
+                alert('❌ Erro ao enviar feedback. Tente novamente.');
+            }
+        }
+
+        function aprovarCampanha(e) {
+            e.stopPropagation();
+            if (confirm('✅ Aprovar esta campanha para execução?')) {
+                alert('🎉 Campanha aprovada! Os próximos passos serão iniciados.');
+                // TODO: Implementar lógica de aprovação
+            }
+        }
 
         window.onload = () => { setInterval(fetchState, 5000); };
     </script>
