@@ -13,7 +13,6 @@
         .font-brick { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.05em; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* THE FAVORITE BACKGROUND */
         .grid-bg { 
             position: fixed; inset: 0; 
             background-image: 
@@ -28,243 +27,136 @@
             pointer-events: none; z-index: -1;
         }
 
-        /* NODE STYLING (MATCHING IMAGE) */
+        /* NODE STYLING */
         .node { 
             position: absolute; width: 320px;
-            background: rgba(5, 5, 5, 0.9); border: 1px solid #222; 
-            padding: 24px; cursor: move; z-index: 10;
-            transition: border-color 0.3s;
+            background: rgba(5, 5, 5, 0.95); border: 1px solid #222; 
+            padding: 24px; cursor: pointer; z-index: 10;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .node:hover { border-color: #444; }
+        .node:hover { border-color: var(--brick-red); transform: translateY(-2px); }
         .node.node-douglas { border: 1px solid var(--brick-red); box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
-        .node.disabled { opacity: 0.3; filter: grayscale(1); pointer-events: none; } /* Truly disabled */
-        .node.pending-execution { opacity: 0.6; border-style: dashed; } /* Waiting but clickable */
-        .node.active-node { border-color: #666; } /* Active/Done */
+        .node.pending-execution { opacity: 0.6; border-style: dashed; }
+        .node.active-node { border-color: #444; }
         
         .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
-        .pending-execution .node-led { background: #333; box-shadow: none; }
-        
-        /* TOGGLE SWITCH */
-        .node-toggle { position: absolute; top: 10px; left: 10px; width: 32px; height: 16px; background: #111; border: 1px solid #222; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .node-toggle::after { content: ''; position: absolute; width: 10px; height: 10px; background: #444; border-radius: 50%; top: 2px; left: 2px; transition: all 0.2s; }
-        .node:not(.disabled) .node-toggle { background: rgba(220, 38, 38, 0.2); border-color: var(--brick-red); }
-        .node:not(.disabled) .node-toggle::after { transform: translateX(14px); background: var(--brick-red); box-shadow: 0 0 6px var(--brick-red); }
         
         .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
         .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
         .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
 
-        /* ANGULAR CONNECTIONS */
-        .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
-        .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
+        .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; transition: opacity 0.5s; }
+        .conn-line.active { opacity: 0.5; }
         
-        .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
-
-        /* SIDE PANEL STYLING UPGRADE */
         .side-panel { position: fixed; top: 0; right: -600px; width: 550px; height: 100vh; background: #050505; border-left: 1px solid #222; z-index: 250; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
         .side-panel.open { right: 0; }
         
-        .panel-header { padding: 32px; border-bottom: 1px solid #111; background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); }
-        .panel-content { flex: 1; overflow-y: auto; padding: 32px; scroll-behavior: smooth; }
+        .panel-header { padding: 32px; border-bottom: 1px solid #111; }
+        .panel-content { flex: 1; overflow-y: auto; padding: 32px; }
         .panel-footer { padding: 24px 32px; border-top: 1px solid #111; background: #050505; display: flex; gap: 16px; justify-content: flex-end; }
 
-        /* MARKDOWN STYLING */
-        .md-content { color: #ccc; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.6; }
-        .md-content h1, .md-content h2, .md-content h3 { font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; color: #fff; margin-top: 32px; margin-bottom: 16px; letter-spacing: -0.02em; }
-        .md-content h1 { font-size: 24px; border-bottom: 1px solid #222; padding-bottom: 12px; }
-        .md-content h2 { font-size: 18px; color: #DC2626; }
-        .md-content h3 { font-size: 14px; color: #888; letter-spacing: 0.05em; }
-        .md-content p { margin-bottom: 16px; }
-        .md-content ul { list-style: none; padding: 0; margin-bottom: 24px; }
-        .md-content li { position: relative; padding-left: 20px; margin-bottom: 8px; color: #aaa; }
-        .md-content li::before { content: '■'; position: absolute; left: 0; color: #DC2626; font-size: 8px; top: 6px; }
-        .md-content blockquote { border-left: 2px solid #333; padding-left: 16px; margin: 24px 0; font-family: 'JetBrains Mono'; font-size: 11px; color: #666; font-style: italic; }
-        .md-content code { background: #111; padding: 2px 6px; font-family: 'JetBrains Mono'; font-size: 11px; color: #DC2626; }
-        .md-content pre { background: #0a0a0a; padding: 16px; border: 1px solid #222; overflow-x: auto; margin-bottom: 24px; }
-        .md-content pre code { background: transparent; padding: 0; color: #888; }
-        .md-content hr { border: 0; border-top: 1px solid #222; margin: 32px 0; }
-        
-        .section-box { border: 1px solid #222; background: #080808; padding: 24px; margin-bottom: 24px; border-radius: 4px; }
+        .md-content { color: #ccc; font-size: 13px; line-height: 1.6; }
+        .md-content h1, .md-content h2 { font-weight: 900; text-transform: uppercase; color: #fff; margin: 24px 0 12px 0; }
+        .md-content h2 { color: var(--brick-red); font-size: 16px; }
+        .section-box { border: 1px solid #222; background: #080808; padding: 24px; margin-bottom: 24px; }
         .section-label { font-family: 'JetBrains Mono'; font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: block; }
         
-        /* JSON STRUCTURED VIEW */
-        .json-structured { font-family: 'Inter', sans-serif; }
-        .json-structured .section-box { margin-bottom: 16px; }
-        .json-structured details summary { cursor: pointer; user-select: none; }
-        .json-structured details summary:hover { color: #fff; }
-
-        .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 8px 16px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
+        .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 10px 20px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
         .btn-brick:hover { background: #fff; color: #000; }
-        
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #222; }
 
         #view-nodegraphic { display: none; }
         #view-nodegraphic.active { display: block; }
-        
-        /* NOTIFICATION TOAST */
-        #notification-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .notification-toast { background: #050505; border: 1px solid #222; padding: 16px 24px; min-width: 300px; max-width: 500px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); animation: slideInRight 0.3s ease-out; }
-        .notification-toast.success { border-color: #22c55e; }
-        .notification-toast.error { border-color: #DC2626; }
-        .notification-toast .toast-title { font-family: 'Inter'; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-        .notification-toast.success .toast-title { color: #22c55e; }
-        .notification-toast.error .toast-title { color: #DC2626; }
-        .notification-toast .toast-message { font-family: 'JetBrains Mono'; font-size: 11px; color: #888; }
-        @keyframes slideInRight { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        
-        /* Hide mobile elements on desktop */
-        #lobby-toggle, #lobby-overlay { display: none; }
 
-        /* MOBILE RESPONSIVE (≤768px) */
+        /* MOBILE OVERRIDES */
         @media (max-width: 768px) {
             body { overflow: hidden; }
+            #main-ui { padding: 16px; }
+            #main-ui header { flex-direction: column; gap: 16px; align-items: flex-start; }
+            #main-ui header h1 { font-size: 24px; }
+            #main-ui header span { display: none; }
             
-            /* Show mobile controls */
-            #lobby-toggle, #lobby-overlay { display: flex; }
-            
-            /* Compact header */
-            #main-ui { padding: 12px; }
-            #main-ui > header { 
-                margin-bottom: 8px; padding-bottom: 8px; 
-                flex-wrap: wrap; gap: 8px;
-                background: #000;
-                position: relative;
-                z-index: 100;
+            #view-nodegraphic header { padding: 16px; flex-direction: column; gap: 12px; background: #000; }
+            #view-nodegraphic header h1 { font-size: 20px; }
+            #view-nodegraphic header span { display: none; }
+            #view-nodegraphic header .flex { width: 100%; justify-content: space-between; }
+
+            #canvas-container { 
+                overflow-y: auto !important; 
+                overflow-x: hidden !important; 
+                height: calc(100vh - 120px) !important;
+                margin-top: 120px;
+                padding-bottom: 100px;
             }
-            #main-ui > header h1 { font-size: 18px; }
-            #main-ui > header h1 span { display: none; }
-            #connection-status { display: none; }
-            #btn-back-lobby { font-size: 8px !important; padding: 6px 10px !important; }
-            #btn-save-config { font-size: 9px !important; padding: 8px 12px !important; }
-            
-            /* KILL LOG ON MOBILE */
-            .fixed.bottom-8.left-8, 
-            .absolute.bottom-8, 
-            [id*="log"], 
-            .font-mono.text-\[9px\].text-gray-600 { 
-                display: none !important; 
-            }
-            
-            /* Pipeline view - scrollable list */
-            #view-nodegraphic { 
-                width: 100vw !important; left: 0 !important;
-                height: calc(100vh - 80px) !important;
-                overflow-y: auto !important;
-                overflow-x: hidden !important;
-                -webkit-overflow-scrolling: touch;
-                padding: 10px 0 100px 0 !important;
-                display: block !important;
-            }
-            
-            /* Force nodes into a simple clean list */
-            #view-nodegraphic > div { 
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
+            #node-container { 
+                display: flex !important; 
+                flex-direction: column !important; 
+                align-items: center !important; 
+                height: auto !important;
                 width: 100% !important;
-                min-width: unset !important;
-                transform: none !important;
-                padding: 0 !important;
-                background: transparent !important;
+                padding: 20px 0 !important;
             }
-            
             .node { 
-                position: relative !important;
-                left: 0 !important;
-                top: 0 !important;
-                margin: 0 auto 12px auto !important;
+                position: relative !important; 
+                left: 0 !important; 
+                top: 0 !important; 
+                margin-bottom: 20px !important;
                 width: 90% !important;
                 max-width: 340px !important;
-                transform: none !important;
-                padding: 16px;
-                border: 1px solid #333 !important;
-                background: #050505 !important;
-                box-shadow: none !important;
             }
-
-            /* Disable lines/canvas on mobile */
-            canvas, svg, #node-canvas { display: none !important; }
-            
-            /* Agent panel full-screen */
+            #conn-svg { display: none !important; }
             .side-panel { width: 100vw; right: -100vw; }
-            .side-panel.open { right: 0; }
-            .panel-header { padding: 16px; }
-            .panel-content { padding: 16px; }
-            .panel-footer { padding: 12px 16px; flex-direction: column; gap: 8px; }
-            .panel-footer button { width: 100%; padding: 14px; font-size: 12px; }
-            
-            /* Buttons touch-friendly */
-            .btn-brick { padding: 10px 16px; font-size: 11px; min-height: 44px; }
-            .project-card { padding: 12px; }
-            
-            /* Modals */
-            #briefing-modal > div, #scheme-modal > div { 
-                width: 95vw; max-width: 95vw; max-height: 85vh; margin: auto;
-            }
-            
-            /* Text readable */
-            .md-content { font-size: 14px; }
-            .md-content h1 { font-size: 18px; }
-            .md-content h2 { font-size: 15px; }
+            .panel-footer { flex-direction: column; }
+            .panel-footer button { width: 100%; }
         }
+
+        #notification-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        .notification-toast { background: #050505; border: 1px solid #222; padding: 16px 24px; min-width: 300px; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
 <body>
     <div class="grid-bg"></div>
     <div class="vignette"></div>
-    
-    <!-- MOBILE LOBBY TOGGLE -->
-    <div id="lobby-toggle" onclick="toggleLobby()"><span></span></div>
-    <div id="lobby-overlay" onclick="toggleLobby()"></div>
-    
-    <!-- NOTIFICATION CONTAINER -->
     <div id="notification-container"></div>
 
-    <!-- MAIN INTERFACE -->
+    <!-- MAIN UI -->
     <div id="main-ui" class="h-screen flex flex-col p-8">
-        <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8 relative z-50">
+        <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8">
             <div>
                 <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
                     BRICK AI <span id="header-sector" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span>
                 </h1>
-                <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">System_Active</div>
+                <div class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">System_Active</div>
             </div>
             <div class="flex gap-4">
                 <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
-                <button id="btn-scheme" onclick="openScheme()" class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
 
-        <!-- WELCOME -->
         <div id="welcome-screen" class="flex-1 flex items-center justify-center">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
                 <div onclick="enterMode('marketing')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
                     <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Marketing</h3>
                     <p class="text-[#444] font-mono text-xs uppercase">Content & Flow</p>
                 </div>
                 <div onclick="enterMode('projetos')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
                     <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos</h3>
                     <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
                 </div>
                 <div onclick="enterMode('ideias')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
                     <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
                     <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
                 </div>
             </div>
         </div>
 
-        <!-- LOBBY -->
-        <div id="project-lobby" class="hidden flex-1 overflow-y-auto pr-4">
+        <div id="project-lobby" class="hidden flex-1 overflow-y-auto">
             <div id="lobby-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-20"></div>
         </div>
     </div>
 
-    <!-- THE FAVORITE WAR ROOM (NODE GRAPHIC) -->
+    <!-- WAR ROOM -->
     <div id="view-nodegraphic" class="fixed inset-0 z-[100] bg-black">
         <header class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
             <div>
@@ -276,26 +168,13 @@
                 </div>
             </div>
             <div class="flex gap-3">
-                <button onclick="savePipelineConfig()" class="btn-brick">Save_Config</button>
                 <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-6 py-2 uppercase tracking-widest mt-1">← Back_To_Lobby</button>
             </div>
         </header>
 
-        <div id="canvas-container" class="relative w-full h-full overflow-auto cursor-grab active:cursor-grabbing">
-            <svg id="conn-svg" class="absolute inset-0 w-full h-[3000px] pointer-events-none"></svg>
-            <div id="node-container" class="relative w-full h-[3000px]"></div>
-        </div>
-
-        <!-- TACTICAL LOG -->
-        <div class="fixed bottom-10 left-10 w-80 h-32 bg-black/90 border border-[#111] p-4 z-[120] font-mono text-[9px]">
-            <div class="flex justify-between text-[#444] mb-2 border-b border-[#111] pb-2">
-                <span>WAR_ROOM_LOG</span>
-                <span class="animate-pulse">SQUAD_READY</span>
-            </div>
-            <div id="tactical-log" class="text-[#666] space-y-1">
-                <div>> INITIALIZING_MASON_PROTOCOL...</div>
-                <div>> MAPPING_AGENT_NETWORK...</div>
-            </div>
+        <div id="canvas-container" class="relative w-full h-full overflow-auto">
+            <svg id="conn-svg" class="absolute inset-0 w-full h-[2500px] pointer-events-none"></svg>
+            <div id="node-container" class="relative w-full h-[2500px]"></div>
         </div>
     </div>
 
@@ -308,127 +187,28 @@
             </div>
             <button onclick="closePanel()" class="text-[#444] hover:text-white font-mono text-xl leading-none">×</button>
         </div>
-        
         <div id="panel-body" class="panel-content md-content"></div>
-        
         <div class="panel-footer">
-            <button class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest px-4 flex items-center gap-2">
-                <span>✎ Feedback</span>
-            </button>
-            <button class="btn-brick flex items-center gap-2 px-6">
-                <span>APROVAR</span>
-                <span class="text-xs">✓</span>
-            </button>
+            <button class="btn-brick px-8">APROVAR ✓</button>
         </div>
     </div>
 
     <!-- NEW BRIEFING MODAL -->
     <div id="briefing-modal" class="fixed inset-0 z-[300] bg-black/90 hidden flex items-center justify-center backdrop-blur-sm">
-        <div class="bg-[#050505] border border-[#222] w-full max-w-2xl p-8 relative shadow-2xl shadow-red-900/10">
-            <button onclick="closeBriefingModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl">×</button>
-            
-            <h2 class="text-2xl font-brick text-white uppercase mb-6">NEW_BRIEFING // INGESTION</h2>
-            
-            <form id="briefing-form" onsubmit="submitBriefing(event)" class="space-y-6">
-                <div>
-                    <label class="block text-[9px] font-mono text-[#666] uppercase mb-2">PROJECT_TITLE</label>
-                    <input type="text" id="bf-title" class="w-full bg-[#111] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] focus:outline-none" placeholder="ex: 180 Seguros - Campanha Q1" required>
+        <div class="bg-[#050505] border border-[#222] w-full max-w-2xl p-8 shadow-2xl">
+            <h2 class="text-2xl font-brick text-white uppercase mb-6">NEW_BRIEFING</h2>
+            <form onsubmit="submitBriefing(event)" class="space-y-6">
+                <input type="text" id="bf-title" class="w-full bg-[#111] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] focus:outline-none" placeholder="PROJECT_TITLE" required>
+                <div class="flex gap-4">
+                    <label class="flex-1"><input type="radio" name="bf-mode" value="marketing" checked class="hidden peer"><div class="border border-[#222] p-3 text-center text-xs font-mono peer-checked:border-[#DC2626] peer-checked:text-white">MARKETING</div></label>
+                    <label class="flex-1"><input type="radio" name="bf-mode" value="projetos" class="hidden peer"><div class="border border-[#222] p-3 text-center text-xs font-mono peer-checked:border-[#DC2626] peer-checked:text-white">PROJETOS</div></label>
                 </div>
-
-                <div>
-                    <label class="block text-[9px] font-mono text-[#666] uppercase mb-2">SECTOR_MODE</label>
-                    <div class="flex gap-4">
-                        <label class="flex-1 cursor-pointer">
-                            <input type="radio" name="bf-mode" value="marketing" class="hidden peer" checked>
-                            <div class="border border-[#222] bg-[#111] p-3 text-center text-xs font-mono text-[#666] peer-checked:border-[#DC2626] peer-checked:text-white transition-all hover:bg-[#1a1a1a]">MARKETING</div>
-                        </label>
-                        <label class="flex-1 cursor-pointer">
-                            <input type="radio" name="bf-mode" value="projetos" class="hidden peer">
-                            <div class="border border-[#222] bg-[#111] p-3 text-center text-xs font-mono text-[#666] peer-checked:border-[#DC2626] peer-checked:text-white transition-all hover:bg-[#1a1a1a]">PROJETOS</div>
-                        </label>
-                        <label class="flex-1 cursor-pointer">
-                            <input type="radio" name="bf-mode" value="ideias" class="hidden peer">
-                            <div class="border border-[#222] bg-[#111] p-3 text-center text-xs font-mono text-[#666] peer-checked:border-[#DC2626] peer-checked:text-white transition-all hover:bg-[#1a1a1a]">IDEIAS</div>
-                        </label>
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-[9px] font-mono text-[#666] uppercase mb-2">CONTEXT_DUMP</label>
-                    <textarea id="bf-content" class="w-full bg-[#111] border border-[#222] text-white p-3 font-mono text-sm h-32 focus:border-[#DC2626] focus:outline-none" placeholder="Paste raw briefing, notes, or context here..."></textarea>
-                </div>
-                
-                <div>
-                    <label class="block text-[9px] font-mono text-[#666] uppercase mb-2">ATTACHMENTS (PDF, MD, TXT)</label>
-                    <input type="file" id="bf-files" multiple class="w-full bg-[#111] border border-[#222] text-[#888] p-2 font-mono text-xs file:mr-4 file:py-2 file:px-4 file:bg-[#222] file:text-white file:border-0 file:text-xs file:font-mono hover:file:bg-[#333]">
-                </div>
-                
-                <div class="pt-4 border-t border-[#222] flex justify-end gap-4">
-                    <button type="button" onclick="closeBriefingModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4">CANCEL</button>
-                    <button type="submit" id="btn-submit" class="btn-brick min-w-[120px]">INITIATE_PROTOCOL</button>
+                <textarea id="bf-content" class="w-full bg-[#111] border border-[#222] text-white p-3 font-mono text-sm h-32 focus:border-[#DC2626] focus:outline-none" placeholder="CONTEXT_DUMP"></textarea>
+                <div class="flex justify-end gap-4 border-t border-[#222] pt-6">
+                    <button type="button" onclick="closeBriefingModal()" class="text-[#444] font-mono text-xs uppercase px-4">CANCEL</button>
+                    <button type="submit" class="btn-brick">INITIATE_PROTOCOL</button>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- SCHEME MODAL -->
-    <div id="scheme-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm p-4" style="display: none;" onclick="if(event.target.id === 'scheme-modal') closeScheme()">
-        <div class="bg-[#050505] border border-[#222] w-full max-w-3xl max-h-[90vh] flex flex-col relative shadow-2xl shadow-red-900/10" onclick="event.stopPropagation()">
-            <div class="p-8 border-b border-[#222] flex-shrink-0">
-                <button onclick="closeScheme()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
-                <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title" class="text-[#DC2626]">MARKETING</span></h2>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto p-8">
-                <div class="bg-[#0a0a0a] border border-[#222] p-6 font-mono text-xs text-[#888] overflow-x-auto mb-6">
-                    <pre id="scheme-diagram" class="leading-relaxed">
-BRIEFING
-│
-▼
-01. BRIEF VALIDATOR (Flash)
-│
-▼
-02. AUDIENCE ══► 03. RESEARCHER (Flash)
-│
-▼
-04. CLAIMS CHECKER (Flash)
-│
-├──────────┼──────────┐
-▼          ▼          ▼
-┌────────┐ ┌────────┐ ┌────────┐
-│COPY A  │ │COPY B  │ │COPY C  │
-│GPT-5.2 │ │ FLASH  │ │SONNET  │
-└────────┘ └────────┘ └────────┘
-│          │          │
-└──────────┼──────────┘
-           ▼
-06. BRAND GUARDIANS (Flash) - valida as 3
-│
-▼
-07. CRITICS (GPT-5.2) - escolhem a melhor
-│
-▼
-08. FILTRO FINAL (Claude Opus)
-│
-▼
-OUTPUT ≥80%</pre>
-                </div>
-                
-                <div class="text-[10px] font-mono text-[#444] border-t border-[#222] pt-4 mt-4">
-                    <div class="mb-2 text-[#666]">PROTOCOL_INFO:</div>
-                    <div id="scheme-info">
-                        <div>• Validação automática em cada nó</div>
-                        <div>• Três versões criativas paralelas (A/B/C)</div>
-                        <div>• Brand Guardians valida todas as versões</div>
-                        <div>• Critics escolhem a melhor</div>
-                        <div>• Filtro final com Claude Opus (score ≥80)</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-4 border-t border-[#222] flex justify-end flex-shrink-0">
-                <button onclick="closeScheme()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
-            </div>
         </div>
     </div>
 
@@ -437,108 +217,66 @@ OUTPUT ≥80%</pre>
         let currentState = null;
         let currentMode = null;
         let selectedJobId = null;
-        
-        // NOTIFICATION SYSTEM
-        function showNotification(message, type = 'success') {
-            const container = document.getElementById('notification-container');
-            const toast = document.createElement('div');
-            toast.className = `notification-toast ${type}`;
-            
-            const title = type === 'success' ? '✓ SUCCESS' : '✗ ERROR';
-            toast.innerHTML = `
-                <div class="toast-title">${title}</div>
-                <div class="toast-message">${message}</div>
-            `;
-            
-            container.appendChild(toast);
-            
-            // Auto-remove after 4 seconds
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(400px)';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
-        }
 
-        // MOBILE LOBBY TOGGLE
-        function toggleLobby() {
-            const lobby = document.getElementById('view-lobby');
-            const toggle = document.getElementById('lobby-toggle');
-            const overlay = document.getElementById('lobby-overlay');
-            
-            lobby.classList.toggle('open');
-            toggle.classList.toggle('open');
-            overlay.classList.toggle('active');
-        }
-        
-        // Hide hamburger on desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                const lobby = document.getElementById('view-lobby');
-                const toggle = document.getElementById('lobby-toggle');
-                const overlay = document.getElementById('lobby-overlay');
-                if (lobby) lobby.classList.remove('open');
-                if (toggle) toggle.classList.remove('open');
-                if (overlay) overlay.classList.remove('active');
-            }
-        });
+        const fileMapping = {
+            'BRIEFING_INPUT': ['BRIEFING', 'INPUT'],
+            'VALIDATOR': ['01_BRIEF_VALIDATOR', 'VALIDATOR'],
+            'AUDIENCE': ['02_AUDIENCE', 'AUDIENCE'],
+            'RESEARCH': ['03_TOPIC', 'RESEARCH'],
+            'FACT_CHECK': ['04_CLAIMS', 'FACT_CHECK'],
+            'COPY_A': ['05_COPYWRITER_GPT', 'COPY_A'],
+            'COPY_B': ['05_COPYWRITER_FLASH', 'COPY_B'],
+            'COPY_C': ['05_COPYWRITER_SONNET', 'COPY_C'],
+            'BRAND': ['06_BRAND', 'BRAND'],
+            'STRATEGY': ['07_CRITIC_LITE', 'STRATEGY'],
+            'WALL': ['08_CRITIC_OPUS', 'WALL'],
+            'OUTPUT_ASSETS': ['FINAL', 'OUTPUT'],
+            'BRAND_DIGEST': ['01_BRAND_DIGEST'],
+            'CREATIVE_IDEATION': ['02_CREATIVE_IDEATION'],
+            'CONCEPT_CRITIC': ['03_CONCEPT_CRITIC'],
+            'EXECUTION_DESIGN': ['04_EXECUTION_DESIGN'],
+            'COPYWRITER': ['05_COPYWRITER'],
+            'DIRECTOR': ['06_DIRECTOR']
+        };
 
-        // MARKETING PIPELINE v3.3
         const nodeDefMarketing = [
-            { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'CORE' },
-            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
-            { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator', model: 'FLASH' },
-            { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'FLASH' },
-            { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'FLASH' },
-            { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker', model: 'FLASH' },
-            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5' },
-            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'FLASH' },
-            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'SONNET' },
-            { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'FLASH' },
-            { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad', model: 'GPT-5' },
-            { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter', model: 'OPUS' },
-            { id: 'n9', x: 0, y: 1950, title: 'HUMAN', label: 'User_Control', model: 'DASHBOARD', human: true },
-            { id: 'n10', x: 0, y: 2150, title: 'OUTPUT_ASSETS', label: 'Final_Ready', model: 'READY' }
+            { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion' },
+            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', douglas: true },
+            { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator' },
+            { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst' },
+            { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher' },
+            { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker' },
+            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha' },
+            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta' },
+            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma' },
+            { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian' },
+            { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad' },
+            { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter' },
+            { id: 'n10', x: 0, y: 1950, title: 'OUTPUT_ASSETS', label: 'Final_Ready' }
         ];
 
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n10']];
 
-        // PROJETOS PIPELINE v2.0
         const nodeDefProjetos = [
-            { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'CORE' },
-            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
-            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'FLASH' },
-            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Generator', model: 'GPT-5' },
-            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'FLASH' },
-            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI_PRO' },
-            { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer', model: 'SONNET' },
-            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI_PRO' },
-            { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'DASHBOARD', human: true },
-            { id: 'p10', x: 0, y: 1950, title: 'OUTPUT_FINAL', label: 'Proposal_Ready', model: 'READY' }
+            { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion' },
+            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', douglas: true },
+            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor' },
+            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Generator' },
+            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge' },
+            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director' },
+            { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer' },
+            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge' },
+            { id: 'p10', x: 0, y: 1750, title: 'OUTPUT_ASSETS', label: 'Final_Ready' }
         ];
 
-        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
-
-        // IDEIAS PIPELINE v1.1
-        const nodeDefIdeias = [
-            { id: 'i0', x: 0, y: 150, title: 'IDEA_INPUT', label: 'Raw_Ingestion', model: 'CORE' },
-            { id: 'id', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
-            { id: 'i1', x: 0, y: 550, title: 'IDEA_PARSER', label: 'Classifier', model: 'FLASH' },
-            { id: 'i2', x: 0, y: 750, title: 'CONTEXT_SCOUT', label: 'Researcher', model: 'FLASH_WEB' },
-            { id: 'i3a', x: -200, y: 950, title: 'DEVILS_ADVOCATE', label: 'The_Skeptic', model: 'SONNET' },
-            { id: 'i3b', x: 200, y: 950, title: 'ANGELS_ADVOCATE', label: 'The_Believer', model: 'SONNET' },
-            { id: 'i4', x: 0, y: 1150, title: 'VERDICT_JUDGE', label: 'Final_Score', model: 'GEMINI_PRO' },
-            { id: 'i5', x: 0, y: 1350, title: 'OUTPUT_REPORT', label: 'Action_Plan', model: 'READY' }
-        ];
-
-        const linksIdeias = [['i0','id'],['id','i1'],['i1','i2'],['i2','i3a'],['i2','i3b'],['i3a','i4'],['i3b','i4'],['i4','i5']];
+        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p10']];
 
         let nodeDef = nodeDefMarketing;
         let links = linksMarketing;
 
         async function fetchState() {
             try {
-                const res = await fetch(`${API_URL}/state${currentMode ? '?mode='+currentMode : ''}`);
+                const res = await fetch(`${API_URL}/state?mode=${currentMode || 'marketing'}`);
                 currentState = await res.json();
                 renderLobby();
                 if(selectedJobId) renderNodeGraphic();
@@ -547,17 +285,11 @@ OUTPUT ≥80%</pre>
 
         function enterMode(mode) {
             currentMode = mode;
-            if (mode === 'projetos') {
-                nodeDef = nodeDefProjetos; links = linksProjetos;
-            } else if (mode === 'ideias') {
-                nodeDef = nodeDefIdeias; links = linksIdeias;
-            } else {
-                nodeDef = nodeDefMarketing; links = linksMarketing;
-            }
+            nodeDef = (mode === 'projetos') ? nodeDefProjetos : nodeDefMarketing;
+            links = (mode === 'projetos') ? linksProjetos : linksMarketing;
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('project-lobby').classList.remove('hidden');
             document.getElementById('btn-back-lobby').classList.remove('hidden');
-            document.getElementById('btn-scheme').classList.remove('hidden');
             document.getElementById('header-sector').textContent = mode.toUpperCase();
             fetchState();
         }
@@ -567,7 +299,6 @@ OUTPUT ≥80%</pre>
             document.getElementById('welcome-screen').classList.remove('hidden');
             document.getElementById('project-lobby').classList.add('hidden');
             document.getElementById('btn-back-lobby').classList.add('hidden');
-            document.getElementById('btn-scheme').classList.add('hidden');
             document.getElementById('header-sector').textContent = 'COMMAND_CENTER';
         }
 
@@ -576,42 +307,21 @@ OUTPUT ≥80%</pre>
             list.innerHTML = '';
             const all = [...currentState.briefing, ...currentState.wip, ...currentState.done];
             const groups = {};
-            const suffixes = ['_BRAND_DIGEST', '_CREATIVE_IDEATION', '_CONCEPT_CRITIC', '_EXECUTION_DESIGN', '_COPYWRITER', '_DIRECTOR', '_BRIEF_VALIDATOR', '_AUDIENCE', '_TOPIC', '_CLAIMS', '_BRAND', '_CRITIC_LITE', '_CRITIC_OPUS', '_FINAL', '_OUTPUT', '_READY'];
-
+            
             all.forEach(f => {
-                let id = f.name;
                 const tsMatch = f.name.match(/^(\d{13,})_/);
-                if (tsMatch) { id = tsMatch[1]; } 
-                else {
-                    let cleanName = f.name.replace(/\.(md|json|txt|pdf)$/i, '');
-                    const sortedSuffixes = suffixes.sort((a,b) => b.length - a.length);
-                    for (const suffix of sortedSuffixes) {
-                        if (cleanName.toUpperCase().endsWith(suffix)) {
-                            cleanName = cleanName.substring(0, cleanName.length - suffix.length);
-                            break;
-                        }
-                    }
-                    id = cleanName.replace(/_\d{2}$/, '').replace(/_$/, '');
-                }
-                if(!groups[id]) groups[id] = []; 
+                const id = tsMatch ? tsMatch[1] : f.name.split('_')[0];
+                if(!groups[id]) groups[id] = [];
                 groups[id].push(f);
             });
 
             Object.keys(groups).sort().reverse().forEach(id => {
                 const files = groups[id];
-                const title = id.match(/^\d{13,}$/) ? files[0].name.replace(/^(\d{13,})_/, '').split('.')[0].replace(/_/g, ' ') : id.replace(/_/g, ' ');
+                const title = files[0].name.replace(/^\d+_/,'').split('.')[0].replace(/_/g,' ');
                 const card = document.createElement('div');
-                card.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all relative overflow-hidden group';
+                card.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all';
                 card.onclick = () => openNodeGraphic(id, title);
-                const isDone = files.some(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
-                card.innerHTML = `
-                    <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,12).toUpperCase()}</div>
-                    <h3 class="text-2xl font-brick text-white uppercase mb-4 truncate">${title}</h3>
-                    <div class="flex items-center gap-2">
-                        <div class="h-1.5 flex-1 bg-[#111] overflow-hidden"><div class="h-full bg-[#DC2626]" style="width: ${isDone ? '100%' : (files.length*10)+'%'}"></div></div>
-                        <div class="text-[9px] font-mono ${isDone ? 'text-green-500' : 'text-[#DC2626]'} tracking-widest">${isDone ? 'COMPLETED' : 'IN_PROGRESS'}</div>
-                    </div>
-                `;
+                card.innerHTML = `<h3 class="text-2xl font-brick text-white uppercase">${title}</h3><p class="text-[9px] font-mono text-[#444] mt-4">${files.length} FILES FOUND</p>`;
                 list.appendChild(card);
             });
         }
@@ -629,63 +339,30 @@ OUTPUT ≥80%</pre>
             selectedJobId = null;
         }
 
-        const fileMapping = {
-            'BRIEFING_INPUT': ['BRIEFING', 'INPUT'],
-            'VALIDATOR': ['01_BRIEF_VALIDATOR', 'BRIEF_VALIDATOR', 'VALIDATOR'],
-            'AUDIENCE': ['02_AUDIENCE', 'AUDIENCE'],
-            'RESEARCH': ['03_TOPIC', 'TOPIC_RESEARCH', 'RESEARCH'],
-            'FACT_CHECK': ['04_CLAIMS', 'CLAIMS_CHECKER', 'CLAIMS'],
-            'COPY_A': ['05_COPYWRITER_GPT', 'COPYWRITER'],
-            'COPY_B': ['05_COPYWRITER_FLASH'],
-            'COPY_C': ['05_COPYWRITER_SONNET'],
-            'BRAND': ['06_BRAND', 'BRAND_GUARDIAN', 'GUARDIAN'],
-            'STRATEGY': ['07_CRITIC_LITE', 'CRITIC_LITE', 'STRATEGY'],
-            'WALL': ['08_CRITIC_OPUS', 'CRITIC_OPUS', 'CRITIC'],
-            'OUTPUT_ASSETS': ['FINAL', 'OUTPUT', 'READY'],
-            'BRAND_DIGEST': ['01_BRAND_DIGEST', 'BRAND_DIGEST'],
-            'CREATIVE_IDEATION': ['02_CREATIVE_IDEATION', 'CREATIVE_IDEATION'],
-            'CONCEPT_CRITIC': ['03_CONCEPT_CRITIC', 'CONCEPT_CRITIC'],
-            'EXECUTION_DESIGN': ['04_EXECUTION_DESIGN', 'EXECUTION_DESIGN'],
-            'COPYWRITER': ['05_COPYWRITER', 'COPYWRITER'],
-            'DIRECTOR': ['06_DIRECTOR', 'DIRECTOR'],
-            'IDEA_INPUT': ['BRIEFING', 'INPUT', 'IDEA'],
-            'IDEA_PARSER': ['01_IDEA_PARSER', 'PARSER', 'IDEA_PARSER'],
-            'CONTEXT_SCOUT': ['02_CONTEXT_SCOUT', 'SCOUT', 'CONTEXT'],
-            'DEVILS_ADVOCATE': ['03_DEVIL', 'DEVILS_ADVOCATE', 'DEVIL'],
-            'ANGELS_ADVOCATE': ['04_ANGEL', 'ANGELS_ADVOCATE', 'ANGEL'],
-            'VERDICT_JUDGE': ['05_VERDICT', 'VERDICT_JUDGE', 'VERDICT', 'JUDGE'],
-            'OUTPUT_REPORT': ['FINAL', 'OUTPUT', 'REPORT', 'READY']
-        };
-
         function renderNodeGraphic() {
             const container = document.getElementById('node-container');
-            const svg = document.getElementById('conn-svg');
-            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
-            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
-            const isComplete = projectFiles.some(f => f.name.match(/(FINAL|OUTPUT|READY)/i));
-            
             container.innerHTML = '';
-            svg.innerHTML = '';
+            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            const projectFiles = allFiles.filter(f => f.name.includes(selectedJobId));
 
             nodeDef.forEach(n => {
                 const el = document.createElement('div');
                 el.className = `node ${n.douglas?'node-douglas':''}`;
                 el.id = n.id;
-                el.style.left = `calc(50% + ${n.x}px - 160px)`;
-                el.style.top = `${n.y}px`;
-
-                const hasFile = isComplete || projectFiles.some(f => f.name.toLowerCase().includes(n.title.toLowerCase()));
-                if (!hasFile && !n.douglas && !n.title.includes('INPUT') && !n.title.includes('READY')) {
-                    el.classList.add('pending-execution');
-                } else {
-                    el.classList.add('active-node');
+                
+                if (window.innerWidth > 768) {
+                    el.style.left = `calc(50% + ${n.x}px - 160px)`;
+                    el.style.top = `${n.y}px`;
                 }
+
+                const hasFile = projectFiles.some(f => f.name.toUpperCase().includes(n.title.toUpperCase()));
+                if (!hasFile && !n.douglas) el.classList.add('pending-execution');
 
                 el.innerHTML = `
                     <div class="node-led"></div>
-                    <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
+                    <div class="node-id">${n.id.toUpperCase()} // ${n.label || ''}</div>
                     <div class="node-title">${n.title}</div>
-                    <div class="node-subtext">${n.douglas ? 'ANALYZING_FLOW_STATE' : (n.human ? 'AWAITING_USER_INPUT' : 'STANDBY_DATA_SYNC')}</div>
+                    <div class="node-subtext">${n.douglas ? 'ANALYZING' : 'DATA_SYNC'}</div>
                 `;
                 el.onclick = () => openPanel(n);
                 container.appendChild(el);
@@ -694,6 +371,7 @@ OUTPUT ≥80%</pre>
         }
 
         function updateConnections() {
+            if (window.innerWidth <= 768) return;
             const svg = document.getElementById('conn-svg');
             svg.innerHTML = '';
             links.forEach(([fId, tId]) => {
@@ -702,89 +380,57 @@ OUTPUT ≥80%</pre>
                 const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
                 const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
                 const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
-                line.setAttribute("class", "conn-line active");
-                svg.appendChild(line);
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1+50} L ${x2} ${y1+50} L ${x2} ${y2}`);
+                path.setAttribute("class", "conn-line active");
+                svg.appendChild(path);
             });
         }
 
         function openPanel(n) {
-            document.getElementById('panel-title').textContent = n.title;
             const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
-            
-            if (!selectedJobId && allFiles.length > 0) {
-                const jobIds = [...new Set(allFiles.map(f => {
-                    const match = f.name.match(/^(\d+)_/);
-                    return match ? match[1] : null;
-                }).filter(Boolean))];
-                if (jobIds.length > 0) {
-                    const counts = jobIds.map(id => ({ id, count: allFiles.filter(f => f.name.startsWith(id)).length }));
-                    selectedJobId = counts.sort((a, b) => b.count - a.count)[0].id;
-                }
-            }
-            
-            const projectFiles = selectedJobId ? allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase())) : allFiles;
+            const projectFiles = allFiles.filter(f => f.name.includes(selectedJobId));
             
             let nodeFile = null;
-            const searchTerms = fileMapping[n.title] || [n.title];
-            for (const term of searchTerms) {
-                nodeFile = projectFiles.find(f => f.name.toUpperCase().includes(term.toUpperCase()));
-                if (nodeFile) break;
+            const terms = fileMapping[n.title] || [n.title];
+            for(const t of terms) {
+                nodeFile = projectFiles.find(f => f.name.toUpperCase().includes(t.toUpperCase()));
+                if(nodeFile) break;
             }
 
+            document.getElementById('panel-title').textContent = n.title;
+            const body = document.getElementById('panel-body');
+            
             if (nodeFile) {
-                const rawContent = nodeFile.content;
-                let htmlContent = '';
-                let jsonData = null;
-                try { jsonData = JSON.parse(rawContent); } catch (e) {}
-
-                if (jsonData) {
-                    htmlContent = '<div class="json-structured">';
-                    const renderObject = (obj, depth = 0) => {
-                        let html = '';
-                        Object.entries(obj).forEach(([key, value]) => {
-                            const indent = depth * 16;
-                            html += `<div style="margin-left: ${indent}px" class="mb-2"><span class="text-gray-400 text-xs font-mono">${key}:</span> `;
-                            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                                html += '<div class="ml-4">' + renderObject(value, depth + 1) + '</div>';
-                            } else if (Array.isArray(value)) {
-                                html += `<span class="text-gray-600 text-xs">[${value.length} items]</span>`;
-                                value.forEach(item => {
-                                    if (typeof item === 'object') { html += '<div class="ml-4 border-l border-gray-700 pl-2 mt-1">' + renderObject(item, depth + 1) + '</div>'; }
-                                    else { html += `<div class="ml-4 text-sm text-gray-300">• ${item}</div>`; }
-                                });
-                            } else { html += `<span class="text-white text-sm">${value}</span>`; }
-                            html += '</div>';
-                        });
-                        return html;
-                    };
-                    
-                    let hasKnown = false;
-                    if (jsonData.conceito || jsonData.conceitos || jsonData.conceito_completo) {
-                        hasKnown = true;
-                        htmlContent += '<div class="section-box border-purple-900/30 bg-purple-900/5 mb-4"><span class="section-label text-purple-400">💡 CONCEITO</span>';
-                        const c = jsonData.conceito_completo || jsonData.conceito;
-                        if (c && c.nome) {
-                            htmlContent += `<div class="text-lg font-bold text-white mb-3">${c.nome}</div>`;
-                            if (c.premissa) htmlContent += `<div class="text-sm text-gray-300 mb-3 leading-relaxed">${c.premissa}</div>`;
-                        }
-                        htmlContent += '</div>';
-                    }
-                    if (!hasKnown) {
-                        htmlContent += '<div class="section-box border-gray-700 bg-gray-900/5 mb-4"><span class="section-label text-gray-400">📄 AGENT_OUTPUT</span>';
-                        htmlContent += '<div class="text-xs">' + renderObject(jsonData) + '</div></div>';
-                    }
-                    htmlContent += '<details class="section-box border-gray-700 bg-gray-900/20"><summary class="section-label">🔍 RAW_JSON</summary><pre class="text-[10px] text-gray-400 mt-2">' + JSON.stringify(jsonData, null, 2) + '</pre></details></div>';
-                } else {
-                    htmlContent = marked.parse(rawContent);
+                try {
+                    const json = JSON.parse(nodeFile.content);
+                    body.innerHTML = '<div class="json-structured">' + renderJSON(json) + '</div>';
+                } catch(e) {
+                    body.innerHTML = marked.parse(nodeFile.content);
                 }
-                document.getElementById('panel-body').innerHTML = htmlContent;
             } else {
-                document.getElementById('panel-body').innerHTML = '<div class="p-8 text-center text-[#444] font-mono italic">Waiting for agent execution...</div>';
+                body.innerHTML = '<p class="p-8 text-center italic text-[#444]">Waiting for agent execution...</p>';
             }
             document.getElementById('agent-panel').classList.add('open');
         }
+
+        function renderJSON(obj) {
+            let html = '';
+            for (const [key, val] of Object.entries(obj)) {
+                html += `<div class="mb-4"><span class="section-label">${key}</span>`;
+                if (typeof val === 'object' && val !== null) {
+                    html += `<div class="pl-4 border-l border-[#222]">${renderJSON(val)}</div>`;
+                } else {
+                    html += `<div class="text-white text-sm">${val}</div>`;
+                }
+                html += `</div>`;
+            }
+            return html;
+        }
+
+        function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
+        function openNewBriefing() { document.getElementById('briefing-modal').classList.remove('hidden'); }
+        function closeBriefingModal() { document.getElementById('briefing-modal').classList.add('hidden'); }
 
         async function submitBriefing(e) {
             e.preventDefault();
@@ -792,17 +438,12 @@ OUTPUT ≥80%</pre>
             formData.append('title', document.getElementById('bf-title').value);
             formData.append('content', document.getElementById('bf-content').value);
             formData.append('mode', document.querySelector('input[name="bf-mode"]:checked').value);
-            const files = document.getElementById('bf-files').files;
-            for (let i = 0; i < files.length; i++) { formData.append('files', files[i]); }
-            
-            const res = await fetch(`${API_URL}/briefing`, { method: 'POST', body: formData });
-            if (res.ok) { closeBriefingModal(); fetchState(); showNotification('PROTOCOL INITIATED'); }
+            await fetch(`${API_URL}/briefing`, { method: 'POST', body: formData });
+            closeBriefingModal(); fetchState();
         }
 
-        function openScheme() { document.getElementById('scheme-modal').style.display = 'flex'; }
-        function closeScheme() { document.getElementById('scheme-modal').style.display = 'none'; }
-        
-        setInterval(fetchState, 10000);
+        window.addEventListener('resize', () => { if(selectedJobId) renderNodeGraphic(); });
+        setInterval(fetchState, 15000);
         fetchState();
     </script>
 </body>
