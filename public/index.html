@@ -615,10 +615,12 @@ OUTPUT (Copy Final)`;
                 const el = document.createElement('div');
                 el.className = `node ${n.douglas?'node-douglas':''}`;
                 el.id = n.id;
-                // Forçar reset de position inline (limpa drag anterior)
-                el.style.cssText = '';
+                // Forçar reset completo + aplicar posições do def
+                el.style.position = 'absolute';
                 el.style.left = `calc(50% + ${n.x}px - 160px)`;
                 el.style.top = `${n.y}px`;
+                // Limpar transform que pode vir do drag
+                el.style.transform = 'none';
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
