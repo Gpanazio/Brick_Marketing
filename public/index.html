@@ -692,7 +692,18 @@ OUTPUT (Copy Final)`;
                 } else if (typeof value === 'object' && value !== null) {
                     html += '<div class="pl-4 space-y-3">';
                     for (const [subKey, subValue] of Object.entries(value)) {
-                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono">${subKey}:</span> <span class="text-[#ccc]">${typeof subValue === 'object' ? JSON.stringify(subValue) : subValue}</span></div>`;
+                        let formattedValue = subValue;
+                        if (typeof subValue === 'object' && subValue !== null) {
+                            // Remove {", etc. e formata cada linha
+                            formattedValue = JSON.stringify(subValue, null, 2)
+                                .replace(/[{}"]/g, '')
+                                .replace(/^\s+/gm, '')
+                                .replace(/,\s*$/gm, '')
+                                .split('\n')
+                                .filter(line => line.trim())
+                                .join('<br>');
+                        }
+                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono">${subKey}:</span> <span class="text-[#ccc]">${formattedValue}</span></div>`;
                     }
                     html += '</div>';
                 } else {
