@@ -100,6 +100,7 @@
             <div class="flex gap-4">
                 <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
                 <button id="btn-scheme" onclick="openScheme()" class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
+                <button id="btn-reset-layout" onclick="resetLayout()" class="hidden text-[#444] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">⟲ Reset</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
@@ -592,13 +593,22 @@ OUTPUT (Copy Final)`;
             document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
             document.getElementById('main-ui').style.display = 'none';
+            document.getElementById('btn-reset-layout').classList.remove('hidden');
             renderNodeGraphic();
         }
 
         function closeNodeGraphic() {
             document.getElementById('view-nodegraphic').classList.remove('active');
             document.getElementById('main-ui').style.display = 'flex';
+            document.getElementById('btn-reset-layout').classList.add('hidden');
             selectedJobId = null;
+        }
+
+        function resetLayout() {
+            if (confirm('Resetar todas as posições dos nós para o layout padrão?')) {
+                localStorage.removeItem(`node_positions_${currentMode}`);
+                renderNodeGraphic();
+            }
         }
 
         function renderNodeGraphic() {
@@ -611,15 +621,23 @@ OUTPUT (Copy Final)`;
             svg.innerHTML = '';
 
             const nodes = currentMode === 'projetos' ? nodeDefProjetos : nodeDefMarketing;
+            // Carregar posições salvas do localStorage
+            const savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
+            
             nodes.forEach(n => {
                 const el = document.createElement('div');
                 el.className = `node ${n.douglas?'node-douglas':''}`;
                 el.id = n.id;
-                // Forçar reset completo + aplicar posições do def
+                
+                // Se tem posição salva, usar ela. Senão, usar padrão do def
                 el.style.position = 'absolute';
-                el.style.left = `calc(50% + ${n.x}px - 160px)`;
-                el.style.top = `${n.y}px`;
-                // Limpar transform que pode vir do drag
+                if (savedPositions[n.id]) {
+                    el.style.left = savedPositions[n.id].left;
+                    el.style.top = savedPositions[n.id].top;
+                } else {
+                    el.style.left = `calc(50% + ${n.x}px - 160px)`;
+                    el.style.top = `${n.y}px`;
+                }
                 el.style.transform = 'none';
 
                 const searchTerms = fileMapping[n.title] || [n.title];
@@ -683,7 +701,18 @@ OUTPUT (Copy Final)`;
         function makeDraggable(el) {
             let p1=0,p2=0,p3=0,p4=0; el.onmousedown = (e) => {
                 e.preventDefault(); p3=e.clientX; p4=e.clientY;
-                document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                document.onmouseup = () => { 
+                    // Salvar posição final no localStorage
+                    const nodePositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
+                    nodePositions[el.id] = {
+                        left: el.style.left,
+                        top: el.style.top
+                    };
+                    localStorage.setItem(`node_positions_${currentMode}`, JSON.stringify(nodePositions));
+                    
+                    document.onmouseup = null; 
+                    document.onmousemove = null; 
+                };
                 document.onmousemove = (e) => {
                     p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
                     el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
