@@ -101,11 +101,25 @@
 
         #view-nodegraphic { display: none; }
         #view-nodegraphic.active { display: block; }
+        
+        /* NOTIFICATION TOAST */
+        #notification-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        .notification-toast { background: #050505; border: 1px solid #222; padding: 16px 24px; min-width: 300px; max-width: 500px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); animation: slideInRight 0.3s ease-out; }
+        .notification-toast.success { border-color: #22c55e; }
+        .notification-toast.error { border-color: #DC2626; }
+        .notification-toast .toast-title { font-family: 'Inter'; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .notification-toast.success .toast-title { color: #22c55e; }
+        .notification-toast.error .toast-title { color: #DC2626; }
+        .notification-toast .toast-message { font-family: 'JetBrains Mono'; font-size: 11px; color: #888; }
+        @keyframes slideInRight { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
 <body>
     <div class="grid-bg"></div>
     <div class="vignette"></div>
+    
+    <!-- NOTIFICATION CONTAINER -->
+    <div id="notification-container"></div>
 
     <!-- MAIN INTERFACE -->
     <div id="main-ui" class="h-screen flex flex-col p-8">
@@ -323,6 +337,28 @@ OUTPUT ≥80%</pre>
         let currentState = null;
         let currentMode = null;
         let selectedJobId = null;
+        
+        // NOTIFICATION SYSTEM
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const toast = document.createElement('div');
+            toast.className = `notification-toast ${type}`;
+            
+            const title = type === 'success' ? '✓ SUCCESS' : '✗ ERROR';
+            toast.innerHTML = `
+                <div class="toast-title">${title}</div>
+                <div class="toast-message">${message}</div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(400px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
 
         // MARKETING PIPELINE v3.3
         const nodeDefMarketing = [
@@ -791,7 +827,7 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                 
                 if(res.ok) {
                     closeBriefingModal();
-                    alert('✅ BRIEFING INGESTED SUCCESSFULLY');
+                    showNotification('BRIEFING INGESTED SUCCESSFULLY', 'success');
                     
                     // Auto-switch to the mode where briefing was created
                     const mode = document.querySelector('input[name="bf-mode"]:checked').value;
@@ -800,10 +836,10 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                     fetchState(); // Refresh lobby
                 } else {
                     const err = await res.json();
-                    alert('❌ ERROR: ' + err.error);
+                    showNotification('ERROR: ' + err.error, 'error');
                 }
             } catch(error) {
-                alert('❌ NETWORK ERROR: ' + error.message);
+                showNotification('NETWORK ERROR: ' + error.message, 'error');
             } finally {
                 btn.textContent = originalText;
                 btn.disabled = false;
@@ -1158,13 +1194,13 @@ DEVILS ADVOCATE    ANGELS ADVOCATE
                 });
                 if (res.ok) {
                     const result = await res.json();
-                    alert(`✅ ${mode.toUpperCase()} pipeline configuration saved!`);
+                    showNotification(`${mode.toUpperCase()} pipeline configuration saved!`, 'success');
                     pipelineConfig = result.config;
                 } else {
-                    alert('❌ Failed to save configuration');
+                    showNotification('Failed to save configuration', 'error');
                 }
             } catch(e) {
-                alert('❌ Error: ' + e.message);
+                showNotification('Error: ' + e.message, 'error');
             }
         }
 
