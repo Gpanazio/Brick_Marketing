@@ -50,6 +50,8 @@
         /* ANGULAR CONNECTIONS */
         .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
         .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
+        .conn-line.refine { stroke: #22c55e; opacity: 0.4; }
+        .conn-line.refine.active { opacity: 0.8; stroke-width: 2; }
 
         .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
 
@@ -303,11 +305,12 @@
             { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
             { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'GEMINI FLASH' },
             { id: 'n7', x: 0, y: 1550, title: 'STRATEGY', label: 'Selection_Squad', model: 'GPT-5.2' },
-            { id: 'n8', x: 0, y: 1750, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
-            { id: 'n9', x: 0, y: 1950, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n10', x: 0, y: 2150, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n7b', x: 0, y: 1650, title: 'COPY_FINAL', label: 'Final_Polish', model: 'DYNAMIC' },
+            { id: 'n8', x: 0, y: 1850, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
+            { id: 'n9', x: 0, y: 2050, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
+            { id: 'n10', x: 0, y: 2250, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n7b'],['n7b','n8'],['n8','n9'],['n9','n10']];
 
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -335,6 +338,7 @@
             'COPY_C': ['05C_', 'COPY_SONNET'],
             'BRAND': ['06_', 'BRAND'],
             'STRATEGY': ['07_', 'CRITIC'],
+            'COPY_FINAL': ['07B_', 'COPY_FINAL', 'REFINED'],
             'WALL': ['08_', 'FILTRO'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
@@ -449,9 +453,12 @@ OUTPUT (Proposta Completa)`;
 ▼
 07. CRITICS (GPT-5.2) - escolhem a melhor
 │
+▼ (verde)
+07B. COPY FINAL (Dynamic) - aplica ajustes sugeridos
+│
 ▼
 08. FILTRO FINAL (Claude Opus) - loop até ≥80
-│
+│    └─► (se reprovar) ─► DOUGLAS (refeed + 3x máx)
 ▼
 09. HUMAN - aprovação final
 │
@@ -464,7 +471,8 @@ OUTPUT (Copy Final)`;
                     <div>• Três versões criativas paralelas (A/B/C)</div>
                     <div>• Brand Guardians valida todas as versões</div>
                     <div>• Critics escolhem a melhor</div>
-                    <div>• Filtro final com Claude Opus (score ≥80)</div>
+                    <div>• <strong>Copy Final aplica ajustes sugeridos</strong></div>
+                    <div>• Filtro final com Claude Opus (score ≥80, loop até 3x via Douglas)</div>
                     <div>• Aprovação humana obrigatória</div>
                 `;
             }
@@ -646,7 +654,12 @@ OUTPUT (Copy Final)`;
 
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
-                line.setAttribute("class", `conn-line ${!f.classList.contains('disabled') && !t.classList.contains('disabled') ? 'active' : ''}`);
+                
+                // Linha especial verde entre Strategy → Copy Final
+                const isRefineLine = (fId === 'n7' && tId === 'n7b');
+                const isActive = !f.classList.contains('disabled') && !t.classList.contains('disabled');
+                const lineClass = `conn-line ${isRefineLine ? 'refine' : ''} ${isActive ? 'active' : ''}`;
+                line.setAttribute("class", lineClass);
                 svg.appendChild(line);
 
                 if(!f.classList.contains('disabled') && !t.classList.contains('disabled')) {
