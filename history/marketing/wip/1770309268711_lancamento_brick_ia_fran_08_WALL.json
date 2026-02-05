@@ -1,45 +1,11 @@
 {
-  "score_final": 82,
-  "status": "APPROVED",
-  "breakdown": {
-    "clareza_oferta": {
-      "pontos": 20,
-      "max": 25,
-      "feedback": "Oferta clara como produtora premium que usa IA para viabilizar o impossível. Falta tangibilizar entregáveis/prazo (ex: 1 filme + 3 cortes, turnaround típico)."
-    },
-    "dor_real": {
-      "pontos": 17,
-      "max": 20,
-      "feedback": "Dor específica e reconhecível (IA mal feita, voz metálica, padrão template). Poderia incluir 1 cenário concreto de budget/deadline para ficar ainda mais verificável."
-    },
-    "credibilidade": {
-      "pontos": 15,
-      "max": 20,
-      "feedback": "Claim de vídeo líder em 2026 está verificada (Serasa Experian) + 10 anos de set. Falta prova social (cases/clientes/nº de projetos)."
-    },
-    "on_brand": {
-      "pontos": 19,
-      "max": 20,
-      "feedback": "Tom de diretor, anti-slop, terminologia correta (Production Enhanced, Vision over Prompt). Energia de set presente."
-    },
-    "cta_especifico": {
-      "pontos": 11,
-      "max": 15,
-      "feedback": "CTA único e claro, porém genérico ("Acesse brick.ai"). Melhor: call de 15min ou breakdown do vídeo de lançamento."
-    }
+  "agent": "FILTRO_FINAL",
+  "job_id": "1770309268711_lancamento_brick_ia_fran",
+  "status": "ERROR",
+  "error": {
+    "reason": "All retries failed",
+    "timestamp": "2026-02-05T14:13:05-03:00",
+    "retries_attempted": 3
   },
-  "destaques_positivos": [
-    "Storytelling alinhado ao vídeo de lançamento (homem cansado)",
-    "Tom cinematográfico e anti-slop consistente com a marca",
-    "Posicionamento claro: produtora premium que viabiliza o impossível",
-    "Uso de dado validado (Serasa Experian) integrado sem forçar"
-  ],
-  "pontos_de_melhoria": [
-    "Adicionar prova social (case, cliente, nº de projetos ou mini breakdown)",
-    "Tangibilizar entregáveis/prazo para aumentar clareza da oferta",
-    "CTA mais específico e de baixa fricção"
-  ],
-  "verdict": "APPROVED - Copy pronta para aprovação humana. Melhorias sugeridas são opcionais.",
-  "next_step": "HUMAN_APPROVAL",
-  "recommend_return_to": null
+  "placeholder": true
 }

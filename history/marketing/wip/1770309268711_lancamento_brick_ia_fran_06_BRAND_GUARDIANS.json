@@ -1,18 +1,18 @@
 {
   "status": "BRAND_OK",
-  "notas": "As copies capturaram com precisão a essência da Brick AI. A Versão B (Flash) está excelente no uso de dados para gerar autoridade sem perder o tom de diretor. A Versão C (Sonnet) conseguiu traduzir o roteiro do vídeo de lançamento para o texto de forma magistral, mantendo o posicionamento 'Anti-Slop'.",
+  "notas": "As copies capturaram com perfeição a alma da Brick AI. A Versão C (Storytelling) está magistral ao conectar a narrativa do 'homem cansado' com a dor real da persona (vergonha de mostrar IA mal feita pro cliente). O uso dos dados validados (74% de confiança e liderança do vídeo em 2026) foi orgânico e gerou autoridade sem parecer um relatório de tendências.",
   "analise_por_versao": {
     "Copy_A_GPT": {
       "veredito": "BRAND_OK",
-      "notas": "Direta e seca. O uso da dualidade BRICK/MASON no storytelling está perfeito. Respeita a terminologia oficial."
+      "notas": "Excelente equilíbrio. Direta, bold e técnica. O uso da dualidade MASON/BRICK no storytelling respeita a arquitetura de voz da marca."
     },
     "Copy_B_Flash": {
       "veredito": "BRAND_OK",
-      "notas": "É a versão mais 'Bold'. O trecho 'para garantir que o seu impossível não pareça um erro de processamento' é puro suor de set. Excelente uso do dado da TOTVS."
+      "notas": "É a versão mais pragmática e eficiente. O trecho 'não pareça um erro de processamento' é um destaque de tom Bold & Unapologetic."
     },
     "Copy_C_Sonnet": {
       "veredito": "BRAND_OK",
-      "notas": "O storytelling 'ELE ESTÁ CANSADO' conecta perfeitamente com o vídeo de lançamento. Conseguiu usar termos técnicos (Arri Alexa) para gerar credibilidade de cinema sem ser pedante."
+      "notas": "Trabalho excepcional de tom de voz. Consegue falar de craft ('Arri Alexa vs iPhone') sem soar pedante, atacando diretamente a objeção de que IA não tem alma."
     }
   },
   "verificacao_terminologia": {
@@ -20,8 +20,10 @@
     "Vision over Prompt": "Presente",
     "Full AI Production": "Presente",
     "Direção de IA": "Presente",
-    "Revolucionário": "Ausente (Passou)",
-    "Disruptivo": "Ausente (Passou)"
+    "Craft": "Presente",
+    "Revolucionário": "Ausente (Check ✅)",
+    "Disruptivo": "Ausente (Check ✅)",
+    "Mágica": "Ausente (Check ✅)"
   },
   "proximo_passo": "Enviar para CRITIC"
 }

@@ -1,32 +1,32 @@
 {
-  "runId": "763bf259-2f5f-4631-b649-b05276f273f6",
+  "runId": "fba60f9a-061e-4b67-9c44-14f71d51fd00",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "As copies para o **LANÇAMENTO BRICK IA** foram validadas e aprovadas sob a ótica de **Brand Guardian**. \n\nTodas as versões respeitam a terminologia oficial (\"Production Enhanced\", \"Vision over Prompt\") e evitam as *red flags* de tech bro (revolucionário, disruptivo). O tom de \"Diretor de Cinema Sênior\" foi mantido, com destaque para a Versão C que traduz perfeitamente a \"fadiga de IA mal feita\" presente no vídeo de lançamento.\n\nO relatório de conformidade de marca foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lan_amento_brick_ia_06_BRAND_GUARDIANS.json`\n\n**Próximo Passo:** Enviar para o `CRITIC` para avaliação técnica de copy e conversão.",
+        "text": "As copies para o **LANÇAMENTO BRICK IA** foram validadas e aprovadas como **BRAND_OK**. \n\nOs textos conseguiram equilibrar a autoridade técnica de 10 anos de set com o uso pragmático de IA, posicionando a marca como a cura para a \"vergonha alheia\" da IA generativa genérica (AI Slop). A terminologia oficial foi respeitada e os dados verificados (Serasa/Kantar) foram integrados de forma a construir credibilidade imediata com o público-alvo de diretores de criação.\n\nO relatório de conformidade de marca foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_06_BRAND_GUARDIANS.json`\n\n**Próximo Passo:** Enviar para o `CRITIC` para a avaliação técnica final de impacto e conversão.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 10710,
+      "durationMs": 8494,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 48290,
-          "output": 204,
-          "cacheRead": 40742,
+          "input": 73913,
+          "output": 218,
+          "cacheRead": 65216,
           "cacheWrite": 0,
-          "total": 48494
+          "total": 74131
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770309454672,
+        "generatedAt": 1770311364714,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",

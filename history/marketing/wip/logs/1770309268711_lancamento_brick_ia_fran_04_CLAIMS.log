@@ -1,32 +1,32 @@
 {
-  "runId": "bbf77a1e-b0fc-421e-82be-acfe93d444c6",
+  "runId": "980de3e7-d99a-4998-b601-5f9a8a144d95",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "Os claims para o **LANÇAMENTO BRICK IA** foram validados. Os dados são extremamente atuais (fevereiro de 2026) e confirmam a tese da marca: com 88% dos profissionais já usando IA, o diferencial deixou de ser a ferramenta e passou a ser o controle criativo e a direção profissional.\n\nO relatório de validação foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lan_amento_brick_ia_04_CLAIMS.json`\n\n**Próximo Passo:** Prosseguir para o `STRATEGIST` para desenhar a régua de lançamento baseada nestes dados validados.",
+        "text": "Os claims para o **LANÇAMENTO BRICK IA** foram higienizados. O dado sobre a liderança do vídeo em 2026 foi verificado com sucesso, mas o número de 88% foi marcado como duvidoso por falta de evidência direta nos relatórios recentes da Kantar, sendo substituído por estatísticas mais robustas sobre a confiança do consumidor em IA (74%).\n\nO relatório de validação foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_04_CLAIMS.json`\n\n**Próximo Passo:** Prosseguir para o `STRATEGIST` para desenhar a jornada de lançamento utilizando os dados validados de confiança e liderança de formato.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 14230,
+      "durationMs": 13398,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 36937,
-          "output": 166,
-          "cacheRead": 32561,
+          "input": 62907,
+          "output": 185,
+          "cacheRead": 57037,
           "cacheWrite": 0,
-          "total": 37103
+          "total": 63092
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770309314076,
+        "generatedAt": 1770311241232,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",

@@ -1,44 +1,35 @@
 {
   "claims_validados": [
     {
-      "claim": "88% dos profissionais de marketing já utilizam IA em suas atividades diárias em 2026.",
-      "status": "VERIFICADO",
-      "fonte_original": "TOTVS Blog / Pesquisas de Mercado 2026",
-      "fonte_verificacao": "https://www.totvs.com/blog/marketing-e-vendas/tendencias-marketing-digital-ecommerce/",
-      "confianca": "alta",
-      "notas": "Dado confirmado no blog oficial da TOTVS publicado em dez/2025 projetando o cenário de 2026."
+      "claim": "A integração de IA generativa em automação e personalização é a principal prioridade para 88% dos líderes de marketing em 2026.",
+      "status": "DUVIDOSO",
+      "fonte_original": "Kantar / eMarketer Projections",
+      "fonte_verificacao": null,
+      "confianca": "baixa",
+      "notas": "[NEEDS SOURCE] - O estudo da Kantar (Marketing Trends 2026) foca em marcas presentes em modelos de IA e Digital Twins, mas não cita o número exato de 88% para essa prioridade específica. Recomenda-se usar 'A grande maioria dos líderes' ou citar o dado de '74% dos usuários confiam em recomendações de IA (Kantar)' para gerar credibilidade."
     },
     {
-      "claim": "A tendência para 2026 é o avanço dos modelos híbridos (conteúdo + performance) e IA integrada ao fluxo de trabalho.",
-      "status": "PARCIAL",
-      "fonte_original": "RD Station / PressWorks 2026",
-      "fonte_verificacao": "https://www.rdstation.com/blog/marketing/tendencias-marketing-e-vendas/",
-      "confianca": "média",
-      "notas": "As fontes citam IA integrada e conteúdo estratégico, mas o termo 'modelo híbrido' aparece mais associado a marketing de afiliados e performance no Valor Econômico. Recomenda-se focar na 'IA integrada ao fluxo criativo' para maior precisão."
-    },
-    {
-      "claim": "O mercado de ferramentas de IA (Sora, Runway Gen-4, Veo 3.1) atingiu maturidade, tornando o controle criativo e a precisão os novos diferenciais.",
+      "claim": "Vídeos curtos e lives mantêm a liderança no marketing digital para 2026, com foco em personalização multimodal.",
       "status": "VERIFICADO",
-      "fonte_original": "Cyberlink / Pxz.ai Review 2026",
-      "fonte_verificacao": "https://pxz.ai/blog/veo-31-vs-top-ai-video-generators-2026",
+      "fonte_original": "Serasa Experian 2026 Trends",
+      "fonte_verificacao": "https://www.serasaexperian.com.br/conteudos/tendencias-de-marketing-2026/",
       "confianca": "alta",
-      "notas": "Confirmado por reviews de jan/2026 que comparam Veo 3.1 e Runway Gen-4, destacando que a diferença agora reside no controle fino (fine-grained control) e na unidade estética."
+      "notas": "Dado confirmado. O relatório da Serasa Experian para 2026 destaca explicitamente que o vídeo mantém a liderança, com avanço de IA em multimodalidade."
     }
   ],
   "estatisticas_recomendadas": [
-    "88% dos profissionais de marketing usam IA diariamente (TOTVS 2026)",
-    "A vantagem competitiva em 2026 não é a tecnologia (commodity), mas o controle criativo/direção (Pxz.ai)",
-    "IA integrada ao fluxo de trabalho é a principal tendência de eficiência (RD Station)"
+    "Vídeo mantém a liderança absoluta no marketing digital em 2026 (Serasa Experian)",
+    "74% dos usuários confiam em recomendações geradas por IA (Kantar 2026)",
+    "61% dos profissionais planejam aumentar investimento em criadores/conteúdo (Kantar)"
   ],
   "estatisticas_evitar": [
-    "Termo 'modelo híbrido' sem explicar que se refere a conteúdo + performance",
-    "Qualquer claim de que a IA faz o trabalho sozinha, já que a tendência é curadoria humana (Meio & Mensagem 2026)"
+    "Dada de 88% (não encontrado em fontes primárias recentes da Kantar/eMarketer)",
+    "IA aumenta produtividade em 10x (genérico e sem base no research)"
   ],
   "resumo": {
-    "total_claims": 3,
-    "verificados": 2,
-    "duvidosos": 0,
-    "parciais": 1,
-    "recomendacao": "Os dados são sólidos e muito recentes (dez/2025 e jan/2026). O Copywriter pode usar com confiança, focando especialmente no dado de 88% da TOTVS para gerar autoridade."
+    "total_claims": 2,
+    "verificados": 1,
+    "duvidosos": 1,
+    "recomendacao": "O copywriter deve focar na liderança do vídeo em 2026 e na confiança do usuário em IA (74%) para vender o 'Production Enhanced'. Evitar o número de 88% a menos que encontre a fonte específica."
   }
 }

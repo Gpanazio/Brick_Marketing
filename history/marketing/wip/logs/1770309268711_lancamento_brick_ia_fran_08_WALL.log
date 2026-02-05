@@ -1,48 +1,36 @@
 {
-  "runId": "311e716c-abe4-4469-a68d-03ca621ce774",
+  "runId": "12ee59c8-0e04-49f7-8772-93346144af33",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "O COPY_SENIOR deu erro — sem copy pra avaliar. Vou verificar o que existe no pipeline desse job.",
-        "mediaUrl": null
-      },
-      {
-        "text": "Pipeline tem copies e brand guardian. Vou ler tudo.",
-        "mediaUrl": null
-      },
-      {
-        "text": "Agora tenho o pipeline completo. O COPY_SENIOR/CRITIC deu erro, mas existem 3 copies completas e o Brand Guardian aprovou todas. Vou avaliar a melhor copy (Sonnet/Copy C — a mais alinhada ao vídeo de lançamento) como copy vencedora de facto.",
-        "mediaUrl": null
-      },
-      {
-        "text": "**APPROVED — 85/100** ✅\n\nArquivo salvo em `history/marketing/wip/1770309268711_lan_amento_brick_ia_08_WALL.json`.\n\n**Resumo rápido:**\n\nO COPY_SENIOR deu erro (3 retries), então assumi a seleção: **Copy C (Sonnet) — narrativa \"ELE ESTÁ CANSADO\"** é a vencedora. É a que conecta diretamente com o vídeo de lançamento e tem o pacote mais completo (CURTO/MÉDIO/STORYTELLING + CTAs por plataforma).\n\n| Critério | Score | Max |\n|---|---|---|\n| Clareza da Oferta | 21 | 25 |\n| Dor Real | 18 | 20 |\n| Credibilidade | 16 | 20 |\n| On-Brand | 19 | 20 |\n| CTA Específico | 11 | 15 |\n\n**3 refinamentos opcionais pra execução:**\n1. Inserir prova social (nº de projetos ou nome de cliente)\n2. CTA com ação específica (\"veja o breakdown\" ou \"agende 15min\")\n3. Tangibilizar entregável em pelo menos 1 versão\n\nCopy pronta pra aprovação humana. Next step: **HUMAN_APPROVAL**.",
+        "text": "Já concluído e salvo em `history/marketing/wip/1770309268711_lancamento_brick_ia_fran_08_WALL.json` com **APPROVED — 82/100**.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 114646,
+      "durationMs": 2741,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-wall",
-        "provider": "anthropic",
-        "model": "claude-opus-4-5",
+        "provider": "openai-codex",
+        "model": "gpt-5.2-codex",
         "usage": {
-          "input": 1,
-          "output": 348,
-          "cacheRead": 50393,
-          "cacheWrite": 330,
-          "total": 51072
+          "input": 2826,
+          "output": 64,
+          "cacheRead": 50944,
+          "cacheWrite": 0,
+          "total": 53834
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770309505844,
+        "generatedAt": 1770311582273,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-wall",
         "sessionKey": "agent:opus:main",
-        "provider": "anthropic",
-        "model": "claude-opus-4-5",
+        "provider": "openai-codex",
+        "model": "gpt-5.2-codex",
         "workspaceDir": "/Users/gabrielpanazio/projects/Brick_Marketing",
         "bootstrapMaxChars": 20000,
         "sandbox": {
@@ -50,9 +38,9 @@
           "sandboxed": false
         },
         "systemPrompt": {
-          "chars": 32486,
+          "chars": 32487,
           "projectContextChars": 13368,
-          "nonProjectContextChars": 19118
+          "nonProjectContextChars": 19119
         },
         "injectedWorkspaceFiles": [
           {

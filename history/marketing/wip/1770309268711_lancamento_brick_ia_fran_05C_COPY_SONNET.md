@@ -2,139 +2,15 @@
 
 ## CURTO
 
-Você já cansou de ver vídeos de IA com dedos derretendo e vozes metalizadas?
+Você já viu um vídeo de IA que te deu vergonha alheia?
 
-Nós também.
+Dedos derretendo. Voz de robô. Aquele padrão "prompt básico" que grita amador.
 
-Por isso a Brick criou a Brick AI.
-10 anos de set + IA de verdade = produção impossível, viável.
-
-Não fazemos "fácil". Fazemos o que não existe.
+A Brick AI é diferente.
+10 anos de set + IA de verdade = projetos impossíveis, viáveis.
 
 **Production Enhanced.**
-Lançamento pós-Carnaval.
-
----
-
-## MÉDIO
-
-88% dos profissionais de marketing já usam IA.
-Mas quantos entregam algo que você não tem vergonha de mostrar pro cliente?
-
-A internet está inundada de vídeos gerados que parecem feitos por quem nunca pisou num set.
-Dedos estranhos. Vozes robóticas. Aquele padrão de "prompt básico" que grita "eu usei IA barata".
-
-**Nós somos diferentes.**
-
-A Brick AI nasceu de 10 anos dirigindo produção de verdade.
-Não substituímos a realidade — viabilizamos o impossível.
-
-Aquele comercial com 50 locations internacionais que custaria R$2M?
-A cena subaquática que o cliente quer pra ontem?
-O produto que ainda não existe, mas precisa estar no vídeo de lançamento?
-
-**Production Enhanced.**
-
-Não é sobre fazer rápido.
-É sobre fazer certo — com direção, craft e a precisão de quem sabe a diferença entre uma Arri Alexa e um iPhone.
-
 **Vision over Prompt.**
-
-Lançamento oficial: pós-Carnaval 2026.
-Prepare-se para ver IA como ela deveria ser.
-
----
-
-## STORYTELLING
-
-**ELE ESTÁ CANSADO.**
-
-Cansado de ver vídeos de IA ruins inundando a timeline.
-Cansado de marcas que confundem "gerado por IA" com "produção de qualidade".
-Cansado de assistir vozes metalizadas destruindo roteiros bons.
-Cansado de ver dedos derretendo em vídeos que custaram R$200 e parecem exatamente isso.
-
-Ele é um homem feito por IA.
-**Mas feito direito.**
-
-Com 10 anos de experiência em set, ele sabe exatamente qual é a diferença:
-A diferença entre apertar "gerar" e dirigir uma cena.
-A diferença entre um prompt e uma visão.
-A diferença entre uma ferramenta barata e **Production Enhanced**.
-
----
-
-**Aqui está a verdade que ninguém te conta:**
-
-88% dos profissionais de marketing já usam IA.
-Mas a grande maioria está usando errado — entregando resultados que parecem amadores porque foram feitos por amadores.
-
-O mercado de ferramentas de IA (Sora, Runway, Veo) atingiu maturidade.
-A tecnologia virou commodity.
-**O que separa o lixo do ouro agora é o controle criativo.**
-
-E controle criativo não vem de tutorial no YouTube.
-Vem de 10 anos de set. De saber luz. De entender timing. De dirigir, não gerar.
-
----
-
-**Por isso a Brick criou a Brick AI.**
-
-Não para "facilitar" produção.
-Para viabilizar o impossível.
-
-Aquele briefing que o cliente adorou mas o budget não fecha?
-A cena que exigiria 3 semanas de locação internacional?
-O produto que ainda não existe mas precisa estar no filme de lançamento?
-
-Não substituímos a realidade.
-**Expandimos ela.**
-
-Production Enhanced significa que a IA está a serviço da visão — não o contrário.
-Significa que cada frame foi dirigido, não apenas gerado.
-Significa que você pode finalmente entregar aquele projeto que parecia impossível, sem parecer amador.
-
----
-
-**Vision over Prompt.**
-
-Porque qualquer um pode escrever um comando.
-Mas só quem entende de cinema sabe o que está procurando.
-
-**Lançamento oficial: pós-Carnaval 2026.**
-
-A era da IA mal feita acabou.
-Bem-vindo à Brick AI.
-
----
-
-## CTA SUGERIDO
-
-**Para LinkedIn:**
-👉 Quer ser dos primeiros a trabalhar com IA da forma certa? Acesse [link] e se inscreva para o lançamento oficial.
-
-**Para Instagram:**
-Link na bio — participe do lançamento oficial da Brick AI e descubra como viabilizar o impossível.
-
-**Para TikTok:**
-Segue a gente pra não perder o lançamento. Spoiler: vai ser diferente de tudo que você já viu.
-
----
-
-# COPY VERSION: B
-
-## CURTO
-
-A internet está cheia de vídeos de IA ruins.
-Dedos derretendo. Vozes de robô. Aquele padrão "eu usei IA barata".
-
-A Brick AI é a resposta.
-10 anos de experiência em produção + IA de verdade.
-
-Não fazemos conteúdo genérico.
-Viabilizamos projetos impossíveis.
-
-**Production Enhanced. Vision over Prompt.**
 
 Lançamento: 23/02.
 
@@ -142,247 +18,106 @@ Lançamento: 23/02.
 
 ## MÉDIO
 
-Você já deve ter visto:
-Vídeos de marca com mãos estranhas.
-Narrações metalizadas que destroem a emoção.
-Aquele padrão visual de "prompt genérico" que qualquer diretor de criação reconhece a 1km de distância.
+**Todo diretor de criação conhece essa dor:**
 
-**88% dos profissionais de marketing já usam IA.**
-Mas a maioria está entregando slop — porque aprenderam a usar a ferramenta, não a dirigir.
+Você recebe o briefing dos sonhos.
+O cliente adora o conceito.
+Mas quando o orçamento chega, a conta não fecha.
+
+50 locações internacionais? R$2M.
+Cena subaquática? 3 semanas de pré-produção.
+Produto que nem existe ainda? Impossível.
+
+E aí você pensa em IA.
+Mas tem medo. Porque 90% do que você vê por aí é... constrangedor.
 
 ---
 
-A Brick AI nasceu de uma revolta criativa.
+**A Brick AI existe porque estamos cansados disso.**
 
-Somos uma produtora com 10 anos de set.
+Cansados de ver vídeo de marca com mão estranha.
+Cansados de voz metalizada destruindo roteiro bom.
+Cansados de "IA" sendo sinônimo de "resultado amador".
+
+Somos uma produtora com 10 anos de experiência.
 Sabemos a diferença entre gerar um vídeo e **dirigir** um vídeo.
 
-Nosso trabalho não é substituir a produção tradicional.
-É viabilizar o que era impossível:
+Vídeo mantém a liderança absoluta no marketing digital em 2026.
+Mas só funciona se tiver craft.
 
-→ 50 locations internacionais sem sair do Brasil
-→ Cenas subaquáticas sem molhar o equipamento
-→ Produtos que ainda não existem, prontos para campanha
+**Production Enhanced** significa que a IA serve a visão — não o contrário.
 
-**Production Enhanced** significa que a IA está subordinada à visão criativa — não o contrário.
-
-O mercado de ferramentas amadureceu.
-Sora, Runway, Veo viraram commodity.
-**O diferencial agora é o controle criativo.**
-
-E controle criativo exige 10 anos de set, não 10 minutos de tutorial.
+Não fazemos "fácil e barato".
+Viabilizamos o impossível com qualidade de cinema.
 
 ---
 
 **Vision over Prompt.**
-Lançamento oficial: pós-Carnaval.
-
-Prepare-se para ver IA como ela deveria ser.
+Lançamento pós-Carnaval: 23 de fevereiro.
 
 ---
 
 ## STORYTELLING
 
-**Existem dois tipos de vídeo de IA no mercado.**
+**Ele acordou cansado.**
 
-**Tipo 1:**
-Aquele que você reconhece instantaneamente como "feito por IA".
-Dedos estranhos. Movimento surreal. Voz sintetizada demais.
-O tipo que você mostra pro cliente e ele faz aquela cara de "será que isso não vai queimar minha marca?"
+Cansado de viver num mundo onde todo vídeo de IA parece o mesmo.
+Aquele movimento surreal. Aquela voz sintetizada demais. Aqueles dedos... por que sempre os dedos?
 
-**Tipo 2:**
-Aquele que você assiste e pensa "espera, como fizeram isso?"
-Porque parece real. Porque foi *dirigido*.
-Porque alguém com 10 anos de set decidiu cada frame, cada luz, cada movimento de câmera.
+Ele é um homem feito por IA.
+Mas feito **direito**.
 
----
-
-**A Brick AI existe porque estávamos cansados do Tipo 1.**
-
-Cansados de ver marcas confundindo "gerado por IA" com "produção de qualidade".
-Cansados de ver diretores de criação com vergonha de apresentar vídeos de IA pros clientes.
-Cansados de um mercado onde ter a ferramenta virou mais importante que saber usá-la.
-
-Porque aqui está o segredo:
-
-88% dos profissionais de marketing já usam IA.
-Mas o mercado de ferramentas (Sora, Runway, Veo 3.1) atingiu maturidade.
-**A tecnologia virou commodity.**
-
-O que separa o amador do profissional agora não é ter acesso à IA.
-É saber **dirigir** ela.
+Porque foi dirigido por gente que tem 10 anos de set.
+Gente que sabe a diferença entre uma Arri Alexa e um iPhone.
+Gente que entende que tecnologia sem visão é só... ruído.
 
 ---
 
-**E direção não se aprende em tutorial.**
+**E ele tem uma pergunta pra você:**
 
-Direção vem de 10 anos errando luz em set.
-De entender por que uma cena funciona e outra não.
-De saber que o problema não é a ferramenta — é a ausência de visão.
+Quantos vídeos de IA você já descartou porque teve vergonha de mostrar pro cliente?
 
-Por isso criamos a Brick AI:
-Uma produtora que une 10 anos de experiência cinematográfica com as melhores ferramentas de IA do mercado.
+Quantas vezes você pensou em usar IA pra viabilizar aquele briefing impossível, mas recuou com medo do resultado parecer amador?
+
+Quantas vezes você sentiu que a promessa da tecnologia estava ali, mas ninguém sabia dirigir ela direito?
+
+---
+
+**A Brick AI nasceu dessa frustração.**
+
+Vídeo mantém a liderança absoluta no marketing digital em 2026.
+74% dos usuários já confiam em recomendações geradas por IA.
+Mas confiança não vem só da tecnologia — vem do **craft**.
+
+E craft não se aprende em tutorial.
+Vem de 10 anos errando luz em set.
+De entender timing, composição, narrativa.
+De saber que o problema nunca foi a ferramenta — foi a ausência de direção.
+
+---
 
 **Production Enhanced.**
 
-Não fazemos vídeos "fáceis e baratos".
-Viabilizamos projetos impossíveis.
+Não é sobre "IA que faz vídeo sozinha".
+É sobre IA subordinada à visão de quem sabe o que está fazendo.
 
-Aquele comercial que exigiria 3 semanas de locação internacional?
-A cena do produto que ainda nem existe?
-O conceito visual que nenhum orçamento tradicional comporta?
+Aquele comercial que custaria R$2M em locações internacionais?
+**Viável.**
 
-**Agora é viável.**
+A cena do produto que ainda não existe fisicamente?
+**Viável.**
 
-Mas só se você trabalhar com quem sabe a diferença entre gerar e dirigir.
+O conceito visual que nenhum orçamento tradicional comporta, mas que faria seu cliente se destacar em 2026?
+**Viável.**
+
+Mas só se você trabalhar com quem tem 10 anos de set + as melhores ferramentas do mercado.
 
 ---
 
 **Vision over Prompt.**
 
 Porque qualquer um digita um comando.
-Mas só quem viveu set sabe o que procurar no resultado.
-
-**Lançamento oficial: 23 de fevereiro, pós-Carnaval.**
-
-A era da IA mal feita acabou.
-Bem-vindo à Brick AI — onde a tecnologia serve a visão, não o contrário.
-
----
-
-## CTA SUGERIDO
-
-**LinkedIn:**
-Se você é Diretor de Criação ou Head of Content e está cansado de resultados medianos com IA, esse lançamento é pra você.
-👉 Acesse [link] e participe do lançamento oficial.
-
-**Instagram:**
-A Brick AI chega dia 23/02.
-Se você quer ver como IA deveria ser, link na bio.
-
-**TikTok:**
-Segue pra acompanhar o lançamento — spoiler: vai ser diferente de tudo que você já viu em IA.
-
----
-
-# COPY VERSION: C
-
-## CURTO
-
-Tem IA que você reconhece a 1km de distância.
-Dedos derretendo. Voz de robô. Movimento esquisito.
-
-E tem IA dirigida por quem tem 10 anos de set.
-
-**Brick AI: Production Enhanced.**
-Não fazemos vídeo fácil. Viabilizamos o impossível.
-
-Lançamento: 23/02.
-
----
-
-## MÉDIO
-
-**Você está cansado.**
-
-Cansado de ver vídeos de IA que parecem feitos por quem nunca pisou num set.
-Cansado de explicar pro cliente que "não, essa mão estranha não é normal".
-Cansado de sentir vergonha de mostrar algo gerado por IA porque você *sabe* que está abaixo do padrão.
-
----
-
-**Nós também estávamos.**
-
-Por isso a Brick criou a Brick AI.
-
-10 anos de experiência em produção real + as melhores ferramentas de IA do mercado.
-Não para fazer vídeo "rápido e barato".
-Para viabilizar projetos que eram *impossíveis* no modelo tradicional.
-
-88% dos profissionais de marketing já usam IA.
-Mas o mercado de ferramentas (Sora, Runway, Veo) virou commodity.
-**O diferencial agora é o controle criativo.**
-
-E controle criativo não vem de prompt genérico.
-Vem de 10 anos errando e acertando luz.
-De saber timing. De dirigir, não gerar.
-
-**Production Enhanced.**
-A IA está subordinada à visão — não o contrário.
-
----
-
-**Lançamento oficial: 23 de fevereiro.**
-Vision over Prompt.
-
----
-
-## STORYTELLING
-
-**Era uma vez um homem feito de IA.**
-
-Mas não qualquer IA.
-Não aquela IA de tutorial de YouTube, de prompt básico, de "aperte gerar e torça pra dar certo".
-
-Ele foi feito por uma equipe que passou 10 anos em set.
-Que conhece a diferença entre uma Arri Alexa e um iPhone.
-Que sabe exatamente o que separa um vídeo bom de um vídeo que você tem vergonha de mostrar pro cliente.
-
-E ele está **cansado**.
-
-Cansado de viver num mundo inundado de IA mal feita.
-Cansado de ver dedos derretendo em vídeos corporativos.
-Cansado de ouvir vozes metalizadas destruindo roteiros que mereciam coisa melhor.
-Cansado de marcas que confundem "usar IA" com "fazer qualquer coisa e aceitar o resultado".
-
----
-
-**Porque aqui está a verdade:**
-
-88% dos profissionais de marketing já usam IA hoje.
-Mas a grande maioria está fazendo errado.
-
-Não porque são incompetentes.
-Mas porque aprenderam a usar a *ferramenta*, não a *dirigir*.
-
-O mercado de IA amadureceu.
-Sora, Runway Gen-4, Veo 3.1 — todos disponíveis, todos poderosos.
-**A tecnologia virou commodity.**
-
-O que separa o slop do cinema agora não é ter acesso à IA.
-É saber o que diabos você está fazendo com ela.
-
----
-
-**E é aí que a Brick AI entra.**
-
-Somos uma produtora com 10 anos de experiência.
-Vivemos set. Erramos luz. Entendemos timing.
-Sabemos a diferença entre "gerar um vídeo" e **dirigir** um vídeo.
-
-Não criamos a Brick AI para "facilitar" produção.
-Criamos para viabilizar o impossível.
-
-Aquele briefing que o cliente adorou mas custaria R$2M em produção tradicional?
-A cena internacional que o orçamento não comporta?
-O produto que ainda não existe mas precisa estar no vídeo de lançamento?
-
-**Agora é viável.**
-
-Mas só se você trabalhar com quem sabe dirigir IA — não apenas usá-la.
-
----
-
-**Production Enhanced.**
-
-Significa que a inteligência artificial está subordinada à visão criativa.
-Significa que cada frame foi dirigido, não apenas gerado.
-Significa que o controle criativo está nas mãos de quem viveu 10 anos de set, não nas mãos de um algoritmo.
-
-**Vision over Prompt.**
-
-Porque qualquer um pode escrever "homem caminhando na praia ao pôr do sol".
-Mas só quem entende de cinema sabe que luz usar, que lente escolher, que movimento de câmera contar a história.
+Mas só quem viveu cinema sabe o que procurar no resultado.
 
 ---
 
@@ -390,11 +125,7 @@ Mas só quem entende de cinema sabe que luz usar, que lente escolher, que movime
 
 **E você?**
 
----
-
-**Lançamento oficial: 23 de fevereiro de 2026, pós-Carnaval.**
-
-Prepare-se para ver IA como ela deveria ser.
+Lançamento oficial: 23 de fevereiro de 2026.
 Bem-vindo à Brick AI.
 
 ---
@@ -403,30 +134,354 @@ Bem-vindo à Brick AI.
 
 **LinkedIn:**
 Se você é Diretor de Criação ou Head of Content e quer viabilizar projetos impossíveis sem parecer amador, esse lançamento é pra você.
-👉 Participe do lançamento oficial: [link]
+👉 Acesse [link] e participe do lançamento oficial.
 
 **Instagram:**
 A Brick AI chega dia 23/02.
 IA dirigida por quem tem 10 anos de set.
-Link na bio pra participar do lançamento.
+Link na bio pra saber mais.
 
 **TikTok:**
 Cansado de IA mal feita? Nós também.
-Segue pra acompanhar o lançamento da Brick AI — 23/02.
+Segue pra acompanhar o lançamento — 23/02.
+
+---
+
+# COPY VERSION: B
+
+## CURTO
+
+A internet está cheia de vídeo de IA ruim.
+Você sabe reconhecer: movimento esquisito, voz de robô, mão derretendo.
+
+A Brick AI é a resposta.
+
+10 anos de produção real + IA de ponta.
+Não fazemos genérico. Viabilizamos o impossível.
+
+**Production Enhanced. Vision over Prompt.**
+
+23/02 — pós-Carnaval.
+
+---
+
+## MÉDIO
+
+**Vamos ser honestos.**
+
+Você já descartou um vídeo gerado por IA porque teve vergonha de mostrar pro cliente.
+
+Não porque a ideia era ruim.
+Mas porque o resultado tinha aquele *jeito* — aquele padrão de IA básica que qualquer diretor reconhece a 1km de distância.
+
+---
+
+**O problema não é a IA. É a falta de direção.**
+
+Vídeo mantém a liderança no marketing digital em 2026.
+Mas só funciona se tiver craft.
+
+E craft não vem de prompt genérico.
+Vem de 10 anos errando e acertando luz.
+De saber o que separa cinema de ruído visual.
+
+---
+
+**A Brick AI une experiência de produtora real com tecnologia de ponta.**
+
+Não somos um SaaS.
+Não vendemos ferramenta.
+
+Vendemos **Production Enhanced** — projetos que eram impossíveis no modelo tradicional, agora viáveis com qualidade de cinema.
+
+Aquele briefing que o cliente adorou mas custaria R$2M?
+A cena internacional que o prazo não comporta?
+O conceito visual que ninguém mais teve coragem de propor?
+
+**Agora dá.**
+
+Mas só com quem sabe dirigir IA — não apenas usar.
+
+---
+
+**Vision over Prompt.**
+Lançamento: 23 de fevereiro.
+
+---
+
+## STORYTELLING
+
+**Era uma vez um diretor de criação.**
+
+Ele tinha o briefing perfeito.
+O cliente tinha adorado o deck.
+Mas quando chegou a planilha de produção... R$2 milhões. 8 semanas de pré. Locações em 5 países.
+
+Inviável.
+
+---
+
+**Então alguém sugeriu: "E se a gente usar IA?"**
+
+Ele hesitou.
+Porque ele tinha visto o que a "IA" estava produzindo por aí:
+Vídeos corporativos com dedos derretendo.
+Comerciais com movimento surreal.
+Vozes sintetizadas que pareciam robô de atendimento.
+
+Aquele padrão que grita: "Eu usei IA barata e aceitei o primeiro resultado."
+
+---
+
+**E aí ele descobriu a Brick AI.**
+
+Uma produtora com 10 anos de experiência que decidiu não lutar contra a IA, mas **dirigir** ela.
+
+Porque o problema nunca foi a tecnologia.
+Foi a ausência de visão.
+
+---
+
+**Vídeo mantém a liderança absoluta no marketing digital em 2026.**
+
+74% dos usuários já confiam em recomendações geradas por IA.
+Mas confiança não é automática — ela vem do **craft**.
+
+E craft não se aprende em 10 minutos de tutorial.
+Vem de 10 anos em set.
+De entender luz, timing, composição.
+De saber que qualquer um pode escrever um prompt, mas só quem viveu cinema sabe o que procurar no resultado.
+
+---
+
+**Production Enhanced.**
+
+Não é "IA que faz sozinha".
+É IA subordinada à visão de quem sabe dirigir.
+
+O briefing de R$2M? Viável em 2 semanas, com qualidade premium.
+A cena internacional? Filmada sem sair do Brasil.
+O produto que ainda não existe? Pronto pro vídeo de lançamento.
+
+**Mas só se você trabalhar com quem tem 10 anos de set + ferramentas de ponta.**
+
+---
+
+**Vision over Prompt.**
+
+Porque a diferença entre slop e cinema não está na ferramenta.
+Está em quem está dirigindo.
+
+---
+
+**O diretor de criação aprovou o projeto.**
+
+Entregou no prazo. No orçamento. Com qualidade que ninguém esperava.
+E quando o CEO perguntou "Como vocês fizeram isso?", ele sorriu:
+
+"Brick AI. Production Enhanced."
+
+---
+
+Lançamento oficial: 23 de fevereiro de 2026.
+Pós-Carnaval. Prepare-se.
+
+---
+
+## CTA SUGERIDO
+
+**LinkedIn:**
+Diretor de Criação ou Head of Content que quer viabilizar briefings impossíveis sem perder craft?
+👉 Participe do lançamento oficial da Brick AI: [link]
+
+**Instagram:**
+23/02 — lançamento Brick AI.
+10 anos de set + IA de verdade.
+Link na bio.
+
+**TikTok:**
+O lançamento que vai mudar como você vê IA em vídeo.
+Segue pra não perder — 23/02.
+
+---
+
+# COPY VERSION: C
+
+## CURTO
+
+Tem dois tipos de vídeo de IA:
+
+1. O que você reconhece na hora (ruim)
+2. O que você pensa: "Como fizeram isso?" (bom)
+
+A Brick AI faz o segundo tipo.
+
+**Production Enhanced. 10 anos de set.**
+
+Lançamento: 23/02.
+
+---
+
+## MÉDIO
+
+**Você já teve que explicar pro cliente por que "não dá pra usar IA"?**
+
+Não porque a ideia era ruim.
+Mas porque você sabia que o resultado ia ter aquele *padrão*.
+
+Dedos estranhos. Movimento surreal. Voz metalizada.
+Aquele jeito que grita: "Eu usei ferramenta barata e aceitei o primeiro resultado."
+
+---
+
+**A Brick AI resolve isso.**
+
+Porque não somos ferramenta. Somos produtora.
+10 anos de experiência em set + as melhores IAs do mercado.
+
+Vídeo mantém a liderança no marketing digital em 2026 — mas só funciona se tiver craft.
+
+**Production Enhanced** significa:
+→ IA subordinada à visão criativa (não o contrário)
+→ Cada frame dirigido por quem tem 10 anos de set
+→ Projetos impossíveis, agora viáveis com qualidade premium
+
+---
+
+Aquele briefing que custaria R$2M em produção tradicional?
+A cena que exigiria 8 semanas de pré-produção?
+O conceito visual que ninguém teve coragem de propor porque parecia impossível?
+
+**Agora dá.**
+
+Mas só com quem sabe a diferença entre gerar e dirigir.
+
+---
+
+**Vision over Prompt.**
+Lançamento: 23 de fevereiro.
+
+---
+
+## STORYTELLING
+
+**Tinha um homem que vivia cansado.**
+
+Não de trabalhar. De ver.
+
+Ver vídeos de IA que pareciam todos iguais.
+Ver marcas usando tecnologia de ponta e entregando resultado amador.
+Ver o potencial da ferramenta ser desperdiçado por quem não sabia dirigir.
+
+**Ele era feito de IA. Mas feito direito.**
+
+Porque quem o criou tinha 10 anos de set.
+Sabia luz. Sabia timing. Sabia a diferença entre "gerar um vídeo" e "contar uma história".
+
+---
+
+**E ele tinha uma missão: acabar com o slop.**
+
+Slop é aquele vídeo que você reconhece na hora.
+Aquele padrão de movimento. Aquela voz sintetizada demais. Aqueles dedos... sempre os dedos.
+
+Slop é quando alguém usa IA e aceita o primeiro resultado.
+Quando a tecnologia está no comando, não a visão.
+
+---
+
+**Mas aqui está a verdade:**
+
+Vídeo mantém a liderança absoluta no marketing digital em 2026.
+74% dos usuários já confiam em recomendações geradas por IA.
+
+Mas confiança não é automática.
+Ela vem do craft.
+
+E craft não vem de prompt — vem de 10 anos errando luz em set.
+
+---
+
+**A Brick AI nasceu para ser a ponte.**
+
+Entre a produção tradicional (cara, lenta, limitada) e a IA genérica (rápida, barata, sem alma).
+
+**Production Enhanced.**
+
+Não é sobre "fazer fácil".
+É sobre fazer o impossível — com direção, não só geração.
+
+Aquele comercial que exigiria R$2M em locações internacionais?
+**Viável em 2 semanas, qualidade cinema.**
+
+A cena do produto que ainda não existe fisicamente?
+**Pronta pro vídeo de lançamento.**
+
+O conceito visual que ninguém teve coragem de propor porque parecia impossível?
+**Agora é o diferencial da sua marca.**
+
+---
+
+**Vision over Prompt.**
+
+Porque qualquer um digita um comando e gera 10 opções em 5 minutos.
+
+Mas só quem tem 10 anos de set sabe qual dessas 10 opções contar a história certa.
+Sabe quando a luz está errada. Quando o timing está off. Quando o movimento não serve a narrativa.
+
+A diferença entre slop e cinema não está na ferramenta.
+**Está em quem está dirigindo.**
+
+---
+
+**O homem feito de IA está cansado de viver num mundo de IA mal feita.**
+
+Ele quer que você veja o que é possível quando tecnologia encontra direção.
+Quando visão comanda prompt, não o contrário.
+
+---
+
+**23 de fevereiro de 2026. Pós-Carnaval.**
+
+Bem-vindo à Brick AI.
+A era do slop acabou.
+
+---
+
+## CTA SUGERIDO
+
+**LinkedIn:**
+Você é Diretor de Criação/Marketing e quer viabilizar projetos impossíveis sem perder qualidade?
+👉 Participe do lançamento da Brick AI: [link]
+
+**Instagram:**
+23/02 — lançamento Brick AI.
+IA dirigida. Não gerada.
+Link na bio.
+
+**TikTok:**
+A IA que você vai querer mostrar pro cliente.
+Lançamento 23/02 — segue aqui.
 
 ---
 
 # AUTO-CHECK (RUBRICA DE QUALIDADE)
 
-✅ **Clareza da oferta:** Sim — "Production Enhanced", não é SaaS, é serviço premium que viabiliza impossível  
-✅ **Dor real:** Sim — vergonha de usar IA, medo de parecer amador, fadiga de slop  
-✅ **Credibilidade:** Sim — uso do dado "88% dos profissionais de marketing usam IA" (TOTVS) e "mercado de ferramentas atingiu maturidade" (Pxz.ai)  
-✅ **On-brand:** Sim — tom de diretor de cinema, anti-slop, bold, "Vision over Prompt"  
-✅ **CTA:** Sim — específico para cada plataforma, acionável (link, bio, seguir)
+✅ **Clareza da oferta:** Sim — "Production Enhanced", não é SaaS, é produtora que viabiliza impossível  
+✅ **Dor real:** Sim — vergonha de IA mal feita, medo de resultado amador, orçamento/deadline impossível  
+✅ **Credibilidade:** Sim — usei dados validados: "Vídeo mantém liderança em 2026" (Serasa) e "74% confiam em IA" (Kantar). Evitei o 88% duvidoso  
+✅ **On-brand:** Sim — tom de diretor sênior, anti-slop, bold, "Vision over Prompt", zero clichês  
+✅ **CTA:** Sim — específico por plataforma (LinkedIn link, Instagram bio, TikTok follow)
 
-**Notas:**
-- Evitei emojis em excesso (apenas 👉 nos CTAs de LinkedIn)
-- Zero uso de "revolucionário", "disruptivo", "game-changer"
-- Tom narrativo/emocional forte na Versão C, alinhado ao vídeo de lançamento
-- Storytelling conecta com o "homem de IA cansado" do vídeo
+**Notas de execução:**
+- Evitei "revolucionário", "disruptivo", "game-changer"
+- Usei apenas 👉 nos CTAs (mínimo de emojis)
 - Dados validados integrados naturalmente no texto
+- Tom narrativo/emocional forte conectando com o vídeo de lançamento (homem de IA cansado)
+- Foco na dor real: vergonha de mostrar IA mal feita pro cliente
+- Diferencial claro: não é ferramenta, é produtora com 10 anos de set
+
+**Diferenciais das 3 versões:**
+- **Versão A:** Mais direta, foco na frustração imediata com IA ruim
+- **Versão B:** Tom consultivo, posiciona Brick como solução técnica para dor específica
+- **Versão C:** Mais cinematográfica, usa metáfora do "homem cansado" como fio condutor narrativo (alinhada ao vídeo de lançamento)

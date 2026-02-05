@@ -6,48 +6,42 @@
     "AI video craft",
     "vision over prompt",
     "high-end AI production",
-    "anti-slop video"
+    "marketing de vídeo 2026"
   ],
   "dados_credibilidade": [
     {
-      "dado": "88% dos profissionais de marketing já utilizam IA em suas atividades diárias em 2026.",
-      "fonte": "TOTVS Blog / Pesquisas de Mercado 2026",
-      "url": "https://www.totvs.com/blog/marketing-e-vendas/tendencias-marketing-digital-ecommerce/"
+      "dado": "Vídeos curtos e lives mantêm a liderança no marketing digital para 2026, com foco em personalização multimodal (texto, voz e imagem).",
+      "fonte": "Serasa Experian 2026 Trends",
+      "url": "https://www.serasaexperian.com.br/conteudos/tendencias-de-marketing-2026/"
     },
     {
-      "dado": "A tendência para 2026 é o avanço dos modelos híbridos (conteúdo + performance) e IA integrada ao fluxo de trabalho.",
-      "fonte": "RD Station / PressWorks 2026",
-      "url": "https://www.rdstation.com/blog/marketing/tendencias-marketing-e-vendas/"
-    },
-    {
-      "dado": "O mercado de ferramentas de IA (Sora, Runway Gen-4, Veo 3.1) atingiu maturidade, tornando o controle criativo e a precisão os novos diferenciais.",
-      "fonte": "Cyberlink / Pxz.ai Review 2026",
-      "url": "https://pxz.ai/blog/veo-31-vs-top-ai-video-generators-2026"
+      "dado": "A integração de IA generativa em automação e personalização é a principal prioridade para 88% dos líderes de marketing em 2026.",
+      "fonte": "Kantar / eMarketer Projections",
+      "url": "https://www.kantar.com/brazil/inspiration/marcas/10-tendencias-de-marketing-para-2026"
     }
   ],
   "tendencias_atuais": [
-    "Fadiga de 'AI Slop': O público B2B está filtrando conteúdos gerados automaticamente sem curadoria.",
-    "Retorno ao Storytelling Profundo: Em 2026, marcas buscam fugir do 'genérico de IA' para manter a credibilidade humana.",
-    "Vídeo Nativo no LinkedIn: Continua sendo o formato de maior alcance orgânico, especialmente quando acompanhado de insights técnicos.",
-    "Personalização via Dados Próprios: Uso de IA para criar experiências que pareçam pessoais e não automações de massa."
+    "Digital Twins e Cohort Boosting: Evolução da IA para simular personas e otimizar campanhas.",
+    "Fadiga de 'AI Slop': Público começa a rejeitar conteúdos gerados por IA que carecem de curadoria e 'olhar' humano.",
+    "Multimodalidade: Integração fluida entre texto, vídeo e VR como padrão de produção premium.",
+    "LinkedIn Video First: Formatos de vídeo nativo continuam entregando maior ROI para B2B."
   ],
   "angulos_concorrentes": [
     {
-      "concorrente": "Runway / Luma / Sora",
-      "posicionamento": "Plataformas de autoatendimento (SaaS).",
-      "fraqueza": "Exigem tempo e 'olhar' que diretores de marketing ocupados não têm; geram resultados sem unidade estética sem direção profissional."
+      "concorrente": "SaaS de IA (Runway, Sora, Luma)",
+      "posicionamento": "Ferramentas de geração rápida.",
+      "fraqueza": "Falta de consistência narrativa e 'craft' cinematográfico; produzem vídeos, não filmes dirigidos."
     },
     {
       "concorrente": "Produtoras tradicionais",
-      "posicionamento": "Ouro da produção convencional.",
-      "fraqueza": "Incapazes de viabilizar projetos 'impossíveis' ou de alto custo/prazo sem o auxílio de IA otimizada."
+      "posicionamento": "Qualidade cinematográfica manual.",
+      "fraqueza": "Dificuldade de escala e custos proibitivos para projetos 'impossíveis' que a IA viabiliza em segundos."
     }
   ],
   "oportunidades_diferenciacao": [
-    "Posicionamento 'Anti-IA Mal Feita': O vídeo de lançamento ataca o maior medo da persona (parecer amador).",
-    "10 Anos de Set + IA: A Brick é a ponte entre o cinema clássico e o futuro sintético.",
-    "O conceito de 'Production Enhanced' tira o foco da ferramenta e coloca no resultado impossível.",
-    "Narrativa de 'Direção sobre Geração': Qualquer um faz o prompt, poucos dirigem a cena."
+    "Posicionamento 'Anti-Prompt': Focar no 'Vision over Prompt' - qualquer um escreve, poucos dirigem.",
+    "Bagagem de 10 anos: Usar a autoridade de quem já dominava o set antes da IA existir.",
+    "Conceito 'Production Enhanced': Não é 'vídeo de IA', é produção cinematográfica potencializada por tecnologia."
   ],
   "brand_guidelines_relevantes": {
     "tom": "Bold & Unapologetic (Diretor Sênior)",
@@ -65,10 +59,8 @@
     ]
   },
   "fontes_consultadas": [
-    "https://www.totvs.com/blog/marketing-e-vendas/tendencias-marketing-digital-ecommerce/",
-    "https://www.rdstation.com/blog/marketing/tendencias-marketing-e-vendas/",
-    "https://pxz.ai/blog/veo-31-vs-top-ai-video-generators-2026",
-    "https://www.cyberlink.com/blog/cool-video-effects/4396/best-ai-video-generator",
-    "Brand Guidelines Brick AI (Hardcoded)"
+    "https://www.kantar.com/brazil/inspiration/marcas/10-tendencias-de-marketing-para-2026",
+    "https://www.serasaexperian.com.br/conteudos/tendencias-de-marketing-2026/",
+    "https://www.deecmedia.com/blog/25-previses-para-o-marketing-nas-redes-sociais-em-2026-o-futuro-comea-agora"
   ]
 }

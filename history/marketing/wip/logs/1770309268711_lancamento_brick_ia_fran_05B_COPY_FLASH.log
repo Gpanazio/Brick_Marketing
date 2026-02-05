@@ -1,32 +1,32 @@
 {
-  "runId": "5ccd032f-7664-4e11-88aa-60c2d0dfba17",
+  "runId": "3a7fa5e3-cfd1-4188-bdef-892f18c5448b",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "A copy para o **LANÇAMENTO BRICK IA** (Versão B - Eficiente & Data-Driven) foi finalizada. O texto utiliza o dado verificado de 88% de adoção de IA para construir autoridade e introduz a dualidade BRICK/MASON para reforçar o posicionamento \"Production Enhanced\" e a crítica ao \"AI Slop\".\n\nO arquivo foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lan_amento_brick_ia_05B_COPY_FLASH.md`\n\n**Próximo Passo:** Prosseguir para o `BRAND GUARDIAN` para garantir que o tom de \"Diretor de Cinema\" está consistente e não caiu em clichês de tech bro.",
+        "text": "A copy para o **LANÇAMENTO BRICK IA** (Versão B - Eficiente & Data-Driven) foi finalizada. O texto utiliza o dado verificado de confiança em IA (74%) e a liderança do formato vídeo em 2026 para construir autoridade, posicionando a Brick AI como a solução para a fadiga do \"AI Slop\" através do *craft* e da direção profissional.\n\nO arquivo foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_05B_COPY_FLASH.md`\n\n**Próximo Passo:** Prosseguir para o `BRAND GUARDIAN` para garantir que o tom de \"Diretor de Cinema\" está consistente e não caiu em clichês de tech bro.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 11245,
+      "durationMs": 10515,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 41554,
-          "output": 182,
-          "cacheRead": 40720,
+          "input": 67087,
+          "output": 193,
+          "cacheRead": 65197,
           "cacheWrite": 0,
-          "total": 41736
+          "total": 67280
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770309331411,
+        "generatedAt": 1770311256180,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",

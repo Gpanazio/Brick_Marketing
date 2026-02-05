@@ -187,7 +187,7 @@ try {
         fs.mkdirSync(HISTORY_ROOT, { recursive: true });
     }
     [MARKETING_ROOT, PROJETOS_ROOT, IDEIAS_ROOT].forEach(root => {
-        ['briefing', 'wip', 'done', 'failed'].forEach(dir => {
+        ['briefing', 'wip', 'done', 'failed', 'feedback'].forEach(dir => {
             const dirPath = path.join(root, dir);
             if (!fs.existsSync(dirPath)) {
                 console.log(`[STARTUP] Creating dir: ${dirPath}`);
@@ -216,9 +216,12 @@ const authMiddleware = (req, res, next) => {
         return next();
     }
 
-    // Allow human actions from UI (approve/feedback) without API key
+    // Allow human actions from UI (approve/feedback/revisions) without API key
     const publicWritePaths = ['/approve', '/feedback'];
-    if (req.method === 'POST' && publicWritePaths.includes(req.path)) {
+    if (req.method === 'POST' && (
+        publicWritePaths.includes(req.path) ||
+        /^\/revisions\/[^/]+\/(approve|reject)$/.test(req.path)
+    )) {
         return next();
     }
 
@@ -360,15 +363,33 @@ app.get('/api/estimate', (req, res) => {
     });
 });
 
-// API: Get all state (including failed)
+// API: Get all state (including failed, revisions, pending feedbacks)
 app.get('/api/state', (req, res) => {
     const mode = req.query.mode || 'marketing';
+    const root = getModeRoot(mode);
+    const feedbackDir = path.join(root, 'feedback');
+
+    // Pending feedbacks (status === 'pending')
+    let pendingFeedbacks = [];
+    if (fs.existsSync(feedbackDir)) {
+        pendingFeedbacks = fs.readdirSync(feedbackDir)
+            .filter(f => f.endsWith('.json'))
+            .map(f => {
+                try { return JSON.parse(fs.readFileSync(path.join(feedbackDir, f), 'utf-8')); }
+                catch(e) { return null; }
+            })
+            .filter(f => f && f.status === 'pending')
+            .map(f => ({ jobId: f.jobId || f.file, text: f.text || f.feedback, timestamp: f.timestamp }));
+    }
+
     res.json({
         mode,
         briefing: getFiles('briefing', mode),
         wip: getFiles('wip', mode),
         done: getFiles('done', mode),
-        failed: getFiles('failed', mode)
+        failed: getFiles('failed', mode),
+        revisions: getRevisions(mode),
+        pendingFeedbacks
     });
 });
 
@@ -985,6 +1006,205 @@ app.post('/api/approve', async (req, res) => {
     log('info', 'campaign_approved', { jobId, mode, filesMoved: movedFiles.length });
     emitStateUpdate(mode || 'marketing');
     res.json({ success: true, saved: approvalFile, filesMoved: movedFiles.length });
+});
+
+// ============================================
+// REVISION SYSTEM
+// ============================================
+
+// Helper: find a file in dir matching jobId + suffix
+function findFileByPattern(dir, jobId, suffix) {
+    if (!fs.existsSync(dir)) return null;
+    const files = fs.readdirSync(dir);
+    const match = files.find(f => f.includes(jobId) && f.endsWith(suffix));
+    if (!match) return null;
+    const fullPath = path.join(dir, match);
+    return {
+        name: match,
+        content: fs.readFileSync(fullPath, 'utf-8'),
+        mtime: fs.statSync(fullPath).mtime.toISOString()
+    };
+}
+
+// Helper: get feedbacks for a specific job
+function getFeedbacksForJob(feedbackDir, jobId) {
+    if (!fs.existsSync(feedbackDir)) return [];
+    return fs.readdirSync(feedbackDir)
+        .filter(f => f.endsWith('.json'))
+        .map(f => {
+            try {
+                return { filename: f, ...JSON.parse(fs.readFileSync(path.join(feedbackDir, f), 'utf-8')) };
+            } catch(e) { return null; }
+        })
+        .filter(f => f && (f.jobId === jobId || (f.jobId && f.jobId.startsWith(jobId)) || (f.file && f.file.includes(jobId))));
+}
+
+// Helper: get all revisions for a mode (scans wip for _revision_diff.json)
+function getRevisions(mode) {
+    const root = getModeRoot(mode);
+    const wipDir = path.join(root, 'wip');
+    if (!fs.existsSync(wipDir)) return [];
+
+    return fs.readdirSync(wipDir)
+        .filter(f => f.endsWith('_revision_diff.json'))
+        .map(f => {
+            try {
+                const content = JSON.parse(fs.readFileSync(path.join(wipDir, f), 'utf-8'));
+                return { filename: f, ...content };
+            } catch(e) {
+                return { filename: f, status: 'error' };
+            }
+        });
+}
+
+// API: Get revision data for a specific job
+app.get('/api/revisions/:jobId', (req, res) => {
+    const { jobId } = req.params;
+    const mode = req.query.mode || 'marketing';
+    const root = getModeRoot(mode);
+    const wipDir = path.join(root, 'wip');
+    const doneDir = path.join(root, 'done');
+    const feedbackDir = path.join(root, 'feedback');
+
+    // Search in wip first, then done
+    const searchDirs = [wipDir, doneDir].filter(d => fs.existsSync(d));
+
+    let original = null, revision = null, diffFile = null;
+    for (const dir of searchDirs) {
+        if (!original) original = findFileByPattern(dir, jobId, 'FINAL.md');
+        if (!revision) revision = findFileByPattern(dir, jobId, 'FINAL_v2.md');
+        if (!diffFile) diffFile = findFileByPattern(dir, jobId, 'revision_diff.json');
+    }
+
+    const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
+    let diffData = null;
+    if (diffFile) {
+        try { diffData = JSON.parse(diffFile.content); } catch(e) { /* ignore */ }
+    }
+
+    res.json({
+        jobId,
+        mode,
+        hasRevision: !!(revision || diffFile),
+        original: original ? { name: original.name, content: original.content } : null,
+        revision: revision ? { name: revision.name, content: revision.content } : null,
+        diff: diffData,
+        feedbacks: feedbacks.map(f => ({
+            filename: f.filename,
+            text: f.text || f.feedback,
+            timestamp: f.timestamp,
+            status: f.status
+        }))
+    });
+});
+
+// API: Approve revision (V2 becomes the official FINAL)
+app.post('/api/revisions/:jobId/approve', (req, res) => {
+    const { jobId } = req.params;
+    const { mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    const wipDir = path.join(root, 'wip');
+
+    const originalFile = findFileByPattern(wipDir, jobId, 'FINAL.md');
+    const v2File = findFileByPattern(wipDir, jobId, 'FINAL_v2.md');
+    const diffFile = findFileByPattern(wipDir, jobId, 'revision_diff.json');
+
+    if (!originalFile || !v2File) {
+        return res.status(404).json({ error: 'Original ou revisão não encontrados' });
+    }
+
+    try {
+        const originalPath = path.join(wipDir, originalFile.name);
+        const v2Path = path.join(wipDir, v2File.name);
+
+        // Backup original: _FINAL.md → _FINAL_v1_original.md
+        const backupName = originalFile.name.replace('_FINAL.md', '_FINAL_v1_original.md');
+        fs.renameSync(originalPath, path.join(wipDir, backupName));
+
+        // Promote V2: _FINAL_v2.md → _FINAL.md
+        fs.renameSync(v2Path, originalPath);
+
+        // Update diff status
+        if (diffFile) {
+            const diffPath = path.join(wipDir, diffFile.name);
+            const diffData = JSON.parse(diffFile.content);
+            diffData.status = 'approved';
+            diffData.approved_at = new Date().toISOString();
+            fs.writeFileSync(diffPath, JSON.stringify(diffData, null, 2));
+        }
+
+        // Mark feedbacks as resolved
+        const feedbackDir = path.join(root, 'feedback');
+        const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
+        feedbacks.forEach(fb => {
+            if (fb.filename) {
+                const fbPath = path.join(feedbackDir, fb.filename);
+                if (fs.existsSync(fbPath)) {
+                    const fbData = JSON.parse(fs.readFileSync(fbPath, 'utf-8'));
+                    fbData.status = 'resolved';
+                    fbData.resolved_at = new Date().toISOString();
+                    fs.writeFileSync(fbPath, JSON.stringify(fbData, null, 2));
+                }
+            }
+        });
+
+        log('info', 'revision_approved', { jobId, mode: mode || 'marketing', backup: backupName });
+        emitStateUpdate(mode || 'marketing');
+        res.json({ success: true, backup: backupName });
+    } catch(err) {
+        log('error', 'revision_approve_failed', { jobId, error: err.message });
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// API: Reject revision (keep original, archive feedback)
+app.post('/api/revisions/:jobId/reject', (req, res) => {
+    const { jobId } = req.params;
+    const { mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    const wipDir = path.join(root, 'wip');
+    const feedbackDir = path.join(root, 'feedback');
+    const archivedDir = path.join(feedbackDir, 'archived');
+
+    if (!fs.existsSync(archivedDir)) fs.mkdirSync(archivedDir, { recursive: true });
+
+    const v2File = findFileByPattern(wipDir, jobId, 'FINAL_v2.md');
+    const diffFile = findFileByPattern(wipDir, jobId, 'revision_diff.json');
+
+    try {
+        // Delete V2
+        if (v2File) {
+            fs.unlinkSync(path.join(wipDir, v2File.name));
+        }
+
+        // Update diff status
+        if (diffFile) {
+            const diffPath = path.join(wipDir, diffFile.name);
+            const diffData = JSON.parse(diffFile.content);
+            diffData.status = 'rejected';
+            diffData.rejected_at = new Date().toISOString();
+            fs.writeFileSync(diffPath, JSON.stringify(diffData, null, 2));
+        }
+
+        // Archive related feedbacks
+        const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
+        feedbacks.forEach(fb => {
+            if (fb.filename) {
+                const src = path.join(feedbackDir, fb.filename);
+                const dest = path.join(archivedDir, fb.filename);
+                if (fs.existsSync(src)) {
+                    fs.renameSync(src, dest);
+                }
+            }
+        });
+
+        log('info', 'revision_rejected', { jobId, mode: mode || 'marketing' });
+        emitStateUpdate(mode || 'marketing');
+        res.json({ success: true });
+    } catch(err) {
+        log('error', 'revision_reject_failed', { jobId, error: err.message });
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Graceful shutdown handler (Railway sends SIGTERM)
