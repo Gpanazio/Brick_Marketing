@@ -52,7 +52,7 @@ echo "✅ Briefing salvo"
 echo ""
 echo "⏳ ETAPA 1: Brand Digest (Flash)"
 BRAND_OUT="$WIP_DIR/${JOB_ID}_BRAND_DIGEST.json"
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-brand" \
   --message "${BRAND_DIGEST_ROLE}
 
@@ -90,7 +90,7 @@ BRAND DIGEST:
 ${BRAND_CONTENT}"
 
 # GPT (ousado)
-openclaw agent \
+openclaw agent --agent gpt \
   --session-id "brick-proj-${JOB_ID}-ideation-gpt" \
   --message "${CREATIVE_ROLE}
 
@@ -108,7 +108,7 @@ Gere seu conceito criativo conforme seu role acima (foco: ousadia, surpresa) e s
 GPT_PID=$!
 
 # Flash (pragmático)
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-ideation-flash" \
   --message "${CREATIVE_ROLE}
 
@@ -126,7 +126,7 @@ Gere seu conceito criativo conforme seu role acima (foco: clareza, executabilida
 FLASH_PID=$!
 
 # Sonnet (emocional)
-openclaw agent \
+openclaw agent --agent sonnet \
   --session-id "brick-proj-${JOB_ID}-ideation-sonnet" \
   --message "${CREATIVE_ROLE}
 
@@ -166,7 +166,7 @@ CRITIC_OUT="$WIP_DIR/${JOB_ID}_CONCEPT_CRITIC.json"
 IDEATION_GPT_CONTENT=$(cat "$IDEATION_GPT_OUT" 2>/dev/null || echo "N/A")
 IDEATION_FLASH_CONTENT=$(cat "$IDEATION_FLASH_OUT" 2>/dev/null || echo "N/A")
 IDEATION_SONNET_CONTENT=$(cat "$IDEATION_SONNET_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-critic" \
   --message "${CRITIC_ROLE}
 
@@ -205,7 +205,7 @@ echo ""
 echo "⏳ ETAPA 4: Execution Design (Gemini Pro)"
 EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.json"
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-exec" \
   --message "${EXECUTION_ROLE}
 
@@ -238,7 +238,7 @@ echo ""
 echo "⏳ ETAPA 5: Copywriter (GPT 5.2)"
 COPY_OUT="$WIP_DIR/${JOB_ID}_COPYWRITER.md"
 EXEC_CONTENT=$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent gpt \
   --session-id "brick-proj-${JOB_ID}-copy" \
   --message "${PROPOSAL_ROLE}
 
@@ -275,7 +275,7 @@ echo "⏳ ETAPA 6: Director (Gemini Pro)"
 DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.md"
 COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
 DIRECTOR_ROLE=$(cat "$ROLES_DIR/DIRECTOR.md" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-director" \
   --message "${DIRECTOR_ROLE}
 

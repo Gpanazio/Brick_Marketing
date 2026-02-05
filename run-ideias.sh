@@ -53,7 +53,7 @@ echo "✅ Raw Idea salva em $RAW_FILE"
 echo ""
 echo "⏳ ETAPA 1: Pain Check (Flash)"
 PAIN_OUT="$WIP_DIR/${JOB_ID}_PAIN_CHECK.json"
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-ideias-${JOB_ID}-pain" \
   --message "${PAIN_ROLE}
 
@@ -80,7 +80,7 @@ echo ""
 echo "⏳ ETAPA 2: Market Scan (Flash)"
 MARKET_OUT="$WIP_DIR/${JOB_ID}_MARKET_SCAN.md"
 PAIN_CONTENT=$(cat "$PAIN_OUT" 2>/dev/null || echo "Pain check não disponível")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-ideias-${JOB_ID}-market" \
   --message "${MARKET_ROLE}
 
@@ -113,7 +113,7 @@ DEVIL_OUT="$WIP_DIR/${JOB_ID}_DEVIL_GEN.json"
 MARKET_CONTENT=$(cat "$MARKET_OUT" 2>/dev/null || echo "Market scan não disponível")
 
 # ANGEL (ângulos criativos a favor)
-openclaw agent \
+openclaw agent --agent sonnet \
   --session-id "brick-ideias-${JOB_ID}-angle" \
   --message "${ANGLE_ROLE}
 
@@ -136,7 +136,7 @@ Advogue pela ideia conforme seu role acima e salve o resultado JSON no arquivo: 
 ANGEL_PID=$!
 
 # DEVIL (destruição criativa)
-openclaw agent \
+openclaw agent --agent sonnet \
   --session-id "brick-ideias-${JOB_ID}-devil" \
   --message "${DEVIL_ROLE}
 
@@ -183,7 +183,7 @@ echo "⏳ ETAPA 4: Viability (Opus)"
 VIABILITY_OUT="$WIP_DIR/${JOB_ID}_VIABILITY.json"
 ANGLE_CONTENT=$(cat "$ANGLE_OUT" 2>/dev/null || echo "Angle gen não disponível")
 DEVIL_CONTENT=$(cat "$DEVIL_OUT" 2>/dev/null || echo "Devil gen não disponível")
-openclaw agent \
+openclaw agent --agent opus \
   --session-id "brick-ideias-${JOB_ID}-viability" \
   --message "${VIABILITY_ROLE}
 

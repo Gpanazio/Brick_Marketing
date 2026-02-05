@@ -53,7 +53,7 @@ echo "✅ Briefing processado"
 echo ""
 echo "⏳ ETAPA 1: Brief Validator (Flash)"
 VALIDATOR_OUT="$WIP_DIR/${JOB_ID}_01_VALIDATOR.json"
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-mkt-${JOB_ID}-validator" \
   --message "${VALIDATOR_ROLE}
 
@@ -74,7 +74,7 @@ Avalie o briefing conforme seu role acima e salve o resultado JSON no arquivo: $
 echo ""
 echo "⏳ ETAPA 2: Audience Analyst (Flash)"
 AUDIENCE_OUT="$WIP_DIR/${JOB_ID}_02_AUDIENCE.json"
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-mkt-${JOB_ID}-audience" \
   --message "${AUDIENCE_ROLE}
 
@@ -96,7 +96,7 @@ echo ""
 echo "⏳ ETAPA 3: Topic Researcher (Flash)"
 RESEARCH_OUT="$WIP_DIR/${JOB_ID}_03_RESEARCH.json"
 AUDIENCE_CONTENT=$(cat "$AUDIENCE_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-mkt-${JOB_ID}-research" \
   --message "${RESEARCHER_ROLE}
 
@@ -121,7 +121,7 @@ echo ""
 echo "⏳ ETAPA 4: Claims Checker (Flash)"
 CLAIMS_OUT="$WIP_DIR/${JOB_ID}_04_CLAIMS.json"
 RESEARCH_CONTENT=$(cat "$RESEARCH_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-mkt-${JOB_ID}-claims" \
   --message "${CLAIMS_ROLE}
 
@@ -162,7 +162,7 @@ CLAIMS (respeitar):
 ${CLAIMS_CONTENT}"
 
 # GPT
-openclaw agent \
+openclaw agent --agent gpt \
   --session-id "brick-mkt-${JOB_ID}-copy-gpt" \
   --message "${COPYWRITER_ROLE}
 
@@ -180,7 +180,7 @@ Escreva a copy conforme seu role acima (tom direto, persuasivo) e salve no arqui
 GPT_PID=$!
 
 # Flash
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-mkt-${JOB_ID}-copy-flash" \
   --message "${COPYWRITER_ROLE}
 
@@ -198,7 +198,7 @@ Escreva a copy conforme seu role acima (tom eficiente, pragmático) e salve no a
 FLASH_PID=$!
 
 # Sonnet
-openclaw agent \
+openclaw agent --agent sonnet \
   --session-id "brick-mkt-${JOB_ID}-copy-sonnet" \
   --message "${COPYWRITER_ROLE}
 
@@ -229,7 +229,7 @@ BRAND_GUARD_OUT="$WIP_DIR/${JOB_ID}_06_BRAND_GUARDIANS.json"
 COPY_A=$(cat "$COPY_GPT_OUT" 2>/dev/null || echo "N/A")
 COPY_B=$(cat "$COPY_FLASH_OUT" 2>/dev/null || echo "N/A")
 COPY_C=$(cat "$COPY_SONNET_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent flash \
   --session-id "brick-mkt-${JOB_ID}-brand-guard" \
   --message "${BRAND_ROLE}
 
@@ -260,7 +260,7 @@ echo ""
 echo "⏳ ETAPA 7: Critic (Opus)"
 CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_CRITICS.json"
 GUARD_CONTENT=$(cat "$BRAND_GUARD_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent opus \
   --session-id "brick-mkt-${JOB_ID}-critic" \
   --message "${CRITIC_ROLE}
 
@@ -294,7 +294,7 @@ echo ""
 echo "⏳ ETAPA 8: Wall / Filtro Final (Opus)"
 WALL_OUT="$WIP_DIR/${JOB_ID}_08_WALL.json"
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
-openclaw agent \
+openclaw agent --agent opus \
   --session-id "brick-mkt-${JOB_ID}-wall" \
   --message "${WALL_ROLE}
 
