@@ -1,0 +1,43 @@
+{
+  "idea_name": "produtora_video_elite_100_ia",
+  "options": [
+    {
+      "name": "Production Enhanced (IA como Motor, Direção como Diferencial)",
+      "action": "Posicionar como produtora premium que usa IA como infraestrutura, mas com direção cinematográfica senior de 10+ anos como diferencial. Comunicar 'Vision over Prompt' — a tecnologia acelera, mas a visão humana comanda. Preço mid-high: $8k-20k por projeto (vs $40k+ tradicional, vs $2k ferramentas diretas).",
+      "bet": "Marcas de luxo pagam pelo 'toque humano' e exclusividade, não pela tecnologia em si. O moat não é a ferramenta (Veo/Sora), é a capacidade de direção que 99% dos operadores de IA não têm. Clientes premium aceitam IA se ela for invisível e o resultado for cinema.",
+      "risk": "Custo operacional mais alto (precisa de diretor senior real). Velocidade reduzida vs '100% IA pura' (review humano adiciona dias). Margem menor que modelo full-automated. Risco de ser comparado a produtoras tradicionais que também começarem a usar IA internamente.",
+      "upside": "Moat defensável (direção cinematográfica leva anos pra desenvolver). Marcas de luxo aceitam o posicionamento (não é 'IA barata', é 'cinema acelerado por IA'). Premium pricing justificável. Diferenciação clara vs ferramentas self-service. Alinhado com o modelo atual da Brick AI — não é pivot, é expansão de oferta.",
+      "reversible": true,
+      "strength_score": 85,
+      "rationale": "É o sweet spot entre vantagem competitiva (direção humana senior) e eficiência operacional (IA reduz custos de produção em 70-80%). O MARKET SCAN identificou que 73% dos viewers não distinguem IA de tradicional — ou seja, a qualidade técnica não é mais o gargalo, é a direção. Marcas de luxo são ultraconservadoras: vender 'IA pura' pode gerar rejeição, mas 'cinema potencializado por IA' é aceitável. Reversível porque permite ajustar o mix (mais/menos IA) conforme feedback do mercado."
+    },
+    {
+      "name": "100% IA Pura (Full Automation, Posicionamento Anti-Tradicional)",
+      "action": "Posicionar como 'a primeira produtora 100% sintética para marcas que não têm medo de IA'. Comunicar velocidade absurda (48-72h do briefing ao render final) e preço disruptivo ($3k-8k por projeto). Target: marcas de luxo digitalmente nativas (DTC, crypto luxury, marcas Web3) que valorizam inovação sobre tradição. Stack: Sora 2 (narrativa) + Veo 3 (motion) + Runway Gen-4 (controle fino).",
+      "bet": "Existe um segmento de marcas de luxo jovens (born-digital) que querem se diferenciar da concorrência tradicional justamente por abraçar IA de forma transparente. Velocidade e preço são vantagens competitivas absolutas. A barreira técnica (saber operar Veo/Sora/Runway em nível elite) ainda existe por 6-12 meses antes da commoditização total.",
+      "risk": "Commoditização rápida: qualquer operador técnico pode replicar em 6 meses. Rejeição de marcas luxury tradicionais (90% do mercado) por percepção de artificialidade. Vendor lock-in crítico: dependência total de Veo/Sora/Runway (se pricing mudar ou políticas restringirem, negócio morre). Regulação emergente pode exigir disclosure 'feito por IA' que mata o appeal. Margem alta no curto prazo, mas insustentável quando concorrência massiva entrar.",
+      "upside": "Velocidade incomparável (48h vs 2-3 meses). Custo operacional baixíssimo (sem equipe de set, sem equipamento). Margem brutal no primeiro ano (70-80%). Posicionamento diferenciado e viral (first-mover em 'luxo 100% IA'). Se der certo, é escalável globalmente via remote.",
+      "reversible": false,
+      "strength_score": 55,
+      "rationale": "High-risk, high-reward. O upside é real (margem brutal + velocidade), mas os riscos de commoditização e rejeição de mercado são críticos. O MARKET SCAN não encontrou evidência de marcas premium abraçando '100% IA' — o que pode significar oportunidade pioneira OU red flag de rejeição de mercado. Irreversível porque o posicionamento '100% IA' queima pontes com clientes conservadores (não dá pra voltar pra 'traditional' depois). Viable apenas se o target for sub-nicho ultra-moderno (DTC luxury, crypto brands)."
+    },
+    {
+      "name": "Vertical Luxury Niche (Joalheria/Relógios 100% IA)",
+      "action": "Focar exclusivamente em um sub-nicho do luxo (ex: alta relojoaria, joalheria fine jewelry) e tornar-se THE specialist. Oferecer pacotes completos (campanhas de lançamento, social content, product videos) produzidos 100% com IA. Construir autoridade via cases e portfolio antes de expandir horizontalmente. Preço premium-mid: $10k-25k por projeto (justificado pela especialização vertical).",
+      "bet": "Em nichos técnicos como alta relojoaria, a barreira de entrada é conhecimento de produto (complications, finishing, heritage). Um generalista de IA não entrega porque não entende o produto. Se você se especializar (aprender o vocabulário, os movimentos de câmera que funcionam pra relógios, a estética do setor), cria moat via expertise vertical, não só via ferramenta. Clientes pagam premium por quem 'entende meu mercado'.",
+      "risk": "Mercado pequeno (alta relojoaria é ultra-nichado). Se o nicho rejeitar IA (possível — mercado conservador), não há plano B. Dependência de poucos clientes grandes (se perder 2-3 contas, revenue despenca). Vendor lock-in igual às outras opções. Dificuldade de escalar fora do nicho (autoridade vertical pode virar prisão).",
+      "upside": "Moat defensável via expertise de domínio (não é só 'operar Veo', é 'entender alta relojoaria'). Premium pricing justificável. Word-of-mouth forte em nichos pequenos (1 case vira 5 indicações). Baixa concorrência (ninguém está fazendo 'IA para alta relojoaria' ainda). Pode expandir para nichos adjacentes (joias → relógios → carros de luxo) depois de provar concept.",
+      "reversible": true,
+      "strength_score": 70,
+      "rationale": "Estratégia de nicho clássica: reduzir o TAM pra aumentar market share e pricing power. O risco de mercado pequeno é real, mas marcas de luxo (especialmente relojoaria) têm budgets enormes e produzem conteúdo constantemente (novos lançamentos, Basel/Geneva shows, campanhas sazonais). Reversível porque pode expandir pra outros nichos se provar traction. Strength score 70 porque combina diferenciação (expertise vertical) com eficiência (IA), mas o TAM limitado impede score mais alto."
+    }
+  ],
+  "recommended": {
+    "option_name": "Production Enhanced (IA como Motor, Direção como Diferencial)",
+    "confidence": 85,
+    "reasoning": "É a única opção que resolve o maior risco identificado pelo MARKET SCAN: commoditização. Ferramentas (Veo/Sora) são acessíveis pra qualquer um, mas direção cinematográfica senior leva 10+ anos pra desenvolver. Marcas de luxo são conservadoras e pagarão premium por 'cinema acelerado por IA', mas rejeitarão '100% IA pura' por percepção de artificialidade. O modelo 'Production Enhanced' já está validado pela Brick AI atual — não é teoria, é expansão de oferta testada. Reversível, defensável e alinhado com o posicionamento existente. O score de 85 reflete que é a opção com melhor balanço risco/retorno: upside significativo (margem 60-70%, pricing $8k-20k), risco gerenciável (moat via direção humana) e fit com mercado conservador de luxo."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-06T00:15:00Z"
+}
