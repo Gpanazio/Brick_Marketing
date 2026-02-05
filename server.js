@@ -2,6 +2,8 @@
 console.log(`[STARTUP] Node ${process.version} | PID ${process.pid} | PORT ${process.env.PORT || 3000}`);
 
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
@@ -40,11 +42,54 @@ const upload = multer({
 });
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+    cors: { origin: '*', methods: ['GET', 'POST'] }
+});
+
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
 
 // Trust Proxy (Railway/Load Balancer support)
 app.set('trust proxy', 1);
+
+// Socket.IO: Emite estado atualizado para todos os clientes
+function emitStateUpdate(mode) {
+    const state = {
+        mode,
+        briefing: getFilesForSocket('briefing', mode),
+        wip: getFilesForSocket('wip', mode),
+        done: getFilesForSocket('done', mode),
+        failed: getFilesForSocket('failed', mode)
+    };
+    io.emit('stateUpdate', state);
+    log('info', 'websocket_state_emitted', { mode, clients: io.engine.clientsCount });
+}
+
+// Helper para socket (sem content pra economizar banda)
+function getFilesForSocket(dir, mode) {
+    const root = getModeRoot(mode);
+    const dirPath = path.join(root, dir);
+    if (!fs.existsSync(dirPath)) return [];
+    return fs.readdirSync(dirPath).filter(f => !f.startsWith('.')).map(f => ({
+        name: f,
+        path: path.join(dir, f),
+        mtime: fs.statSync(path.join(dirPath, f)).mtime.toISOString()
+    }));
+}
+
+io.on('connection', (socket) => {
+    log('info', 'websocket_client_connected', { id: socket.id });
+    
+    socket.on('subscribe', (mode) => {
+        socket.join(mode);
+        log('info', 'websocket_subscribed', { id: socket.id, mode });
+    });
+    
+    socket.on('disconnect', () => {
+        log('info', 'websocket_client_disconnected', { id: socket.id });
+    });
+});
 
 // Métricas em memória (persiste em arquivo a cada 5min)
 const METRICS_FILE = path.join(__dirname, '.metrics.json');
@@ -226,6 +271,68 @@ app.get('/api/config', (req, res) => {
     });
 });
 
+// API: Estimativa de custo do pipeline
+app.get('/api/estimate', (req, res) => {
+    const mode = req.query.mode || 'marketing';
+    
+    // Definir etapas por modo
+    const pipelines = {
+        marketing: [
+            { name: 'VALIDATOR', model: 'flash' },
+            { name: 'AUDIENCE', model: 'flash' },
+            { name: 'RESEARCH', model: 'flash' },
+            { name: 'CLAIMS', model: 'flash' },
+            { name: 'COPYWRITER', model: 'gpt' },
+            { name: 'COPYWRITER', model: 'flash' },
+            { name: 'COPYWRITER', model: 'sonnet' },
+            { name: 'BRAND_GUARDIANS', model: 'flash' },
+            { name: 'CRITICS', model: 'opus' },
+            { name: 'DIRECTOR', model: 'gpt' },
+            { name: 'WALL', model: 'opus' }
+        ],
+        projetos: [
+            { name: 'BRAND_DIGEST', model: 'flash' },
+            { name: 'CREATIVE_IDEATION', model: 'sonnet' },
+            { name: 'CONCEPT_CRITIC', model: 'flash' },
+            { name: 'EXECUTION_DESIGN', model: 'gemini' },
+            { name: 'COPYWRITER', model: 'sonnet' },
+            { name: 'DIRECTOR', model: 'gemini' }
+        ],
+        ideias: [
+            { name: 'PAIN_CHECK', model: 'flash' },
+            { name: 'MARKET_SCAN', model: 'flash' },
+            { name: 'ANGLE_GEN', model: 'sonnet' },
+            { name: 'VIABILITY', model: 'opus' }
+        ]
+    };
+    
+    const steps = pipelines[mode] || pipelines.marketing;
+    const modelCosts = CONFIG.MODEL_COSTS || {};
+    const avgTokens = CONFIG.AVG_TOKENS_PER_STEP || {};
+    
+    let totalCost = 0;
+    const breakdown = steps.map(step => {
+        const tokens = avgTokens[step.name] || 800;
+        const costPer1K = modelCosts[step.model] || 0.01;
+        const cost = (tokens / 1000) * costPer1K;
+        totalCost += cost;
+        return {
+            step: step.name,
+            model: step.model,
+            tokens,
+            cost: cost.toFixed(4)
+        };
+    });
+    
+    res.json({
+        mode,
+        steps: steps.length,
+        totalCost: totalCost.toFixed(2),
+        breakdown,
+        note: 'Estimativa baseada em tokens médios por etapa. Custo real pode variar.'
+    });
+});
+
 // API: Get all state (including failed)
 app.get('/api/state', (req, res) => {
     const mode = req.query.mode || 'marketing';
@@ -397,6 +504,9 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
         const filesNote = uploadedFiles.length > 0 ? `\n📎 *${uploadedFiles.length} anexo(s)* para processar` : '';
         await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}${filesNote}\n\n_Douglas, aciona o squad!_`); // Fallback
         
+        // WebSocket: notificar clientes
+        emitStateUpdate(mode || 'marketing');
+        
         res.json({ success: true, filename, mode: mode || 'marketing', filesCount: uploadedFiles.length });
     } catch (err) {
         log('error', 'briefing_create_failed', { error: err.message });
@@ -440,6 +550,7 @@ app.post('/api/result', (req, res) => {
     log('info', 'result_submitted', { filename, category: targetCategory, botName, mode: mode || 'marketing' });
     metrics.requests.total++;
     metrics.requests.success++;
+    emitStateUpdate(mode || 'marketing');
     res.json({ success: true, filename, category: targetCategory });
 });
 
@@ -456,6 +567,7 @@ app.post('/api/move', (req, res) => {
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
         log('info', 'file_moved', { filename, from, to, mode: mode || 'marketing' });
+        emitStateUpdate(mode || 'marketing');
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -470,6 +582,7 @@ app.delete('/api/file', (req, res) => {
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
         log('info', 'file_deleted', { filename, category, mode: mode || 'marketing' });
+        emitStateUpdate(mode || 'marketing');
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -484,6 +597,7 @@ app.post('/api/briefing/clear', (req, res) => {
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
         log('info', 'briefing_cleared', { filename, mode: mode || 'marketing' });
+        emitStateUpdate(mode || 'marketing');
         res.json({ success: true });
     } else {
         res.status(404).json({ error: 'File not found' });
@@ -697,6 +811,7 @@ app.post('/api/feedback', async (req, res) => {
     await notifyDouglas(notifyData);
     
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
+    emitStateUpdate(mode || 'marketing');
     res.json({ success: true, saved: feedbackFile, archived: true });
 });
 
@@ -759,6 +874,7 @@ app.post('/api/approve', async (req, res) => {
     fs.writeFileSync(approvalFile, JSON.stringify(approval, null, 2));
     
     log('info', 'campaign_approved', { jobId, mode, filesMoved: movedFiles.length });
+    emitStateUpdate(mode || 'marketing');
     res.json({ success: true, saved: approvalFile, filesMoved: movedFiles.length });
 });
 
@@ -816,8 +932,9 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Start server - bind to 0.0.0.0 for Railway/Docker compatibility
-server = app.listen(PORT, '0.0.0.0', () => {
-    log('info', 'server_started', { port: PORT, host: '0.0.0.0', marketingRoot: MARKETING_ROOT });
+server = httpServer.listen(PORT, '0.0.0.0', () => {
+    log('info', 'server_started', { port: PORT, host: '0.0.0.0', marketingRoot: MARKETING_ROOT, websocket: true });
     console.log(`🚀 Brick AI War Room running on http://0.0.0.0:${PORT}`);
+    console.log(`🔌 WebSocket enabled`);
     console.log(`📁 Marketing folder: ${MARKETING_ROOT}`);
 });

@@ -7,6 +7,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text x='50' y='75' font-size='70' text-anchor='middle' fill='%23DC2626' font-family='monospace' font-weight='bold'>B</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --brick-red: #DC2626; --brick-black: #000; --brick-white: #FFF; --brick-gray: #111; }
@@ -266,11 +267,17 @@
             <div class="p-8 space-y-6">
                 <div>
                     <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">MODO</label>
-                    <select id="briefing-mode" class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none">
+                    <select id="briefing-mode" onchange="updateCostEstimate()" class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none">
                         <option value="marketing">Marketing (Conteúdo & Flow)</option>
                         <option value="projetos">Projetos (Strategy & Craft)</option>
                         <option value="ideias">Ideias (Validation)</option>
                     </select>
+                    <div id="cost-estimate" class="mt-2 text-[10px] font-mono text-[#666] flex items-center gap-2">
+                        <span class="text-[#DC2626]">💰</span>
+                        <span>Custo estimado: <span id="cost-value" class="text-green-500">$--</span></span>
+                        <span class="text-[#444]">|</span>
+                        <span>Etapas: <span id="steps-value" class="text-white">--</span></span>
+                    </div>
                 </div>
                 
                 <div>
@@ -1143,6 +1150,20 @@ OUTPUT (Copy Final)`;
             document.getElementById('briefing-content').value = '';
             document.getElementById('briefing-mode').value = currentMode || 'marketing';
             document.getElementById('briefing-title').focus();
+            updateCostEstimate();
+        }
+        
+        async function updateCostEstimate() {
+            const mode = document.getElementById('briefing-mode').value;
+            try {
+                const res = await fetch(`${API_URL}/estimate?mode=${mode}`);
+                const data = await res.json();
+                document.getElementById('cost-value').textContent = `$${data.totalCost}`;
+                document.getElementById('steps-value').textContent = data.steps;
+            } catch(e) {
+                document.getElementById('cost-value').textContent = '$--';
+                document.getElementById('steps-value').textContent = '--';
+            }
         }
         
         function closeBriefingModal() {
@@ -1314,7 +1335,69 @@ OUTPUT (Copy Final)`;
             setTimeout(() => notification.remove(), 4000);
         }
 
-        window.onload = () => { setInterval(fetchState, 5000); };
+        // WebSocket connection (com fallback para polling)
+        let socket = null;
+        let useWebSocket = true;
+        
+        function initWebSocket() {
+            try {
+                socket = io();
+                
+                socket.on('connect', () => {
+                    console.log('🔌 WebSocket conectado');
+                    document.getElementById('connection-status').textContent = 'WebSocket_Active';
+                    document.getElementById('connection-status').className = 'text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest';
+                    useWebSocket = true;
+                    
+                    // Subscrever ao modo atual
+                    if (currentMode) {
+                        socket.emit('subscribe', currentMode);
+                    }
+                });
+                
+                socket.on('stateUpdate', (state) => {
+                    if (state.mode === currentMode) {
+                        // Buscar conteúdo completo via API (socket só envia metadata)
+                        fetchState();
+                    }
+                });
+                
+                socket.on('disconnect', () => {
+                    console.log('🔌 WebSocket desconectado, usando polling');
+                    document.getElementById('connection-status').textContent = 'Polling_Mode';
+                    document.getElementById('connection-status').className = 'text-[9px] font-mono text-yellow-500 mt-2 uppercase tracking-widest';
+                    useWebSocket = false;
+                });
+                
+                socket.on('connect_error', () => {
+                    console.log('🔌 WebSocket erro, usando polling');
+                    useWebSocket = false;
+                });
+                
+            } catch(e) {
+                console.log('🔌 WebSocket não disponível, usando polling');
+                useWebSocket = false;
+            }
+        }
+        
+        // Subscrever quando mudar de modo
+        const originalEnterMode = enterMode;
+        enterMode = function(mode) {
+            originalEnterMode(mode);
+            if (socket && socket.connected) {
+                socket.emit('subscribe', mode);
+            }
+        };
+        
+        window.onload = () => {
+            initWebSocket();
+            // Fallback: polling a cada 10s (só se WebSocket falhar)
+            setInterval(() => {
+                if (!useWebSocket && currentMode) {
+                    fetchState();
+                }
+            }, 10000);
+        };
     </script>
 </body>
 </html>

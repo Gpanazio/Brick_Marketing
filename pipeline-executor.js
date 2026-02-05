@@ -56,10 +56,28 @@ function readFile(filepath) {
     }
 }
 
-// Salvar arquivo
-function saveFile(filepath, content) {
+// Salvar arquivo com versioning automático
+function saveFile(filepath, content, enableVersioning = true) {
     try {
         const data = typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+        
+        // Versioning: se arquivo já existe, criar backup com versão
+        if (enableVersioning && fs.existsSync(filepath)) {
+            const ext = path.extname(filepath);
+            const base = filepath.slice(0, -ext.length);
+            
+            // Encontrar próxima versão disponível
+            let version = 1;
+            while (fs.existsSync(`${base}_v${version}${ext}`)) {
+                version++;
+            }
+            
+            // Mover arquivo atual para versão anterior
+            const versionedPath = `${base}_v${version}${ext}`;
+            fs.renameSync(filepath, versionedPath);
+            log('info', 'file_versioned', { original: filepath, versioned: versionedPath, version });
+        }
+        
         fs.writeFileSync(filepath, data, 'utf-8');
         log('info', 'file_saved', { filepath });
         return true;
