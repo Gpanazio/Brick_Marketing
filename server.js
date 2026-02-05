@@ -14,7 +14,7 @@ const multer = require('multer');
 
 // Config e Contratos
 const CONFIG = require('./config/constants');
-const schemas = require('./contracts/schemas');
+// const schemas = require('./contracts/schemas'); // REMOVED: unused, contracts/ folder doesn't exist
 
 // Multer config for file uploads
 const storage = multer.diskStorage({
