@@ -3,7 +3,7 @@
 # Executa pipeline de Marketing (Content & Flow)
 # Usa openclaw agent (sincrono)
 
-set -e
+# set -e  # Removed: placeholders handle errors
 
 BRIEFING_FILE="$1"
 

@@ -3,7 +3,7 @@
 # Executa pipeline de Ideias (Fast Track)
 # Usa openclaw agent (sincrono) - cada etapa espera o agente terminar
 
-set -e
+# set -e  # Removed: placeholders handle errors
 
 BRIEFING_FILE="$1"
 

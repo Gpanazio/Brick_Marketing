@@ -3,7 +3,7 @@
 # Executa pipeline de Projetos (Creative/Concept)
 # Usa openclaw agent (sincrono)
 
-set -e
+# set -e  # Removed: placeholders handle errors
 
 BRIEFING_FILE="$1"
 
