@@ -254,6 +254,51 @@
         </div>
     </div>
 
+    <!-- BRIEFING MODAL -->
+    <div id="briefing-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'briefing-modal') closeBriefingModal()">
+        <div class="bg-[#050505] border border-[#DC2626] w-full max-w-2xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
+            <div class="p-8 border-b border-[#222]">
+                <button onclick="closeBriefingModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <h2 class="text-2xl font-brick text-white uppercase">NOVO BRIEFING</h2>
+                <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Crie um novo projeto para o pipeline</div>
+            </div>
+
+            <div class="p-8 space-y-6">
+                <div>
+                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">MODO</label>
+                    <select id="briefing-mode" class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none">
+                        <option value="marketing">Marketing (Conteúdo & Flow)</option>
+                        <option value="projetos">Projetos (Strategy & Craft)</option>
+                        <option value="ideias">Ideias (Validation)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">TÍTULO *</label>
+                    <input 
+                        type="text"
+                        id="briefing-title"
+                        class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none"
+                        placeholder="Ex: Lançamento Brick AI 2026"
+                    >
+                </div>
+                
+                <div>
+                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">DESCRIÇÃO *</label>
+                    <textarea
+                        id="briefing-content"
+                        class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-40 focus:border-[#DC2626] outline-none resize-none"
+                        placeholder="Descreva o projeto, objetivo, público-alvo, restrições..."></textarea>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-[#222] flex justify-end gap-4">
+                <button onclick="closeBriefingModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
+                <button onclick="submitBriefing()" class="btn-brick px-6 py-3">CRIAR BRIEFING</button>
+            </div>
+        </div>
+    </div>
+
     <!-- APPROVAL MODAL -->
     <div id="approval-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'approval-modal') closeApprovalModal()">
         <div class="bg-[#050505] border border-[#DC2626] w-full max-w-xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
@@ -271,11 +316,11 @@
                     </div>
                     <div class="flex justify-between text-sm">
                         <span class="text-[#666] font-mono">SCORE FINAL:</span>
-                        <span class="text-green-500 font-mono font-bold">94/100</span>
+                        <span id="approval-score" class="text-green-500 font-mono font-bold">--/100</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span class="text-[#666] font-mono">APROVADO POR:</span>
-                        <span class="text-[#DC2626] font-mono">CLAUDE OPUS 4.5</span>
+                        <span id="approval-model" class="text-[#DC2626] font-mono">--</span>
                     </div>
                 </div>
 
@@ -324,7 +369,7 @@
             { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI FLASH' },
             { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI PRO' },
             { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer', model: 'CLAUDE SONNET' },
-            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'CLAUDE OPUS' },
+            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI PRO' },
             { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'p10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
@@ -1091,8 +1136,59 @@ OUTPUT (Copy Final)`;
         }
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
+        
         function openNewBriefing() {
-            showNotification('📋 Módulo de briefing em desenvolvimento.', 'error');
+            document.getElementById('briefing-modal').classList.remove('hidden');
+            document.getElementById('briefing-title').value = '';
+            document.getElementById('briefing-content').value = '';
+            document.getElementById('briefing-mode').value = currentMode || 'marketing';
+            document.getElementById('briefing-title').focus();
+        }
+        
+        function closeBriefingModal() {
+            document.getElementById('briefing-modal').classList.add('hidden');
+        }
+        
+        async function submitBriefing() {
+            const title = document.getElementById('briefing-title').value.trim();
+            const content = document.getElementById('briefing-content').value.trim();
+            const mode = document.getElementById('briefing-mode').value;
+            
+            if (!title) {
+                showNotification('⚠️ Título é obrigatório.', 'error');
+                return;
+            }
+            
+            if (!content) {
+                showNotification('⚠️ Descrição é obrigatória.', 'error');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_URL}/briefing`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, content, mode })
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    closeBriefingModal();
+                    showNotification(`✅ Briefing "${title}" criado! Douglas será notificado.`);
+                    
+                    // Atualizar estado
+                    setTimeout(() => {
+                        if (!currentMode) enterMode(mode);
+                        fetchState();
+                    }, 500);
+                } else {
+                    const err = await res.json();
+                    showNotification(`❌ Erro: ${err.error || 'Falha ao criar briefing'}`, 'error');
+                }
+            } catch(e) {
+                console.error('Erro ao criar briefing:', e);
+                showNotification('❌ Erro ao criar briefing. Tente novamente.', 'error');
+            }
         }
 
         function openFeedbackModal(e) {
@@ -1141,6 +1237,31 @@ OUTPUT (Copy Final)`;
             e.stopPropagation();
             const projectTitle = document.getElementById('ng-title').textContent;
             document.getElementById('approval-project').textContent = projectTitle;
+            
+            // Buscar score real do WALL
+            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
+            const wallFile = projectFiles.find(f => f.name.includes('WALL') || f.name.includes('FILTRO') || f.name.includes('08_'));
+            
+            let score = '--';
+            let model = 'WALL';
+            
+            if (wallFile) {
+                try {
+                    const data = JSON.parse(wallFile.content);
+                    score = data.score_final || data.score || '--';
+                    model = 'CLAUDE OPUS';
+                } catch(e) {
+                    // Se não conseguir parsear, manter valores default
+                }
+            }
+            
+            document.getElementById('approval-score').textContent = `${score}/100`;
+            document.getElementById('approval-score').className = score >= 80 
+                ? 'text-green-500 font-mono font-bold' 
+                : 'text-yellow-500 font-mono font-bold';
+            document.getElementById('approval-model').textContent = model;
+            
             document.getElementById('approval-modal').classList.remove('hidden');
         }
 

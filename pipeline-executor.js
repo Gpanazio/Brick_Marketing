@@ -13,7 +13,7 @@ const path = require('path');
 const GATEWAY_URL = process.env.GATEWAY_URL || 'http://localhost:18789/api';
 const GATEWAY_TOKEN = process.env.GATEWAY_TOKEN || '';
 const HISTORY_ROOT = path.join(__dirname, 'history');
-const BRIEFING_DIR = path.join(__dirname, 'marketing', 'briefing');
+const BRIEFING_DIR = path.join(HISTORY_ROOT, 'marketing', 'briefing');  // Corrigido: usar history/
 const WIP_DIR = path.join(HISTORY_ROOT, 'marketing', 'wip');
 const DONE_DIR = path.join(HISTORY_ROOT, 'marketing', 'done');
 
