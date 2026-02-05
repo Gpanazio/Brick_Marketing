@@ -1,12 +1,12 @@
 # COPY VERSION: A
 
 ## CURTO
-Vídeo continua líder em 2026 (Serasa Experian). Mas o feed está cheio de IA mal dirigida.
+Vídeo segue líder em 2026 (Serasa Experian). Mas o feed está cheio de IA sem direção.
 A Brick AI é Production Enhanced: 10 anos de set + IA para viabilizar o impossível.
 **Vision over Prompt.**
 
 ## MÉDIO
-Vídeo segue no topo do marketing digital em 2026 (Serasa Experian). E o que o público mais rejeita é o óbvio: IA com cara de template, voz metálica, padrão de prompt reciclado.
+Vídeo mantém a liderança no marketing digital em 2026 (Serasa Experian). O problema é outro: IA mal dirigida, voz metálica, padrão de prompt reciclado.
 
 A Brick AI não é ferramenta. É produtora.
 10 anos de set, direção sênior e IA como infraestrutura para cenas que antes eram inviáveis por budget ou prazo.
@@ -20,7 +20,7 @@ Não é sobre fazer fácil. É sobre fazer o impossível com craft.
 [MASON] WARNING: plastic_voice=high
 [BRICK] O cliente pede premium e você entrega genérico.
 
-Vídeo é o formato líder em 2026 (Serasa Experian). Isso não é novidade. A novidade é o cansaço do público com IA sem direção.
+Vídeo é o formato líder em 2026 (Serasa Experian). A novidade é o cansaço do público com IA sem direção.
 
 A Brick AI nasceu para resolver isso: uma produtora com 10 anos de set, agora com IA para viabilizar o impossível — sem perder a mão humana, sem perder craft.
 
