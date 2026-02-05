@@ -465,9 +465,10 @@
             { id: 'n7', x: 0, y: 1550, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.2' },
             { id: 'n8', x: 0, y: 1800, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
             { id: 'n9', x: 0, y: 2050, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n10', x: 0, y: 2300, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n11', x: 0, y: 2300, title: 'SOCIAL_SLICE', label: 'Social_Content', model: 'DOUGLAS' },
+            { id: 'n10', x: 0, y: 2550, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n11'],['n11','n10']];
 
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -498,6 +499,37 @@
         const linksIdeias = [['i0','id'],['id','i1'],['i1','i2'],['i2','i3a'],['i2','i3b'],['i3a','i4'],['i3b','i4'],['i4','i5']];
 
         const fileMapping = {
+            'BRIEFING_INPUT': ['BRIEFING', 'PROCESSED'],
+            'DOUGLAS': ['PROCESSED'],
+            'VALIDATOR': ['VALIDATOR'],
+            'AUDIENCE': ['AUDIENCE'],
+            'RESEARCH': ['RESEARCH'],
+            'FACT_CHECK': ['CLAIMS'],
+            'COPY_A': ['COPY_GPT'],
+            'COPY_B': ['COPY_FLASH'],
+            'COPY_C': ['COPY_SONNET'],
+            'BRAND': ['BRAND_GUARDIAN'],
+            'COPY SENIOR': ['COPY_SENIOR'],
+            'WALL': ['WALL'],
+            'SOCIAL_SLICE': ['SOCIAL_SLICE'],
+            'OUTPUT': ['FINAL'],
+            // Projetos
+            'BRAND_DIGEST': ['BRAND_DIGEST'],
+            'IDEATION_GPT': ['IDEATION_GPT'],
+            'IDEATION_FLASH': ['IDEATION_FLASH'],
+            'IDEATION_SONNET': ['IDEATION_SONNET'],
+            'CONCEPT_CRITIC': ['CONCEPT_CRITIC'],
+            'EXECUTION_DESIGN': ['EXECUTION_DESIGN'],
+            'COPYWRITER': ['PROPOSAL_WRITER', 'COPYWRITER'],
+            'DIRECTOR': ['DIRECTOR'],
+            // Ideias
+            'PAIN_CHECK': ['PAIN_CHECK'],
+            'MARKET_SCAN': ['MARKET_SCAN'],
+            'ANGLE_GEN': ['ANGLE_GEN'],
+            'DEVIL_GEN': ['DEVIL_GEN'],
+            'VIABILITY': ['VIABILITY'],
+            'DECISION': ['DECISION']
+        };
             'BRIEFING_INPUT': ['BRIEFING_INPUT', 'lan_amento'],
             'DOUGLAS': ['PROCESSED'],
             'VALIDATOR': ['01_', 'VALIDATOR'],
