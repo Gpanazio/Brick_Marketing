@@ -1,11 +1,26 @@
 {
-  "agent": "COPY_SENIOR",
-  "job_id": "1770309268711_lan_amento_brick_ia",
-  "status": "ERROR",
-  "error": {
-    "reason": "All retries failed",
-    "timestamp": "2026-02-05T13:38:24-03:00",
-    "retries_attempted": 3
-  },
-  "placeholder": true
+  "vencedor": "C",
+  "modelo_vencedor": "sonnet",
+  "pontos_fortes": [
+    "Storytelling alinhado ao vídeo de lançamento (homem cansado)",
+    "Tom de set consistente e anti-slop",
+    "Promessa clara de viabilizar o impossível",
+    "Uso correto dos dados validados",
+    "Mantra da marca bem integrado"
+  ],
+  "pontos_fracos": [
+    "Texto longo e repetitivo em alguns trechos",
+    "CTA fragmentado por plataforma",
+    "Excesso de exemplos de slop sem avanço de argumento"
+  ],
+  "alteracoes_aplicadas": [
+    "Cortei redundâncias e reduzi o storytelling mantendo o arco narrativo",
+    "Consolidei o CTA em uma única chamada objetiva",
+    "Enxuguei repetições de slop e foquei em direção/craft",
+    "Incluí o dado validado da liderança do vídeo em 2026 (Serasa Experian)",
+    "Removi referências dispersas por plataforma e normalizei o tom",
+    "Reforcei o posicionamento Production Enhanced como serviço, não ferramenta"
+  ],
+  "copy_revisada": "## CURTO\nVídeo continua líder em 2026 (Serasa Experian).\nO problema não é a IA — é a direção.\nBrick AI: 10 anos de set + IA para viabilizar o impossível.\n**Production Enhanced. Vision over Prompt.**\n\n## MÉDIO\nVocê já viu IA mal feita demais para confiar.\nMão estranha, voz metálica, aquele padrão que grita template.\n\nA Brick AI existe para o oposto disso.\nSomos produtora. 10 anos de set e direção sênior, com IA como infraestrutura para cenas que antes eram inviáveis por budget ou prazo.\n\nVídeo segue líder no marketing digital em 2026 (Serasa Experian).\nEntão o diferencial agora é craft — não prompt.\n\n**Production Enhanced. Vision over Prompt.**\n\n## STORYTELLING\n**Ele está cansado.**\n\nCansado de ver IA sem direção inundando o feed.\nCansado de ver tecnologia brilhante entregando resultado amador.\n\nEle é feito por IA. **Mas feito direito.**\nPorque foi dirigido por quem vive set há 10 anos.\nQuem sabe luz, timing e narrativa — não só gerar.\n\nA Brick AI nasceu daí: um estúdio que já fazia o difícil no mundo real e agora usa IA para viabilizar o impossível, sem perder a mão humana.\n\n**Production Enhanced** significa que cada frame foi dirigido.\n**Vision over Prompt** significa que a visão manda, não o algoritmo.\n\n## CTA SUGERIDO\nQuer lançar com IA sem parecer IA?\nAcesse **brick.ai** e entre no set da Brick AI.",
+  "veredito": "APPROVED"
 }
