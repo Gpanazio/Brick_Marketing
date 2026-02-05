@@ -892,11 +892,11 @@ OUTPUT (Copy Final)`;
             nodes.forEach(n => {
                 const el = document.createElement('div');
                 const providerMap = {
-                    'GPT': 'openai', 'GPT 5.2': 'openai',
-                    'GEMINI FLASH': 'gemini-flash',
-                    'GEMINI PRO': 'gemini-pro',
-                    'CLAUDE SONNET': 'sonnet',
-                    'CLAUDE OPUS': 'opus',
+                    'GPT': 'openai', 'GPT 5.2': 'openai', 'GPT-5.2': 'openai', 'GPT-4O': 'openai',
+                    'GEMINI FLASH': 'gemini-flash', 'FLASH': 'gemini-flash',
+                    'GEMINI PRO': 'gemini-pro', 'GEMINI 3 PRO': 'gemini-pro',
+                    'CLAUDE SONNET': 'sonnet', 'SONNET': 'sonnet',
+                    'CLAUDE OPUS': 'opus', 'OPUS': 'opus',
                     'APPROVAL': 'human'
                 };
                 const provider = providerMap[n.model] || '';
