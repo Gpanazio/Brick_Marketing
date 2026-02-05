@@ -214,4 +214,85 @@ Opus domina o custo (~85% do total) por causa do input pesado (12k tokens de con
 
 ---
 
-*Se algo não funciona: verifique se o Railway está online (`/api/health`) e se os agentes do OpenClaw estão configurados.*
+---
+
+## Como o Douglas orquestra (a lógica do bot)
+
+Douglas é um agente OpenClaw (Claude Opus) que roda no Mac do Gabriel. Ele é o cérebro que conecta tudo.
+
+### Fluxo de orquestração
+
+```
+[Usuário cria briefing no War Room]
+         │
+         ▼
+[Railway salva briefing + notifica Telegram]
+         │
+         ▼
+[Gabriel vê notificação e avisa Douglas: "chegou briefing"]
+         │
+         ▼
+[Douglas roda: ./run-orchestrate.sh marketing]
+         │
+         ├─► 1. Health check no Railway (GET /api/health)
+         ├─► 2. Busca briefings pendentes (GET /api/pending?mode=marketing)
+         ├─► 3. Baixa conteúdo do briefing (GET /api/file)
+         ├─► 4. Salva local em history/marketing/briefing/
+         ├─► 5. Roda run-marketing.sh (pipeline completo)
+         │       └─► Cada etapa usa: openclaw agent --agent <modelo>
+         │           Os agentes (flash, gpt, sonnet, opus) estão
+         │           configurados no openclaw.json com modelos específicos
+         ├─► 6. Sincroniza resultados (./sync-to-railway.sh --all marketing)
+         │       └─► POST /api/result para cada arquivo gerado
+         ├─► 7. Limpa briefing processado (POST /api/briefing/clear)
+         └─► 8. Avisa Gabriel no Telegram que terminou
+```
+
+### Agentes OpenClaw usados pelo pipeline
+
+Os scripts chamam `openclaw agent --agent <id>` de forma síncrona. Cada agent tem modelo fixo:
+
+| Agent ID | Modelo | Usado nas etapas |
+|----------|--------|------------------|
+| flash | Gemini 3 Flash Preview | 1 (Validator), 2 (Audience), 3 (Research), 4 (Claims), 5B (Copy B) |
+| gpt | GPT 5.2 Codex | 5A (Copy A), 6 (Copy Senior) |
+| sonnet | Claude Sonnet 4.5 | 5C (Copy C) |
+| opus | Claude Opus 4.6 | 7 (Wall) |
+
+Cada chamada cria uma sessão isolada (`--session-id "brick-mkt-{JOB_ID}-{etapa}"`) pra não poluir o contexto entre etapas.
+
+### O que NÃO roda em background
+
+- **Sem watcher** -- Não tem polling. Nada roda 24/7.
+- **Sem cron** -- Não tem job agendado pra verificar briefings.
+- **Event-driven** -- Tudo começa quando Gabriel avisa no Telegram.
+- **Sync sob demanda** -- Arquivos só vão pro Railway quando Douglas manda (sync-to-railway.sh).
+
+### Onde Douglas guarda memória
+
+Douglas é um agente com amnésia -- acorda fresco toda sessão. Pra lembrar do War Room:
+- `~/.openclaw/workspace/MEMORY.md` -- Memória de longo prazo (arquitetura, decisões, lições)
+- `~/.openclaw/workspace/memory/YYYY-MM-DD.md` -- Notas diárias
+- Este documento (`MARKETING_PIPELINE.md`) -- Referência técnica
+
+### Como re-rodar algo que falhou
+
+Se uma etapa falhou ou você quer reprocessar:
+
+```bash
+# Re-rodar só o loop Copy Senior ↔ Wall
+./run-reloop.sh <JOB_ID>
+
+# Re-rodar pipeline inteiro
+./run-marketing.sh history/marketing/briefing/<briefing>.md
+
+# Sincronizar manualmente pro Railway
+./sync-to-railway.sh --all marketing
+
+# Sincronizar um arquivo específico
+./sync-to-railway.sh history/marketing/wip/<arquivo> marketing
+```
+
+---
+
+*Se algo não funciona: verifique se o Railway está online (`/api/health`) e se os agentes do OpenClaw estão configurados (`openclaw status`).*
