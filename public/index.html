@@ -455,6 +455,7 @@
         let currentMode = null;
         let selectedJobId = null;
         let refreshInterval = null;
+        let activeRevisionLinks = [];
 
         const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -1051,6 +1052,8 @@ OUTPUT (Proposta Completa)`;
 
             // DYNAMIC REVISION NODES - Detecta arquivos REVISAO_1, REVISAO_2... e cria nós ao lado do HUMAN
             const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
+            activeRevisionLinks = [];
+            
             revisionFiles.forEach((revFile, idx) => {
                 const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
                 const revId = `rev${revNum}`;
@@ -1073,14 +1076,13 @@ OUTPUT (Proposta Completa)`;
                     const humanRect = humanNode.getBoundingClientRect();
                     const containerRect = container.getBoundingClientRect();
                     const baseX = humanRect.left - containerRect.left + humanRect.width + 50;
-                    const offsetX = (idx * 380); // 380px de gap entre revisões
+                    const offsetX = (idx * 380);
                     el.style.left = `${baseX + offsetX}px`;
                     el.style.top = `${humanRect.top - containerRect.top}px`;
                 } else if (savedPositions[revId]) {
                     el.style.left = savedPositions[revId].left;
                     el.style.top = savedPositions[revId].top;
                 } else {
-                    // Fallback se HUMAN não existe ainda
                     el.style.left = `${centerX + 400 + (idx * 380)}px`;
                     el.style.top = `2050px`;
                 }
@@ -1102,40 +1104,15 @@ OUTPUT (Proposta Completa)`;
                 container.appendChild(el);
                 makeDraggable(el);
                 
-                // Adicionar conexão visual: HUMAN -> REVISAO_N
-                const drawRevLink = () => {
-                    const f = document.getElementById('n9'), t = el;
-                    if(!f || !t) return;
-                    
-                    const cR = container.getBoundingClientRect();
-                    const fR = f.getBoundingClientRect();
-                    const tR = t.getBoundingClientRect();
-                    
-                    // Pontos de conexão: meio da borda direita do Human -> meio da borda esquerda da Revisão
-                    const x1 = fR.right - cR.left;
-                    const y1 = fR.top - cR.top + fR.height / 2;
-                    const x2 = tR.left - cR.left;
-                    const y2 = tR.top - cR.top + tR.height / 2;
-                    
-                    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                    line.setAttribute("d", `M ${x1} ${y1} L ${x2} ${y2}`);
-                    line.setAttribute("stroke", "#f97316");
-                    line.setAttribute("stroke-width", "2");
-                    line.setAttribute("fill", "none");
-                    line.setAttribute("stroke-dasharray", "5,5");
-                    line.setAttribute("opacity", "0.6");
-                    line.setAttribute("class", "revision-link");
-                    svg.appendChild(line);
-                };
-                // Garantir que os elementos já estão no DOM
-                setTimeout(drawRevLink, 0);
+                // Adicionar link à lista global de revisões
+                activeRevisionLinks.push(['n9', revId]);
             });
 
-            updateConnections();
+            updateConnections(activeRevisionLinks);
             updateTelemetry(projectFiles);
         }
 
-        function updateConnections() {
+        function updateConnections(revisionLinks = []) {
             const svg = document.getElementById('conn-svg');
             svg.innerHTML = '';
             
@@ -1143,6 +1120,7 @@ OUTPUT (Proposta Completa)`;
             if (currentMode === 'projetos') currentLinks = linksProjetos;
             if (currentMode === 'ideias') currentLinks = linksIdeias;
 
+            // Desenhar links normais do pipeline
             currentLinks.forEach(([fId, tId]) => {
                 const f = document.getElementById(fId), t = document.getElementById(tId);
                 if(!f || !t) return;
@@ -1169,6 +1147,33 @@ OUTPUT (Proposta Completa)`;
                     pulse.appendChild(anim); svg.appendChild(pulse);
                 }
             });
+            
+            // Desenhar links de revisão (estilo diferente)
+            revisionLinks.forEach(([fId, tId]) => {
+                const f = document.getElementById(fId), t = document.getElementById(tId);
+                if(!f || !t) return;
+                
+                const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
+                
+                // Linha reta horizontal da direita do HUMAN para a esquerda da REVISÃO
+                const x1 = fR.right - cR.left;
+                const y1 = fR.top - cR.top + fR.height / 2;
+                const x2 = tR.left - cR.left;
+                const y2 = tR.top - cR.top + tR.height / 2;
+                
+                if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
+
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", x1);
+                line.setAttribute("y1", y1);
+                line.setAttribute("x2", x2);
+                line.setAttribute("y2", y2);
+                line.setAttribute("stroke", "#f97316");
+                line.setAttribute("stroke-width", "2");
+                line.setAttribute("stroke-dasharray", "5,5");
+                line.setAttribute("opacity", "0.7");
+                svg.appendChild(line);
+            });
         }
 
         function makeDraggable(el) {
@@ -1188,7 +1193,7 @@ OUTPUT (Proposta Completa)`;
                 document.onmousemove = (e) => {
                     p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
                     el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
-                    updateConnections();
+                    updateConnections(activeRevisionLinks);
                 };
             };
         }
