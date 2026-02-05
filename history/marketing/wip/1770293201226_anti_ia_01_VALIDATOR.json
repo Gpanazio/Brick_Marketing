@@ -1,0 +1,16 @@
+{
+  "status": "FAIL",
+  "faltando": [
+    "OBJETIVO - Além de ser polêmico, qual o objetivo de negócio (awareness, conversão, comentário)?",
+    "PÚBLICO - Quem exatamente estamos provocando (Copywriters, designers, donos de agência)?",
+    "CONTEXTO - Por que fazer esse post agora? Faz parte de uma campanha maior?",
+    "REFERÊNCIAS - Algum tom de voz específico da Brick Marketing que deve ser mantido ou evitado?"
+  ],
+  "perguntas_para_humano": [
+    "Quem é o público-alvo específico que queremos provocar no Instagram?",
+    "Qual o objetivo final desse post (gerar comentários, atrair novos seguidores, posicionamento de marca)?",
+    "Existe algum limite para a 'polêmica' ou alguma restrição do que não podemos dizer?",
+    "O post deve levar a algum link ou CTA específico?"
+  ],
+  "proximo_passo": "Aguardar input humano"
+}

@@ -11,7 +11,6 @@ import shutil
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Configuração de cores
 class Colors:
     HEADER = '\033[95m'
     BLUE = '\033[94m'
@@ -39,117 +38,111 @@ def load_pipeline(path):
         return yaml.safe_load(f)
 
 def replace_vars(text, variables):
-    """Substitui {{var}} pelo valor no dicionário variables"""
-    if not isinstance(text, str):
-        return text
-    
-    # Replace
+    if not isinstance(text, str): return text
     for key, value in variables.items():
         pattern = "{{" + key + "}}"
         text = text.replace(pattern, str(value))
-        
-    # Check unresolved vars
-    unresolved = re.findall(r'\{\{(\w+)\}\}', text)
-    if unresolved:
-        log(f"Aviso: Variáveis não resolvidas encontradas: {unresolved}", "warning")
-        
     return text
 
 def check_condition(step, variables):
-    """Verifica se o step deve rodar baseado na condição (Python puro)"""
-    if 'condition' not in step:
-        return True
-    
+    if 'condition' not in step: return True
     cond = step['condition']
     if cond.get('check') == 'grep':
         file_path = replace_vars(cond['file'], variables)
-        pattern = cond['pattern'].strip('"\'') # Remove aspas do YAML se houver
-        
-        if not os.path.exists(file_path):
-            return False
-            
+        pattern = cond['pattern'].strip('"\'')
+        if not os.path.exists(file_path): return False
         try:
-            # Leitura segura em Python
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                content = f.read()
-                return pattern in content
-        except Exception as e:
-            log(f"Erro ao verificar condição no arquivo {file_path}: {e}", "error")
-            return False
-            
+                return pattern in f.read()
+        except: return False
     return True
 
-def execute_openclaw(step_name, cmd):
-    """Função helper para executar comando e capturar output (thread-safe)"""
+def execute_agent_cli(step_name, task_prompt, model, timeout, job_id, step_id):
+    """Executa via CLI openclaw agent"""
+    
+    # Mapear modelo para thinking level (proxy)
+    thinking = "off"
+    if "sonnet" in model or "gpt" in model: thinking = "low"
+    if "opus" in model: thinking = "high"
+    
+    session_id = f"job-{job_id}-{step_id}"
+    
+    cmd = [
+        "openclaw", "agent",
+        "--session-id", session_id,
+        "--message", task_prompt,
+        "--thinking", thinking,
+        "--timeout", str(timeout),
+        "--json"
+    ]
+    
     try:
         start_time = time.time()
+        # Executa e bloqueia até terminar
         result = subprocess.run(cmd, capture_output=True, text=True)
         duration = time.time() - start_time
-        return {
-            'success': result.returncode == 0,
-            'name': step_name,
-            'duration': duration,
-            'stdout': result.stdout,
-            'stderr': result.stderr
-        }
+        
+        if result.returncode != 0:
+            return {'success': False, 'name': step_name, 'duration': duration, 'stderr': result.stderr}
+            
+        # Parse JSON output
+        try:
+            data = json.loads(result.stdout)
+            reply = data.get('message', {}).get('text', '') or data.get('text', '')
+            return {
+                'success': True, 
+                'name': step_name, 
+                'duration': duration, 
+                'stdout': reply
+            }
+        except:
+            # Se não for JSON, retorna stdout bruto
+            return {
+                'success': True, 
+                'name': step_name, 
+                'duration': duration, 
+                'stdout': result.stdout
+            }
+            
     except Exception as e:
-        return {
-            'success': False,
-            'name': step_name,
-            'duration': 0,
-            'stdout': '',
-            'stderr': str(e)
-        }
+        return {'success': False, 'name': step_name, 'duration': 0, 'stderr': str(e)}
 
 def run_step(step, variables):
     step_id = step['id']
     step_name = step.get('name', step_id)
+    job_id = variables['job_id']
     
-    # Verificar condição
     if not check_condition(step, variables):
-        log(f"Pulando etapa '{step_name}' (condição não satisfeita)", "warning")
+        log(f"Pulando {step_name}", "warning")
         return True
 
-    log(f"Iniciando etapa: {step_name}", "header")
+    log(f"Iniciando: {step_name}", "header")
     
-    # Processar Task
     task_prompt = replace_vars(step['task'], variables)
     model = step.get('model', 'flash')
     timeout = step.get('timeout', 120)
     
-    cmd = [
-        "openclaw", "sessions", "spawn",
-        "--task", task_prompt,
-        "--model", model,
-        "--timeout", str(timeout),
-        "--cleanup", "delete"
-    ]
-    
-    res = execute_openclaw(step_name, cmd)
+    res = execute_agent_cli(step_name, task_prompt, model, timeout, job_id, step_id)
     
     if not res['success']:
-        log(f"Erro na etapa {step_name}:", "error")
-        print(res['stderr'])
+        log(f"Erro: {res['stderr']}", "error")
         return False
         
-    log(f"Etapa concluída em {res['duration']:.1f}s", "success")
+    log(f"Concluído em {res['duration']:.1f}s", "success")
     
-    # Output Check
     if 'output_check' in step:
         check = step['output_check']
         file_path = replace_vars(check['file'], variables)
-        if check['condition'] == 'exists':
-            if not os.path.exists(file_path):
-                log(f"Output esperado não encontrado: {file_path}", "error")
-                return False
-            else:
-                log(f"Output verificado: {os.path.basename(file_path)}", "success")
+        if not os.path.exists(file_path):
+            log(f"Output não gerado: {file_path}", "error")
+            return False
+        log(f"Output OK: {os.path.basename(file_path)}", "success")
     
     return True
 
 def run_parallel_steps(steps, variables):
-    """Roda steps em paralelo usando ThreadPoolExecutor"""
-    log(f"Iniciando {len(steps)} etapas em paralelo...", "header")
+    log(f"Iniciando {len(steps)} etapas paralelas...", "header")
+    job_id = variables['job_id']
     
     futures = []
     with ThreadPoolExecutor(max_workers=len(steps)) as executor:
@@ -159,107 +152,62 @@ def run_parallel_steps(steps, variables):
             model = step.get('model', 'flash')
             timeout = step.get('timeout', 120)
             
-            cmd = [
-                "openclaw", "sessions", "spawn",
-                "--task", task_prompt,
-                "--model", model,
-                "--timeout", str(timeout),
-                "--cleanup", "delete"
-            ]
+            futures.append(executor.submit(
+                execute_agent_cli, step_name, task_prompt, model, timeout, job_id, step['id']
+            ))
             
-            log(f"Disparando {step_name}...", "info")
-            futures.append(executor.submit(execute_openclaw, step_name, cmd))
-            
-        # Coletar resultados
         all_success = True
         for future in as_completed(futures):
             res = future.result()
             if res['success']:
-                log(f"Paralelo {res['name']} concluído ({res['duration']:.1f}s)", "success")
+                log(f"Paralelo {res['name']} OK ({res['duration']:.1f}s)", "success")
             else:
-                log(f"Erro no paralelo {res['name']}", "error")
-                print(res['stderr'])
+                log(f"Paralelo {res['name']} FALHOU: {res['stderr']}", "error")
                 all_success = False
                 
     return all_success
 
 def main():
-    parser = argparse.ArgumentParser(description="Brick AI Pipeline Maestro")
-    parser.add_argument("briefing", help="Caminho para o arquivo de briefing")
-    parser.add_argument("--pipeline", default="pipelines/standard_v1.yaml", help="Arquivo YAML do pipeline")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("briefing")
+    parser.add_argument("--pipeline", default="pipelines/standard_v1.yaml")
     args = parser.parse_args()
     
-    # Setup básico
     briefing_path = os.path.abspath(args.briefing)
-    if not os.path.exists(briefing_path):
-        log(f"Briefing não encontrado: {briefing_path}", "error")
-        sys.exit(1)
+    if not os.path.exists(briefing_path): sys.exit(1)
         
-    pipeline_path = os.path.abspath(args.pipeline)
-    if not os.path.exists(pipeline_path):
-        log(f"Pipeline YAML não encontrado: {pipeline_path}", "error")
-        sys.exit(1)
-
-    # Carregar Pipeline
-    try:
-        pipeline = load_pipeline(pipeline_path)
-        log(f"Pipeline carregado: {pipeline['name']} (v{pipeline['version']})", "success")
-    except Exception as e:
-        log(f"Erro ao carregar YAML: {e}", "error")
-        sys.exit(1)
+    pipeline = load_pipeline(args.pipeline)
+    log(f"Pipeline: {pipeline['name']}", "success")
         
-    # Inicializar Variáveis
     job_id = str(int(time.time() * 1000))
     variables = pipeline.get('variables', {}).copy()
-    
-    # Expandir ~ nas variáveis (FIX: type check)
     for k, v in variables.items():
-        if isinstance(v, str):
-            variables[k] = os.path.expanduser(v)
+        if isinstance(v, str): variables[k] = os.path.expanduser(v)
         
     variables['job_id'] = job_id
     variables['input_file'] = briefing_path
     
-    # Criar diretórios necessários
     wip_dir = variables.get('wip_dir')
-    if wip_dir and not os.path.exists(wip_dir):
-        os.makedirs(wip_dir)
-        log(f"Diretório WIP criado: {wip_dir}", "info")
+    if wip_dir and not os.path.exists(wip_dir): os.makedirs(wip_dir)
         
-    # Pré-processamento (FIX: shutil seguro)
     processed_file = os.path.join(wip_dir, f"{job_id}_PROCESSED.md")
-    try:
-        shutil.copy2(briefing_path, processed_file)
-        variables['input_file'] = processed_file
-    except Exception as e:
-        log(f"Erro ao copiar briefing: {e}", "error")
-        sys.exit(1)
+    shutil.copy2(briefing_path, processed_file)
+    variables['input_file'] = processed_file
     
     log(f"Job ID: {job_id}", "info")
-    log(f"Input: {briefing_path}", "info")
     
-    # Executar Steps
     for step in pipeline['steps']:
         step_type = step.get('type', 'sequential')
-        
         if step_type == 'parallel':
-            if 'steps' not in step:
-                log(f"Etapa paralela {step['id']} sem sub-etapas!", "error")
-                continue
             success = run_parallel_steps(step['steps'], variables)
         else:
             success = run_step(step, variables)
             
-        if not success:
-            on_failure = step.get('on_failure', 'abort')
-            if on_failure == 'abort':
-                log("Pipeline abortado devido a erro.", "error")
-                sys.exit(1)
-            elif on_failure == 'continue':
-                log("Erro ignorado (on_failure: continue)", "warning")
-                
-    log("Pipeline finalizado com sucesso! 🚀", "success")
-    log(f"Arquivos em: {wip_dir}", "info")
+        if not success and step.get('on_failure') == 'abort':
+            log("Abortando.", "error")
+            sys.exit(1)
+
+    log("Fim! 🚀", "success")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,68 @@
+{
+  "tema": "Controvérsia e Adoção de IA no Mercado Criativo (2026)",
+  
+  "keywords_principais": [
+    "marketing anti-IA",
+    "slop de IA",
+    "maturidade de IA em agências",
+    "craft criativo vs automação",
+    "mesmice visual IA"
+  ],
+  
+  "dados_credibilidade": [
+    {
+      "dado": "Criativos que utilizam IA recebem, em média, 56% a mais do que colegas sem essa competência.",
+      "fonte": "Global AI Jobs Barometer 2025 (PwC)",
+      "url": "https://consumidormoderno.com.br/ia-imagens-mesmice-visual/"
+    },
+    {
+      "dado": "2025 foi o ano da transição do 'deslumbre' para a IA como infraestrutura em grandes grupos de mídia (WPP, AlmapBBDO).",
+      "fonte": "AI Assessment Google Brasil / Meio & Mensagem",
+      "url": "https://www.meioemensagem.com.br/comunicacao/google-premiara-uso-de-ia-por-agencias-em-2026"
+    },
+    {
+      "dado": "O investimento global em publicidade deve atingir US$ 1,24 trilhão até 2026, impulsionado pela eficiência da IA.",
+      "fonte": "WGSN - Previsão de Marketing 2026",
+      "url": "https://www.meioemensagem.com.br/womentowatch/quais-serao-os-desafios-das-agencias-em-2026"
+    }
+  ],
+  
+  "tendencias_atuais": [
+    "Surgimento do movimento 'Anti-IA' como posicionamento de marca em 2026.",
+    "Crítica ao 'Slop' (conteúdo de IA de baixa qualidade/genérico) que gera fadiga no consumidor.",
+    "IA saindo da fase experimental para se tornar 'infraestrutura invisível' em operações de agência.",
+    "Foco em 'Maturidade de IA' - não é mais sobre usar, mas sobre como integrar no workflow sem perder o craft."
+  ],
+  
+  "angulos_concorrentes": [
+    {
+      "concorrente": "Agências Tradicionais 'Anti-IA'",
+      "posicionamento": "Human-made / Hand-crafted",
+      "fraqueza": "Escalabilidade e custos proibitivos para o mid-market."
+    },
+    {
+      "concorrente": "Geradores de 'Slop' (Freelancers com prompts básicos)",
+      "posicionamento": "Barato e rápido",
+      "fraqueza": "Mesmice visual e falta de direção de arte (craft)."
+    }
+  ],
+  
+  "oportunidades_diferenciacao": [
+    "Atacar o ceticismo: 'Não é sobre IA vs Humano, é sobre quem tem 10 anos de craft usando a ferramenta certa'.",
+    "O 'Slop' de IA é o novo 'banco de imagens': todo mundo percebe e ninguém gosta. A Brick AI foca no 'Premium Craft'.",
+    "Provocação: Enquanto você discute se IA tem alma, seu concorrente está faturando 56% a mais."
+  ],
+  
+  "brand_guidelines_relevantes": {
+    "tom": "Bold & Provocativo (Brick AI Style)",
+    "terminologia": ["Premium Craft", "Infraestrutura de IA", "Maturidade Criativa"],
+    "proibido": ["IA vai substituir humanos", "Fácil e rápido"]
+  },
+  
+  "fontes_consultadas": [
+    "https://consumidormoderno.com.br/ia-imagens-mesmice-visual/",
+    "https://www.meioemensagem.com.br/comunicacao/google-premiara-uso-de-ia-por-agencias-em-2026",
+    "https://valor.globo.com/empresas/marketing/noticia/2025/12/13/uso-de-ia-por-agencias-de-publicidade-salta-em-2025-segundo-estudo-do-google.ghtml",
+    "https://www.cnnbrasil.com.br/tecnologia/por-que-2026-pode-ser-o-ano-do-marketing-anti-ia/"
+  ]
+}

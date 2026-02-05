@@ -1,0 +1,59 @@
+{
+  "score_final": 82,
+  "status": "APPROVED",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 18,
+      "max": 25,
+      "feedback": "A copy posiciona a Brick AI como produtora criativa premium que usa IA com direção de arte sênior. 'Infraestrutura de IA para quem tem 10 anos de set' e 'Premium Craft' comunicam o território. MAS: o que exatamente eu compro? Produção de vídeo? Key Visuals? Consultoria de workflow? Campanha completa? O leitor entende o PORQUÊ (IA com craft > IA sem craft) mas não o O QUÊ tangível. Para um post polêmico de awareness isso é aceitável — ninguém espera ficha técnica num carousel provocativo. Mas impede a nota máxima. Se em algum slide dissesse 'Produção de KV e vídeo com IA dirigida — metade do tempo, mesmo craft', subia pra 22+."
+    },
+    "dor_real": {
+      "pontos": 19,
+      "max": 20,
+      "feedback": "O monólogo interno do STORYTELLING é cirúrgico: 'Se eu pedir mais budget, vão achar que eu não sei fazer o trabalho / Se eu terceirizar, vai perder o craft / Se eu usar IA, vão dizer que não tem alma.' Isso é a tríade de paralisia real de um diretor de criação sênior em 2026 — ego, craft e julgamento social. Não é dor inventada; é ansiedade verificável e específica. O gap salarial de 56% adiciona uma dor financeira concreta. O 'décimo review de um job que tinha prazo pra ontem, cliente mudou briefing 3 vezes' é cenário cotidiano real. Tiro 1 ponto porque falta uma frase que conecte a dor diretamente ao serviço da Brick (ex: 'Nós passamos por esse set 150 vezes. Por isso criamos o workflow X.')."
+    },
+    "credibilidade": {
+      "pontos": 16,
+      "max": 20,
+      "feedback": "Fontes externas sólidas: PwC 2025 (56% salary gap), Google AI Assessment 2025, dados de mercado (US$ 1,24 tri), e nomes reais (WPP, AlmapBBDO). As analogias históricas (Photoshop, Instagram, Canva, TikTok) são fatos verificáveis que o público-alvo viveu — isso é credibilidade experiencial, não só documental. O que falta: ZERO prova social first-party. Nenhum cliente nomeado, nenhum case, nenhum 'entregamos X em Y dias para Z'. A claim de '10 anos de experiência' é auto-referencial e não sustentada. Para passar de 16, precisa de pelo menos um case tangível ou depoimento de cliente. Num post polêmico isso é menos crítico (o objetivo é provocar, não converter), mas a rubrica não faz exceção."
+    },
+    "on_brand": {
+      "pontos": 19,
+      "max": 20,
+      "feedback": "Quase perfeito. A formatação cinematográfica (SET / CUT TO / FADE IN / FINAL FRAME) não é recurso estilístico — é a voz da marca operando em tempo real. A copy não FALA sobre ser diretor; ela ESCREVE como diretor. 'Vision over Prompt' e 'Premium Craft' usados corretamente, sem forçar. Tom unapologetic sem cair em tech-bro. Analogias técnicas (Arri Alexa, moviola, monitor) são do vocabulário do público-alvo, não jargão de startup. Tiro 1 ponto pelo CTA Opção 3 (MASON glitch): é on-brand para quem já conhece a Brick, mas para a persona-alvo (DC sênior de agência tradicional em fase de ceticismo), 'MASON_SYSTEM' é ruído sem contexto. Oferecer isso como opção de CTA num post de aquisição é um deslize de targeting, não de brand."
+    },
+    "cta_especifico": {
+      "pontos": 10,
+      "max": 15,
+      "feedback": "Três opções, nenhuma completa. Opção 1 ('Link na bio') é o mínimo possível no Instagram — funcional mas preguiçoso. Opção 2 ('Acesse brick.ai') é a melhor: tem atitude ('Enquanto você discute, nós entregamos') e URL direta, mas não diz o que acontece quando eu clico. Vejo um portfólio? Agendo call? Recebo uma proposta? A provocação é boa, a ação é vaga. Opção 3 já foi criticada acima. Para 15/15 precisaria de algo como: 'Quer ver o workflow que entregou [case] em 48h? brick.ai/premium — 15min no seu calendário.' Baixa fricção + ação clara + prova implícita."
+    }
+  },
+  "destaques_positivos": [
+    "O STORYTELLING com monólogo interno é o melhor asset desta copy. A tríade 'budget/craft/julgamento' como pensamentos em itálico cria identificação imediata — o leitor se vê na cena antes de receber o argumento. Isso é direção de cena aplicada a copywriting.",
+    "O arco histórico (Photoshop → Instagram → Canva → TikTok → IA) é retoricamente devastador para a persona de 35-50 anos. Cada exemplo é um fato que ela viveu e onde o ceticismo se provou errado. Não é argumento — é espelho.",
+    "A formatação cinematográfica é brand voice em ação. SET / CUT TO / FADE IN não são decoração — são a prova de que quem escreve entende de direção. A forma valida o conteúdo.",
+    "O CURTO funciona como post standalone E como slide de abertura de carrossel. Essa versatilidade de formato é rara e valiosa para produção.",
+    "Concordo com o Critic: todas as terminologias oficiais (Vision over Prompt, Premium Craft, Anti-Slop) aparecem de forma orgânica, não forçada. Zero termos proibidos."
+  ],
+  "pontos_de_melhoria": [
+    "CTA precisa de next-step concreto. 'Acesse brick.ai' não é suficiente — o leitor provocado precisa saber O QUE vai encontrar. Sugestão: 'Veja o workflow que entrega Premium Craft em metade do tempo → brick.ai/set' ou 'Agende 15min com quem tem 10 anos de set → brick.ai/call'.",
+    "Redundância do dado de 56% (PwC) — aparece no CURTO, MÉDIO e STORYTELLING. O Critic já flagou e concordo: manter no CURTO (gancho) e STORYTELLING (payoff), reformular no MÉDIO com outro dado ou ângulo. Repetição de data point enfraquece credibilidade, não fortalece.",
+    "O STORYTELLING tem gordura entre FADE IN e FINAL FRAME. Os parágrafos sobre WPP/AlmapBBDO como 'infraestrutura invisível' e 'US$ 1,24 trilhão' já estão no MÉDIO. No STORYTELLING, o ritmo pede ir direto de 'Dirigir.' para o FINAL FRAME. Concordo integralmente com o Critic neste ponto."
+  ],
+  "notas_do_critic_validadas": {
+    "concordo": [
+      "Reduzir 56% para 2 menções — correto, redundância enfraquece",
+      "Cortar parágrafos redundantes do STORYTELLING — essencial para ritmo",
+      "Remover rubrica de auto-check e notas de produção do entregável — óbvio, isso é processo, não copy",
+      "Matar CTA MASON glitch como CTA principal — correto, é insider demais para aquisição",
+      "Manter Opção 2 como CTA primário — é o mais on-brand"
+    ],
+    "discordo_parcialmente": [
+      "A sugestão de trocar abertura do MÉDIO por '\"IA NÃO TEM ALMA.\" — Todo diretor de criação que vai ser substituído em 2027' é boa mas agressiva demais. 'Vai ser substituído' pode alienar em vez de provocar. Sugestão alternativa: '\"IA NÃO TEM ALMA.\" — Ouvi isso de 3 diretores de criação. Dois já mudaram de ideia. O terceiro mudou de carreira.' — provoca sem ameaçar diretamente.",
+      "Sobre o FINAL FRAME: o Critic sugere encerrar na pergunta e deixar 'Vision over Prompt' só como assinatura visual. Entendo o argumento, mas para Instagram a assinatura textual funciona como branding de fechamento — especialmente em carrossel onde o último slide precisa de identidade visual+textual. Manter, mas como última linha isolada, não como parágrafo."
+    ]
+  },
+  "verdict": "APPROVED — Score 82/100. Copy passa o threshold com margem estreita. A base é forte: tom on-brand impecável, dor real e específica, estrutura narrativa cinematográfica que É a voz da marca. Os 18 pontos perdidos são em CTA (precisa de next-step concreto), credibilidade (falta prova social first-party) e clareza da oferta (posicionamento claro, serviço específico ausente). Os ajustes do Critic — especialmente corte de redundância no STORYTELLING e definição de CTA — são obrigatórios antes de publicar. Se aplicados, essa copy sobe pra 88-90.",
+  "next_step": "HUMAN_APPROVAL",
+  "recommend_return_to": null
+}

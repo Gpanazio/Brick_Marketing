@@ -1,0 +1,42 @@
+{
+  "claims_validados": [
+    {
+      "claim": "Criativos que utilizam IA recebem, em média, 56% a mais do que colegas sem essa competência.",
+      "status": "VERIFICADO",
+      "fonte_original": "Global AI Jobs Barometer 2025 (PwC)",
+      "fonte_verificacao": "https://www.pwc.com/gx/en/news-room/press-releases/2025/ai-linked-to-a-fourfold-increase-in-productivity-growth.html",
+      "confianca": "alta",
+      "notas": "Confirmado pelo press release oficial da PwC de Junho de 2025. O prêmio médio de salário para quem tem habilidades em IA subiu de 25% para 56% no último ano."
+    },
+    {
+      "claim": "2025 foi o ano da transição do 'deslumbre' para a IA como infraestrutura em grandes grupos de mídia (WPP, AlmapBBDO).",
+      "status": "VERIFICADO",
+      "fonte_original": "AI Assessment Google Brasil / Meio & Mensagem",
+      "fonte_verificacao": "https://www.meioemensagem.com.br/comunicacao/google-premiara-uso-de-ia-por-agencias-em-2026",
+      "confianca": "alta",
+      "notas": "Confirmado pela reportagem da Meio & Mensagem de Dezembro de 2025 sobre o AI Assessment do Google, citando agências como AlmapBBDO e WPP como as mais avançadas (nível Multimomento)."
+    },
+    {
+      "claim": "O investimento global em publicidade deve atingir US$ 1,24 trilhão até 2026.",
+      "status": "VERIFICADO",
+      "fonte_original": "WGSN - Previsão de Marketing 2026",
+      "fonte_verificacao": "https://www.meioemensagem.com.br/womentowatch/quais-serao-os-desafios-das-agencias-em-2026",
+      "confianca": "média-alta",
+      "notas": "Diz respeito a uma projeção da WGSN citada em veículos especializados. O número é coerente com o crescimento do mercado publicitário global."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "Profissionais com IA ganham 56% mais que colegas sem a habilidade (PwC 2025).",
+    "Agências líderes (WPP, Almap) já usam IA como infraestrutura invisível, não apenas teste (Google/Meio & Mensagem 2025).",
+    "Investimento global em publicidade chegará a US$ 1,24 trilhão em 2026 (WGSN)."
+  ],
+  "estatisticas_evitar": [
+    "Qualquer afirmação que sugira que a IA 'substitui a alma' ou 'o craft' sem o contraponto da direção humana, para não alienar a persona cética."
+  ],
+  "resumo": {
+    "total_claims": 3,
+    "verificados": 3,
+    "duvidosos": 0,
+    "recomendacao": "Todos os dados trazidos pela pesquisa são sólidos e podem ser usados como 'balas de prata' para vencer o ceticismo da persona, especialmente o dado de 56% de ganho salarial (PwC)."
+  }
+}

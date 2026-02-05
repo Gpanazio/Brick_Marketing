@@ -275,51 +275,60 @@ app.get('/api/config', (req, res) => {
 app.get('/api/estimate', (req, res) => {
     const mode = req.query.mode || 'marketing';
     
-    // Definir etapas por modo
+    // Definir etapas por modo (DEVE espelhar os scripts run-*.sh)
     const pipelines = {
         marketing: [
             { name: 'VALIDATOR', model: 'flash' },
             { name: 'AUDIENCE', model: 'flash' },
             { name: 'RESEARCH', model: 'flash' },
             { name: 'CLAIMS', model: 'flash' },
-            { name: 'COPYWRITER', model: 'gpt' },
-            { name: 'COPYWRITER', model: 'flash' },
-            { name: 'COPYWRITER', model: 'sonnet' },
+            { name: 'COPYWRITER', model: 'gpt', label: 'Copy A (GPT)' },
+            { name: 'COPYWRITER', model: 'flash', label: 'Copy B (Flash)' },
+            { name: 'COPYWRITER', model: 'sonnet', label: 'Copy C (Sonnet)' },
             { name: 'BRAND_GUARDIANS', model: 'flash' },
             { name: 'CRITICS', model: 'opus' },
-            { name: 'DIRECTOR', model: 'gpt' },
             { name: 'WALL', model: 'opus' }
         ],
         projetos: [
             { name: 'BRAND_DIGEST', model: 'flash' },
-            { name: 'CREATIVE_IDEATION', model: 'sonnet' },
-            { name: 'CONCEPT_CRITIC', model: 'flash' },
-            { name: 'EXECUTION_DESIGN', model: 'gemini' },
-            { name: 'COPYWRITER', model: 'sonnet' },
-            { name: 'DIRECTOR', model: 'gemini' }
+            { name: 'CREATIVE_IDEATION', model: 'gpt', label: 'Ideation A (GPT)' },
+            { name: 'CREATIVE_IDEATION', model: 'flash', label: 'Ideation B (Flash)' },
+            { name: 'CREATIVE_IDEATION', model: 'sonnet', label: 'Ideation C (Sonnet)' },
+            { name: 'CONCEPT_CRITIC', model: 'pro' },
+            { name: 'EXECUTION_DESIGN', model: 'pro' },
+            { name: 'PROPOSAL_WRITER', model: 'gpt' },
+            { name: 'PROJECT_DIRECTOR', model: 'pro' }
         ],
         ideias: [
             { name: 'PAIN_CHECK', model: 'flash' },
             { name: 'MARKET_SCAN', model: 'flash' },
-            { name: 'ANGLE_GEN', model: 'sonnet' },
+            { name: 'ANGLE_GEN', model: 'sonnet', label: 'Angel (Sonnet)' },
+            { name: 'DEVIL_GEN', model: 'sonnet', label: 'Devil (Sonnet)' },
             { name: 'VIABILITY', model: 'opus' }
         ]
     };
     
     const steps = pipelines[mode] || pipelines.marketing;
-    const modelCosts = CONFIG.MODEL_COSTS || {};
-    const avgTokens = CONFIG.AVG_TOKENS_PER_STEP || {};
+    const outputCosts = CONFIG.MODEL_COSTS_OUTPUT || {};
+    const inputCosts = CONFIG.MODEL_COSTS_INPUT || {};
+    const avgOutputTokens = CONFIG.AVG_TOKENS_PER_STEP || {};
+    const avgInputTokens = CONFIG.AVG_INPUT_TOKENS_PER_STEP || {};
     
     let totalCost = 0;
     const breakdown = steps.map(step => {
-        const tokens = avgTokens[step.name] || 800;
-        const costPer1K = modelCosts[step.model] || 0.01;
-        const cost = (tokens / 1000) * costPer1K;
+        const outTokens = avgOutputTokens[step.name] || 800;
+        const inTokens = avgInputTokens[step.name] || 2000;
+        const outCostPer1K = outputCosts[step.model] || 0.01;
+        const inCostPer1K = inputCosts[step.model] || 0.001;
+        const outCost = (outTokens / 1000) * outCostPer1K;
+        const inCost = (inTokens / 1000) * inCostPer1K;
+        const cost = outCost + inCost;
         totalCost += cost;
         return {
-            step: step.name,
+            step: step.label || step.name,
             model: step.model,
-            tokens,
+            inputTokens: inTokens,
+            outputTokens: outTokens,
             cost: cost.toFixed(4)
         };
     });
@@ -329,7 +338,7 @@ app.get('/api/estimate', (req, res) => {
         steps: steps.length,
         totalCost: totalCost.toFixed(2),
         breakdown,
-        note: 'Estimativa baseada em tokens médios por etapa. Custo real pode variar.'
+        note: 'Estimativa inclui input + output tokens. Custo real pode variar ±30%.'
     });
 });
 
