@@ -1,4 +1,0 @@
-FEEDBACK PENDENTE
-JobID: test_douglas_wake
-Texto: TESTE AUTOMÁTICO - Se você está lendo isso, o wake funcionou!
-Timestamp: 2026-02-04T20:12:29.901Z
