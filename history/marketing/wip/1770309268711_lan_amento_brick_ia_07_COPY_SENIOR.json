@@ -1,0 +1,26 @@
+{
+  "vencedor": "C",
+  "modelo_vencedor": "sonnet",
+  "pontos_fortes": [
+    "Narrativa alinhada ao vídeo de lançamento (homem de IA cansado)",
+    "Tom anti-slop consistente e técnico",
+    "Posicionamento claro: produtora premium, não ferramenta",
+    "Uso do dado de 88% (TOTVS) como prova de mercado",
+    "Mantra da marca presente (Vision over Prompt)"
+  ],
+  "pontos_fracos": [
+    "Texto longo demais para feed sem cortes",
+    "Repetições de ideia (slop/commodity) em blocos próximos",
+    "CTA disperso por plataforma, precisa de foco único"
+  ],
+  "alteracoes_aplicadas": [
+    "Cortei redundâncias e reduzi o storytelling em ~30% mantendo o arco",
+    "Removi CTAs por plataforma e consolidei em um CTA único e acionável",
+    "Enxuguei repetições de ""commodity"" e ""slop"" mantendo a tese",
+    "Incluí referência explícita ao vídeo de lançamento na abertura",
+    "Ajustei linguagem para mais set/produção e menos explicativa",
+    "Mantive apenas o dado verificado (88% TOTVS) e removi outros"
+  ],
+  "copy_revisada": "# COPY VERSION: C\n\n## CURTO\nVocê já cansou de ver IA mal feita no seu feed?\nVoz metálica. Padrão de prompt. Erro bobo que entrega o truque.\n\nA Brick AI é o oposto disso.\n10 anos de set + IA dirigida = produção impossível, viável.\n\n**Production Enhanced. Vision over Prompt.**\n\n## MÉDIO\nO vídeo de lançamento conta a história de um homem feito por IA — mas feito direito.\nEle está cansado de viver num mundo de IA mal feita. Nós também.\n\n88% dos profissionais de marketing já usam IA diariamente (TOTVS, 2026).\nEntão a diferença não é usar. É dirigir.\n\nA Brick AI não é ferramenta self-service. É produtora.\n10 anos de set, direção sênior e IA como infraestrutura para viabilizar o impossível — sem perder craft, sem perder a mão humana.\n\n**Production Enhanced.**\n**Vision over Prompt.**\n\n## STORYTELLING\n**ELE ESTÁ CANSADO.**\n\nCansado de ver vídeos de IA com dedos derretendo.\nCansado de vozes metalizadas destruindo roteiros bons.\nCansado de marcas confundindo “gerado” com “dirigido”.\n\nEle é um homem feito por IA. **Mas feito direito.**\nPorque foi dirigido por quem vive set há 10 anos.\nQuem sabe luz, lente, timing — não só prompt.\n\n**A Brick AI nasceu daí.**\nDe um estúdio que já fez o difícil no mundo real e agora usa IA para viabilizar o impossível.\nNão para baratear. Para elevar.\n\n88% do mercado já usa IA.\nO que separa o amador do premium agora é o controle criativo.\n\n**Production Enhanced** significa: cada frame foi dirigido, não apenas gerado.\n**Vision over Prompt.**\n\n## CTA SUGERIDO\nQuer lançar com IA sem parecer IA?\nAcesse **brick.ai** e entre no lançamento oficial da Brick AI.",
+  "veredito": "APPROVED"
+}
