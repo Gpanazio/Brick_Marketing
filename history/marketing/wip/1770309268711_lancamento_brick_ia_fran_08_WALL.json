@@ -1,52 +1,45 @@
 {
-  "agent": "WALL",
-  "job_id": "1770309268711_lan_amento_brick_ia",
-  "timestamp": "2026-02-05T13:38:50-03:00",
-  "nota_processo": "COPY_SENIOR (step 07) retornou ERROR (3 retries). O WALL assumiu a seleção da copy vencedora com base nos artefatos disponíveis: 3 copies (GPT/Flash/Sonnet) + Brand Guardian (todos BRAND_OK). Copy selecionada para avaliação: 05C_COPY_SONNET.md (Versão C interna — 'ELE ESTÁ CANSADO'), por ser a mais alinhada ao vídeo de lançamento descrito no briefing e a mais completa em formatos (CURTO/MÉDIO/STORYTELLING + CTAs por plataforma).",
-  "copy_avaliada": "05C_COPY_SONNET.md — Versão C (narrativa 'Era uma vez um homem feito de IA')",
-  "score_final": 85,
+  "score_final": 82,
   "status": "APPROVED",
   "breakdown": {
     "clareza_oferta": {
-      "pontos": 21,
+      "pontos": 20,
       "max": 25,
-      "feedback": "Oferta clara através de exemplos concretos: '50 locations internacionais sem sair do Brasil', 'cenas subaquáticas', 'produto que ainda não existe'. O conceito 'Production Enhanced' está bem explicado ('IA subordinada à visão criativa'). Perde pontos por não tangibilizar entregáveis (ex: '1 hero film + 3 cortes para social') nem prazo/formato. Sugestão: adicionar uma linha como 'Do briefing ao filme em X semanas' ou listar entregáveis típicos."
+      "feedback": "Oferta clara como produtora premium que usa IA para viabilizar o impossível. Falta tangibilizar entregáveis/prazo (ex: 1 filme + 3 cortes, turnaround típico)."
     },
     "dor_real": {
-      "pontos": 18,
+      "pontos": 17,
       "max": 20,
-      "feedback": "Dor específica, visual e visceral: 'dedos derretendo', 'vozes metalizadas', 'vergonha de mostrar IA pro cliente'. Conecta com a pesquisa (fadiga de AI Slop, ceticismo da persona de 10+ anos). Sustentada pelo dado de 88% TOTVS. Quase perfeita — faltaria um quote real de cliente/prospect para subir pra 20."
+      "feedback": "Dor específica e reconhecível (IA mal feita, voz metálica, padrão template). Poderia incluir 1 cenário concreto de budget/deadline para ficar ainda mais verificável."
     },
     "credibilidade": {
-      "pontos": 16,
+      "pontos": 15,
       "max": 20,
-      "feedback": "Pontos fortes: dado TOTVS 88% (verificado), referência à maturidade de ferramentas Sora/Runway/Veo (verificado via Pxz.ai), '10 anos de set', vocabulário técnico legítimo (Arri Alexa, direção de arte, timing). Falta: prova social direta — nenhum case nomeado, nenhum cliente citado, nenhum número de projetos (ex: '150+ produções'). Sugestão: inserir pelo menos '10 anos de set, X projetos entregues' ou um mini-case do próprio vídeo de lançamento."
+      "feedback": "Claim de vídeo líder em 2026 está verificada (Serasa Experian) + 10 anos de set. Falta prova social (cases/clientes/nº de projetos)."
     },
     "on_brand": {
       "pontos": 19,
       "max": 20,
-      "feedback": "Tom quase perfeito. Checklist do BRAND_GUARDIAN: ✅ Bold & Unapologetic ('A era da IA mal feita acabou'), ✅ Diretor de Cinema Sênior (Arri Alexa, craft, luz, set), ✅ Energia de Set ('10 anos errando e acertando luz'), ✅ Anti-Slop (conceito central da campanha), ✅ Terminologia correta (Production Enhanced, Vision over Prompt, Full AI Production), ✅ Zero termos proibidos (sem 'revolucionário', 'disruptivo', 'game-changer'). Único ponto menor: a narrativa do 'homem cansado' é excelente mas em alguns trechos do STORYTELLING fica um tom de 'palestra motivacional'. Nada grave — Brand Guardian já havia aprovado."
+      "feedback": "Tom de diretor, anti-slop, terminologia correta (Production Enhanced, Vision over Prompt). Energia de set presente."
     },
     "cta_especifico": {
       "pontos": 11,
       "max": 15,
-      "feedback": "Positivo: CTAs segmentados por plataforma (LinkedIn/Instagram/TikTok) com targeting correto ('Diretor de Criação ou Head of Content'). Funcional e válido. Perde pontos porque: 1) Todos apontam para '[link]' genérico sem ação específica (ex: 'Agende call de 15min'), 2) O CTA do TikTok é o mais fraco ('segue pra acompanhar'), 3) Falta baixa fricção — um 'Veja o breakdown técnico do vídeo de lançamento' seria mais atrativo e coerente com a persona técnica."
+      "feedback": "CTA único e claro, porém genérico ("Acesse brick.ai"). Melhor: call de 15min ou breakdown do vídeo de lançamento."
     }
   },
   "destaques_positivos": [
-    "Narrativa 'ELE ESTÁ CANSADO' conecta perfeitamente com o vídeo de lançamento — raro essa coerência copy ↔ peça audiovisual",
-    "Tom on-brand impecável: Bold, cinematográfico, anti-slop, zero corporativês ou hype vazio",
-    "Dor visual e visceral que ressoa com a persona (dedos derretendo, vozes metalizadas, vergonha de mostrar pro cliente)",
-    "Dados verificados integrados organicamente no texto (88% TOTVS, maturidade de ferramentas via Pxz.ai)",
-    "Versões CURTO/MÉDIO/STORYTELLING permitem execução multi-plataforma sem retrabalho",
-    "Posicionamento claro: 'Não é SaaS, é produtora. Não faz fácil, faz impossível.' — diferenciação real"
+    "Storytelling alinhado ao vídeo de lançamento (homem cansado)",
+    "Tom cinematográfico e anti-slop consistente com a marca",
+    "Posicionamento claro: produtora premium que viabiliza o impossível",
+    "Uso de dado validado (Serasa Experian) integrado sem forçar"
   ],
   "pontos_de_melhoria": [
-    "Credibilidade: adicionar prova social concreta — número de projetos entregues, nome de pelo menos 1 cliente, ou mini-case do vídeo de lançamento como 'making of'",
-    "CTA: trocar '[link]' genérico por ação específica de baixa fricção — 'Veja o breakdown do vídeo de lançamento' ou 'Agende 15min com nosso diretor'",
-    "Oferta: considerar tangibilizar entregáveis em pelo menos uma versão ('Do briefing ao filme em X semanas')"
+    "Adicionar prova social (case, cliente, nº de projetos ou mini breakdown)",
+    "Tangibilizar entregáveis/prazo para aumentar clareza da oferta",
+    "CTA mais específico e de baixa fricção"
   ],
-  "verdict": "APPROVED — Copy pronta para aprovação humana. A narrativa 'homem de IA cansado' é a peça central da campanha e está sólida. Os pontos de melhoria (prova social, CTA, tangibilização) são refinamentos opcionais que podem ser feitos na execução. Score 85/100 passa o threshold com margem.",
+  "verdict": "APPROVED - Copy pronta para aprovação humana. Melhorias sugeridas são opcionais.",
   "next_step": "HUMAN_APPROVAL",
   "recommend_return_to": null
 }
