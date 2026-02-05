@@ -1,0 +1,186 @@
+name: "Brick AI Standard Pipeline v1"
+description: "Pipeline completo de marketing (8 etapas) com validação e orquestração multi-modelo."
+version: "1.0"
+
+variables:
+  roles_dir: "~/projects/Brick_Marketing/roles"
+  wip_dir: "~/projects/Brick_Marketing/history/marketing/wip"
+
+steps:
+  - id: "01_validator"
+    name: "Brief Validator"
+    agent: "main" # ou ID específico se tiver
+    model: "flash"
+    timeout: 60
+    task: |
+      Você é o BRIEF_VALIDATOR do pipeline Brick AI.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Role: {{roles_dir}}/BRIEF_VALIDATOR.md
+      2. Briefing: {{input_file}}
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_01_VALIDATOR.json
+      - Formato: { "status": "OK|FAIL", "missing_fields": [...], "assumptions_if_silent": {...} }
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_01_VALIDATOR.json"
+      condition: "exists"
+
+  - id: "02_audience"
+    name: "Audience Analyst"
+    model: "flash"
+    timeout: 90
+    task: |
+      Você é o AUDIENCE_ANALYST.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Role: {{roles_dir}}/AUDIENCE_ANALYST.md
+      2. Briefing: {{input_file}}
+      3. Validator: {{wip_dir}}/{{job_id}}_01_VALIDATOR.json
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_02_AUDIENCE.json
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_02_AUDIENCE.json"
+      condition: "exists"
+
+  - id: "03_researcher"
+    name: "Topic Researcher"
+    model: "flash"
+    timeout: 120
+    task: |
+      Você é o TOPIC_RESEARCHER.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Role: {{roles_dir}}/TOPIC_RESEARCHER.md
+      2. Briefing: {{input_file}}
+      3. Audience: {{wip_dir}}/{{job_id}}_02_AUDIENCE.json
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_03_RESEARCH.json
+      - Use web_search.
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_03_RESEARCH.json"
+      condition: "exists"
+
+  - id: "04_claims"
+    name: "Claims Checker"
+    model: "flash"
+    timeout: 90
+    task: |
+      Você é o CLAIMS_CHECKER.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Briefing: {{input_file}}
+      2. Research: {{wip_dir}}/{{job_id}}_03_RESEARCH.json
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_04_CLAIMS.json
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_04_CLAIMS.json"
+      condition: "exists"
+
+  - id: "05_copywriters"
+    name: "Copywriters Parallel"
+    type: "parallel" # Executa steps filhos em paralelo
+    steps:
+      - id: "05a_gpt"
+        model: "gpt"
+        timeout: 180
+        task: |
+          Você é o COPYWRITER A (GPT-5.2).
+          **Job ID:** {{job_id}}
+          **Leia:**
+          1. Role: {{roles_dir}}/COPYWRITER.md
+          2. Briefing: {{input_file}}
+          3. Audience: {{wip_dir}}/{{job_id}}_02_AUDIENCE.json
+          4. Research: {{wip_dir}}/{{job_id}}_03_RESEARCH.json
+          5. Claims: {{wip_dir}}/{{job_id}}_04_CLAIMS.json
+          **Output:**
+          - Salve copy em: {{wip_dir}}/{{job_id}}_05A_COPY_GPT.md
+          - Temp 1.0
+
+      - id: "05b_flash"
+        model: "flash"
+        timeout: 120
+        task: |
+          Você é o COPYWRITER B (Flash).
+          **Job ID:** {{job_id}}
+          **Leia:** (mesmo contexto acima)
+          **Output:**
+          - Salve copy em: {{wip_dir}}/{{job_id}}_05B_COPY_FLASH.md
+          - Temp 1.0
+
+      - id: "05c_sonnet"
+        model: "sonnet"
+        timeout: 180
+        task: |
+          Você é o COPYWRITER C (Sonnet).
+          **Job ID:** {{job_id}}
+          **Leia:** (mesmo contexto acima)
+          **Output:**
+          - Salve copy em: {{wip_dir}}/{{job_id}}_05C_COPY_SONNET.md
+          - Temp 1.0
+
+  - id: "06_guardians"
+    name: "Brand Guardians"
+    model: "flash"
+    timeout: 90
+    task: |
+      Você é o BRAND_GUARDIANS.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Role: {{roles_dir}}/BRAND_GUARDIAN.md
+      2. Copies: 
+         - {{wip_dir}}/{{job_id}}_05A_COPY_GPT.md
+         - {{wip_dir}}/{{job_id}}_05B_COPY_FLASH.md
+         - {{wip_dir}}/{{job_id}}_05C_COPY_SONNET.md
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_06_BRAND_GUARDIANS.json
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_06_BRAND_GUARDIANS.json"
+      condition: "exists"
+
+  - id: "07_critics"
+    name: "Critics"
+    model: "opus"
+    timeout: 120
+    task: |
+      Você é o CRITICS.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Role: {{roles_dir}}/CRITIC.md
+      2. Copies A/B/C e Brand Guardians (JSONs anteriores)
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_07_CRITICS.json
+      - Formato: { "vencedor": "A|B|C", "ajustes_sugeridos": [...] }
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_07_CRITICS.json"
+      condition: "exists"
+
+  - id: "07b_director"
+    name: "Director (Refinement)"
+    model: "gpt"
+    timeout: 180
+    condition: # Só roda se o arquivo anterior contiver "ajustes_sugeridos"
+      check: "grep"
+      file: "{{wip_dir}}/{{job_id}}_07_CRITICS.json"
+      pattern: '"ajustes_sugeridos"'
+    task: |
+      Você é o DIRECTOR.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Role: {{roles_dir}}/DIRECTOR.md
+      2. Critics: {{wip_dir}}/{{job_id}}_07_CRITICS.json
+      **Output:**
+      - Salve em: {{wip_dir}}/{{job_id}}_07B_DIRECTOR.md
+
+  - id: "08_wall"
+    name: "The Wall (Final Filter)"
+    model: "opus"
+    timeout: 120
+    task: |
+      Você é o WALL.
+      **Job ID:** {{job_id}}
+      **Leia:**
+      1. Copy final (Director ou Winner)
+      2. Briefing original
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_08_WALL.json
+      - Score >= 80 aprovado.
