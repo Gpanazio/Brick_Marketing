@@ -373,15 +373,17 @@
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
             { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
             { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'GEMINI FLASH' },
-            { id: 'p2', x: 0, y: 750, title: 'CREATIVE_IDEATION', label: 'Concept_Gen', model: 'CLAUDE SONNET' },
-            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI FLASH' },
+            { id: 'p2a', x: -180, y: 750, title: 'IDEATION_GPT', label: 'Concept_A', model: 'GPT' },
+            { id: 'p2b', x: 0, y: 750, title: 'IDEATION_FLASH', label: 'Concept_B', model: 'GEMINI FLASH' },
+            { id: 'p2c', x: 180, y: 750, title: 'IDEATION_SONNET', label: 'Concept_C', model: 'CLAUDE SONNET' },
+            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI PRO' },
             { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI PRO' },
             { id: 'p5', x: 0, y: 1350, title: 'COPYWRITER', label: 'Script_Writer', model: 'CLAUDE SONNET' },
             { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI PRO' },
             { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'p10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
+        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2a'],['p1','p2b'],['p1','p2c'],['p2a','p3'],['p2b','p3'],['p2c','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
 
         const nodeDefIdeias = [
             { id: 'i0', x: 0, y: 150, title: 'RAW_IDEA', label: 'Ingestion', model: 'INPUT' },
@@ -412,7 +414,9 @@
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
-            'CREATIVE_IDEATION': ['CREATIVE_IDEATION'],
+            'IDEATION_GPT': ['IDEATION_GPT', 'CREATIVE_IDEATION_GPT'],
+            'IDEATION_FLASH': ['IDEATION_FLASH', 'CREATIVE_IDEATION_FLASH'],
+            'IDEATION_SONNET': ['IDEATION_SONNET', 'CREATIVE_IDEATION_SONNET', 'CREATIVE_IDEATION'],
             'CONCEPT_CRITIC': ['CONCEPT_CRITIC'],
             'EXECUTION_DESIGN': ['EXECUTION_DESIGN'],
             'COPYWRITER': ['COPYWRITER'],
@@ -499,11 +503,13 @@
 ▼
 01. BRAND DIGEST (Flash) - extrai DNA/tom/assets
 │
+├────────────────┬────────────────┤
+▼                ▼                ▼
+02a. IDEATION    02b. IDEATION    02c. IDEATION
+(GPT)            (Flash)          (Sonnet)
+├────────────────┴────────────────┤
 ▼
-02. CREATIVE IDEATION (Sonnet) - 3 conceitos
-│
-▼
-03. CONCEPT CRITIC (Flash) - escolhe melhor
+03. CONCEPT CRITIC (Gemini Pro) - escolhe melhor
 │
 ▼
 04. EXECUTION DESIGN (Gemini Pro) - direção visual
@@ -635,7 +641,7 @@ OUTPUT (Copy Final)`;
                 // Ex: roteirizacao_set_PAIN_CHECK.json -> roteirizacao_set
                 const roleSuffixes = [
                     // Projetos
-                    'BRAND_DIGEST','CREATIVE_IDEATION','CONCEPT_CRITIC','EXECUTION_DESIGN',
+                    'BRAND_DIGEST','CREATIVE_IDEATION','IDEATION_GPT','IDEATION_FLASH','IDEATION_SONNET','CONCEPT_CRITIC','EXECUTION_DESIGN',
                     'COPYWRITER','DIRECTOR','FINAL','PROCESSED','BRIEFING_INPUT',
                     // Ideias
                     'PAIN_CHECK','MARKET_SCAN','ANGLE_GEN','DEVIL_GEN','VIABILITY','DECISION','RAW_IDEA'
