@@ -174,19 +174,8 @@ const PAIN_CHECK = {
     }
 };
 
-const MARKET_SCAN = {
-    name: 'MARKET_SCAN',
-    required: ['market_scan'],
-    properties: {
-        idea_name: { type: 'string' },
-        market_scan: { type: 'object' },
-        opportunity_score: { type: 'number', min: 0, max: 100 },
-        opportunity_analysis: { type: 'string' },
-        differentiation_angles: { type: 'array' },
-        status: { type: 'string', enum: ['PASS', 'FAIL'] },
-        next_step: { type: 'string' }
-    }
-};
+// MARKET_SCAN: output é .md (markdown), não JSON. Schema removido.
+// Se migrar para .json no futuro, adicionar schema aqui.
 
 const ANGLE_GEN = {
     name: 'ANGLE_GEN',
@@ -256,7 +245,7 @@ const schemas = {
 
     // Ideias
     PAIN_CHECK,
-    MARKET_SCAN,
+    // MARKET_SCAN: output é .md, schema não aplicável
     ANGLE_GEN,
     DEVIL_GEN,
     VIABILITY

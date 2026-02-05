@@ -110,12 +110,12 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 
 ### Projetos
 - {JOB_ID}_BRIEFING_INPUT.md
-- {JOB_ID}_BRAND_DIGEST.md
+- {JOB_ID}_BRAND_DIGEST.json
 - {JOB_ID}_IDEATION_GPT.md
 - {JOB_ID}_IDEATION_FLASH.md
 - {JOB_ID}_IDEATION_SONNET.md
-- {JOB_ID}_CONCEPT_CRITIC.md
-- {JOB_ID}_EXECUTION_DESIGN.md
+- {JOB_ID}_CONCEPT_CRITIC.json
+- {JOB_ID}_EXECUTION_DESIGN.json
 - {JOB_ID}_COPYWRITER.md
 - {JOB_ID}_DIRECTOR.md
 
@@ -123,8 +123,8 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 - {JOB_ID}_RAW_IDEA.md
 - {JOB_ID}_PAIN_CHECK.json
 - {JOB_ID}_MARKET_SCAN.md
-- {JOB_ID}_ANGLE_GEN.md
-- {JOB_ID}_DEVIL_GEN.md
+- {JOB_ID}_ANGLE_GEN.json
+- {JOB_ID}_DEVIL_GEN.json
 - {JOB_ID}_VIABILITY.json
 
 ## Estimativa de Custos
