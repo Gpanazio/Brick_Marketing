@@ -636,11 +636,18 @@ OUTPUT (Copy Final)`;
                 f.name.includes('PROCESSED') || 
                 f.name.includes('RAW_IDEA')
             );
-            if (!briefingFile || !briefingFile.content) return null;
+            
+            // Fallback: qualquer arquivo com conteúdo que comece com # BRIEFING:
+            const fallbackFile = !briefingFile ? files.find(f => 
+                f.content && /^#\s*BRIEFING:/m.test(f.content)
+            ) : null;
+            
+            const targetFile = briefingFile || fallbackFile;
+            if (!targetFile || !targetFile.content) return null;
 
             // Extrai título da primeira linha markdown
             // Suporta: # BRIEFING: X, # BRIEFING PROCESSADO: X, # RAW IDEA: X
-            const match = briefingFile.content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:|RAW IDEA:)?\s*(.+)$/m);
+            const match = targetFile.content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:|RAW IDEA:)?\s*(.+)$/m);
             return match ? match[1].trim() : null;
         }
 
