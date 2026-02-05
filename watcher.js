@@ -1,231 +1,184 @@
 /**
- * BRICK AI WATCHER v2.0
+ * BRICK AI WATCHER v3.0 (Executor Mode)
  * 
- * Monitora Railway, detecta briefings, notifica Douglas.
- * MELHORIAS: Retry com backoff, persistência de estado, logs estruturados.
- * 
- * Uso: RAILWAY_URL=https://seu-app.up.railway.app node watcher.js
+ * - Monitora Railway (API)
+ * - Baixa briefings de Marketing, Projetos e Ideias
+ * - Executa Maestro (Python) com o pipeline correto
+ * - Sincroniza resultados (WIP/DONE) de volta para o Railway
  */
 
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 
+// Config
 const RAILWAY_URL = process.env.RAILWAY_URL || 'http://localhost:3000';
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
-const POLL_INTERVAL = 10000; // 10 segundos
-const LOCAL_MARKETING = path.join(__dirname);
-const STATE_FILE = path.join(__dirname, '.watcher_state.json');
-const MAX_RETRIES = 3;
+const POLL_INTERVAL = 10000; // 10s
+const PROJECT_ROOT = __dirname;
+const MAESTRO_SCRIPT = path.join(PROJECT_ROOT, 'run-pipeline.sh');
 
+// State
+const STATE_FILE = path.join(__dirname, '.watcher_state_v3.json');
 let processedBriefings = new Set();
-let lastWipFiles = new Set();
+let syncedFiles = new Set();
+let activeJobs = new Set();
 
-// Structured logging
-const log = (level, event, data = {}) => {
-    const entry = { level, event, ...data, timestamp: new Date().toISOString() };
-    console.log(JSON.stringify(entry));
+// Mapeamento Modo -> Pipeline YAML
+const PIPELINES = {
+    'marketing': 'pipelines/standard_v1.yaml',
+    'projetos': 'pipelines/projects_v1.yaml',
+    'ideias': 'pipelines/ideias_v1.yaml'
 };
 
-// State persistence
-function saveState() {
-    try {
-        fs.writeFileSync(STATE_FILE, JSON.stringify({
-            processedBriefings: [...processedBriefings],
-            lastWipFiles: [...lastWipFiles],
-            savedAt: new Date().toISOString()
-        }, null, 2));
-    } catch (e) {
-        log('error', 'state_save_failed', { error: e.message });
-    }
-}
+// Logging
+const log = (level, event, data = {}) => {
+    console.log(JSON.stringify({ level, event, ...data, timestamp: new Date().toISOString() }));
+};
 
+// Sleep
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Persistence
 function loadState() {
     try {
         if (fs.existsSync(STATE_FILE)) {
             const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf-8'));
             processedBriefings = new Set(data.processedBriefings || []);
-            lastWipFiles = new Set(data.lastWipFiles || []);
-            log('info', 'state_loaded', { 
-                processedBriefings: processedBriefings.size, 
-                lastWipFiles: lastWipFiles.size 
-            });
+            syncedFiles = new Set(data.syncedFiles || []);
         }
+    } catch (e) { log('warn', 'state_load_failed', { error: e.message }); }
+}
+
+function saveState() {
+    try {
+        fs.writeFileSync(STATE_FILE, JSON.stringify({
+            processedBriefings: [...processedBriefings],
+            syncedFiles: [...syncedFiles],
+            lastUpdate: new Date().toISOString()
+        }, null, 2));
+    } catch (e) { log('error', 'state_save_failed', { error: e.message }); }
+}
+
+// Fetch helper
+async function apiFetch(endpoint, options = {}) {
+    try {
+        const url = `${RAILWAY_URL}${endpoint}`;
+        const headers = { 'X-API-Key': API_KEY, ...options.headers };
+        const res = await fetch(url, { ...options, headers });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
     } catch (e) {
-        log('warn', 'state_load_failed', { error: e.message });
+        log('error', 'api_fetch_failed', { endpoint, error: e.message });
+        return null;
     }
 }
 
-// Sleep helper
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Fetch with exponential backoff retry
-async function fetchWithRetry(url, options = {}, maxRetries = MAX_RETRIES) {
-    let lastError;
+// Executar Pipeline
+function runPipeline(briefingPath, mode) {
+    const pipelineYaml = PIPELINES[mode] || PIPELINES['marketing'];
+    const yamlPath = path.join(PROJECT_ROOT, pipelineYaml);
     
-    for (let i = 0; i < maxRetries; i++) {
-        try {
-            const res = await fetch(url, options);
-            if (res.ok) return await res.json();
-            throw new Error(`HTTP ${res.status}`);
-        } catch (e) {
-            lastError = e;
-            if (i < maxRetries - 1) {
-                const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s
-                log('warn', 'fetch_retry', { url, attempt: i + 1, delay, error: e.message });
-                await sleep(delay);
-            }
-        }
-    }
+    log('info', 'starting_pipeline', { mode, briefing: path.basename(briefingPath), yaml: pipelineYaml });
     
-    log('error', 'fetch_failed', { url, attempts: maxRetries, error: lastError.message });
-    return null;
-}
-
-console.log('🔗 Brick AI Watcher v2.0 iniciado');
-console.log(`📡 Railway: ${RAILWAY_URL}`);
-console.log(`📁 Local: ${LOCAL_MARKETING}`);
-console.log('---');
-
-// Ensure local dirs exist
-['briefing', 'wip', 'done', 'failed'].forEach(dir => {
-    const dirPath = path.join(LOCAL_MARKETING, 'marketing', dir);
-    if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
-});
-
-// Fetch from Railway
-async function fetchState() {
-    return await fetchWithRetry(`${RAILWAY_URL}/api/state`);
-}
-
-// Send result to Railway with retry
-async function sendResult(filename, content, category = 'wip') {
-    const result = await fetchWithRetry(`${RAILWAY_URL}/api/result`, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'X-API-Key': API_KEY
-        },
-        body: JSON.stringify({ filename, content, category })
+    // Spawn run-pipeline.sh
+    const child = spawn(MAESTRO_SCRIPT, [briefingPath, '--pipeline', yamlPath], {
+        cwd: PROJECT_ROOT,
+        stdio: 'inherit' // Loga direto no console do watcher
     });
-    
-    if (result) {
-        log('info', 'result_sent', { filename, category });
-        return true;
-    }
-    return false;
+
+    const jobId = path.basename(briefingPath);
+    activeJobs.add(jobId);
+
+    child.on('close', (code) => {
+        activeJobs.delete(jobId);
+        if (code === 0) {
+            log('success', 'pipeline_finished', { mode, briefing: path.basename(briefingPath) });
+            // Forçar sync imediato após sucesso
+            syncLocalToRemote(mode);
+        } else {
+            log('error', 'pipeline_failed', { mode, briefing: path.basename(briefingPath), code });
+        }
+    });
 }
 
-// Report failure to Railway
-async function reportFailure(filename, step, error) {
-    try {
-        await fetch(`${RAILWAY_URL}/api/fail`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'X-API-Key': API_KEY
-            },
-            body: JSON.stringify({ filename, step, error })
-        });
-        log('info', 'failure_reported', { filename, step });
-    } catch (e) {
-        log('error', 'failure_report_failed', { error: e.message });
-    }
-}
+// Download Briefings
+async function checkBriefings(mode) {
+    const data = await apiFetch(`/api/pending?mode=${mode}`);
+    if (!data || !data.briefings) return;
 
-// Clear briefing from Railway after processing
-async function clearBriefing(filename) {
-    try {
-        const res = await fetch(`${RAILWAY_URL}/api/briefing/clear`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'X-API-Key': API_KEY
-            },
-            body: JSON.stringify({ filename })
-        });
-        return res.ok;
-    } catch (e) {
-        return false;
-    }
-}
-
-// Check for new briefings
-async function checkBriefings(state) {
-    for (const briefing of state.briefing) {
-        if (!processedBriefings.has(briefing.name)) {
-            log('info', 'briefing_detected', { name: briefing.name });
+    for (const b of data.briefings) {
+        if (!processedBriefings.has(b.name)) {
+            log('info', 'new_briefing_found', { mode, name: b.name });
             
-            // Save locally for Douglas to process
-            const localPath = path.join(LOCAL_MARKETING, 'marketing', 'briefing', briefing.name);
-            fs.writeFileSync(localPath, briefing.content);
+            // Salvar localmente
+            const localDir = path.join(PROJECT_ROOT, 'history', mode, 'briefing');
+            if (!fs.existsSync(localDir)) fs.mkdirSync(localDir, { recursive: true });
             
-            // Create signal file for Douglas
-            const signalPath = path.join(LOCAL_MARKETING, 'NEW_BRIEFING_SIGNAL.txt');
-            fs.writeFileSync(signalPath, `NOVO BRIEFING: ${briefing.name}\nDATA: ${new Date().toISOString()}\n\nDouglas, processe este briefing!`);
+            const localPath = path.join(localDir, b.name);
+            fs.writeFileSync(localPath, b.content);
             
-            processedBriefings.add(briefing.name);
+            // Executar
+            runPipeline(localPath, mode);
+            
+            processedBriefings.add(b.name);
             saveState();
-            
-            log('info', 'briefing_saved_locally', { name: briefing.name });
         }
     }
 }
 
-// Check for new local WIP files to sync to Railway
-async function syncLocalToRailway() {
-    const wipPath = path.join(LOCAL_MARKETING, 'marketing', 'wip');
-    if (!fs.existsSync(wipPath)) return;
+// Sync Results (WIP/DONE) -> Railway
+async function syncLocalToRemote(mode) {
+    const dirs = ['wip', 'done'];
     
-    const localFiles = fs.readdirSync(wipPath).filter(f => !f.startsWith('.'));
-    
-    for (const file of localFiles) {
-        if (!lastWipFiles.has(file)) {
-            const content = fs.readFileSync(path.join(wipPath, file), 'utf-8');
-            const success = await sendResult(file, content, 'wip');
-            if (success) {
-                lastWipFiles.add(file);
-                saveState();
+    for (const dir of dirs) {
+        const localPath = path.join(PROJECT_ROOT, 'history', mode, dir);
+        if (!fs.existsSync(localPath)) continue;
+        
+        const files = fs.readdirSync(localPath).filter(f => !f.startsWith('.'));
+        
+        for (const file of files) {
+            const filePath = path.join(localPath, file);
+            const stats = fs.statSync(filePath);
+            const fileKey = `${mode}:${dir}:${file}:${stats.mtimeMs}`; // Key inclui mtime pra detectar updates
+            
+            if (!syncedFiles.has(fileKey)) {
+                log('info', 'syncing_file', { mode, dir, file });
+                
+                const content = fs.readFileSync(filePath, 'utf-8');
+                const res = await apiFetch('/api/result', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: file,
+                        content,
+                        category: dir,
+                        mode: mode
+                    })
+                });
+                
+                if (res && res.success) {
+                    syncedFiles.add(fileKey);
+                    saveState();
+                }
             }
         }
     }
 }
 
-// Main loop
+// Main Loop
 async function poll() {
-    const state = await fetchState();
-    if (state) {
-        await checkBriefings(state);
-        await syncLocalToRailway();
-    }
-}
-
-// Initial sync of existing files
-function initialSync() {
-    loadState();
+    const modes = ['marketing', 'projetos', 'ideias'];
     
-    const wipPath = path.join(LOCAL_MARKETING, 'marketing', 'wip');
-    if (fs.existsSync(wipPath)) {
-        const files = fs.readdirSync(wipPath).filter(f => !f.startsWith('.'));
-        files.forEach(f => lastWipFiles.add(f));
+    for (const mode of modes) {
+        await checkBriefings(mode);
+        await syncLocalToRemote(mode);
     }
-    saveState();
 }
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-    log('info', 'watcher_stopping');
-    saveState();
-    process.exit(0);
-});
-
-process.on('SIGTERM', () => {
-    log('info', 'watcher_stopping');
-    saveState();
-    process.exit(0);
-});
-
-initialSync();
-poll();
+// Init
+console.log('🚀 Brick AI Watcher v3.0 (Executor)');
+console.log(`📡 Remote: ${RAILWAY_URL}`);
+loadState();
+poll(); // Run once immediately
 setInterval(poll, POLL_INTERVAL);
-
-log('info', 'watcher_started', { pollInterval: POLL_INTERVAL, railwayUrl: RAILWAY_URL });
