@@ -1,0 +1,42 @@
+{
+  "claims_validados": [
+    {
+      "claim": "Dois terços das marcas B2B estão mudando táticas para dar ao storytelling um 'sentimento mais humano' em 2026.",
+      "status": "VERIFICADO",
+      "fonte_original": "Marketing Week",
+      "fonte_verificacao": "https://www.marketingweek.com/5-trends-shape-b2b-marketing/",
+      "confianca": "alta",
+      "notas": "Texto original: 'two-thirds of respondents are evolving their approaches... in order to give their brand’s storytelling a more human feel'. O dado é referente a uma pesquisa mencionada no artigo da Marketing Week."
+    },
+    {
+      "claim": "O sucesso do marketing em 2026 dependerá de visibilidade, credibilidade e influência humana para construir confiança.",
+      "status": "VERIFICADO",
+      "fonte_original": "eMarketer",
+      "fonte_verificacao": "https://www.emarketer.com/content/b2b-marketing-trends-watch-2026",
+      "confianca": "alta",
+      "notas": "Confirmado no resumo do relatório da eMarketer: 'In 2026, marketing success will hinge on visibility, credibility, and governance... human influence is reshaping how marketers build trust'."
+    },
+    {
+      "claim": "94% dos compradores B2B usaram LLMs durante sua jornada de compra em 2025.",
+      "status": "VERIFICADO",
+      "fonte_original": "6sense (citado pela Marketing Week)",
+      "fonte_verificacao": "https://www.marketingweek.com/5-trends-shape-b2b-marketing/",
+      "confianca": "alta",
+      "notas": "Dado presente no artigo da Marketing Week citando a 6sense. Reforça o argumento de que a IA já está na infraestrutura da jornada de compra."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "2/3 das marcas B2B estão focando em storytelling com 'sentimento humano' para 2026 (Marketing Week).",
+    "94% dos compradores B2B já usam LLMs como ChatGPT/Gemini para informar decisões (6sense/Marketing Week).",
+    "Credibilidade e influência humana são os pilares da confiança no marketing B2B para 2026 (eMarketer)."
+  ],
+  "estatisticas_evitar": [
+    "Evitar números muito redondos de produtividade (ex: 'IA aumenta 10x') que não aparecem nessas fontes de tendências."
+  ],
+  "resumo": {
+    "total_claims": 3,
+    "verificados": 3,
+    "duvidosos": 0,
+    "recomendacao": "Os dados de tendências para 2026 são sólidos e vêm de fontes de autoridade (Marketing Week e eMarketer). O Copywriter pode usar o dado de 94% de uso de LLMs pelos compradores para criar urgência na persona 'cética'."
+  }
+}

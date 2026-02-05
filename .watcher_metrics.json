@@ -1,0 +1,25 @@
+{
+  "startTime": "2026-02-05T15:08:21.927Z",
+  "totalPipelinesRun": 0,
+  "successfulPipelines": 0,
+  "failedPipelines": 0,
+  "filesSynced": 0,
+  "lastCleanup": "2026-02-05T15:08:21.964Z",
+  "byMode": {
+    "marketing": {
+      "runs": 0,
+      "success": 0,
+      "failed": 0
+    },
+    "projetos": {
+      "runs": 0,
+      "success": 0,
+      "failed": 0
+    },
+    "ideias": {
+      "runs": 0,
+      "success": 0,
+      "failed": 0
+    }
+  }
+}

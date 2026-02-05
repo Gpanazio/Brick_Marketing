@@ -463,10 +463,10 @@ if [ ! -f "$BRAND_GUARD_OUT" ] || ! validate_json "$BRAND_GUARD_OUT"; then
 fi
 
 # ============================================
-# ETAPA 7: CRITIC (Opus)
+# ETAPA 7: CRITIC (GPT 5.2)
 # ============================================
 echo ""
-echo "⏳ ETAPA 7: Critic (Opus)"
+echo "⏳ ETAPA 7: Critic (GPT 5.2)"
 STEP_START=$(start_timer)
 CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_CRITICS.json"
 CRITIC_LOG="$LOG_DIR/${JOB_ID}_07_CRITICS.log"
@@ -478,7 +478,7 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent opus \
+    openclaw agent --agent gpt \
       --session-id "brick-mkt-${JOB_ID}-critic" \
       --message "${CRITIC_ROLE}
 

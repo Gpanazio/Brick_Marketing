@@ -1,0 +1,41 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agência de publicidade média/grande ou brands in-house",
+    "experiencia": "10+ anos no mercado"
+  },
+  "dores": [
+    "Ceticismo com a qualidade da IA (medo de campanhas sazonais genéricas)",
+    "Orçamento de produção apertado para datas comemorativas",
+    "Fadiga de conteúdos de 'Feliz Páscoa' sem diferencial criativo",
+    "Medo de parecer desatualizado se não usar tecnologia, mas medo de parecer 'fake' se usar mal"
+  ],
+  "linguagem_comum": [
+    "brief",
+    "craft",
+    "produção premium",
+    "key visual",
+    "approach",
+    "deadline"
+  ],
+  "objecoes": [
+    "IA não consegue entregar o 'calor' ou o 'craft' de uma data como a Páscoa",
+    "Campanhas de IA para feriados costumam parecer templates de banco de imagem",
+    "Não temos budget para um filme de Páscoa de alto nível"
+  ],
+  "motivadores_de_acao": [
+    "Status de ser a primeira agência/marca a fazer um 'Easter Egg' tecnológico de alto nível",
+    "Eficiência operacional para criar conteúdo sazonal premium sem estourar o budget",
+    "Diferenciação competitiva através de uma estética 'Kubrickiana' em uma data fofa"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (Principal)",
+    "Newsletters: B9, Meio & Mensagem",
+    "Eventos: Cannes Lions, SXSW"
+  ],
+  "fontes_consultadas": [
+    "Persona Oficial Brick AI (Hardcoded)",
+    "Briefing 'Campanha de Páscoa' - Job ID 1770303771859"
+  ],
+  "analise_alinhamento": "O briefing de Páscoa para a Brick AI precisa fugir do clichê 'coelhinho e chocolate' para atrair esta persona. O alinhamento deve focar no 'craft' da produção de IA, tratando a Páscoa como um desafio técnico ou estético (ex: como seria a Páscoa dirigida por Kubrick?). Isso ataca a dor do ceticismo e o motivador de status profissional."
+}

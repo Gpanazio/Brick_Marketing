@@ -1,0 +1,46 @@
+{
+  "idea_name": "Agente de IA para Roteirização de Sets Reais",
+  "market_scan": {
+    "category": "SaaS B2B (Vertical - Film Production Management)",
+    "business_model": "Subscription (Per-project or Annual License)",
+    "pricing_range": {
+      "entry": "$49-149/mês (Indie/Commercials)",
+      "mid": "$499-1.500/mês (Production Houses)",
+      "enterprise": "$5.000+/anual (Studios/Streamers)"
+    },
+    "competitor_types": [
+      {
+        "type": "Incumbentes estabelecidos (Legacy Software)",
+        "threat_level": "high",
+        "notes": "Softwares como Movie Magic Scheduling dominam o mercado enterprise mas possuem UX datada e zero automação inteligente."
+      },
+      {
+        "type": "SaaS Modernos de Gestão de Produção",
+        "threat_level": "medium",
+        "notes": "Plataformas como StudioBinder e Yamdu oferecem colaboração em nuvem superior, mas ainda dependem de drag-and-drop manual."
+      },
+      {
+        "type": "Startups de IA em Pré-Produção",
+        "threat_level": "medium",
+        "notes": "Empresas como Filmustage focam em breakdown de roteiro e podem expandir para scheduling."
+      }
+    ],
+    "barriers": {
+      "technical": "high",
+      "regulatory": "low",
+      "network_effects": "medium",
+      "switching_costs": "high",
+      "capital": "medium"
+    }
+  },
+  "opportunity_score": 82,
+  "opportunity_analysis": "Os incumbentes são ferramentas de 'registro', não de 'otimização'. O alto custo operacional das diárias de filmagem cria um ROI imediato para qualquer solução que reduza o risco de erro humano. A janela de oportunidade está na integração de variáveis externas (clima, logística) que hoje moram apenas na cabeça do 1st AD.",
+  "differentiation_angles": [
+    "Recálculo dinâmico em tempo real (Pivoting logístico instantâneo se chover ou se um ator atrasar)",
+    "Otimização por 'Sun Tracking' (Sincronização automática da ordem das cenas com a posição exata da luz solar no set)",
+    "Predictive Fatigue Monitoring (Ajuste do cronograma para cenas mais complexas ocorrerem nos picos de energia da equipe)"
+  ],
+  "status": "PASS",
+  "next_step": "ANGLE_GEN",
+  "timestamp": "2026-02-05T12:35:00Z"
+}

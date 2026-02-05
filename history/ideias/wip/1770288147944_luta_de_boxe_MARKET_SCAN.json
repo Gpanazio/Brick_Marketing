@@ -1,0 +1,46 @@
+{
+  "idea_name": "Bolsonaro x Lula, ao vivo na RedeTV (Luta de Boxe)",
+  "market_scan": {
+    "category": "Live Entertainment / Pay-Per-View (PPV)",
+    "business_model": "Transação única (PPV) + Patrocínio + Direitos de Transmissão + Apostas",
+    "pricing_range": {
+      "entry": "R$ 49-99 (Digital PPV)",
+      "mid": "R$ 500-2.000 (Ingresso Presencial)",
+      "enterprise": "R$ 10M+ (Cotas de Patrocínio Master)"
+    },
+    "competitor_types": [
+      {
+        "type": "Promotoras de Celebrity Boxing (ex: Fight Music Show)",
+        "threat_level": "high",
+        "notes": "Já possuem o know-how de produção e rede de contatos com casas de apostas."
+      },
+      {
+        "type": "Emissoras de TV Tradicionais",
+        "threat_level": "medium",
+        "notes": "Podem bloquear por questões éticas/editoriais ou tentar exclusividade."
+      },
+      {
+        "type": "Plataformas de Streaming (Netflix/YouTube)",
+        "threat_level": "medium",
+        "notes": "Interesse em eventos 'unscripted' de alto impacto global."
+      }
+    ],
+    "barriers": {
+      "technical": "low",
+      "regulatory": "very high",
+      "network_effects": "high",
+      "switching_costs": "none",
+      "capital": "high"
+    }
+  },
+  "opportunity_score": 85,
+  "opportunity_analysis": "O mercado de 'atypical combat sports' está em explosão global. No Brasil, o apelo de um confronto direto entre as duas maiores figuras políticas da história recente é um 'black swan' de audiência. O risco não é de mercado (demanda), mas de execução/viabilidade jurídica.",
+  "differentiation_angles": [
+    "Gamificação política: Venda de rounds baseada em votação popular",
+    "Apostas 'ideológicas' integradas",
+    "Narrativa de 'O Acerto de Contas Final' (The Ultimate Grudge Match)"
+  ],
+  "status": "PASS",
+  "next_step": "ANGLE_GEN",
+  "timestamp": "2026-02-05T12:20:00Z"
+}

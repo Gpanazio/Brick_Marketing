@@ -1,16 +1,16 @@
 {
   "status": "FAIL",
   "faltando": [
-    "OBJETIVO - Além de ser polêmico, qual o objetivo de negócio (awareness, conversão, comentário)?",
-    "PÚBLICO - Quem exatamente estamos provocando (Copywriters, designers, donos de agência)?",
-    "CONTEXTO - Por que fazer esse post agora? Faz parte de uma campanha maior?",
-    "REFERÊNCIAS - Algum tom de voz específico da Brick Marketing que deve ser mantido ou evitado?"
+    "OBJETIVO - Além de ser polêmico, qual o resultado esperado? (Comentários, compartilhamentos, novos seguidores?)",
+    "PÚBLICO - Quem exatamente estamos provocando? (Freelancers, diretores de arte tradicionais, copywriters?)",
+    "FORMATO - É um post único, carrossel ou Reels?",
+    "CONTEXTO - Faz parte do aquecimento para o lançamento em 23/02 ou é um post isolado?"
   ],
   "perguntas_para_humano": [
-    "Quem é o público-alvo específico que queremos provocar no Instagram?",
-    "Qual o objetivo final desse post (gerar comentários, atrair novos seguidores, posicionamento de marca)?",
-    "Existe algum limite para a 'polêmica' ou alguma restrição do que não podemos dizer?",
-    "O post deve levar a algum link ou CTA específico?"
+    "Qual o objetivo principal deste post além da polêmica?",
+    "Qual o perfil específico do público que queremos 'alfinetar'?",
+    "O post deve ser em qual formato (ex: imagem única, carrossel de dados)?",
+    "Existe alguma restrição sobre quão agressivo o tom pode ser?"
   ],
-  "proximo_passo": "Aguardar input humano"
+  "proximo_passo": "Aguardar input humano para detalhamento"
 }

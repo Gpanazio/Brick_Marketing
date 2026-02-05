@@ -12,7 +12,7 @@
 | 5B | COPYWRITER.md | Flash | Copy versao B (eficiente/data-driven) |
 | 5C | COPYWRITER.md | Sonnet | Copy versao C (narrativo/emocional) |
 | 6 | BRAND_GUARDIAN.md | Flash | Valida consistencia de marca |
-| 7 | CRITIC.md | Opus | Escolhe melhor copy, sugere ajustes |
+| 7 | CRITIC.md | GPT | Escolhe melhor copy, sugere ajustes |
 | 8 | FILTRO_FINAL.md | Opus | Score final 0-100, aprova/rejeita |
 
 ## Ideias Pipeline (run-ideias.sh)

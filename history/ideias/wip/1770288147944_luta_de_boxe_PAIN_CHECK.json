@@ -1,9 +1,22 @@
 {
-  "agent": "PAIN_CHECK",
-  "job_id": "1770288147944_luta_de_boxe",
-  "problem_score": 9,
-  "audience_size": "massive",
-  "urgency": "high",
-  "analysis": "A proposta explora a polarização política extrema do Brasil transformando-a em entretenimento de combate direto. A 'dor' resolvida é a necessidade de catarse da população e a simplificação do conflito ideológico em uma disputa física binária. O cenário 'RedeTV' ancora a estética no sensacionalismo popular. Potencial de engajamento viral absoluto, embora não resolva problemas estruturais reais, atende a uma demanda latente de espetáculo.",
-  "verdict": "VALID"
+  "idea_name": "Bolsonaro x Lula, ao vivo na RedeTV (Luta de Boxe)",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_active": true,
+    "analysis": "A 'dor' aqui não é um problema corporativo tradicional, mas sim a extrema polarização política e o desejo de entretenimento catártico. O mercado de 'Celebrity Boxing' (como o Fight Music Show no Brasil) prova que há uma demanda massiva por ver figuras públicas resolvendo tensões de forma física. A polarização no Brasil é uma das maiores do mundo, gerando uma dor de 'necessidade de desfecho' ou 'vitória definitiva' para ambos os lados."
+  },
+  "evidence": [
+    "Sucesso comercial de eventos como Popó x Bambam no Brasil, que geram milhões em receita e audiência.",
+    "Engajamento recorde em qualquer postagem que coloque ambos os políticos em oposição direta.",
+    "Crescimento do mercado de apostas esportivas em eventos de entretenimento e política no Brasil."
+  ],
+  "red_flags": [
+    "Viabilidade jurídica e política: É quase impossível obter autorização para tal evento devido a questões de segurança nacional e imagem pública.",
+    "Risco de incitação à violência real fora do ringue devido ao teor ideológico.",
+    "Idade e condição física dos envolvidos (dor de segurança vs. entretenimento)."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-05T12:12:00Z"
 }
