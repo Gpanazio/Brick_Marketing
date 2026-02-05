@@ -14,7 +14,7 @@ const multer = require('multer');
 
 // Config e Contratos
 const CONFIG = require('./config/constants');
-// const schemas = require('./contracts/schemas'); // REMOVED: unused, contracts/ folder doesn't exist
+const { schemas, validate, getBotNameFromFilename } = require('./contracts/schemas');
 
 // Multer config for file uploads
 const storage = multer.diskStorage({
@@ -542,8 +542,25 @@ app.post('/api/result', (req, res) => {
     const categoryDir = path.join(root, targetCategory);
     if (!fs.existsSync(categoryDir)) fs.mkdirSync(categoryDir, { recursive: true });
 
-    // Schema validation removed - contracts/schemas.js not implemented
-    // TODO: Implement JSON schema validation when contracts/ folder is created
+    // Schema validation - valida output JSON dos agentes
+    if (filename.endsWith('.json') && content) {
+        try {
+            const detectedBot = botName || getBotNameFromFilename(filename);
+            if (detectedBot && schemas[detectedBot]) {
+                const jsonContent = JSON.parse(content);
+                const validation = validate(jsonContent, detectedBot);
+                if (!validation.valid) {
+                    log('warn', 'schema_validation_failed', {
+                        filename,
+                        botName: detectedBot,
+                        errors: validation.errors
+                    });
+                }
+            }
+        } catch (e) {
+            log('warn', 'json_parse_failed', { filename, error: e.message });
+        }
+    }
 
     if (botName && durationMs) {
         trackStep(botName, true, durationMs, model);

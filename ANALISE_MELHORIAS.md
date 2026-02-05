@@ -12,7 +12,13 @@
 |------|--------|-----------|
 | Fase 1 - Hotfixes | ✅ Concluída | Bugs críticos corrigidos |
 | Fase 2 - Estabilização | ✅ Concluída | Retry, validação, logging |
-| Fase 3 - Otimização | ⏳ Pendente | Context summarization, cleanup |
+| Fase 3 - Otimização | ✅ Concluída | Contracts, context summarizer, cleanup |
+
+### Arquivos Criados/Modificados na Fase 3:
+- `contracts/schemas.js` - Validação de JSON output dos agentes
+- `lib/context-summarizer.sh` - Funções de resumo de contexto (economia de tokens)
+- `watcher.js` → v5.0 - Cleanup automático de state antigo + métricas
+- `server.js` - Habilitada validação de schema no endpoint /api/result
 
 ---
 
