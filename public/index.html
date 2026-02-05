@@ -62,6 +62,11 @@
         .node[data-provider="human"] { border-left: 2px solid #fff; }
         .node[data-provider="human"] .node-led { background: #fff; box-shadow: 0 0 8px #fff; }
         .node[data-provider="human"] .node-subtext { color: #fff; }
+        .node[data-provider="revision"] { border-left: 2px solid #f97316; border: 2px solid #f97316; background: rgba(249, 115, 22, 0.05); }
+        .node[data-provider="revision"] .node-led { background: #f97316; box-shadow: 0 0 12px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
+        .node[data-provider="revision"] .node-subtext { color: #f97316; }
+        .node[data-provider="revision"] .node-title { color: #f97316; }
+        @keyframes pulse-revision { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .disabled[data-provider] { border-left-color: #222 !important; }
         .disabled[data-provider] .node-subtext { color: #333 !important; }
 
@@ -513,6 +518,10 @@
             'DIRECTOR': ['DIRECTOR'],
             'WALL': ['08_', 'FILTRO', 'WALL'],
             'SOCIAL_SLICE': ['SOCIAL_SLICE'],
+            'REVISÃO 1': ['REVISAO_1'],
+            'REVISÃO 2': ['REVISAO_2'],
+            'REVISÃO 3': ['REVISAO_3'],
+            'REVISÃO 4': ['REVISAO_4'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
@@ -685,13 +694,13 @@ OUTPUT (Proposta Completa)`;
 ├─► (SE score < 80) → volta COPYWRITER (05)
 │
 ▼ (score ≥ 80)
-09. HUMAN - aprovação final
+09. HUMAN - aprovação ou revisão
 │
-▼
-11. SOCIAL SLICE (Douglas)
+├─► [APROVAR] → SOCIAL_SLICE → OUTPUT
 │
-▼
-OUTPUT (Copy Final)`;
+└─► [REVISAR] → REVISÃO 1 (Modelo Campeão + Feedback)
+                │
+                └─► Aprovar/Rejeitar → loop`;
 
                 info.innerHTML = `
                     <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
@@ -701,6 +710,7 @@ OUTPUT (Copy Final)`;
                     <div>• Copy Senior (GPT-5.2) escolhe a melhor, aplica ajustes e entrega copy_revisada</div>
                     <div>• Wall (Opus) score final: ≥80 aprova, &lt;80 rejeita</div>
                     <div>• Aprovação humana obrigatória</div>
+                    <div>• <strong>Sistema de Revisões:</strong> Humano pode pedir ajustes → Modelo Campeão gera REVISÃO N → Aparece como nó destacado ao lado</div>
                     <div>• Social Slice fatiado para redes sociais</div>
                 `;
             }
@@ -1021,6 +1031,63 @@ OUTPUT (Copy Final)`;
                 makeDraggable(el);
             });
 
+            // DYNAMIC REVISION NODES - Detecta arquivos REVISAO_1, REVISAO_2... e cria nós ao lado do HUMAN
+            const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
+            revisionFiles.forEach((revFile, idx) => {
+                const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
+                const revId = `rev${revNum}`;
+                const revNode = {
+                    id: revId,
+                    title: `REVISÃO ${revNum}`,
+                    label: `Revision_${revNum}`,
+                    model: 'MODELO CAMPEÃO'
+                };
+                
+                const el = document.createElement('div');
+                el.className = 'node';
+                el.setAttribute('data-provider', 'revision');
+                el.id = revId;
+                el.style.position = 'absolute';
+                
+                // Posição: ao lado direito do HUMAN node (n9), com offset horizontal crescente
+                const humanNode = document.getElementById('n9');
+                if (humanNode && !savedPositions[revId]) {
+                    const humanRect = humanNode.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+                    const baseX = humanRect.left - containerRect.left + humanRect.width + 50;
+                    const offsetX = (idx * 380); // 380px de gap entre revisões
+                    el.style.left = `${baseX + offsetX}px`;
+                    el.style.top = `${humanRect.top - containerRect.top}px`;
+                } else if (savedPositions[revId]) {
+                    el.style.left = savedPositions[revId].left;
+                    el.style.top = savedPositions[revId].top;
+                } else {
+                    // Fallback se HUMAN não existe ainda
+                    el.style.left = `${centerX + 400 + (idx * 380)}px`;
+                    el.style.top = `2050px`;
+                }
+                
+                el.style.transform = 'none';
+                
+                el.innerHTML = `
+                    <div class="node-led"></div>
+                    <div class="node-id">${revId.toUpperCase()} // Revision_${revNum}</div>
+                    <div class="node-title">REVISÃO ${revNum}</div>
+                    <div class="node-subtext">MODELO CAMPEÃO</div>
+                    <div class="flex gap-2 mt-4 pt-4 border-t border-[#222]">
+                        <button onclick="approveRevision('${selectedJobId}', ${revNum}, event)" class="flex-1 bg-[#22c55e] text-white font-brick text-[9px] py-2 hover:bg-white hover:text-black transition-colors">✓ APROVAR</button>
+                        <button onclick="rejectRevision('${selectedJobId}', ${revNum}, event)" class="flex-1 border border-[#444] text-[#666] font-brick text-[9px] py-2 hover:border-white hover:text-white transition-colors">✗ REJEITAR</button>
+                    </div>
+                `;
+                
+                el.ondblclick = () => openPanel(revNode, projectFiles);
+                container.appendChild(el);
+                makeDraggable(el);
+                
+                // Adicionar conexão visual: HUMAN -> REVISAO_N
+                linksMarketing.push(['n9', revId]);
+            });
+
             updateConnections();
             updateTelemetry(projectFiles);
         }
@@ -1215,6 +1282,32 @@ OUTPUT (Copy Final)`;
             const n = document.createElement('div');
             n.className = `fixed top-8 right-8 z-[400] bg-${type === 'error' ? 'red' : 'green'}-600 text-white px-6 py-4 font-mono text-sm border border-${type === 'error' ? 'red' : 'green'}-500 shadow-2xl`;
             n.textContent = msg; document.body.appendChild(n); setTimeout(() => n.remove(), 4000);
+        }
+
+        async function approveRevision(jobId, revNum, e) {
+            e.stopPropagation();
+            if (!confirm(`Aprovar REVISÃO ${revNum}? Isso substituirá o conteúdo original.`)) return;
+            try {
+                const res = await fetch(`${API_URL}/revisions/${jobId}/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
+                    body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
+                });
+                if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
+            } catch(err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
+        }
+
+        async function rejectRevision(jobId, revNum, e) {
+            e.stopPropagation();
+            if (!confirm(`Rejeitar REVISÃO ${revNum}? O arquivo será movido para histórico.`)) return;
+            try {
+                const res = await fetch(`${API_URL}/revisions/${jobId}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
+                    body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
+                });
+                if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
+            } catch(err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
         }
 
         function getJobRevisionInfo(jobId) {
