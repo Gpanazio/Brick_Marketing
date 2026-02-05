@@ -1,5 +1,5 @@
 {
-  "runId": "7efbd466-300e-4652-a08d-6d3dd0537ab8",
+  "runId": "fe4dfae0-18fb-468b-9f98-02dc191bbfaa",
   "status": "ok",
   "summary": "completed",
   "result": {
@@ -10,23 +10,23 @@
       }
     ],
     "meta": {
-      "durationMs": 16468,
+      "durationMs": 14674,
       "agentMeta": {
         "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
         "provider": "openai-codex",
         "model": "gpt-5.2-codex",
         "usage": {
-          "input": 332,
+          "input": 861,
           "output": 10,
-          "cacheRead": 62336,
+          "cacheRead": 72704,
           "cacheWrite": 0,
-          "total": 62678
+          "total": 73575
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770311256153,
+        "generatedAt": 1770311949940,
         "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
         "sessionKey": "agent:gpt:main",
         "provider": "openai-codex",

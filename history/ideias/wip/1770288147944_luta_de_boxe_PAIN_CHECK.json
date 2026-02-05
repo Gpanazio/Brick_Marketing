@@ -1,22 +1,22 @@
 {
-  "idea_name": "Bolsonaro x Lula, ao vivo na RedeTV (Luta de Boxe)",
+  "idea_name": "luta_de_boxe_politico_mma_card",
   "pain_check": {
     "is_real": true,
     "relevance": "high",
     "is_active": true,
-    "analysis": "A 'dor' aqui não é um problema corporativo tradicional, mas sim a extrema polarização política e o desejo de entretenimento catártico. O mercado de 'Celebrity Boxing' (como o Fight Music Show no Brasil) prova que há uma demanda massiva por ver figuras públicas resolvendo tensões de forma física. A polarização no Brasil é uma das maiores do mundo, gerando uma dor de 'necessidade de desfecho' ou 'vitória definitiva' para ambos os lados."
+    "analysis": "A dor resolvida é a 'Fadiga do Debate Tradicional' e o desejo por 'Catarse Social Satírica'. O público brasileiro está saturado de formatos políticos sérios que não geram resolução. O pivot para um 'Card de MMA' com Tiririca na abertura valida a dor do público por entretenimento que misture política e espetáculo (infotainment). A relevância é alta, pois converte a polarização em consumo de mídia massivo. É uma dor ativa, demonstrada pelo sucesso de eventos como o 'Fight Music Show' e o engajamento recorde em debates que focam no conflito pessoal em vez de propostas."
   },
   "evidence": [
-    "Sucesso comercial de eventos como Popó x Bambam no Brasil, que geram milhões em receita e audiência.",
-    "Engajamento recorde em qualquer postagem que coloque ambos os políticos em oposição direta.",
-    "Crescimento do mercado de apostas esportivas em eventos de entretenimento e política no Brasil."
+    "Sucesso comercial e de audiência de lutas entre celebridades (Popó vs Bambam, Whindersson), provando o mercado de 'lutas de entretenimento'.",
+    "Engajamento de vídeos de humor político (Porta dos Fundos, Tiririca) superando comunicações oficiais dos políticos.",
+    "Aumento do consumo de plataformas de apostas em eventos não-esportivos (eleições, reality shows)."
   ],
   "red_flags": [
-    "Viabilidade jurídica e política: É quase impossível obter autorização para tal evento devido a questões de segurança nacional e imagem pública.",
-    "Risco de incitação à violência real fora do ringue devido ao teor ideológico.",
-    "Idade e condição física dos envolvidos (dor de segurança vs. entretenimento)."
+    "Risco Legal/Regulatório: Incitação à violência entre figuras públicas pode sofrer sanções do TSE/Ministério Público.",
+    "Saúde: A idade dos lutadores da 'luta principal' impossibilita um combate real (exige ser puramente satírico/IA/Coreografado).",
+    "Segurança: Risco de confrontos entre torcidas/militâncias no local do evento."
   ],
   "status": "PASS",
   "next_step": "MARKET_SCAN",
-  "timestamp": "2026-02-05T12:12:00Z"
+  "timestamp": "2026-02-05T14:24:00Z"
 }

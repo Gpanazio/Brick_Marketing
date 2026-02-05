@@ -1,48 +1,46 @@
-# MARKET SCAN: Luta de Boxe (Bolsonaro x Lula)
-
-**Job ID:** 1770288147944_luta_de_boxe
-**Date:** 2026-02-05
-**Agent:** MARKET_SCAN
-
-## 1. Análise de Mercado & Concorrência
-
-O mercado de "lutas de entretenimento" (boxing entertainment) explodiu globalmente e no Brasil, movendo-se de atletas profissionais para influenciadores e celebridades. No entanto, o nicho **político** permanece restrito a:
-1.  **Memes e Deepfakes:** Conteúdo viral desorganizado em redes sociais (WhatsApp/TikTok).
-2.  **Games Indie:** Jogos de luta simples com caricaturas de políticos (ex: *Políticos Memes Kombat*).
-3.  **Debates Televisivos:** Onde a agressividade é verbal, mas a audiência busca o "sangue" metafórico (vide o caso da cadeirada do Datena em 2024).
-
-Não existe um produto de mídia estruturado (Live Event) que capitalize financeiramente sobre a rivalidade física dessas duas figuras centrais.
-
-## 2. Benchmarks Relevantes
-
-### A. Popó x Whindersson Nunes (Fight Music Show)
-*   **O que é:** O marco zero do boxe de entretenimento no Brasil.
-*   **Relevância:** Provou que o público brasileiro paga (PPV) e para o país para ver ícones pop se enfrentando, independentemente da técnica. Validou o modelo de negócios milionário.
-*   **Insight:** A narrativa supera o esporte.
-
-### B. Elon Musk vs. Mark Zuckerberg (O Hype Global)
-*   **O que é:** O desafio de "cage match" que nunca aconteceu, mas dominou a conversa global por meses.
-*   **Relevância:** Mostra que a simples *promessa* de violência física entre figuras de poder intocáveis gera um engajamento infinito.
-*   **Insight:** A tensão pré-evento é mais valiosa que a luta em si.
-
-### C. MTV Celebrity Deathmatch (A Estética)
-*   **O que é:** Programa clássico que simulava lutas mortais entre famosos usando claymation (massinha).
-*   **Relevância:** Como uma luta real entre Lula e Bolsonaro é fisicamente/juridicamente inviável, este é o benchmark de formato.
-*   **Insight:** O uso de sósias, bonecos ou "Deepfake Live" na RedeTV permitiria a violência gráfica catártica sem as consequências do mundo real.
-
-## 3. Gap de Oportunidade
-
-**O Vácuo:**
-Há uma demanda reprimida por "catarse física" na política. O eleitor quer ver seu "campeão" derrotar o "vilão" de forma definitiva e visual, algo que as urnas (abstratas) não proporcionam.
-
-**A Oportunidade RedeTV (Trash TV):**
-A RedeTV possui o DNA do sensacionalismo popular (Teste de Fidelidade, Banheira do Gugu vibes).
-*   **Formato:** "Telecatch Político". Não é sobre boxe real, é sobre teatro.
-*   **Execução:** Uso de sósias perfeitos ou tecnologia de deepfake em tempo real em um ringue físico.
-*   **Monetização:** Apostas (Bets), PPV e patrocínios de marcas que jogam no caos.
-
-## 4. Veredito Market Scan
-A ideia é **altamente viável como entretenimento simulado/sátira**. O público aceitaria a "farsa" pelo prazer do espetáculo. O gap está na falta de coragem das grandes emissoras em cruzar essa linha — terreno fértil para a RedeTV ou streaming independente.
-
-**Potencial de Viralização:** 10/10.
-**Viabilidade Técnica:** Alta (com sósias/IA).
+{
+  "idea_name": "luta_de_boxe_politico_mma_card",
+  "market_scan": {
+    "category": "Live Event / Pay-Per-View / Entretenimento",
+    "business_model": "Híbrido (PPV + Patrocínio + Betting + Direitos de Transmissão)",
+    "pricing_range": {
+      "entry": "R$ 49,90 - 89,90 (PPV Digital)",
+      "mid": "R$ 150.000 - 500.000 (Cotas de Patrocínio Regional)",
+      "enterprise": "R$ 2M+ (Cota Master / Naming Rights)"
+    },
+    "competitor_types": [
+      {
+        "type": "Organizadores de Celebrity Boxing (FMS, Misfits)",
+        "threat_level": "medium",
+        "notes": "Detêm o know-how técnico, mas carecem do apelo político visceral."
+      },
+      {
+        "type": "Emissoras de TV Tradicionais (Programação de Auditório)",
+        "threat_level": "low",
+        "notes": "Têm o alcance, mas o compliance impede a execução de um formato tão 'trash'."
+      },
+      {
+        "type": "Plataformas de Betting (Casas de Apostas)",
+        "threat_level": "none",
+        "notes": "São parceiros de infraestrutura e monetização, não concorrentes."
+      }
+    ],
+    "barriers": {
+      "technical": "low",
+      "regulatory": "extreme",
+      "network_effects": "high",
+      "switching_costs": "none",
+      "capital": "high"
+    }
+  },
+  "opportunity_score": 90,
+  "opportunity_analysis": "O mercado brasileiro de 'infotainment' político é subexplorado em formatos de alta produção. O card de MMA com Tiririca na abertura quebra a barreira da 'violência política' e transforma o evento em um espetáculo de cultura pop satírica. A RedeTV é a janela perfeita por seu histórico de 'trash TV' e baixa sensibilidade ao cancelamento corporativo comparada à Globo.",
+  "differentiation_angles": [
+    "Gamificação do Ódio: Transformar a polarização em odds de apostas em tempo real.",
+    "Humor como Amortecedor: O card do Tiririca 'limpa' a imagem do evento perante anunciantes de massa.",
+    "Direitos de Pay-Per-View Digital: Foco em monetizar a 'segunda tela' (celular) enquanto a TV aberta massifica o alcance."
+  ],
+  "status": "PASS",
+  "next_step": "ANGLE_GEN",
+  "timestamp": "2026-02-05T14:26:00Z"
+}

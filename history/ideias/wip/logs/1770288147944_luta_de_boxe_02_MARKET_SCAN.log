@@ -1,33 +1,33 @@
 {
-  "runId": "76896b2d-2694-4da0-8e1a-77cb9dea7c2e",
+  "runId": "8597e6ff-64b6-4f3c-a66e-e8adcfef0871",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "{\n  \"idea_name\": \"Bolsonaro x Lula, ao vivo na RedeTV (Luta de Boxe)\",\n  \"market_scan\": {\n    \"category\": \"Live Entertainment / Pay-Per-View (PPV)\",\n    \"business_model\": \"Transação única (PPV) + Patrocínio + Direitos de Transmissão + Apostas\",\n    \"pricing_range\": {\n      \"entry\": \"R$ 49-99 (Digital PPV)\",\n      \"mid\": \"R$ 500-2.000 (Ingresso Presencial)\",\n      \"enterprise\": \"R$ 10M+ (Cotas de Patrocínio Master)\"\n    },\n    \"competitor_types\": [\n      {\n        \"type\": \"Promotoras de Celebrity Boxing (ex: Fight Music Show)\",\n        \"threat_level\": \"high\",\n        \"notes\": \"Já possuem o know-how de produção e rede de contatos com casas de apostas.\"\n      },\n      {\n        \"type\": \"Emissoras de TV Tradicionais\",\n        \"threat_level\": \"medium\",\n        \"notes\": \"Podem bloquear por questões éticas/editoriais ou tentar exclusividade.\"\n      },\n      {\n        \"type\": \"Plataformas de Streaming (Netflix/YouTube)\",\n        \"threat_level\": \"medium\",\n        \"notes\": \"Interesse em eventos 'unscripted' de alto impacto global.\"\n      }\n    ],\n    \"barriers\": {\n      \"technical\": \"low\",\n      \"regulatory\": \"very high\",\n      \"network_effects\": \"high\",\n      \"switching_costs\": \"none\",\n      \"capital\": \"high\"\n    }\n  },\n  \"opportunity_score\": 85,\n  \"opportunity_analysis\": \"O mercado de 'atypical combat sports' está em explosão global. No Brasil, o apelo de um confronto direto entre as duas maiores figuras políticas da história recente é um 'black swan' de audiência. O risco não é de mercado (demanda), mas de execução/viabilidade jurídica.\",\n  \"differentiation_angles\": [\n    \"Gamificação política: Venda de rounds baseada em votação popular\",\n    \"Apostas 'ideológicas' integradas\",\n    \"Narrativa de 'O Acerto de Contas Final' (The Ultimate Grudge Match)\"\n  ],\n  \"status\": \"PASS\",\n  \"next_step\": \"ANGLE_GEN\",\n  \"timestamp\": \"2026-02-05T12:20:00Z\"\n}",
+        "text": "A análise de mercado (**MARKET_SCAN**) para o \"Card de MMA Político\" foi concluída com um **Opportunity Score de 90**.\n\nA inclusão do Tiririca na abertura é o diferencial estratégico que permite a monetização: ela transforma o evento de um \"conflito perigoso\" em um **espetáculo de cultura pop e sátira**, o que abre portas para patrocinadores e casas de apostas. O potencial de Pay-Per-View é massivo devido à polarização recorde do Brasil.\n\nO relatório foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/ideias/wip/1770288147944_luta_de_boxe_MARKET_SCAN.md`\n\n**Próximo Passo:** Prosseguir para o `ANGLE_GEN` para gerar os ângulos criativos de venda (ex: \"O Duelo dos Séculos\", \"Voto de Luva\", etc).",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 11868,
+      "durationMs": 10108,
       "agentMeta": {
-        "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
+        "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 87132,
-          "output": 587,
-          "cacheRead": 81424,
+          "input": 114057,
+          "output": 216,
+          "cacheRead": 105971,
           "cacheWrite": 0,
-          "total": 87719
+          "total": 114273
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770304187542,
-        "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
+        "generatedAt": 1770312193541,
+        "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",
         "model": "gemini-3-flash-preview",

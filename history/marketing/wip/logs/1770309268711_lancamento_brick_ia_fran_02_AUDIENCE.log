@@ -1,32 +1,32 @@
 {
-  "runId": "24e50297-c877-4c38-810c-ab48fc11453e",
+  "runId": "d444510b-7c38-408f-86e3-110db5bb4174",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "A análise de audiência para o **LANÇAMENTO BRICK IA** foi concluída e está totalmente alinhada à persona oficial da marca. O foco do lançamento em \"viabilizar o impossível\" e o diferencial de 10 anos de experiência da Brick atacam diretamente o ceticismo do Diretor de Criação em relação ao *craft* da IA generativa genérica.\n\nO relatório detalhado da persona foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_02_AUDIENCE.json`\n\n**Próximo Passo:** Prosseguir com o `TOPIC RESEARCHER` para identificar tendências e dados de mercado para o pós-Carnaval 2026 que reforcem a necessidade de uma \"direção de IA\" profissional.",
+        "text": "A análise de audiência para o **LANÇAMENTO BRICK IA - FRAN** foi concluída e está totalmente alinhada à persona oficial da marca. O diferencial de \"viabilizar o impossível\" e o foco em *craft* atacam diretamente o ceticismo do Diretor de Criação sênior em relação aos resultados amadores da IA generativa genérica.\n\nO relatório detalhado da persona foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_02_AUDIENCE.json`\n\n**Próximo Passo:** Prosseguir com o `TOPIC RESEARCHER` para identificar tendências e dados de mercado para o pós-Carnaval 2026 que reforcem a necessidade de uma produção potencializada por IA (*Production Enhanced*).",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 7974,
+      "durationMs": 7957,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 53019,
+          "input": 84045,
           "output": 197,
-          "cacheRead": 48888,
+          "cacheRead": 81508,
           "cacheWrite": 0,
-          "total": 53216
+          "total": 84242
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770311214378,
+        "generatedAt": 1770311904623,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",

@@ -1,33 +1,33 @@
 {
-  "runId": "db8da11f-7522-426c-8da1-6992d5432abb",
+  "runId": "649d2b69-c99b-4851-9976-7c71bf45d972",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "{\n  \"idea_name\": \"Bolsonaro x Lula, ao vivo na RedeTV (Luta de Boxe)\",\n  \"pain_check\": {\n    \"is_real\": true,\n    \"relevance\": \"high\",\n    \"is_active\": true,\n    \"analysis\": \"A 'dor' aqui não é um problema corporativo tradicional, mas sim a extrema polarização política e o desejo de entretenimento catártico. O mercado de 'Celebrity Boxing' (como o Fight Music Show no Brasil) prova que há uma demanda massiva por ver figuras públicas resolvendo tensões de forma física. A polarização no Brasil é uma das maiores do mundo, gerando uma dor de 'necessidade de desfecho' ou 'vitória definitiva' para ambos os lados.\"\n  },\n  \"evidence\": [\n    \"Sucesso comercial de eventos como Popó x Bambam no Brasil, que geram milhões em receita e audiência.\",\n    \"Engajamento recorde em qualquer postagem que coloque ambos os políticos em oposição direta.\",\n    \"Crescimento do mercado de apostas esportivas em eventos de entretenimento e política no Brasil.\"\n  ],\n  \"red_flags\": [\n    \"Viabilidade jurídica e política: É quase impossível obter autorização para tal evento devido a questões de segurança nacional e imagem pública.\",\n    \"Risco de incitação à violência real fora do ringue devido ao teor ideológico.\",\n    \"Idade e condição física dos envolvidos (dor de segurança vs. entretenimento).\"\n  ],\n  \"status\": \"PASS\",\n  \"next_step\": \"MARKET_SCAN\",\n  \"timestamp\": \"2026-02-05T12:12:00Z\"\n}",
+        "text": "A ideia do \"Card de MMA Político\" passou no **PAIN CHECK**.\n\nA análise confirma que o projeto ataca uma dor real de **fadiga do debate tradicional** e o desejo do público por **catarse satírica**. O pivot com o Tiririca na abertura é fundamental para estabelecer o tom de entretenimento e humor, reduzindo a carga de agressividade pura e aumentando o apelo para patrocinadores.\n\nO relatório de validação foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/ideias/wip/1770288147944_luta_de_boxe_PAIN_CHECK.json`\n\n**Próximo Passo:** Prosseguir para o `MARKET_SCAN` para mapear o cenário de Pay-Per-View e parcerias com casas de apostas para esse \"Super Bowl\" da polarização.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 9990,
+      "durationMs": 9508,
       "agentMeta": {
-        "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
+        "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 72205,
-          "output": 384,
-          "cacheRead": 65130,
+          "input": 111413,
+          "output": 197,
+          "cacheRead": 105971,
           "cacheWrite": 0,
-          "total": 72589
+          "total": 111610
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770304128016,
-        "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
+        "generatedAt": 1770312182748,
+        "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",
         "model": "gemini-3-flash-preview",

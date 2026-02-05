@@ -1,14 +1,14 @@
 {
   "startTime": "2026-02-05T15:08:21.927Z",
-  "totalPipelinesRun": 7,
-  "successfulPipelines": 6,
-  "failedPipelines": 1,
-  "filesSynced": 138,
-  "lastCleanup": "2026-02-05T17:08:21.959Z",
+  "totalPipelinesRun": 9,
+  "successfulPipelines": 7,
+  "failedPipelines": 2,
+  "filesSynced": 167,
+  "lastCleanup": "2026-02-05T18:08:21.966Z",
   "byMode": {
     "marketing": {
-      "runs": 5,
-      "success": 4,
+      "runs": 6,
+      "success": 5,
       "failed": 1
     },
     "projetos": {
@@ -17,9 +17,9 @@
       "failed": 0
     },
     "ideias": {
-      "runs": 2,
+      "runs": 3,
       "success": 2,
-      "failed": 0
+      "failed": 1
     }
   }
 }

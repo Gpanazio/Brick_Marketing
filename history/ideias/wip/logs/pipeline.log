@@ -68,3 +68,6 @@
     "MARKET_SCAN falhando 3x pode ser sinal de mercado opaco/pequeno demais para ter dados públicos — isso por si só é informação."
   ]
 } | Score: 0 | Duration: ms
+[2026-02-05T14:17:23-03:00] Pipeline iniciado: 1770288147944_luta_de_boxe
+[2026-02-05T14:19:36-03:00] Pipeline iniciado: 1770288147944_luta_de_boxe
+[2026-02-05T14:23:01-03:00] Pipeline iniciado: 1770288147944_luta_de_boxe

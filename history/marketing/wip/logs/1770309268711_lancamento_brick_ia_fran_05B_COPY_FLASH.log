@@ -1,32 +1,32 @@
 {
-  "runId": "3a7fa5e3-cfd1-4188-bdef-892f18c5448b",
+  "runId": "ad8529e4-fc83-4919-964d-03c3cd719c61",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "A copy para o **LANÇAMENTO BRICK IA** (Versão B - Eficiente & Data-Driven) foi finalizada. O texto utiliza o dado verificado de confiança em IA (74%) e a liderança do formato vídeo em 2026 para construir autoridade, posicionando a Brick AI como a solução para a fadiga do \"AI Slop\" através do *craft* e da direção profissional.\n\nO arquivo foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_05B_COPY_FLASH.md`\n\n**Próximo Passo:** Prosseguir para o `BRAND GUARDIAN` para garantir que o tom de \"Diretor de Cinema\" está consistente e não caiu em clichês de tech bro.",
+        "text": "<ctrl46><ctrl46><ctrl46><ctrl46>",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 10515,
+      "durationMs": 10949,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 67087,
-          "output": 193,
-          "cacheRead": 65197,
+          "input": 98768,
+          "output": 4,
+          "cacheRead": 97813,
           "cacheWrite": 0,
-          "total": 67280
+          "total": 98772
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770311256180,
+        "generatedAt": 1770311949914,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",

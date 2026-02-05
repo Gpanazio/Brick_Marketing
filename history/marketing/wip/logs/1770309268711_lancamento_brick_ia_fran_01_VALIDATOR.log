@@ -1,32 +1,32 @@
 {
-  "runId": "ee61a1c4-b77c-4449-a118-c1bad6eaad3a",
+  "runId": "ed4b8104-3716-41ac-b343-3138c14d6b0a",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "O briefing para o **LANÇAMENTO BRICK IA** foi validado com sucesso. Ele contém os elementos fundamentais para prosseguir: objetivo claro, público-alvo estratégico, canais definidos e um diferencial competitivo bem estabelecido (\"Production Enhanced\").\n\nO resultado da validação foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_01_VALIDATOR.json`\n\n**Próximo Passo:** Iniciar `AUDIENCE ANALYST` + `TOPIC RESEARCHER`.",
+        "text": "O briefing para o **LANÇAMENTO BRICK IA - FRAN** foi validado com sucesso. Ele contém os pilares necessários (objetivo claro, público definido, canais estratégicos e contexto de marca) para seguir no pipeline de marketing.\n\nO resultado foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_01_VALIDATOR.json`\n\n**Próximo Passo:** Iniciar `AUDIENCE ANALYST` + `TOPIC RESEARCHER`.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 6953,
+      "durationMs": 6642,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 50124,
-          "output": 138,
-          "cacheRead": 48886,
+          "input": 81153,
+          "output": 133,
+          "cacheRead": 73357,
           "cacheWrite": 0,
-          "total": 50262
+          "total": 81286
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770311206132,
+        "generatedAt": 1770311895682,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",

@@ -1,32 +1,32 @@
 {
-  "runId": "418f1966-c53d-44aa-a83b-25ac4e3473e4",
+  "runId": "d8d03287-c2a9-4d48-acc6-8f5785b43494",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "A pesquisa de tópicos para o **LANÇAMENTO BRICK IA** foi concluída, trazendo dados que confirmam a tendência de multimodalidade e a crescente rejeição ao \"AI Slop\" (conteúdo gerado por IA sem curadoria) em 2026. O diferencial de 10 anos de experiência da Brick é validado como o pilar central para o posicionamento \"Production Enhanced\".\n\nO relatório detalhado com tendências, dados de mercado e oportunidades de diferenciação foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_03_RESEARCH.json`\n\n**Próximo Passo:** Prosseguir para o `CLAIMS CHECKER` para validar as estatísticas e garantir que o copywriter use apenas dados verificados.",
+        "text": "A pesquisa de tópicos para o **LANÇAMENTO BRICK IA - FRAN** foi concluída, trazendo dados que confirmam a tendência de multimodalidade e a crescente rejeição ao \"AI Slop\" (conteúdo gerado por IA sem curadoria) em 2026. O diferencial de 10 anos de experiência da Brick é validado como o pilar central para o posicionamento \"Production Enhanced\".\n\nO relatório detalhado com tendências, dados de mercado e oportunidades de diferenciação foi salvo em:\n`/Users/gabrielpanazio/projects/Brick_Marketing/history/marketing/wip/1770309268711_lancamento_brick_ia_fran_03_RESEARCH.json`\n\n**Próximo Passo:** Prosseguir para o `CLAIMS CHECKER` para validar as estatísticas e garantir que o copywriter use apenas dados verificados.",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 16180,
+      "durationMs": 16769,
       "agentMeta": {
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 58005,
-          "output": 192,
-          "cacheRead": 48887,
+          "input": 89859,
+          "output": 194,
+          "cacheRead": 81504,
           "cacheWrite": 0,
-          "total": 58197
+          "total": 90053
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770311223756,
+        "generatedAt": 1770311913891,
         "sessionId": "brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-brand-guard",
         "sessionKey": "agent:flash:main",
         "provider": "google",
