@@ -467,13 +467,12 @@
             { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5.2' },
             { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'GEMINI FLASH' },
             { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
-            { id: 'n6', x: 0, y: 1350, title: 'BRAND', label: 'Brand_Guardian', model: 'GEMINI FLASH' },
-            { id: 'n7', x: 0, y: 1550, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.2' },
-            { id: 'n8', x: 0, y: 1800, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
-            { id: 'n9', x: 0, y: 2050, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n10', x: 0, y: 2300, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n7', x: 0, y: 1350, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.2' },
+            { id: 'n8', x: 0, y: 1550, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
+            { id: 'n9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
+            { id: 'n10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n7'],['n5b','n7'],['n5c','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
 
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -513,10 +512,9 @@
             'COPY_A': ['05A_', 'COPY_GPT', 'COPY_A'],
             'COPY_B': ['05B_', 'COPY_FLASH', 'COPY_B'],
             'COPY_C': ['05C_', 'COPY_SONNET', 'COPY_C'],
-            'BRAND': ['06_', 'BRAND'],
-            'COPY SENIOR': ['07_', 'COPY_SENIOR', 'CRITIC'],
+            'COPY SENIOR': ['06_', 'COPY_SENIOR', 'CRITIC'],
             'DIRECTOR': ['DIRECTOR'],
-            'WALL': ['08_', 'FILTRO', 'WALL'],
+            'WALL': ['07_', 'FILTRO', 'WALL'],
             'SOCIAL_SLICE': ['SOCIAL_SLICE'],
             'REVISÃO 1': ['REVISAO_1'],
             'REVISÃO 2': ['REVISAO_2'],
@@ -683,18 +681,15 @@ OUTPUT (Proposta Completa)`;
 │          │          │
 └──────────┼──────────┘
            ▼
-06. BRAND GUARDIANS (Flash) - valida as 3
+06. COPY SENIOR (GPT 5.2) - julga, revisa e entrega copy final
 │
 ▼
-07. COPY SENIOR (GPT 5.2) - julga, revisa e entrega copy final
-│
-▼
-08. WALL (Opus) - score final
+07. WALL (Opus) - score final
 │
 ├─► (SE score < 80) → volta COPYWRITER (05)
 │
 ▼ (score ≥ 80)
-09. HUMAN - aprovação ou revisão
+08. HUMAN - aprovação ou revisão
 │
 ├─► [APROVAR] → OUTPUT
 │
@@ -705,8 +700,7 @@ OUTPUT (Proposta Completa)`;
                 info.innerHTML = `
                     <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
                     <div>• Validação automática em cada nó</div>
-                    <div>• Três versões criativas paralelas (A/B/C)</div>
-                    <div>• Brand Guardians valida todas as versões</div>
+                    <div>• Três versões criativas paralelas (A/B/C) - já com Brand Guide injetado</div>
                     <div>• Copy Senior (GPT-5.2) escolhe a melhor, aplica ajustes e entrega copy_revisada</div>
                     <div>• Wall (Opus) score final: ≥80 aprova, &lt;80 rejeita</div>
                     <div>• Aprovação humana obrigatória</div>

@@ -60,7 +60,7 @@ AUDIENCE_ROLE=$(cat "$ROLES_DIR/AUDIENCE_ANALYST.md" 2>/dev/null || echo "N/A")
 RESEARCHER_ROLE=$(cat "$ROLES_DIR/TOPIC_RESEARCHER.md" 2>/dev/null || echo "N/A")
 CLAIMS_ROLE=$(cat "$ROLES_DIR/CLAIMS_CHECKER.md" 2>/dev/null || echo "N/A")
 COPYWRITER_ROLE=$(cat "$ROLES_DIR/COPYWRITER.md" 2>/dev/null || echo "N/A")
-BRAND_ROLE=$(cat "$ROLES_DIR/BRAND_GUARDIAN.md" 2>/dev/null || echo "N/A")
+BRAND_GUIDE=$(cat "$ROLES_DIR/BRAND_GUIDE.md" 2>/dev/null || echo "N/A")
 CRITIC_ROLE=$(cat "$ROLES_DIR/COPY_SENIOR.md" 2>/dev/null || echo "N/A")
 WALL_ROLE=$(cat "$ROLES_DIR/FILTRO_FINAL.md" 2>/dev/null || echo "N/A")
 
@@ -298,7 +298,12 @@ COPY_FLASH_OUT="$WIP_DIR/${JOB_ID}_05B_COPY_FLASH.md"
 COPY_SONNET_OUT="$WIP_DIR/${JOB_ID}_05C_COPY_SONNET.md"
 CLAIMS_CONTENT=$(cat "$CLAIMS_OUT" 2>/dev/null || echo "N/A")
 
-COPY_CONTEXT="BRIEFING:
+COPY_CONTEXT="BRAND GUIDE (OBRIGATÓRIO - RESPEITAR RIGOROSAMENTE):
+${BRAND_GUIDE}
+
+---
+
+BRIEFING:
 ${BRIEFING_CONTENT}
 
 PÚBLICO:
@@ -324,7 +329,7 @@ ${COPY_CONTEXT}
 ---
 
 INSTRUÇÕES:
-Escreva a copy conforme seu role acima (tom direto, persuasivo) e salve no arquivo: ${COPY_GPT_OUT}" \
+Escreva a copy conforme o role COPYWRITER acima e RESPEITANDO RIGOROSAMENTE o BRAND GUIDE (tom, terminologia, red flags). Salve no arquivo: ${COPY_GPT_OUT}" \
   --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_05A_COPY_GPT.log" &
 GPT_PID=$!
 
@@ -342,7 +347,7 @@ ${COPY_CONTEXT}
 ---
 
 INSTRUÇÕES:
-Escreva a copy conforme seu role acima (tom eficiente, pragmático) e salve no arquivo: ${COPY_FLASH_OUT}" \
+Escreva a copy conforme o role COPYWRITER acima e RESPEITANDO RIGOROSAMENTE o BRAND GUIDE (tom, terminologia, red flags). Salve no arquivo: ${COPY_FLASH_OUT}" \
   --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_05B_COPY_FLASH.log" &
 FLASH_PID=$!
 
@@ -360,7 +365,7 @@ ${COPY_CONTEXT}
 ---
 
 INSTRUÇÕES:
-Escreva a copy conforme seu role acima (tom narrativo, storytelling) e salve no arquivo: ${COPY_SONNET_OUT}" \
+Escreva a copy conforme o role COPYWRITER acima e RESPEITANDO RIGOROSAMENTE o BRAND GUIDE (tom, terminologia, red flags). Salve no arquivo: ${COPY_SONNET_OUT}" \
   --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_05C_COPY_SONNET.log" &
 SONNET_PID=$!
 
@@ -401,76 +406,16 @@ fi
 print_duration $DURATION "Etapa 5"
 
 # ============================================
-# ETAPA 6: BRAND GUARDIANS (Flash)
+# ETAPA 6: COPY SENIOR (GPT 5.2)
 # ============================================
 echo ""
-echo "⏳ ETAPA 6: Brand Guardians (Flash)"
+echo "⏳ ETAPA 6: Copy Senior (GPT 5.2)"
 STEP_START=$(start_timer)
-BRAND_GUARD_OUT="$WIP_DIR/${JOB_ID}_06_BRAND_GUARDIANS.json"
-BRAND_LOG="$LOG_DIR/${JOB_ID}_06_BRAND_GUARDIANS.log"
+CRITIC_OUT="$WIP_DIR/${JOB_ID}_06_COPY_SENIOR.json"
+CRITIC_LOG="$LOG_DIR/${JOB_ID}_06_COPY_SENIOR.log"
 COPY_A=$(cat "$COPY_GPT_OUT" 2>/dev/null || echo "N/A")
 COPY_B=$(cat "$COPY_FLASH_OUT" 2>/dev/null || echo "N/A")
 COPY_C=$(cat "$COPY_SONNET_OUT" 2>/dev/null || echo "N/A")
-
-attempt=1
-backoff=2
-
-while [ $attempt -le $max_retries ]; do
-    echo "  >> Tentativa $attempt/$max_retries"
-    
-    openclaw agent --agent flash \
-      --session-id "brick-mkt-${JOB_ID}-brand-guard" \
-      --message "${BRAND_ROLE}
-
----
-
-BRIEFING ORIGINAL:
-${BRIEFING_CONTENT}
-
-COPY A (GPT):
-${COPY_A}
-
-COPY B (Flash):
-${COPY_B}
-
-COPY C (Sonnet):
-${COPY_C}
-
----
-
-INSTRUÇÕES:
-Valide as copies conforme seu role acima e salve o resultado JSON no arquivo: ${BRAND_GUARD_OUT}" \
-      --timeout 120 --json 2>&1 | tee "$BRAND_LOG"
-    
-    if [ -f "$BRAND_GUARD_OUT" ] && validate_json "$BRAND_GUARD_OUT"; then
-        DURATION=$(get_duration_ms $STEP_START)
-        echo "✅ Brand Guardians concluído"
-        print_duration $DURATION "Etapa 6"
-        break
-    fi
-    
-    if [ $attempt -lt $max_retries ]; then
-        echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
-        sleep $backoff
-        backoff=$((backoff * 2))
-    fi
-    
-    attempt=$((attempt + 1))
-done
-
-if [ ! -f "$BRAND_GUARD_OUT" ] || ! validate_json "$BRAND_GUARD_OUT"; then
-    create_json_placeholder "$BRAND_GUARD_OUT" "BRAND_GUARDIAN" "$JOB_ID" "All retries failed"
-fi
-
-# ============================================
-# ETAPA 7: COPY SENIOR (GPT 5.2)
-# ============================================
-echo ""
-echo "⏳ ETAPA 7: Copy Senior (GPT 5.2)"
-STEP_START=$(start_timer)
-CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_COPY_SENIOR.json"
-CRITIC_LOG="$LOG_DIR/${JOB_ID}_07_COPY_SENIOR.log"
-GUARD_CONTENT=$(cat "$BRAND_GUARD_OUT" 2>/dev/null || echo "N/A")
 
 attempt=1
 backoff=2
@@ -496,9 +441,6 @@ ${COPY_B}
 COPY C (Sonnet):
 ${COPY_C}
 
-BRAND GUARDIAN:
-${GUARD_CONTENT}
-
 ---
 
 INSTRUÇÕES:
@@ -508,7 +450,7 @@ Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os a
     if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Copy Senior concluído"
-        print_duration $DURATION "Etapa 7"
+        print_duration $DURATION "Etapa 6"
         break
     fi
     
@@ -554,7 +496,7 @@ Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os a
     if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Copy Senior concluído via fallback Sonnet"
-        print_duration $DURATION "Etapa 7"
+        print_duration $DURATION "Etapa 6"
     else
         echo "❌ Fallback Sonnet também falhou. Criando placeholder..."
         create_json_placeholder "$CRITIC_OUT" "COPY_SENIOR" "$JOB_ID" "All retries failed (GPT + Sonnet fallback)"
@@ -562,13 +504,13 @@ Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os a
 fi
 
 # ============================================
-# ETAPA 8: WALL / FILTRO FINAL (Opus)
+# ETAPA 7: WALL / FILTRO FINAL (Opus)
 # ============================================
 echo ""
-echo "⏳ ETAPA 8: Wall / Filtro Final (Opus)"
+echo "⏳ ETAPA 7: Wall / Filtro Final (Opus)"
 STEP_START=$(start_timer)
-WALL_OUT="$WIP_DIR/${JOB_ID}_08_WALL.json"
-WALL_LOG="$LOG_DIR/${JOB_ID}_08_WALL.log"
+WALL_OUT="$WIP_DIR/${JOB_ID}_07_WALL.json"
+WALL_LOG="$LOG_DIR/${JOB_ID}_07_WALL.log"
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
 
 attempt=1
@@ -598,7 +540,7 @@ Faça a revisão final conforme seu role acima e salve o resultado JSON no arqui
     if [ -f "$WALL_OUT" ] && validate_json "$WALL_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Wall concluído"
-        print_duration $DURATION "Etapa 8"
+        print_duration $DURATION "Etapa 7"
         break
     fi
     
