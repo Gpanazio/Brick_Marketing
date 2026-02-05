@@ -1076,20 +1076,23 @@ OUTPUT (Proposta Completa)`;
                 el.id = revId;
                 el.style.position = 'absolute';
                 
-                // Posição: ao lado direito do HUMAN node (n9), com offset horizontal crescente
+                // Posição: ao lado direito do HUMAN node (n9), perfeitamente alinhado
                 const humanNode = document.getElementById('n9');
                 if (humanNode && !savedPositions[revId]) {
-                    const humanRect = humanNode.getBoundingClientRect();
-                    const containerRect = container.getBoundingClientRect();
-                    const baseX = humanRect.left - containerRect.left + humanRect.width + 50;
-                    const offsetX = (idx * 380);
+                    // Usar as coordenadas de estilo do HUMAN diretamente para garantir alinhamento perfeito
+                    const humanLeft = parseInt(humanNode.style.left) || humanNode.offsetLeft;
+                    const humanTop = parseInt(humanNode.style.top) || humanNode.offsetTop;
+                    const humanWidth = 320; // Largura fixa de todos os nós
+                    const gap = 50; // Gap entre nós
+                    const baseX = humanLeft + humanWidth + gap;
+                    const offsetX = (idx * (humanWidth + gap)); // Cada revisão adicional se afasta mais 370px
                     el.style.left = `${baseX + offsetX}px`;
-                    el.style.top = `${humanRect.top - containerRect.top}px`;
+                    el.style.top = `${humanTop}px`; // Mesma altura exata do HUMAN
                 } else if (savedPositions[revId]) {
                     el.style.left = savedPositions[revId].left;
                     el.style.top = savedPositions[revId].top;
                 } else {
-                    el.style.left = `${centerX + 400 + (idx * 380)}px`;
+                    el.style.left = `${centerX + 400 + (idx * 370)}px`;
                     el.style.top = `2050px`;
                 }
                 
