@@ -884,8 +884,9 @@ OUTPUT (Copy Final)`;
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
-                // Não desabilitar: BRIEFING_INPUT (n0), Douglas, e DIRECTOR (n7b - em construção)
-                if(!hasFile && !n.douglas && n.id !== 'n0' && n.id !== 'n7b') el.classList.add('disabled');
+                // Não desabilitar: BRIEFING_INPUT (n0), Douglas, DIRECTOR (n7b), e nodes humanos (DECISION etc)
+                // Nodes humanos ficam ativos quando o pipeline chegou neles (node anterior tem arquivo)
+                if(!hasFile && !n.douglas && !n.human && n.id !== 'n0' && n.id !== 'n7b') el.classList.add('disabled');
 
                 el.innerHTML = `
                     <div class="node-led"></div>
