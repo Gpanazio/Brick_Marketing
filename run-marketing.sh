@@ -146,7 +146,13 @@ while [ $attempt -le $max_retries ]; do
     
     openclaw agent --agent flash \
       --session-id "brick-mkt-${JOB_ID}-audience" \
-      --message "${AUDIENCE_ROLE}
+      --message "# ⚠️ CONTEXTO DE MARCA OBRIGATÓRIO (RESPEITAR RIGOROSAMENTE)
+
+${BRAND_GUIDE}
+
+---
+
+${AUDIENCE_ROLE}
 
 ---
 
@@ -156,7 +162,7 @@ ${BRIEFING_CONTENT}
 ---
 
 INSTRUÇÕES:
-Avalie o alinhamento do briefing com a persona oficial conforme seu role acima. Salve o resultado JSON no arquivo: ${AUDIENCE_OUT}" \
+Avalie o alinhamento do briefing com a persona oficial E com o contexto de marca acima. Salve o resultado JSON no arquivo: ${AUDIENCE_OUT}" \
       --timeout 120 --json 2>&1 | tee "$AUDIENCE_LOG"
     
     if [ -f "$AUDIENCE_OUT" ] && validate_json "$AUDIENCE_OUT"; then
