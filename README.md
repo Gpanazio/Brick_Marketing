@@ -8,7 +8,7 @@ Sistema de orquestração de agentes autônomos para marketing e projetos criati
 
 ## ⚡ Pipelines Ativos
 
-### 1. Marketing (v3.4)
+### 1. Marketing (v3.5)
 Focado em campanhas e conteúdo externo.
 ```
 BRIEFING (raw + anexos)
@@ -25,14 +25,16 @@ DOUGLAS (Pré-processador: lê anexos, consolida)
     ↓
 06. BRAND GUARDIANS (Flash)
     ↓
-07. CRITICS (GPT-5.2)
+07. COPY SENIOR (GPT-5.2 - escolhe, revisa e entrega copy_revisada)
     ↓
-08. FILTRO FINAL (Opus) → Loop de feedback (máx 3x)
+08. FILTRO FINAL / WALL (Opus - score 0-100)
     ↓
 09. HUMAN (Aprovação Final)
     ↓
 OUTPUT READY
 ```
+
+**Mudança recente (2026-02-05):** CRITIC (etapa 7) renomeado para COPY SENIOR. Agora não apenas julga, mas também APLICA ajustes e entrega `copy_revisada`. Modelo permanece GPT-5.2. Custo do pipeline reduzido de ~$0.55 para ~$0.35.
 
 ### 2. Projetos (v2.0)
 Focado em branding e projetos internos.
@@ -85,4 +87,4 @@ OUTPUT REPORT
 - **HUMAN (Aprovação):** Etapa final obrigatória antes do output ser considerado pronto.
 
 ---
-*Atualizado: 04/02/2026*
+*Atualizado: 05/02/2026*

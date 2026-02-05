@@ -39,7 +39,7 @@ BRIEFING -> DOUGLAS -> VALIDATOR -> AUDIENCE -> RESEARCHER -> CLAIMS
                                                                 |
                                        BRAND_GUARDIAN -> COPY_SENIOR -> WALL -> [HUMANO]
 ```
-Modelos: Flash (etapas 1-4,6), GPT+Flash+Sonnet (etapa 5), GPT (etapa 7), Opus (etapa 8)
+Modelos: Flash (etapas 1-4,6), GPT+Flash+Sonnet (etapa 5), GPT (etapa 7 - Copy Senior), Opus (etapa 8)
 
 ### Projetos (run-projetos.sh)
 ```
@@ -143,11 +143,13 @@ Retorna breakdown por step com input + output tokens e custo estimado.
 | Opus   | opus   | $75.00   | $15.00   |
 
 ### Custo Estimado por Pipeline
-| Pipeline   | Steps | Custo Total | Maior Gasto                    |
-|-----------|-------|-------------|--------------------------------|
+| Pipeline   | Steps | Custo Total | Maior Gasto                         |
+|-----------|-------|-------------|-------------------------------------|
 | Marketing | 10    | ~$0.35      | Opus: WALL (~$0.25) + GPT: Copy Senior (~$0.05) |
-| Projetos  | 8     | ~$0.16      | GPT + Sonnet Ideation (~$0.06) |
-| Ideias    | 5     | ~$0.22      | Opus: VIABILITY (~$0.16)       |
+| Projetos  | 8     | ~$0.16      | GPT + Sonnet Ideation (~$0.06)      |
+| Ideias    | 5     | ~$0.22      | Opus: VIABILITY (~$0.16)            |
+
+**Nota:** Custo Marketing foi reduzido de ~$0.55 para ~$0.35 após substituição de Opus (CRITIC) por GPT (COPY_SENIOR) na etapa 7.
 
 ### Configuracao
 - `config/constants.js`: MODEL_COSTS_OUTPUT, MODEL_COSTS_INPUT, AVG_TOKENS_PER_STEP, AVG_INPUT_TOKENS_PER_STEP
