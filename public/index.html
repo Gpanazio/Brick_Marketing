@@ -1030,7 +1030,11 @@ OUTPUT (Proposta Completa)`;
                 el.style.transform = 'none';
 
                 const searchTerms = fileMapping[n.title] || [n.title];
-                const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
+                // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall
+                const hasFile = projectFiles.some(f => 
+                    !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
+                    searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()))
+                );
                 if(!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
 
                 el.innerHTML = `
@@ -1235,7 +1239,11 @@ OUTPUT (Proposta Completa)`;
 
         function openPanel(n, files) {
             const searchTerms = fileMapping[n.title] || [n.title];
-            const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
+            // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall
+            const file = files.find(f => 
+                !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
+                searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()))
+            );
             const body = document.getElementById('panel-body');
             
             if (n.title === 'BRIEFING_INPUT') {
