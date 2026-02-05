@@ -516,10 +516,9 @@
             'COPY_A': ['05A_', 'COPY_GPT', 'COPY_A'],
             'COPY_B': ['05B_', 'COPY_FLASH', 'COPY_B'],
             'COPY_C': ['05C_', 'COPY_SONNET', 'COPY_C'],
-            'COPY SENIOR': ['06_', 'COPY_SENIOR', 'CRITIC'],
+            'COPY SENIOR': ['06_', 'COPY_SENIOR'],
             'DIRECTOR': ['DIRECTOR'],
             'WALL': ['07_', 'FILTRO', 'WALL'],
-            'SOCIAL_SLICE': ['SOCIAL_SLICE'],
             'REVISÃO 1': ['REVISAO_1'],
             'REVISÃO 2': ['REVISAO_2'],
             'REVISÃO 3': ['REVISAO_3'],
@@ -666,53 +665,105 @@ OUTPUT (Proposta Completa)`;
                     <div>• Aprovação humana obrigatória</div>
                 `;
             } else {
-                diagram.textContent = `BRIEFING
+                diagram.textContent = `BRIEFING (input do usuário)
 │
 ▼
-00. DOUGLAS (Pré-processador) - lê PDFs/imagens/anexos
+00. DOUGLAS (Orchestrator) ─── Pré-processa briefing, anexos, decisões
 │
 ▼
-01. BRIEF VALIDATOR (Flash)
+01. BRIEF VALIDATOR (Flash) ── Valida completude, identifica lacunas
 │
 ▼
-02. AUDIENCE ══► 03. RESEARCHER (Flash)
+02. AUDIENCE ANALYST (Flash) ─ Analisa persona + alinhamento com Brand Guide
 │
 ▼
-04. CLAIMS CHECKER (Flash)
-│
-├──────────┼──────────┐
-▼          ▼          ▼
-┌────────┐ ┌────────┐ ┌────────┐
-│COPY A  │ │COPY B  │ │COPY C  │
-│GPT-5.2 │ │ FLASH  │ │SONNET  │
-└────────┘ └────────┘ └────────┘
-│          │          │
-└──────────┼──────────┘
-           ▼
-06. COPY SENIOR (GPT 5.2) - julga, revisa e entrega copy final
+03. TOPIC RESEARCHER (Flash) ─ Pesquisa dados, tendências, referências
 │
 ▼
-07. WALL (Opus) - score final
+04. CLAIMS CHECKER (Flash) ── Filtra hype, valida claims verificáveis
 │
-├─► (SE score < 80) → volta COPYWRITER (05)
+├──────────────┬──────────────┐
+▼              ▼              ▼
+┌────────────┐ ┌────────────┐ ┌────────────┐
+│ COPY A     │ │ COPY B     │ │ COPY C     │
+│ GPT-5.2    │ │ FLASH      │ │ SONNET     │
+│ (Direto)   │ │ (Data)     │ │ (Narrativo)│
+└────────────┘ └────────────┘ └────────────┘
+├──────────────┴──────────────┘
+▼
+06. COPY SENIOR (GPT 5.2) ─── Escolhe melhor, aplica ajustes, entrega copy_revisada
+│
+▼
+07. WALL (Opus + Brand Guardian) ─── Score 0-100 (rubrica 5 critérios)
+│
+├─► (score < 80) → LOOP: volta pro COPY SENIOR com feedback do Wall
+│                   Copy Senior revisa → Wall reavalia (max 3 loops)
 │
 ▼ (score ≥ 80)
-08. HUMAN - aprovação ou revisão
+08. HUMAN ─── Aprovação final
 │
-├─► [APROVAR] → OUTPUT
+├─► [APROVAR] → OUTPUT (copy publicável)
 │
-└─► [REVISAR] → REVISÃO 1 (Modelo Campeão + Feedback)
+└─► [REVISAR] → REVISÃO N (Modelo Campeão + Feedback Humano)
                 │
-                └─► Aprovar/Rejeitar → loop`;
+                └─► Aprovar / Rejeitar → loop de revisões`;
 
                 info.innerHTML = `
-                    <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
-                    <div>• Validação automática em cada nó</div>
-                    <div>• Três versões criativas paralelas (A/B/C) - já com Brand Guide injetado</div>
-                    <div>• Copy Senior (GPT-5.2) escolhe a melhor, aplica ajustes e entrega copy_revisada</div>
-                    <div>• Wall (Opus) score final: ≥80 aprova, &lt;80 rejeita</div>
-                    <div>• Aprovação humana obrigatória</div>
-                    <div>• <strong>Sistema de Revisões:</strong> Humano pode pedir ajustes → Modelo Campeão gera REVISÃO N → Aparece como nó destacado ao lado</div>
+                    <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:16px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">O QUE CADA NODE FAZ</h3>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">00. DOUGLAS (Orchestrator)</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Pré-processa o briefing bruto. Lê PDFs, imagens e anexos. Se o briefing está incompleto, Douglas preenche as lacunas (documentado em PROCESSED.md, seção "Decisões do Douglas"). Nunca para o pipeline pra perguntar.</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">01. BRIEF VALIDATOR <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Valida se o briefing tem todas as informações necessárias: público, objetivo, canal, formato. Gera JSON com status PASS/FAIL e lista de campos faltantes. Role: <code>BRIEF_VALIDATOR.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">02. AUDIENCE ANALYST <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia alinhamento do briefing com a persona oficial da Brick AI e o Brand Guide completo. Persona hardcoded no role file. Recebe BRAND_GUIDE.md inteiro. Role: <code>AUDIENCE_ANALYST.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">03. TOPIC RESEARCHER <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Pesquisa dados de mercado, tendências e referências relevantes pro tema do briefing. Alimenta os copywriters com munição factual. Role: <code>TOPIC_RESEARCHER.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">04. CLAIMS CHECKER <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Filtro anti-hype. Valida se claims são verificáveis e sustentados por dados. Proíbe termos como "revolucionário", "disruptivo", "game-changer". Garante autoridade segura. Role: <code>CLAIMS_CHECKER.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">05. COPYWRITERS x3 <span style="color:#10a37f;">(GPT)</span> <span style="color:#4285f4;">(Flash)</span> <span style="color:#d97706;">(Sonnet)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Três modelos escrevem em paralelo com estilos diferentes: A (direto/persuasivo), B (eficiente/data-driven), C (narrativo/emocional). Todos recebem BRAND_GUIDE.md completo e respeitam tom, terminologia e red flags. Role: <code>COPYWRITER.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">06. COPY SENIOR <span style="color:#10a37f;">(GPT 5.2)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Diretor de Criação Sênior. Avalia as 3 copies, escolhe a melhor (vencedor A/B/C), aplica TODOS os ajustes necessários diretamente no texto e entrega <code>copy_revisada</code> final. Não só sugere — executa. Role: <code>COPY_SENIOR.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">07. WALL <span style="color:#9333ea;">(Opus)</span> + Brand Guardian</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Último portão. Score de 0-100 com rubrica de 5 critérios: Clareza da Oferta (25pts), Dor Real (20pts), Credibilidade (20pts), On-Brand (20pts, usando BRAND_GUARDIAN.md completo), CTA Específico (15pts). Score ≥80 aprova, &lt;80 rejeita e volta pro Copy Senior com feedback detalhado (max 3 loops). Role: <code>FILTRO_FINAL.md</code> + <code>BRAND_GUARDIAN.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">08. HUMAN</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Aprovação humana obrigatória. Pode aprovar (→ OUTPUT) ou pedir revisão com feedback livre. Revisões são processadas pelo modelo que ganhou a rodada original (campo modelo_vencedor), gerando REVISÃO_N.md ao lado do node.</div>
+                    </div>
+
+                    <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:20px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">REFERÊNCIAS DE MARCA</h3>
+                    <div>• <strong>BRAND_GUIDE.md</strong> — "Vision over Prompt". Tom: The Cold Director. Injetado nos Copywriters + Audience Analyst.</div>
+                    <div>• <strong>BRAND_GUARDIAN.md</strong> — Checklist de tom, terminologia, red flags, consistência. Injetado no Wall + Copy Senior (fallback).</div>
+
+                    <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:20px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">LOOP AUTOMÁTICO</h3>
+                    <div>• Se Wall rejeita (score &lt; 80), Copy Senior recebe feedback detalhado do Wall e revisa a copy.</div>
+                    <div>• Wall reavalia. Máximo 3 iterações. Arquivos versionados: _v2.json, _v3.json.</div>
+                    <div>• Modelo usado no loop = modelo vencedor da rodada original (campo modelo_vencedor).</div>
                 `;
             }
 

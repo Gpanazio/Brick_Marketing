@@ -61,6 +61,7 @@ RESEARCHER_ROLE=$(cat "$ROLES_DIR/TOPIC_RESEARCHER.md" 2>/dev/null || echo "N/A"
 CLAIMS_ROLE=$(cat "$ROLES_DIR/CLAIMS_CHECKER.md" 2>/dev/null || echo "N/A")
 COPYWRITER_ROLE=$(cat "$ROLES_DIR/COPYWRITER.md" 2>/dev/null || echo "N/A")
 BRAND_GUIDE=$(cat "$ROLES_DIR/BRAND_GUIDE.md" 2>/dev/null || echo "N/A")
+BRAND_GUARDIAN=$(cat "$ROLES_DIR/BRAND_GUARDIAN.md" 2>/dev/null || echo "N/A")
 CRITIC_ROLE=$(cat "$ROLES_DIR/COPY_SENIOR.md" 2>/dev/null || echo "N/A")
 WALL_ROLE=$(cat "$ROLES_DIR/FILTRO_FINAL.md" 2>/dev/null || echo "N/A")
 
@@ -491,7 +492,7 @@ COPY C (Sonnet):
 ${COPY_C}
 
 BRAND GUARDIAN:
-${GUARD_CONTENT}
+${BRAND_GUARDIAN}
 
 ---
 
@@ -531,6 +532,12 @@ while [ $attempt -le $max_retries ]; do
 
 ---
 
+# BRAND GUARDIAN (REFERÊNCIA OBRIGATÓRIA PARA AVALIAÇÃO ON-BRAND)
+
+${BRAND_GUARDIAN}
+
+---
+
 BRIEFING:
 ${BRIEFING_CONTENT}
 
@@ -540,7 +547,7 @@ ${CRITIC_CONTENT}
 ---
 
 INSTRUÇÕES:
-Faça a revisão final conforme seu role acima e salve o resultado JSON no arquivo: ${WALL_OUT}" \
+Faça a revisão final conforme seu role acima. Para o critério ON-BRAND (20 pontos), use o BRAND GUARDIAN acima como referência completa (tom, terminologia, red flags, checklist). Salve o resultado JSON no arquivo: ${WALL_OUT}" \
       --timeout 150 --json 2>&1 | tee "$WALL_LOG"
     
     if [ -f "$WALL_OUT" ] && validate_json "$WALL_OUT"; then
@@ -572,6 +579,15 @@ fi
 LOOP_COUNT=1
 MAX_LOOPS=3
 WALL_SCORE=$(jq -r '.score_final // 0' "$WALL_OUT" 2>/dev/null)
+
+# Inicializar COPY_REVISADA com a versão da etapa 6 (OBRIGATÓRIO)
+COPY_REVISADA=$(jq -r '.copy_revisada // empty' "$CRITIC_OUT" 2>/dev/null)
+if [ -z "$COPY_REVISADA" ]; then
+    echo "❌ ERRO CRÍTICO: Copy Senior (etapa 6) não gerou copy_revisada."
+    echo "   Arquivo: $CRITIC_OUT"
+    echo "   O loop NÃO pode rodar sem a copy revisada. Abortando loop."
+    WALL_SCORE=100  # Força skip do loop -- pipeline segue pro FINAL com o que tem
+fi
 
 echo ""
 echo "📊 Wall Score: $WALL_SCORE/100"
@@ -670,13 +686,19 @@ INSTRUÇÕES:
 
 ---
 
+# BRAND GUARDIAN (REFERÊNCIA OBRIGATÓRIA PARA AVALIAÇÃO ON-BRAND)
+
+${BRAND_GUARDIAN}
+
+---
+
 COPY REVISADA (versão $LOOP_COUNT):
 ${COPY_REVISADA}
 
 ---
 
 CONTEXTO:
-Esta é a avaliação $LOOP_COUNT após feedback anterior. Seja justo: se os ajustes foram aplicados corretamente, aprove.
+Esta é a avaliação $LOOP_COUNT após feedback anterior. Seja justo: se os ajustes foram aplicados corretamente, aprove. Para o critério ON-BRAND, use o BRAND GUARDIAN acima como referência.
 
 ---
 

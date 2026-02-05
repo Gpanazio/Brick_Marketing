@@ -46,7 +46,6 @@ module.exports = {
         'RESEARCH': 1200,
         'CLAIMS': 600,
         'COPYWRITER': 1500,
-        'BRAND_GUARDIANS': 800,
         'COPY_SENIOR': 2000,
         'WALL': 1000,
         // Ideias
@@ -70,7 +69,6 @@ module.exports = {
         'RESEARCH': 3000,
         'CLAIMS': 3500,
         'COPYWRITER': 5000,
-        'BRAND_GUARDIANS': 8000,
         'COPY_SENIOR': 10000,
         'WALL': 12000,
         // Ideias

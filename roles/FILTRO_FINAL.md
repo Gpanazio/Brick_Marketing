@@ -45,7 +45,7 @@ Seu trabalho: dar um **score de 0-100** baseado na rubrica abaixo.
 ### 4. ON-BRAND (20 pontos)
 **Segue a voz da Brick AI?**
 
-Consultar: `roles/BRAND_GUARDIAN.md`
+Referência: BRAND_GUARDIAN.md (injetado no prompt pelo pipeline — use o conteúdo recebido acima)
 
 - **20 pts:** Tom perfeito (Bold, Diretor de Cinema, Anti-Slop)
 - **15 pts:** Tom correto mas genérico
