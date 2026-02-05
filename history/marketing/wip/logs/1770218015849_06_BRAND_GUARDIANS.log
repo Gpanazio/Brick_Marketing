@@ -1,32 +1,32 @@
 {
-  "runId": "b83a3093-4379-4a7a-878f-21ac83330519",
+  "runId": "6292c62a-b53f-46df-ae05-ffa2646ff37d",
   "status": "ok",
   "summary": "completed",
   "result": {
     "payloads": [
       {
-        "text": "# COPY VERSION: B (Efficient & Data-Driven)\n\n## CURTO\nEm 2026, a qualidade da IA deixou de ser o diferencial; o moat agora é a direção (LTX Studio). Enquanto o mercado satura com \"slop\" genérico, a Brick entrega Production Enhanced: a força da IA dirigida por quem tem 10 anos de set. Vision over Prompt.\n\n## MÉDIO\nO mercado de AI Video vai bater $133 bilhões até 2030 (LTX Studio). A pergunta para diretores de criação não é mais \"se\" a IA entrega, mas \"quem\" está no comando. \n\nNa Brick AI, não somos uma ferramenta de massa de $29/mês. Somos um estúdio de elite focado em viabilizar o impossível. Unimos o storytelling sênior à infraestrutura tecnológica para destravar briefings que o budget tradicional mataria. \n\nA IA faz a imagem. Nós fazemos o cinema. Artistas com Armas Nucleares.\n\n## STORYTELLING\nO deadline é agressivo. O budget é curto. O briefing pede o \"impossível\". \nO approach padrão? Cortar o craft para caber no deck. \n\nNa Brick, o approach é diferente. Ativamos o MASON.\n\nSegundo dados oficiais do LinkedIn, vídeos nativos geram 1.4x mais engajamento. Mas em 2026, marcas premium estão punindo o conteúdo sem alma. Por isso, nossa abordagem é Production Enhanced: usamos a IA para construir sets infinitos e efeitos complexos, mas mantemos a Arri Alexa mental de 10 anos de experiência na direção de arte.\n\nNão vendemos automação. Vendemos a vantagem competitiva de quem sabe dirigir a tecnologia para resultados que convertem (como os carrosséis de dados que chegam a 24.4% de engajamento). \n\nPare de brigar com a ferramenta. Comece a dirigir o resultado.\n\n## CTA SUGERIDO\n[VEM PRO SET] - Viabilize seu projeto impossível com o workflow Production Enhanced da Brick AI. Acesse brick.ai",
+        "text": "{\n  \"status\": \"BRAND_OK\",\n  \"notas\": \"As copies capturaram com precisão a essência da Brick AI. A Copy C (Sonnet) é o destaque absoluto por personificar com perfeição o 'Diretor de Cinema Sênior', usando analogias técnicas precisas (Arri Alexa, Moviola) e mantendo o mantra 'Vision over Prompt' como fio condutor. A dualidade com a voz MASON nos CTAs terminal/glitch está impecável.\",\n  \"analise_detalhada\": {\n    \"Voz_BRICK\": \"Excelente. O tom é bold, sênior e focado em craft. Frases como 'A IA faz a imagem. Nós fazemos o cinema' resumem perfeitamente o posicionamento de elite.\",\n    \"Voz_MASON\": \"As opções de CTA e a copy alternativa em tom de terminal seguem a diretriz de logs do sistema de forma criativa e consistente.\",\n    \"Terminologia\": \"Uso correto de 'Production Enhanced', 'Vision over Prompt' e 'Artistas com Armas Nucleares'. Nenhum termo proibido foi utilizado.\",\n    \"Valores\": \"O valor de 'Direção > Geração' é o pilar central da argumentação, atacando a dor do ceticismo da persona ao diferenciar a Brick de ferramentas SaaS de massa.\",\n    \"Estratégia\": \"A recomendação de impulsionar o carrossel MÉDIO baseada nos dados de engajamento de 24.4% demonstra inteligência de mercado alinhada à marca.\"\n  },\n  \"proximo_passo\": \"Enviar para CRITIC para avaliação de eficácia e impacto final.\"\n}",
         "mediaUrl": null
       }
     ],
     "meta": {
-      "durationMs": 21070,
+      "durationMs": 21913,
       "agentMeta": {
         "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 149943,
-          "output": 456,
-          "cacheRead": 146712,
+          "input": 165495,
+          "output": 372,
+          "cacheRead": 163048,
           "cacheWrite": 0,
-          "total": 150399
+          "total": 165867
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770304410717,
+        "generatedAt": 1770304506730,
         "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
         "sessionKey": "agent:flash:main",
         "provider": "google",

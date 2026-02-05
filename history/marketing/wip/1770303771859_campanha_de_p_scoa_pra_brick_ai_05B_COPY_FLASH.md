@@ -1,26 +1,23 @@
 # COPY VERSION: B (Efficient & Data-Driven)
 
 ## CURTO
-Páscoa não é sobre chocolate. É sobre o renascimento do craft. Enquanto o "slop" de IA genérica satura o feed, a Brick foca no storytelling com sentimento humano — a tendência que moverá 2/3 das marcas B2B em 2026. Vision over Prompt. Sempre.
+Páscoa não é sobre chocolate. É sobre o renascimento do craft. Em um mercado saturado de conteúdos genéricos, 2026 marca o retorno ao "storytelling humano" (eMarketer). Na Brick, o prompt é apenas a casca. A visão é o que nasce. Vision over Prompt.
 
 ## MÉDIO
-O prompt é a casca. A visão é o que está dentro. 
-Sem direção, o resultado é oco.
+O ovo de Páscoa corporativo é o símbolo perfeito do marketing atual: uma casca brilhante de IA, mas completamente oca por dentro. 
 
-Em 2026, a credibilidade será o único pilar de confiança no marketing B2B (eMarketer). Não adianta escalar a produção se você está escalando a mediocridade. Na Brick AI, nossa produção é "Production Enhanced" porque mantemos os 10 anos de set no comando da ferramenta. 
+Em 2026, as marcas vencedoras serão as que transformam automação em experiências que parecem pessoais (Multiview). A vantagem competitiva não é mais a tecnologia em si — que virou commodity — mas o insight humano por trás dela. 
 
-Páscoa é sobre transformação. Nós transformamos a eficiência da IA no craft premium que sua marca exige. 
+Na Brick AI, nossa produção é "Production Enhanced" porque usamos 10 anos de set para dirigir a ferramenta. Não entregamos Slop. Entregamos maturidade criativa para marcas que não aceitam o genérico.
 
 ## STORYTELLING
-94% dos compradores B2B já usam LLMs para decidir o que comprar (6sense). O jogo da "descoberta" mudou. Se sua marca soa como um template de IA genérica, ela se torna invisível. 
+O briefing de feriado chega na mesa. A tentação? Usar um gerador de imagem qualquer, colocar um coelhinho e bater o ponto. 
 
-Nesta Páscoa, a metáfora é real: a evolução das espécies. 
-De um lado, o marketing de coelhinho e ovo dourado que ninguém sênior lê. 
-Do outro, o "renascimento" do craft. 
+O problema? Decisores B2B estão cada vez mais treinados para ignorar o artificial. Segundo a eMarketer, o sucesso em 2026 dependerá do equilíbrio entre "AI-led discovery" e credibilidade humana. Se o seu conteúdo soa como um prompt preguiçoso, você perde a confiança do seu público antes mesmo do primeiro play.
 
-Dois terços das marcas líderes estão migrando para um storytelling com "sentimento humano" (Marketing Week, 2025). Por quê? Porque em um mar de automação, a única coisa que converte um Diretor de Criação é o craft impecável. 
+Na Brick, ativamos o MASON para viabilizar o impossível, mas mantemos o controle criativo no set. 
 
-Nós não entregamos prompts. Entregamos direção cinematográfica aplicada à infraestrutura de IA. Menos mágica, mais set. 
+Nesta Páscoa, não estamos vendendo chocolate. Estamos celebrando o renascimento do que realmente importa: a direção que separa um vídeo "gerado" de um filme dirigido. A Arri Alexa não faz o filme sozinha, e a IA também não.
 
 ## CTA SUGERIDO
-[DESCUBRA O CRAFT] - Veja como a Brick AI está redefinindo a produção premium para 2026. Acesse brick.ai
+[VEM PRO SET] - Descubra como a Brick AI humaniza a tecnologia para entregar craft premium em 2026. Acesse brick.ai

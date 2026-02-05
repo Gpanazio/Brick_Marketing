@@ -1,25 +1,29 @@
 # COPY VERSION: B (Efficient & Data-Driven)
 
 ## CURTO
-Enquanto você discute se IA tem "alma", o mercado já precificou seu ceticismo. Segundo a PwC (2025), profissionais com domínio de IA já ganham 56% a mais do que quem ficou no "hand-crafted" puro. Na Brick, não fazemos prompt. Fazemos direção. Vision over Prompt.
+Enquanto você discute se IA tem "alma", o mercado já precificou sua hesitação: profissionais com IA ganham 56% a mais (PwC, 2025). O problema não é a ferramenta, é o "slop" gerado por quem não tem 10 anos de set. Vision over Prompt.
 
 ## MÉDIO
-O "slop" de IA é o novo banco de imagens: todo mundo percebe, ninguém respeita e acaba com o seu craft. Mas o erro não é da ferramenta, é da falta de visão de quem opera. 
+2026 é o ano da "vida analógica" — não porque a tecnologia falhou, mas porque o público cansou do artificial sem propósito (Forbes). O mercado está punindo o conteúdo oco, e com razão. 
 
-Em 2025, os maiores grupos do mundo (WPP, AlmapBBDO) pararam de "testar" e integraram a IA como infraestrutura invisível. Por quê? Porque o deadline não espera o seu preconceito e o budget do cliente não aceita mais a ineficiência do processo tradicional.
+O "slop" de IA é o novo banco de imagens genérico. Se o seu approach é apenas dar um prompt e esperar mágica, você já perdeu o craft. Na Brick AI, usamos a IA como infraestrutura para viabilizar o impossível, mas quem segura a câmera (mesmo que digital) é a direção sênior. 
 
-A Brick AI não entrega "geração". Entrega maturidade criativa. 10 anos de set aplicados à tecnologia que separa quem lidera de quem vira estatística.
+Não é sobre substituir o humano; é sobre dar armas nucleares para o artista.
 
 ## STORYTELLING
-Recebemos um brief ontem. Prazo impossível, budget apertado, qualidade premium exigida. O approach padrão? "Não dá pra fazer com esse craft".
+Recebemos um brief ontem: "Queremos algo que pareça real, mas que seja impossível de filmar". 
+O diretor tradicional diria: "Preciso de 3 semanas e o triplo desse budget".
+O entusiasta de IA diria: "Faço em 2 horas com um prompt".
 
-O approach Brick? Ativamos o MASON.
+Ambos estão errados.
 
-Não é sobre apertar um botão e esperar mágica. É sobre saber que um Key Visual precisa de textura, grão e intenção — coisas que o "slop" genérico de quem só sabe dar prompt nunca vai entender. 
+O primeiro mata o ROI. O segundo mata o craft e entrega o "slop" artificial que o consumidor de 2026 rejeita ativamente (Forbes). 
 
-O mercado publicitário vai movimentar US$ 1,24 trilhão até 2026. A pergunta para diretores de criação não é mais "IA sim ou não", mas sim: "quem está dirigindo?".
+Na Brick, ativamos o MASON. 
 
-Se você ainda acha que IA é brinquedo de estagiário, saiba que profissionais que dominam a ferramenta já estão faturando 56% a mais (PwC 2025). O craft evoluiu. Você vem junto ou vai virar história de mesa de bar?
+Unimos a infraestrutura de processamento ao olhar de quem sabe a diferença entre uma Arri Alexa e um iPhone. O resultado? Premium Craft que converte. O mercado já deu o recado: quem domina essa direção ganha 56% a mais (PwC, 2025). 
+
+A pergunta não é se você gosta de IA. A pergunta é se você gosta de liderar.
 
 ## CTA SUGERIDO
-[VEM PRO SET] - Pare de brigar com a ferramenta e comece a dirigir o resultado. Conheça o workflow Brick.
+[DIRIJA O IMPOSSÍVEL] - Saiba como o workflow Production Enhanced da Brick AI entrega craft real com eficiência de 2026. Acesse brick.ai

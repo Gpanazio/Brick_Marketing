@@ -1,32 +1,27 @@
 {
-  "runId": "c7d0e90a-e5af-47c5-bb6c-6114c1415204",
+  "runId": "815d4390-c793-4417-ace9-34d174603fdf",
   "status": "ok",
   "summary": "completed",
   "result": {
-    "payloads": [
-      {
-        "text": "# COPY VERSION: B (Efficient & Data-Driven)\n\n## CURTO\nPáscoa não é sobre chocolate. É sobre o renascimento do craft. Enquanto o \"slop\" de IA genérica satura o feed, a Brick foca no storytelling com sentimento humano — a tendência que moverá 2/3 das marcas B2B em 2026. Vision over Prompt. Sempre.\n\n## MÉDIO\nO prompt é a casca. A visão é o que está dentro. \nSem direção, o resultado é oco.\n\nEm 2026, a credibilidade será o único pilar de confiança no marketing B2B (eMarketer). Não adianta escalar a produção se você está escalando a mediocridade. Na Brick AI, nossa produção é \"Production Enhanced\" porque mantemos os 10 anos de set no comando da ferramenta. \n\nPáscoa é sobre transformação. Nós transformamos a eficiência da IA no craft premium que sua marca exige. \n\n## STORYTELLING\n94% dos compradores B2B já usam LLMs para decidir o que comprar (6sense). O jogo da \"descoberta\" mudou. Se sua marca soa como um template de IA genérica, ela se torna invisível. \n\nNesta Páscoa, a metáfora é real: a evolução das espécies. \nDe um lado, o marketing de coelhinho e ovo dourado que ninguém sênior lê. \nDo outro, o \"renascimento\" do craft. \n\nDois terços das marcas líderes estão migrando para um storytelling com \"sentimento humano\" (Marketing Week, 2025). Por quê? Porque em um mar de automação, a única coisa que converte um Diretor de Criação é o craft impecável. \n\nNós não entregamos prompts. Entregamos direção cinematográfica aplicada à infraestrutura de IA. Menos mágica, mais set. \n\n## CTA SUGERIDO\n[DESCUBRA O CRAFT] - Veja como a Brick AI está redefinindo a produção premium para 2026. Acesse brick.ai",
-        "mediaUrl": null
-      }
-    ],
+    "payloads": [],
     "meta": {
-      "durationMs": 11648,
+      "durationMs": 28848,
       "agentMeta": {
         "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
         "provider": "google",
         "model": "gemini-3-flash-preview",
         "usage": {
-          "input": 65648,
-          "output": 458,
-          "cacheRead": 57001,
+          "input": 157830,
+          "output": 547,
+          "cacheRead": 150808,
           "cacheWrite": 0,
-          "total": 66106
+          "total": 158377
         }
       },
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770304062489,
+        "generatedAt": 1770304441827,
         "sessionId": "50cae3ab-fa9a-4f03-92c9-14491854a0c1",
         "sessionKey": "agent:flash:main",
         "provider": "google",

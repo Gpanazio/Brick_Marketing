@@ -1,13 +1,13 @@
 {
   "startTime": "2026-02-05T15:08:21.927Z",
-  "totalPipelinesRun": 0,
-  "successfulPipelines": 0,
+  "totalPipelinesRun": 5,
+  "successfulPipelines": 1,
   "failedPipelines": 0,
-  "filesSynced": 0,
+  "filesSynced": 79,
   "lastCleanup": "2026-02-05T15:08:21.964Z",
   "byMode": {
     "marketing": {
-      "runs": 0,
+      "runs": 3,
       "success": 0,
       "failed": 0
     },
@@ -17,8 +17,8 @@
       "failed": 0
     },
     "ideias": {
-      "runs": 0,
-      "success": 0,
+      "runs": 2,
+      "success": 1,
       "failed": 0
     }
   }

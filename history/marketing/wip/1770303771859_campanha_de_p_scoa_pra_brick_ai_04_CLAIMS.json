@@ -1,42 +1,42 @@
 {
   "claims_validados": [
     {
-      "claim": "Dois terços das marcas B2B estão mudando táticas para dar ao storytelling um 'sentimento mais humano' em 2026.",
+      "claim": "Em 2026, o sucesso do marketing B2B dependerá do equilíbrio entre visibilidade por IA e credibilidade humana.",
       "status": "VERIFICADO",
-      "fonte_original": "Marketing Week",
-      "fonte_verificacao": "https://www.marketingweek.com/5-trends-shape-b2b-marketing/",
-      "confianca": "alta",
-      "notas": "Texto original: 'two-thirds of respondents are evolving their approaches... in order to give their brand’s storytelling a more human feel'. O dado é referente a uma pesquisa mencionada no artigo da Marketing Week."
-    },
-    {
-      "claim": "O sucesso do marketing em 2026 dependerá de visibilidade, credibilidade e influência humana para construir confiança.",
-      "status": "VERIFICADO",
-      "fonte_original": "eMarketer",
+      "fonte_original": "eMarketer 2026 Predictions",
       "fonte_verificacao": "https://www.emarketer.com/content/b2b-marketing-trends-watch-2026",
       "confianca": "alta",
-      "notas": "Confirmado no resumo do relatório da eMarketer: 'In 2026, marketing success will hinge on visibility, credibility, and governance... human influence is reshaping how marketers build trust'."
+      "notas": "Confirmado no resumo do relatório da eMarketer: 'In 2026, marketing success will hinge on visibility, credibility, and governance... human influence is reshaping how marketers build trust'. Reforça o posicionamento 'Vision over Prompt'."
     },
     {
-      "claim": "94% dos compradores B2B usaram LLMs durante sua jornada de compra em 2025.",
+      "claim": "As marcas vencedoras em 2026 serão as que transformam automação em experiências que parecem pessoais.",
       "status": "VERIFICADO",
-      "fonte_original": "6sense (citado pela Marketing Week)",
-      "fonte_verificacao": "https://www.marketingweek.com/5-trends-shape-b2b-marketing/",
+      "fonte_original": "Multiview 2026 Trends",
+      "fonte_verificacao": "https://www.multiview.com/marketing/blog/7-b2b-marketing-trends-for-2026-you-cant-ignore",
       "confianca": "alta",
-      "notas": "Dado presente no artigo da Marketing Week citando a 6sense. Reforça o argumento de que a IA já está na infraestrutura da jornada de compra."
+      "notas": "Texto original: 'the real winners will be those who turn data into empathy and automation into experiences that feel personal'. Valida o diferencial de 'Humanização da IA' da Brick."
+    },
+    {
+      "claim": "O vídeo será o formato mais versátil e engajador para comunicação B2B em 2026.",
+      "status": "VERIFICADO",
+      "fonte_original": "Multiview 2026 Trends",
+      "fonte_verificacao": "https://www.multiview.com/marketing/blog/7-b2b-marketing-trends-for-2026-you-cant-ignore",
+      "confianca": "alta",
+      "notas": "A fonte afirma que 'Video will remain the most engaging and versatile format for B2B communication' e que deixará de ser um 'ad-on' para ser o meio primário de storytelling."
     }
   ],
   "estatisticas_recomendadas": [
-    "2/3 das marcas B2B estão focando em storytelling com 'sentimento humano' para 2026 (Marketing Week).",
-    "94% dos compradores B2B já usam LLMs como ChatGPT/Gemini para informar decisões (6sense/Marketing Week).",
-    "Credibilidade e influência humana são os pilares da confiança no marketing B2B para 2026 (eMarketer)."
+    "A vantagem competitiva em 2026 não é a tecnologia, mas o 'insight humano' por trás dela (Multiview 2026).",
+    "Visibilidade em descobertas feitas por IA (AI-led discovery) é o novo pilar estratégico para marcas B2B (eMarketer).",
+    "Storytelling de qualidade e expertise de primeira mão superam conteúdos genéricos gerados em massa (Multiview Insight)."
   ],
   "estatisticas_evitar": [
-    "Evitar números muito redondos de produtividade (ex: 'IA aumenta 10x') que não aparecem nessas fontes de tendências."
+    "Evitar promessas de 'redução de custos em 90%' sem citar um caso real, pois as tendências de 2026 focam mais em qualidade/conexão do que apenas em eficiência bruta."
   ],
   "resumo": {
     "total_claims": 3,
     "verificados": 3,
     "duvidosos": 0,
-    "recomendacao": "Os dados de tendências para 2026 são sólidos e vêm de fontes de autoridade (Marketing Week e eMarketer). O Copywriter pode usar o dado de 94% de uso de LLMs pelos compradores para criar urgência na persona 'cética'."
+    "recomendacao": "As fontes confirmam a tese da Brick AI: 2026 é o ano do 'retorno ao humano'. O Copywriter deve focar no argumento de que a IA da Brick serve para 'humanizar' o storytelling em um mercado saturado de conteúdos artificiais e ocos."
   }
 }

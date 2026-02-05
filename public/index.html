@@ -1059,91 +1059,65 @@ OUTPUT (Copy Final)`;
         }
 
         function formatJSON(json) {
-            // Helper: Formata valores individuais
-            function formatValue(val) {
-                // Booleanos → ✓/✗
-                if (typeof val === 'boolean') return val ? '<span class="text-green-500">✓ Sim</span>' : '<span class="text-red-500">✗ Não</span>';
-                
-                // Números → detecta scores e formata
+            function formatValue(val, key) {
+                if (typeof val === 'boolean') return val ? '<span class="text-green-500">✓</span>' : '<span class="text-red-500">✗</span>';
                 if (typeof val === 'number') {
-                    if (val <= 100 && val >= 0) {
-                        const stars = '⭐'.repeat(Math.floor(val / 20));
+                    const isScore = key && (key.includes('score') || key.includes('nota') || key.includes('pontos') || key.includes('max'));
+                    if (isScore || (val >= 0 && val <= 100)) {
                         const color = val >= 80 ? 'text-green-500' : val >= 60 ? 'text-yellow-500' : 'text-red-500';
-                        return `<span class="${color} font-bold">${val}/100</span> ${stars}`;
+                        return `<span class="${color} font-bold">${val}</span>`;
                     }
-                    return val;
+                    return `<span class="text-white">${val}</span>`;
                 }
-                
+                if (typeof val === 'string') {
+                    // Status badges
+                    const statusColors = {
+                        'PASS': 'bg-green-900 text-green-400', 'APPROVED': 'bg-green-900 text-green-400',
+                        'BRAND_OK': 'bg-green-900 text-green-400', 'GO': 'bg-green-900 text-green-400',
+                        'FAIL': 'bg-red-900 text-red-400', 'REJECTED': 'bg-red-900 text-red-400',
+                        'BRAND_FAIL': 'bg-red-900 text-red-400', 'NO_GO': 'bg-red-900 text-red-400',
+                        'BLOCKED': 'bg-red-900 text-red-400',
+                        'APPROVED_WITH_NOTES': 'bg-yellow-900 text-yellow-400',
+                        'CONDITIONAL_GO': 'bg-yellow-900 text-yellow-400', 'REVISIT': 'bg-yellow-900 text-yellow-400'
+                    };
+                    if (statusColors[val]) return `<span class="px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider ${statusColors[val]}">${val.replace(/_/g, ' ')}</span>`;
+                    // Long strings → render as markdown
+                    if (val.length > 200) return `<div class="text-[#ccc] leading-relaxed mt-2 prose-sm">${marked.parse(val)}</div>`;
+                    return `<span class="text-[#ccc]">${val}</span>`;
+                }
                 return val;
             }
 
-            let html = '<div class="space-y-6">';
-
-            for (const [key, value] of Object.entries(json)) {
-                html += `<div class="border-b border-[#222] pb-4">`;
-                html += `<div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>`;
-
-                if (Array.isArray(value)) {
-                    if (value.length === 0) {
-                        html += '<div class="text-sm text-[#666] italic">Nenhum item</div>';
-                    } else {
-                        html += '<ul class="space-y-2 pl-0">';
-                        value.forEach(item => {
-                            if (typeof item === 'object') {
-                                // Remove colchetes, chaves, aspas
-                                const cleaned = JSON.stringify(item, null, 2)
-                                    .replace(/[\[\]{}"]/g, '')
-                                    .replace(/^\s+/gm, '')
-                                    .replace(/,\s*$/gm, '')
-                                    .split('\n')
-                                    .filter(line => line.trim())
-                                    .join('<br>');
-                                html += `<li class="text-sm text-[#aaa] border-l-2 border-[#333] pl-4 py-2 leading-relaxed">${cleaned}</li>`;
-                            } else {
-                                html += `<li class="text-sm text-[#aaa] leading-relaxed">• ${item}</li>`;
-                            }
-                        });
-                        html += '</ul>';
-                    }
-                } else if (typeof value === 'object' && value !== null) {
-                    html += '<div class="pl-4 space-y-4">';
-                    for (const [subKey, subValue] of Object.entries(value)) {
-                        let formattedValue;
-                        
-                        if (Array.isArray(subValue)) {
-                            // Arrays dentro de objetos → sempre quebra linha
-                            if (subValue.length === 0) {
-                                formattedValue = '<span class="text-[#666] italic">Nenhum</span>';
-                            } else {
-                                formattedValue = '<div class="mt-2 space-y-1">' + 
-                                    subValue.map(item => `<div class="text-[#aaa]">• ${item}</div>`).join('') + 
-                                    '</div>';
-                            }
-                        } else if (typeof subValue === 'object' && subValue !== null) {
-                            // Objetos aninhados
-                            formattedValue = '<div class="mt-2 space-y-1">';
-                            for (const [nestedKey, nestedValue] of Object.entries(subValue)) {
-                                const cleanKey = nestedKey.replace(/_/g, ' ');
-                                const cleanValue = Array.isArray(nestedValue) 
-                                    ? '<div class="ml-4 mt-1">' + nestedValue.map(v => `<div>• ${v}</div>`).join('') + '</div>'
-                                    : formatValue(nestedValue);
-                                formattedValue += `<div class="text-[#aaa]"><span class="text-[#666] font-mono">${cleanKey}:</span> ${cleanValue}</div>`;
-                            }
-                            formattedValue += '</div>';
-                        } else {
-                            formattedValue = formatValue(subValue);
+            function renderAny(val, key, depth) {
+                if (val === null || val === undefined) return '<span class="text-[#666] italic">--</span>';
+                if (Array.isArray(val)) {
+                    if (val.length === 0) return '<span class="text-[#666] italic">Nenhum</span>';
+                    return '<div class="space-y-2 mt-2">' + val.map(item => {
+                        if (typeof item === 'object' && item !== null) {
+                            return `<div class="border-l-2 border-[#333] pl-4 py-2 space-y-1">${Object.entries(item).map(([k,v]) => 
+                                `<div class="text-sm"><span class="text-[#666] font-mono">${k.replace(/_/g,' ')}:</span> ${renderAny(v, k, depth+1)}</div>`
+                            ).join('')}</div>`;
                         }
-                        
-                        html += `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${subKey.replace(/_/g, ' ')}:</span> <span class="text-[#ccc]">${formattedValue}</span></div>`;
-                    }
-                    html += '</div>';
-                } else {
-                    html += `<div class="text-sm text-[#ddd] leading-relaxed">${formatValue(value)}</div>`;
+                        return `<div class="text-sm text-[#aaa]">• ${item}</div>`;
+                    }).join('') + '</div>';
                 }
-
-                html += '</div>';
+                if (typeof val === 'object') {
+                    return `<div class="${depth > 0 ? 'pl-4 mt-2' : ''} space-y-3">${Object.entries(val).map(([k,v]) => {
+                        const label = k.replace(/_/g, ' ');
+                        const rendered = renderAny(v, k, depth+1);
+                        return `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${label}:</span> ${rendered}</div>`;
+                    }).join('')}</div>`;
+                }
+                return formatValue(val, key);
             }
 
+            let html = '<div class="space-y-6">';
+            for (const [key, value] of Object.entries(json)) {
+                html += `<div class="border-b border-[#222] pb-5">`;
+                html += `<div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>`;
+                html += renderAny(value, key, 0);
+                html += '</div>';
+            }
             html += '</div>';
             return html;
         }

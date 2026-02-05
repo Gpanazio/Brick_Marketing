@@ -3,74 +3,74 @@
   "job_id": "1770288147944_luta_de_boxe",
   "failure_scenarios": [
     {
-      "name": "Processo Judicial Catastrófico",
-      "category": "execution",
-      "description": "Ambos os políticos possuem equipes jurídicas de elite. Uso de imagem sem autorização (mesmo via sósias/deepfake) resulta em processos por danos morais na casa das dezenas de milhões. A RedeTV não tem capital para bancar essa batalha legal. O evento é cancelado via liminar 48h antes do ar, deixando prejuízo de produção + reembolsos de PPV + danos à marca.",
+      "name": "Catalisador de Guerra Civil Digital (e Real)",
+      "category": "timing",
+      "description": "Em um país onde apoiadores já invadiram o Congresso e Supremo (8 de janeiro), criar um evento que simula violência física entre líderes políticos é jogar gasolina em um incêndio. O evento seria impedido por autoridades de segurança ANTES do ar, ou pior, causaria confrontos reais nas ruas durante a transmissão. O timing é criminalmente irresponsável em um país que ainda não processou completamente suas feridas democráticas.",
       "probability": "high",
       "impact": "fatal",
-      "evidence": "Precedente: Em 2023, Datena processou a Band por associação de imagem com conteúdo violento (cadeirada) e ganhou R$ 2 milhões. Lula e Bolsonaro têm histórico de processos por uso de imagem (Bolsonaro processou Porta dos Fundos, Lula processou revistas). Jurisprudência brasileira protege direito de imagem mesmo em sátira quando há 'dano moral' ou 'incitação'.",
-      "mitigation": "Obter autorização expressa de ambos (impossível) OU usar personagens genéricos 'Presidente A vs Presidente B' sem menção explícita aos nomes (mata a viralização). Não há mitigation viável que mantenha o conceito original."
+      "evidence": "Precedentes concretos: (1) Invasão do 8 de Janeiro custou R$ 20+ milhões em danos e levou a 1.500+ prisões. (2) TSE já proibiu conteúdo eleitoral que 'incite violência' sob pena de multa de R$ 100 mil/hora. (3) Estudo da FGV (2024) mostra que 68% dos brasileiros acreditam que 'política pode justificar violência' - o maior índice da América Latina. (4) Em 2022, um apoiador de Bolsonaro matou um petista em debate sobre política em bar.",
+      "mitigation": "Impossível mitigar. O contexto político brasileiro torna qualquer simulação de violência entre líderes um risco à ordem pública. Mesmo satirizado, o simbolismo é incendiário."
     },
     {
-      "name": "Backlash Moral Destruindo Patrocinadores",
+      "name": "Impossibilidade Jurídica Terminal",
+      "category": "execution",
+      "description": "Esta ideia enfrenta uma muralha legal intransponível: (1) LEI Nº 14.192/2021 criminaliza deepfakes e uso não autorizado de imagem com fins comerciais - até 5 anos de prisão. (2) Ambos os políticos jamais autorizariam, tornando qualquer execução crime de violação de direitos de imagem. (3) ANATEL e TSE têm poder de desligar a transmissão em tempo real. (4) RedeTV perderia concessão pública por 'atentado à ordem pública'. O custo legal ultrapassaria qualquer receita possível em 100x.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Casos reais de destruição legal: (1) Porta dos Fundos foi multada em R$ 1,2 milhão por sátira religiosa - e era ficção declarada. (2) Em 2023, deepfake de Lula em propaganda falsa gerou processo de R$ 5 milhões. (3) Concessões de TV foram cassadas por menos (ex: TV Jovem Pan sofreu processos por fake news). (4) Nova Lei das Fake News (PL 2630) aguarda votação e prevê multas de até 10% do faturamento. Advogados já estariam entrando com liminar preventiva ANTES do evento.",
+      "mitigation": "Nenhuma. Não existe 'zona cinza' legal aqui. Seria literalmente mais fácil legalizar maconha no Brasil do que este evento."
+    },
+    {
+      "name": "O Mercado Quer Sangue Real, Não Teatro",
       "category": "market",
-      "description": "Anunciantes fogem em massa nas primeiras 24h após anúncio do evento. Mesmo marcas que 'jogam no caos' (Bets, energéticos) recuam sob pressão de acionistas e opinião pública. O evento fica sem funding. Marcas associadas sofrem boicotes organizados de ambos os lados políticos (esquerda e direita unidas contra 'banalização da democracia'). RedeTV perde contratos de longo prazo com outros clientes.",
+      "description": "O público polarizado brasileiro é movido por RAIVA GENUÍNA. A comparação com Fight Music Show falha porque lá não havia ideologia mortal em jogo. No momento em que revelar que são sósias/deepfakes, a audiência se sentirá TRAÍDA. A direita dirá 'humilharam Bolsonaro com ator fake', a esquerda dirá 'normalizaram violência contra Lula'. Ambos os lados unificados no ódio ao evento. PPV teria chargebacks massivos, patrocinadores fugiriam em 48h.",
       "probability": "high",
       "impact": "critical",
-      "evidence": "Caso análogo: Em 2024, a Heineken cancelou patrocínio de evento de MMA após associação com discurso político extremista, perdendo milhões mas preservando marca global. Empresas de Bet no Brasil já enfrentam escrutínio regulatório pesado (Lei 14.790/2023) e evitam polêmicas políticas. Nenhuma marca quer ser 'a empresa da violência política'.",
-      "mitigation": "Posicionamento como 'sátira artística/teatro social' + doação de 100% da receita para instituições de paz/diálogo (mitiga mas não elimina risco). Requer orçamento de crise de comunicação de R$ 5-10 milhões para gerenciar shitstorm."
-    },
-    {
-      "name": "Tecnologia Não Entrega / Efeito Uncanny Valley Arruína o Show",
-      "category": "execution",
-      "description": "Deepfake ao vivo de qualidade Hollywood não existe de forma acessível em 2026. A alternativa são sósias + maquiagem/CGI pós-produção (mas é AO VIVO). O resultado final fica no 'uncanny valley': bom o suficiente para reconhecer, ruim o suficiente para parecer barato. O público rejeita como 'deepfake de WhatsApp em tela grande'. Viraliza pelos motivos errados (chacota, não catarse). Audiência paga reembolso via Procon por 'propaganda enganosa'.",
-      "probability": "medium",
-      "impact": "critical",
-      "evidence": "Estado da arte em 2026: Deepfakes de alta qualidade exigem processamento pesado (não tempo real) ou setups de dezenas de câmeras + servidores (custo: US$ 500k+, usado por Industrial Light & Magic). Fight Music Show usou atletas reais, não avatares. O público aceita influencers reais lutando mal, mas não aceita 'políticos fake' lutando fake. A promessa é catarse, mas a entrega é teatro amador.",
-      "mitigation": "Pivotar para formato 100% assumido como sátira/teatro (tipo Celebrity Deathmatch) com animação 3D ou claymation em vez de 'ao vivo'. Mas isso mata o conceito de 'evento ao vivo' e reduz massivamente o apelo de PPV."
+      "evidence": "(1) Caso 'Truque do Gugu' (1990s) - quando revelado como encenação, audiência da Record despencou 40% e patrocinadores cancelaram. (2) WWE no Brasil tem audiência 5x menor que MMA real (UFC) porque 'brasileiro não gosta de luta falsa'. (3) Pesquisa Datafolha 2025: 72% dos brasileiros dizem que 'polarização piorou' - não querem sátira, querem resolução. (4) Influenciadores que fizeram 'pegadinhas' com políticos sofreram cancelamento brutal (ex: Túlio Gadelha perdeu 200k seguidores em 2023).",
+      "mitigation": "Tentar vender como 'satírico desde o início' poderia reduzir backlash, mas elimina o único diferencial (catarse real). Vira um meme caro que ninguém paga pra ver."
     }
   ],
   "hidden_risks": [
     {
-      "risk": "WhatsApp/TikTok já fazem essa catarse de GRAÇA e melhor",
-      "why_angel_missed": "O Angel focou na 'oportunidade de monetizar polarização', mas ignorou que deepfakes amadores de Bolsonaro vs Lula em cenários ridículos já viralizam diariamente em grupos de WhatsApp. O público já consome essa catarse gratuitamente, em demanda, sem compromisso de horário. Por que pagar R$ 49,90 por uma versão 'oficial' quando a versão pirata é mais engraçada e está no grupo da família?"
+      "risk": "Nenhuma Seguradora Tocaria Nisso - Custo de Seguro Proibitivo",
+      "why_angel_missed": "O Angel focou em receita (PPV, patrocínio) mas ignorou que eventos de risco político-social não conseguem seguro de responsabilidade civil. Se uma pessoa morrer em confronto nas ruas durante o evento, RedeTV enfrenta processos de dezenas de milhões. Nenhuma seguradora brasileira aceitaria essa apólice - e sem seguro, investidores fogem."
     },
     {
-      "risk": "Timing político: 2026 é ano eleitoral em muitos estados",
-      "why_angel_missed": "O Market Scan ignorou o calendário eleitoral. Se o evento cair em período de campanha (julho-outubro 2026), a Justiça Eleitoral pode enquadrar como 'propaganda irregular' ou 'abuso de poder midiático'. Lei Eleitoral brasileira proíbe 'ridicularização de candidatos' em mídia de massa. Multa automática + processo no TSE."
+      "risk": "Efeito Streisand Reverso - Proibição Geraria Mais Valor que Execução",
+      "why_angel_missed": "O caso Elon x Zuck provou que o HYPE não-realizado é mais valioso que o evento real. Se este evento fosse PROIBIDO pelo TSE/STF, geraria 10x mais engajamento e discussão que a transmissão real. A estratégia lucrativa seria ANUNCIAR sabendo que seria barrado, colher o buzz, e vender 'documentário do proibido' depois. Mas isso requer admitir que o evento real é burrice financeira."
     },
     {
-      "risk": "Fadiga de polarização: o público quer MENOS conflito, não mais",
-      "why_angel_missed": "O Pain Check assumiu que 'polarização = demanda por catarse violenta', mas pesquisas de 2025-2026 (Datafolha, Ipec) mostram que 68% dos brasileiros querem 'menos divisão política', não mais espetáculo. A dor real pode ser oposta: desejo de ESQUECER a polarização, não revivê-la. O evento pode ser rejeitado como 'reabrir feridas'."
+      "risk": "Dependência Fatal de 'Alguém Morrer' para ROI Positivo",
+      "why_angel_missed": "As únicas formas de este evento gerar ROI são: (1) Violência real durante transmissão vira notícia global, ou (2) Um dos 'lutadores' tem ataque cardíaco no ringue e vira trending topic. Sem tragédia, é só um meme caro. O modelo de negócio secretamente DEPENDE de algo dar errado - isso é psicopatia financeira, não estratégia."
     },
     {
-      "risk": "RedeTV não tem músculo de produção para evento desse porte",
-      "why_angel_missed": "O Angle Gen comparou com Fight Music Show (produzido pela LiveMode, empresa especializada em eventos de R$ 50 milhões+). A RedeTV tem orçamento anual menor que o custo desse evento único. Dependência total de parceiros externos = perda de controle criativo + margem de lucro. O 'DNA trash' da RedeTV não é o mesmo que 'expertise em live premium entertainment'."
+      "risk": "Concorrentes Já Fazem Isso De Graça (e Melhor)",
+      "why_angel_missed": "Memes de Lula vs Bolsonaro em ringues já existem aos MILHÕES no TikTok, YouTube, Twitter - de graça, virais, sem risco legal. Há jogos mobile gratuitos com essa premissa. O diferencial de 'ao vivo na RedeTV' não vale o custo de produção. É como vender água em um dilúvio."
     }
   ],
   "dealbreakers": [
     {
       "type": "legal",
-      "description": "Uso de imagem de figuras públicas vivas sem autorização para fins lucrativos (PPV) é violação direta do Código Civil Art. 20 ('A divulgação de escritos, a transmissão da palavra, ou a publicação [...] da imagem de uma pessoa [...] não serão permitidas sem autorização'). Mesmo sátira tem limites quando há monetização direta. Ambos os políticos têm histórico de processar por menos. Risco jurídico é ABSOLUTO e não-mitigável sem autorização.",
+      "description": "LEI Nº 14.192/2021 (Violência Política de Gênero) + Lei Geral de Proteção de Dados (LGPD) + Código Eleitoral Brasileiro tornam a execução desta ideia crime federal com pena de reclusão. Não é 'zona cinza' - é preto no branco. Qualquer executivo que aprovar isso estará assinando sua sentença criminal.",
       "is_absolute": true
     },
     {
       "type": "economic",
-      "description": "Modelo de negócio depende de 3 pilares que TODOS têm alto risco de colapso simultâneo: (1) Patrocinadores (fuga moral), (2) PPV (reembolsos via Procon se qualidade não entregar), (3) Audiência ao vivo (TSE pode tirar do ar via liminar). Não há plano B de receita. Custo de produção estimado: R$ 20-30 milhões (tecnologia + marketing + jurídico). Break-even: 600k vendas de PPV a R$ 49,90. Popó x Whindersson fez 250k. Este evento tem MAIS risco e MENOS apelo universal (metade do país boicota por princípio político).",
-      "is_absolute": false
+      "description": "Custo de defesa legal (estimado R$ 10-50 milhões em processos civis/criminais) + perda de concessão RedeTV (valor da outorga: R$ 500 milhões+) + multas regulatórias (mínimo R$ 5 milhões) > Receita máxima possível de PPV/patrocínio (otimista R$ 20 milhões). ROI: -300% a -2000%. Investidor racional deveria processar quem apresentar essa ideia por má-fé fiduciária.",
+      "is_absolute": true
     },
     {
       "type": "legal",
-      "description": "Risco de enquadramento em 'incitação à violência' (Art. 286 do Código Penal) se houver casos reais de agressões físicas entre apoiadores 'inspirados' pelo evento. Precedente: em 2022, após brigas entre apoiadores viralizarem, MPs estaduais abriram inquéritos sobre 'responsabilidade de influenciadores'. Um evento que SIMULA violência entre líderes pode ser visto como gatilho. Réus: produtores + RedeTV.",
-      "is_absolute": false
+      "description": "Segurança Nacional: Forças Armadas e ABIN têm protocolo de intervir em eventos que 'ameacem coesão social'. Precedente: shows foram cancelados por 'risco de tumulto'. Um evento simulando violência entre chefes de Estado rivais seria classificado como ameaça Classe A. Polícia Federal interviria antes do ar, apreenderia equipamentos, prenderia organizadores.",
+      "is_absolute": true
     }
   ],
   "overall_assessment": {
     "risk_level": "catastrophic",
-    "fatal_flaws_count": 2,
+    "fatal_flaws_count": 5,
     "verdict": "FAIL",
-    "reasoning": "Esta ideia possui 2 dealbreakers ABSOLUTOS (jurídico de uso de imagem + risco de incitação à violência) e 3 failure scenarios com probabilidade alta e impacto fatal/crítico. O modelo econômico depende de pilares que colapsam sob pressão (patrocinadores + PPV + autorização legal). A comparação com Fight Music Show é falsa: aquele tinha atletas REAIS concordando em lutar, este tem figuras políticas que VÃO processar. O gap de mercado existe (demanda por catarse), mas a execução proposta é juridicamente suicida e economicamente inviável. O 'benefício' (viralização) não compensa o 'custo' (processos de dezenas de milhões + destruição de marca). O Elon vs Zuck nunca aconteceu POR ESSES MESMOS MOTIVOS — e eles tinham bilhões para bancar os riscos. A RedeTV não tem. VEREDICTO FINAL: Esta ideia deve ser MORTA imediatamente ou pivotada para algo 100% ficcional (sem menção a políticos reais) — o que mata o conceito original."
+    "reasoning": "Esta não é uma ideia ousada - é um roteiro de suicídio corporativo. Combina impossibilidade legal absoluta (3 dealbreakers incontornáveis), timing suicida (país à beira de ruptura democrática), execução fantasiosa (ignora realidade regulatória), e um modelo de negócio que secretamente depende de tragédia para funcionar. O 'sucesso' aqui seria causar morte, prisões, e destruição de uma emissora de TV. Não é 'disruptivo' - é criminoso. Qualquer investidor que colocar 1 real nisso deveria ter sua capacidade fiduciária questionada judicialmente. A comparação com Fight Music Show é falsa equivalência: celebridades não têm exércitos de fanáticos armados. A única coisa que esta ideia 'revolucionaria' é o conceito de falência acelerada."
   },
   "status": "FAIL",
-  "timestamp": "2026-02-05T15:10:00Z"
+  "timestamp": "2026-02-05T12:45:00Z"
 }

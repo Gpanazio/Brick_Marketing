@@ -1,28 +1,28 @@
 {
   "idea_name": "Agente de IA para Roteirização de Sets Reais",
   "market_scan": {
-    "category": "SaaS B2B (Vertical - Film Production Management)",
-    "business_model": "Subscription (Per-project or Annual License)",
+    "category": "SaaS B2B (Vertical - Production Management)",
+    "business_model": "Subscription (Per Project or Annual Seat)",
     "pricing_range": {
-      "entry": "$49-149/mês (Indie/Commercials)",
-      "mid": "$499-1.500/mês (Production Houses)",
-      "enterprise": "$5.000+/anual (Studios/Streamers)"
+      "entry": "$49-99/mês (Indie/Shorts)",
+      "mid": "$299-799/mês (Boutique Agencies)",
+      "enterprise": "$2,500+/anual (Studios/Streamers)"
     },
     "competitor_types": [
       {
-        "type": "Incumbentes estabelecidos (Legacy Software)",
+        "type": "Incumbentes estabelecidos (Legacy)",
         "threat_level": "high",
-        "notes": "Softwares como Movie Magic Scheduling dominam o mercado enterprise mas possuem UX datada e zero automação inteligente."
+        "notes": "Movie Magic Scheduling domina a indústria há décadas; extremamente enraizado em workflows sêniores mas tecnologicamente defasado."
       },
       {
-        "type": "SaaS Modernos de Gestão de Produção",
+        "type": "Modern Production SaaS",
         "threat_level": "medium",
-        "notes": "Plataformas como StudioBinder e Yamdu oferecem colaboração em nuvem superior, mas ainda dependem de drag-and-drop manual."
+        "notes": "StudioBinder e Yamdu possuem ótima interface e colaboração, mas ainda focam em digitalizar o processo manual, não em otimização algorítmica."
       },
       {
         "type": "Startups de IA em Pré-Produção",
         "threat_level": "medium",
-        "notes": "Empresas como Filmustage focam em breakdown de roteiro e podem expandir para scheduling."
+        "notes": "Filmustage foca em breakdown; a expansão natural deles é para o scheduling, o que os torna competidores diretos em breve."
       }
     ],
     "barriers": {
@@ -34,13 +34,13 @@
     }
   },
   "opportunity_score": 82,
-  "opportunity_analysis": "Os incumbentes são ferramentas de 'registro', não de 'otimização'. O alto custo operacional das diárias de filmagem cria um ROI imediato para qualquer solução que reduza o risco de erro humano. A janela de oportunidade está na integração de variáveis externas (clima, logística) que hoje moram apenas na cabeça do 1st AD.",
+  "opportunity_analysis": "O mercado de produção de vídeo está sob pressão extrema por margem. O custo de uma diária 'perdida' ou de horas extras não planejadas é o maior dreno de budget. Existe uma janela clara para uma ferramenta que saia do 'banco de dados' (legacy) para a 'prescrição e otimização' (IA). A integração com dados externos (clima/logística) é o 'moat' inicial.",
   "differentiation_angles": [
-    "Recálculo dinâmico em tempo real (Pivoting logístico instantâneo se chover ou se um ator atrasar)",
-    "Otimização por 'Sun Tracking' (Sincronização automática da ordem das cenas com a posição exata da luz solar no set)",
-    "Predictive Fatigue Monitoring (Ajuste do cronograma para cenas mais complexas ocorrerem nos picos de energia da equipe)"
+    "Predictive Budgeting (Simula o custo de diferentes ordens de filmagem instantaneamente)",
+    "Sun-Aware Scheduling (Otimização automática baseada na posição solar exata para cada cena)",
+    "Crew-Wellness Optimization (Algoritmo que balanceia complexidade de cena vs fadiga acumulada da equipe)"
   ],
   "status": "PASS",
   "next_step": "ANGLE_GEN",
-  "timestamp": "2026-02-05T12:35:00Z"
+  "timestamp": "2026-02-05T12:45:00Z"
 }

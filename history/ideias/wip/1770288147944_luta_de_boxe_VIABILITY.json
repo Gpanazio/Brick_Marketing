@@ -1,20 +1,77 @@
 {
-  "agent": "VIABILITY",
-  "job_id": "1770288147944_luta_de_boxe",
-  "final_score": 88,
-  "decision": "GO",
-  "reasoning": "A demanda de mercado (Angel) é inegável: o público brasileiro anseia pela catarse física da polarização. No entanto, o alerta jurídico do Devil é fatal para a proposta original de 'Deepfake Realista'. O projeto só para de pé se pivotar para a Sátira Explícita (Sósias ou Caricaturas 3D), abraçando a estética 'Trash' da RedeTV em vez de tentar disfarçá-la. A combinação da narrativa de 'Luta Livre' (Angel) com a segurança jurídica da 'Paródia' (Devil) cria um produto viável, blindado e altamente lucrativo via Bets/Pix.",
-  "angel_merit": "Identificou o mecanismo de monetização perfeito ('Pix Kombat') e a solução de 'Sósias' como MVP viral, entendendo que o público quer o circo, não a perfeição técnica.",
-  "devil_merit": "Salvou o projeto de um desastre jurídico certo ao vetar o uso de Deepfakes não autorizados de chefes de estado e apontar a necessidade crítica de enquadramento como humor/paródia.",
-  "strengths": [
-    "Fit cultural perfeito (Polarização + Entretenimento).",
-    "Modelo de monetização direto (Bets/Pix) que independe de grandes marcas conservadoras.",
-    "Potencial de mídia espontânea internacional ('Brasil cria rinha de políticos')."
-  ],
-  "weaknesses": [
-    "Risco Jurídico residual (mesmo como sátira, exige corpo jurídico forte).",
-    "Risco de Segurança física para os sósias (fanatismo da audiência).",
-    "Dependência do ecossistema de Bets (volátil regulatoriamente)."
-  ],
-  "recommendation": "Executar o 'Ângulo 2' (Liga de Sósias) fundido com o 'Ângulo 3' (Interferência via Pix). Abandonar Deepfake realista. Focar na estética 'Telecatch/WWE' para garantir a proteção legal da paródia. Produzir um piloto curto para validar a recepção sem expor a operação inteira."
+  "idea_name": "Bolsonaro x Lula: Luta de Boxe ao vivo na RedeTV",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 15,
+        "max": 30,
+        "feedback": "A dor existe — a polarização brasileira é real, documentada e emocionalmente esgotante. 68% dos brasileiros acreditam que política pode justificar violência (FGV, 2024). Fadiga política é uma dor coletiva ativa. MAS: a dor é de RESOLUÇÃO POLÍTICA, não de ENTRETENIMENTO VIOLENTO. O Pain Check acertou ao identificar a dor, errou ao validar que ESTA solução a resolve. A analogia com o Fight Music Show é falsa equivalência: Popó x Bambam não tinha exércitos de fanáticos armados nem risco de guerra civil. A 'catarse' proposta é uma fantasia terapêutica — nenhum eleitor de Bolsonaro ou Lula vai processar seu ressentimento porque viu sósias se socando na RedeTV. Ao revelar que é teatro, a frustração AUMENTA, não diminui. A dor é real. A solução não a toca."
+      },
+      "mercado": {
+        "pontos": 5,
+        "max": 25,
+        "feedback": "O Market Scan identificou corretamente que o mercado de lutas de entretenimento é lucrativo e que há um 'gap' no nicho político. Porém confundiu PROIBIÇÃO com OPORTUNIDADE. O gap existe porque é ILEGAL ocupá-lo — não porque ninguém teve a ideia. É como dizer que há um gap no mercado de cassinos a céu aberto no Vaticano: tecnicamente verdade, fatalmente irrelevante. O Devil demoliu este ponto com dados concretos: (1) Conteúdo similar já existe de graça aos milhões no TikTok/YouTube, (2) WWE (luta encenada) tem 5x menos audiência que MMA real no Brasil — brasileiro não paga por farsa, (3) O público-alvo (polarizado e raivoso) é o PIOR público para um evento satirizado — eles querem sangue real, não teatro. O mercado de bets é real mas associar apostas a violência política simulada é convite para intervenção regulatória imediata."
+      },
+      "diferenciacao": {
+        "pontos": 10,
+        "max": 25,
+        "feedback": "O Angel apresentou três ângulos criativos, e o 'Catarse Nacional' tem genuína originalidade conceitual. A ideia de enquadrar como 'ritual catártico' (teatro grego moderno) é intelectualmente interessante. O problema: a diferenciação vem da ILEGALIDADE, não da INOVAÇÃO. Ninguém faz isso porque é crime — não porque falta criatividade. É como dizer 'nosso diferencial é que vendemos cocaína artesanal — ninguém mais faz isso com craft'. A barreira de entrada não é falta de visão, é o Código Penal. Dito isso, dou 10 e não zero porque o CONCEITO (violência política como entretenimento catártico) tem valor intelectual — ele simplesmente não pode ser executado neste formato."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Zero. Inexequível em QUALQUER dimensão relevante. Para a Brick AI especificamente: é uma produtora criativa de IA, não uma promotora de eventos de massa com aparato jurídico/securitário. Mas mesmo para quem PODERIA executar (RedeTV, Live Nation), os dealbreakers são absolutos: (1) Lei 14.192/2021 criminaliza uso não autorizado de imagem política — pena de reclusão até 5 anos. Nenhum dos dois autorizaria. (2) TSE pode desligar transmissão em tempo real. (3) ANATEL cassaria a concessão da RedeTV (valor: R$ 500M+). (4) Nenhuma seguradora cobriria o evento. (5) Forças Armadas/ABIN têm protocolo de intervenção para 'ameaças à coesão social'. (6) ROI estimado: -300% a -2000% (custo legal de R$ 10-50M vs receita máxima otimista de R$ 20M). O Devil acertou em cheio: o único cenário de ROI positivo depende de tragédia — alguém morrer ou ser gravemente ferido para gerar cobertura global. Isso não é modelo de negócios, é sociopatia com spreadsheet."
+      }
+    },
+    "score_final": 30,
+    "status": "NO-GO",
+    "confidence": "very_high"
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "reasoning": "Score 30/100 — muito abaixo do threshold mínimo de 40 para reconsideração. A ideia tem 3 dealbreakers ABSOLUTOS (todos legais/regulatórios), nenhum dos quais é contornável com criatividade ou dinheiro. O Pain Check e Market Scan foram otimistas ao ponto de negligentes — identificaram corretamente sinais de demanda mas ignoraram que a 'oferta' é literalmente crime federal. O Angel construiu ângulos criativos sobre fundação de areia: nenhum dos três ângulos sobrevive ao primeiro contato com um advogado. O Devil, por outro lado, entregou a análise mais sólida do pipeline: cada cenário de falha é documentado com precedentes reais e legislação específica. A assimetria é brutal — o melhor cenário possível (evento acontece sem incidentes) ainda gera prejuízo financeiro. O pior cenário (violência real, mortes, prisões) é plausível e irreversível. Não existe pivot que salve a ideia no formato proposto.",
+    "next_steps": [
+      "ARQUIVAR a ideia no formato atual — é inexequível jurídica, financeira e moralmente",
+      "EXTRAIR o insight válido: há demanda por conteúdo que processe a polarização brasileira de forma catártica. Isso é real e monetizável — mas não através de violência simulada entre figuras políticas reais",
+      "CONSIDERAR pivots radicais (ver abaixo) APENAS se o interesse persistir"
+    ],
+    "risks": [
+      "FATAL — Criminalização: Lei 14.192/2021 + LGPD + Código Eleitoral = reclusão de até 5 anos para organizadores",
+      "FATAL — Perda de concessão: ANATEL cassaria outorga da RedeTV (R$ 500M+ em valor)",
+      "FATAL — Incitação à violência: País pós-8 de Janeiro, 68% acreditam que política justifica violência (FGV). Evento seria gatilho para confrontos reais",
+      "ECONÔMICO — ROI negativo mesmo no melhor cenário: custos legais superariam receita em 3-20x",
+      "REPUTACIONAL — Nenhum patrocinador mainstream tocaria. Marcas de bets/crypto são únicas possíveis, e mesmo essas recuariam após primeira liminar"
+    ],
+    "mitigations": [
+      "Não existem mitigações viáveis para os 3 dealbreakers legais. São absolutos.",
+      "A única 'mitigação' honesta é não fazer o evento."
+    ],
+    "pivots_possiveis": [
+      {
+        "nome": "Documentário sobre a Ideia Proibida",
+        "conceito": "Não fazer o evento — fazer um DOC sobre POR QUE o evento não pode existir. Entrevistar juristas, sociólogos, lutadores, humoristas. A tese: 'O que diz sobre um país o fato de que a luta mais desejada é entre seus políticos?' Formato: série de 3 episódios para YouTube/streaming.",
+        "viabilidade": "Média-alta. Sem risco legal (é jornalismo/opinião). Custo baixo. Viralização provável. Monetização via views + patrocínio cultural.",
+        "score_estimado": "65-70/100 — CONDITIONAL GO"
+      },
+      {
+        "nome": "Game Satírico Mobile (Celebrity Deathmatch BR)",
+        "conceito": "Jogo de luta estilo arcade com caricaturas de políticos brasileiros (estilizadas o suficiente para evitar violação de imagem). Monetização via ads + in-app purchases. Referência: jogos indie já existem no nicho mas sem qualidade de produção.",
+        "viabilidade": "Média. Zona cinza legal (caricatura é protegida por lei como sátira). Custo de desenvolvimento moderado. Mercado validado por jogos similares menores.",
+        "score_estimado": "55-60/100 — REVISIT com advogado de IP"
+      },
+      {
+        "nome": "Efeito Streisand Estratégico",
+        "conceito": "O Devil identificou algo brilhante: ANUNCIAR o evento sabendo que será proibido, colher o buzz gratuito, e pivotar para conteúdo sobre a proibição. É marketing de guerrilha puro. Mas: requer tolerância a risco legal do anúncio em si + possível multa por 'publicidade enganosa'.",
+        "viabilidade": "Baixa-média. Inteligente em teoria, arriscado em prática. Funciona uma vez. Custo de multa potencial: R$ 100K-500K. Buzz value potencial: inestimável.",
+        "score_estimado": "45-50/100 — REVISIT com cautela"
+      }
+    ]
+  },
+  "meta_analysis": {
+    "pain_check_accuracy": "Parcial. Identificou a dor corretamente (polarização), mas foi negligente ao validar que ESTA solução a resolve. O red_flags levantado foi tímido demais — deveria ter sido FAIL, não PASS.",
+    "market_scan_accuracy": "Fraca. Confundiu proibição legal com gap de mercado. Os benchmarks (Fight Music Show, Elon vs Zuck) são analogias sedutoras mas fundamentalmente falsas: nenhum envolvia figuras políticas com bases armadas. A conclusão 'altamente viável como entretenimento simulado' é irresponsável.",
+    "angel_accuracy": "Criativa mas desconectada da realidade. Os ângulos são intelectualmente estimulantes (especialmente 'Catarse Nacional' como teatro grego moderno) mas nenhum sobrevive ao primeiro contato com a legislação brasileira. O score de 85 para um ângulo inexequível é inflação perigosa.",
+    "devil_accuracy": "Devastadoramente precisa. Cada cenário de falha é documentado, cada dealbreaker é fundamentado em legislação real, e os hidden risks (seguro, Efeito Streisand, dependência de tragédia) são insights genuínos que o resto do pipeline ignorou. O Devil salvou este pipeline de recomendar um crime."
+  },
+  "timestamp": "2026-02-05T15:14:00Z"
 }
