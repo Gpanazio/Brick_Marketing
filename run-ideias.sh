@@ -23,7 +23,9 @@ if [ -z "$JOB_ID" ]; then
     JOB_ID=$(date +%s%3N)
 fi
 
-PROJECT_ROOT="$HOME/projects/Brick_Marketing"
+# Detectar diretório do script dinamicamente
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR"
 WIP_DIR="$PROJECT_ROOT/history/ideias/wip"
 ROLES_DIR="$PROJECT_ROOT/roles"
 

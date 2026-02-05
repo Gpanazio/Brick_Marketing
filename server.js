@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
         cb(null, `${timestamp}_${safeName}`);
     }
 });
-const upload = multer({ 
+const upload = multer({
     storage,
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
     fileFilter: (req, file, cb) => {
@@ -81,12 +81,12 @@ function getFilesForSocket(dir, mode) {
 
 io.on('connection', (socket) => {
     log('info', 'websocket_client_connected', { id: socket.id });
-    
+
     socket.on('subscribe', (mode) => {
         socket.join(mode);
         log('info', 'websocket_subscribed', { id: socket.id, mode });
     });
-    
+
     socket.on('disconnect', () => {
         log('info', 'websocket_client_disconnected', { id: socket.id });
     });
@@ -148,11 +148,11 @@ const getModeRoot = (mode) => {
 
 // Structured logging
 const log = (level, event, data = {}) => {
-    console.log(JSON.stringify({ 
-        level, 
-        event, 
-        ...data, 
-        timestamp: new Date().toISOString() 
+    console.log(JSON.stringify({
+        level,
+        event,
+        ...data,
+        timestamp: new Date().toISOString()
     }));
 };
 
@@ -215,19 +215,19 @@ const authMiddleware = (req, res, next) => {
     if (req.method === 'GET') {
         return next();
     }
-    
+
     // Allow human actions from UI (approve/feedback) without API key
     const publicWritePaths = ['/approve', '/feedback'];
     if (req.method === 'POST' && publicWritePaths.includes(req.path)) {
         return next();
     }
-    
+
     // For other Write operations (POST/DELETE), require API Key
     const key = req.headers['x-api-key'] || req.query.key;
     if (key === API_KEY) {
         return next();
     }
-    
+
     log('warn', 'unauthorized_write_attempt', { path: req.path, method: req.method });
     res.status(401).json({ error: 'Unauthorized' });
 };
@@ -289,7 +289,7 @@ app.get('/api/config', (req, res) => {
 // API: Estimativa de custo do pipeline
 app.get('/api/estimate', (req, res) => {
     const mode = req.query.mode || 'marketing';
-    
+
     // Definir etapas por modo (DEVE espelhar os scripts run-*.sh)
     const pipelines = {
         marketing: [
@@ -322,13 +322,13 @@ app.get('/api/estimate', (req, res) => {
             { name: 'VIABILITY', model: 'opus' }
         ]
     };
-    
+
     const steps = pipelines[mode] || pipelines.marketing;
     const outputCosts = CONFIG.MODEL_COSTS_OUTPUT || {};
     const inputCosts = CONFIG.MODEL_COSTS_INPUT || {};
     const avgOutputTokens = CONFIG.AVG_TOKENS_PER_STEP || {};
     const avgInputTokens = CONFIG.AVG_INPUT_TOKENS_PER_STEP || {};
-    
+
     let totalCost = 0;
     const breakdown = steps.map(step => {
         const outTokens = avgOutputTokens[step.name] || 800;
@@ -347,7 +347,7 @@ app.get('/api/estimate', (req, res) => {
             cost: cost.toFixed(4)
         };
     });
-    
+
     res.json({
         mode,
         steps: steps.length,
@@ -380,7 +380,7 @@ async function notifyTelegram(message) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
     if (!token || !chatId) return;
-    
+
     try {
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
@@ -396,7 +396,7 @@ async function notifyTelegram(message) {
 // Douglas notification via OpenClaw Wake API
 async function notifyDouglas(data) {
     // OpenClaw Wake: send system event to Douglas session via Gateway API
-    const wakeMessage = data.feedbackAction 
+    const wakeMessage = data.feedbackAction
         ? `🔄 FEEDBACK HUMANO RECEBIDO - Projeto ${data.jobId || 'N/A'} (${data.mode || 'marketing'}): "${data.feedbackText || '(vazio)'}". Feedback salvo em history/${data.mode}/feedback/. Aguardando processamento.`
         : `📋 NOVO BRIEFING RECEBIDO - ${data.title || 'Sem título'} (${data.mode || 'marketing'}, ${data.filesCount || 0} anexos). JobID: ${data.jobId}. Aguardando processamento via War Room.`;
 
@@ -419,11 +419,11 @@ async function notifyDouglas(data) {
     // Fallback: Telegram notification (legacy)
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
-    
+
     if (!token || !chatId) {
         return; // OpenClaw wake is enough
     }
-    
+
     // Só envia Telegram aqui para FEEDBACK (evita duplicar alerta de briefing)
     if (!data.feedbackAction) {
         return;
@@ -433,13 +433,13 @@ async function notifyDouglas(data) {
 
 Projeto: ${data.jobId}
 Modo: ${data.mode}`;
-    
+
     try {
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                chat_id: chatId, 
+            body: JSON.stringify({
+                chat_id: chatId,
                 text: message
             })
         });
@@ -454,17 +454,17 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
     try {
         const { title, content, mode } = req.body;
         if (!title) return res.status(400).json({ error: 'Título obrigatório' });
-        
+
         const root = getModeRoot(mode || 'marketing');
         const timestamp = Date.now();
         const jobId = `${timestamp}_${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
         const filename = `${jobId}.md`;
         const filePath = path.join(root, 'briefing', filename);
-        
+
         // Ensure briefing dir exists
         const briefingDir = path.join(root, 'briefing');
         if (!fs.existsSync(briefingDir)) fs.mkdirSync(briefingDir, { recursive: true });
-        
+
         // Build briefing content
         const modeLabel = mode === 'projetos' ? 'PROJETO' : 'BRIEFING';
         let fileContent = `# ${modeLabel}: ${title}\n`;
@@ -473,13 +473,13 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
         fileContent += `**Mode:** ${mode || 'marketing'}\n`;
         fileContent += `**Job ID:** ${jobId}\n\n`;
         fileContent += `## Descrição\n${content || '(sem descrição)'}\n\n`;
-        
+
         // Process uploaded files
         const uploadedFiles = req.files || [];
         if (uploadedFiles.length > 0) {
             fileContent += `## Anexos (${uploadedFiles.length} arquivo(s))\n`;
             fileContent += `> ⚠️ Douglas precisa processar esses anexos antes de passar pro squad.\n\n`;
-            
+
             uploadedFiles.forEach((file, i) => {
                 const fileInfo = {
                     original: file.originalname,
@@ -488,24 +488,24 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
                     type: file.mimetype,
                     size: file.size
                 };
-                fileContent += `### Anexo ${i+1}: ${file.originalname}\n`;
+                fileContent += `### Anexo ${i + 1}: ${file.originalname}\n`;
                 fileContent += `- **Tipo:** ${file.mimetype}\n`;
-                fileContent += `- **Tamanho:** ${(file.size/1024).toFixed(1)}KB\n`;
+                fileContent += `- **Tamanho:** ${(file.size / 1024).toFixed(1)}KB\n`;
                 fileContent += `- **Path:** \`${file.path}\`\n\n`;
             });
-            
+
             fileContent += `---\n**AGUARDANDO PROCESSAMENTO POR DOUGLAS**\n`;
         }
-        
+
         fs.writeFileSync(filePath, fileContent);
-        
-        log('info', 'briefing_created', { 
-            filename, 
-            title, 
+
+        log('info', 'briefing_created', {
+            filename,
+            title,
             mode: mode || 'marketing',
-            filesCount: uploadedFiles.length 
+            filesCount: uploadedFiles.length
         });
-        
+
         // Notify Douglas via OpenClaw Wake + Telegram
         const briefingData = {
             title,
@@ -513,17 +513,17 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
             filesCount: uploadedFiles.length,
             jobId
         };
-        
+
         await notifyDouglas(briefingData); // Primary: OpenClaw system event
-        
+
         const emoji = mode === 'projetos' ? '🎬' : '🚨';
         const typeLabel = mode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
         const filesNote = uploadedFiles.length > 0 ? `\n📎 *${uploadedFiles.length} anexo(s)* para processar` : '';
         await notifyTelegram(`${emoji} *${typeLabel} NO WAR ROOM*\n\n*Título:* ${title}${filesNote}\n\n_Douglas, aciona o squad!_`); // Fallback
-        
+
         // WebSocket: notificar clientes
         emitStateUpdate(mode || 'marketing');
-        
+
         res.json({ success: true, filename, mode: mode || 'marketing', filesCount: uploadedFiles.length });
     } catch (err) {
         log('error', 'briefing_create_failed', { error: err.message });
@@ -537,32 +537,18 @@ app.post('/api/result', (req, res) => {
     const root = getModeRoot(mode || 'marketing');
     const targetCategory = category || 'wip';
     const filePath = path.join(root, targetCategory, filename);
-    
+
     // Ensure category dir exists
     const categoryDir = path.join(root, targetCategory);
     if (!fs.existsSync(categoryDir)) fs.mkdirSync(categoryDir, { recursive: true });
-    
-    // Validar output do bot se especificado
-    if (botName && schemas[botName]) {
-        try {
-            const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || 
-                              content.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                const parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
-                const validation = schemas[botName].validate(parsed);
-                if (!validation.valid) {
-                    log('warn', 'schema_validation_failed', { botName, error: validation.error });
-                }
-            }
-        } catch (e) {
-            log('warn', 'schema_parse_failed', { botName, error: e.message });
-        }
-    }
-    
+
+    // Schema validation removed - contracts/schemas.js not implemented
+    // TODO: Implement JSON schema validation when contracts/ folder is created
+
     if (botName && durationMs) {
         trackStep(botName, true, durationMs, model);
     }
-    
+
     fs.writeFileSync(filePath, content);
     log('info', 'result_submitted', { filename, category: targetCategory, botName, mode: mode || 'marketing' });
     metrics.requests.total++;
@@ -578,9 +564,9 @@ app.post('/api/move', (req, res) => {
     const src = path.join(root, from, filename);
     const destDir = path.join(root, to);
     const dest = path.join(destDir, filename);
-    
+
     if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
-    
+
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
         log('info', 'file_moved', { filename, from, to, mode: mode || 'marketing' });
@@ -625,7 +611,7 @@ app.post('/api/briefing/clear', (req, res) => {
 app.post('/api/fail', (req, res) => {
     const { filename, step, error, originalContent } = req.body;
     const failedPath = path.join(MARKETING_ROOT, 'failed');
-    
+
     // Save error metadata
     const meta = {
         originalFile: filename,
@@ -633,15 +619,15 @@ app.post('/api/fail', (req, res) => {
         error: error,
         timestamp: new Date().toISOString()
     };
-    
+
     const metaFilename = `${Date.now()}_${filename}.error.json`;
     fs.writeFileSync(path.join(failedPath, metaFilename), JSON.stringify(meta, null, 2));
-    
+
     // Optionally save original content
     if (originalContent) {
         fs.writeFileSync(path.join(failedPath, filename), originalContent);
     }
-    
+
     log('error', 'job_failed', { filename, step, error });
     res.json({ success: true, errorFile: metaFilename });
 });
@@ -651,7 +637,7 @@ app.post('/api/retry', (req, res) => {
     const { filename } = req.body;
     const src = path.join(MARKETING_ROOT, 'failed', filename);
     const dest = path.join(MARKETING_ROOT, 'briefing', filename);
-    
+
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
         // Clean up error metadata
@@ -668,11 +654,11 @@ app.post('/api/retry', (req, res) => {
 app.post('/api/rerun', (req, res) => {
     const { jobId, mode } = req.body;
     const root = getModeRoot(mode || 'marketing');
-    
+
     // Encontrar arquivo de briefing original
     const briefingDir = path.join(root, 'briefing');
     let briefingFile = null;
-    
+
     // Helper de busca - procura arquivo que contém o jobId
     const findFile = (dir, id) => {
         if (!fs.existsSync(dir)) return null;
@@ -702,13 +688,13 @@ app.post('/api/rerun', (req, res) => {
                     }
                 }
             }
-            
+
             // 3. Fallback: recuperar RAW_IDEA do WIP como briefing
             if (!briefingFile) {
                 const rawFile = wipFiles.find(f => f.includes('RAW_IDEA'));
                 const processedFile = wipFiles.find(f => f.includes('PROCESSED'));
                 const sourceFile = rawFile || processedFile;
-                
+
                 if (sourceFile) {
                     // Criar um briefing limpo a partir do WIP
                     const cleanName = jobId + '.md';
@@ -719,11 +705,11 @@ app.post('/api/rerun', (req, res) => {
             }
         }
     }
-    
+
     if (!briefingFile) {
         return res.status(404).json({ error: 'Briefing original não encontrado para re-run' });
     }
-    
+
     // Limpar TODOS os arquivos WIP/DONE/FAILED relacionados a esse JobID
     // Também limpar por jobId extraído do conteúdo (pode ter IDs derivados)
     const idsToClean = [jobId];
@@ -739,12 +725,12 @@ app.post('/api/rerun', (req, res) => {
             });
         }
     });
-    
+
     // "Tocar" o arquivo de briefing para mudar o mtime e o watcher pegar de novo
     const briefingPath = path.join(briefingDir, briefingFile);
     const content = fs.readFileSync(briefingPath, 'utf-8');
     fs.writeFileSync(briefingPath, content); // Re-escreve para atualizar timestamp
-    
+
     log('info', 'job_rerun_triggered', { jobId, mode, briefingFile });
     emitStateUpdate(mode || 'marketing');
     res.json({ success: true, message: 'Job reiniciado', briefingFile });
@@ -788,7 +774,7 @@ app.get('/api/architecture', (req, res) => {
         log('error', 'architecture_not_found', { searchedPaths: possiblePaths });
         return res.status(404).json({ error: 'SQUAD_ARCHITECTURE.md not found', searched: possiblePaths });
     }
-    
+
     res.json({ content });
 });
 
@@ -796,7 +782,7 @@ app.get('/api/architecture', (req, res) => {
 app.get('/api/pipeline', (req, res) => {
     const mode = req.query.mode || 'marketing';
     const pipelinePath = path.join(__dirname, 'config', `pipeline-${mode}.json`);
-    
+
     if (fs.existsSync(pipelinePath)) {
         const config = JSON.parse(fs.readFileSync(pipelinePath, 'utf-8'));
         res.json(config);
@@ -818,20 +804,20 @@ app.post('/api/pipeline', (req, res) => {
     if (!nodes) {
         return res.status(400).json({ error: 'Missing nodes config' });
     }
-    
+
     const targetMode = mode || 'marketing';
     const pipelinePath = path.join(__dirname, 'config', `pipeline-${targetMode}.json`);
-    
+
     // Determine version based on mode
     const version = targetMode === 'projetos' ? '2.0' : '3.3';
-    
+
     const config = {
         nodes,
         version,
         mode: targetMode,
         lastUpdate: new Date().toISOString()
     };
-    
+
     fs.writeFileSync(pipelinePath, JSON.stringify(config, null, 2));
     log('info', 'pipeline_config_updated', { mode: targetMode, nodes: Object.keys(nodes).length });
     res.json({ success: true, config });
@@ -845,12 +831,12 @@ app.post('/api/archive', (req, res) => {
     const timestamp = new Date().toISOString().split('T')[0];
     const destFilename = `${timestamp}_${filename}`;
     const historyDir = path.join(baseDir, 'history');
-    
+
     // Ensure history dir exists
     if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
-    
+
     const dest = path.join(historyDir, destFilename);
-    
+
     if (fs.existsSync(src)) {
         fs.renameSync(src, dest);
         log('info', 'file_archived', { filename, archived: destFilename, mode });
@@ -865,13 +851,13 @@ app.post('/api/feedback', async (req, res) => {
     // Support both old format (file, action, type, text) and new format (jobId, feedback)
     const { file, action, type, text, routedTo, mode, jobId, feedback } = req.body;
     const timestamp = Date.now();
-    
+
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
     const feedbackDir = path.join(baseDir, 'feedback');
     const historyDir = path.join(baseDir, 'history');
     if (!fs.existsSync(feedbackDir)) fs.mkdirSync(feedbackDir, { recursive: true });
     if (!fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
-    
+
     // Archive current version before feedback
     if (file) {
         const currentFile = path.join(baseDir, 'wip', file);
@@ -883,7 +869,7 @@ app.post('/api/feedback', async (req, res) => {
             log('info', 'version_archived', { original: file, archived: historyFile });
         }
     }
-    
+
     const feedbackData = {
         timestamp: new Date().toISOString(),
         jobId: jobId || file,
@@ -895,14 +881,14 @@ app.post('/api/feedback', async (req, res) => {
         mode,
         status: 'pending'
     };
-    
+
     const feedbackFile = path.join(feedbackDir, `${timestamp}_feedback.json`);
     fs.writeFileSync(feedbackFile, JSON.stringify(feedbackData, null, 2));
-    
+
     // Create signal file for Douglas to pick up
     const signalFile = path.join(baseDir, 'FEEDBACK_SIGNAL.txt');
     fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nJobID: ${jobId || file}\nTexto: ${text || feedback}\nTimestamp: ${new Date().toISOString()}`);
-    
+
     // Notify Douglas via OpenClaw Wake
     const notifyData = {
         jobId: jobId || file,
@@ -912,7 +898,7 @@ app.post('/api/feedback', async (req, res) => {
         feedbackText: text || feedback
     };
     await notifyDouglas(notifyData);
-    
+
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     emitStateUpdate(mode || 'marketing');
     res.json({ success: true, saved: feedbackFile, archived: true });
@@ -923,11 +909,11 @@ app.get('/api/feedback', (req, res) => {
     const mode = req.query.mode || 'marketing';
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
     const feedbackDir = path.join(baseDir, 'feedback');
-    
+
     if (!fs.existsSync(feedbackDir)) {
         return res.json({ pending: [] });
     }
-    
+
     const files = fs.readdirSync(feedbackDir)
         .filter(f => f.endsWith('.json'))
         .map(f => {
@@ -935,7 +921,7 @@ app.get('/api/feedback', (req, res) => {
             return { filename: f, ...content };
         })
         .filter(f => f.status === 'pending');
-    
+
     res.json({ pending: files });
 });
 
@@ -943,15 +929,15 @@ app.get('/api/feedback', (req, res) => {
 app.post('/api/approve', async (req, res) => {
     const { jobId, mode, timestamp } = req.body;
     const ts = Date.now();
-    
+
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
     const approvalDir = path.join(baseDir, 'approved');
     const wipDir = path.join(baseDir, 'wip');
     const doneDir = path.join(baseDir, 'done');
-    
+
     if (!fs.existsSync(approvalDir)) fs.mkdirSync(approvalDir, { recursive: true });
     if (!fs.existsSync(doneDir)) fs.mkdirSync(doneDir, { recursive: true });
-    
+
     // Move all project files from wip/ to done/
     const movedFiles = [];
     if (fs.existsSync(wipDir)) {
@@ -963,7 +949,7 @@ app.post('/api/approve', async (req, res) => {
             movedFiles.push(file);
         });
     }
-    
+
     const approval = {
         timestamp: timestamp || new Date().toISOString(),
         jobId,
@@ -972,10 +958,10 @@ app.post('/api/approve', async (req, res) => {
         approvedBy: 'human',
         filesMovedToDone: movedFiles.length
     };
-    
+
     const approvalFile = path.join(approvalDir, `${jobId}_APPROVED_${ts}.json`);
     fs.writeFileSync(approvalFile, JSON.stringify(approval, null, 2));
-    
+
     log('info', 'campaign_approved', { jobId, mode, filesMoved: movedFiles.length });
     emitStateUpdate(mode || 'marketing');
     res.json({ success: true, saved: approvalFile, filesMoved: movedFiles.length });

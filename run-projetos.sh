@@ -21,7 +21,9 @@ if [ -z "$JOB_ID" ]; then
     JOB_ID=$(date +%s%3N)
 fi
 
-PROJECT_ROOT="$HOME/projects/Brick_Marketing"
+# Detectar diretório do script dinamicamente
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR"
 WIP_DIR="$PROJECT_ROOT/history/projetos/wip"
 ROLES_DIR="$PROJECT_ROOT/roles"
 
@@ -274,7 +276,7 @@ echo ""
 echo "⏳ ETAPA 6: Director (Gemini Pro)"
 DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.md"
 COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
-DIRECTOR_ROLE=$(cat "$ROLES_DIR/DIRECTOR.md" 2>/dev/null || echo "N/A")
+DIRECTOR_ROLE=$(cat "$ROLES_DIR/PROJECT_DIRECTOR.md" 2>/dev/null || echo "N/A")
 openclaw agent --agent pro \
   --session-id "brick-proj-${JOB_ID}-director" \
   --message "${DIRECTOR_ROLE}

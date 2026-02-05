@@ -21,7 +21,9 @@ if [ -z "$JOB_ID" ]; then
     JOB_ID=$(date +%s%3N)
 fi
 
-PROJECT_ROOT="$HOME/projects/Brick_Marketing"
+# Detectar diretório do script dinamicamente
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR"
 WIP_DIR="$PROJECT_ROOT/history/marketing/wip"
 
 echo "📢 Brick AI Marketing Pipeline"
@@ -318,10 +320,10 @@ Faça a revisão final conforme seu role acima e salve o resultado JSON no arqui
 FINAL_OUT="$WIP_DIR/${JOB_ID}_FINAL.md"
 WINNER=$(jq -r '.winner // .copy_winner // .winner_copy // "C"' "$CRITIC_OUT" 2>/dev/null | tr -d '"')
 case "$WINNER" in
-  A|a) WIN_FILE="$COPY_A_OUT" ;; 
-  B|b) WIN_FILE="$COPY_B_OUT" ;; 
-  C|c) WIN_FILE="$COPY_C_OUT" ;; 
-  *) WIN_FILE="$COPY_C_OUT" ;;
+  A|a) WIN_FILE="$COPY_GPT_OUT" ;; 
+  B|b) WIN_FILE="$COPY_FLASH_OUT" ;; 
+  C|c) WIN_FILE="$COPY_SONNET_OUT" ;; 
+  *) WIN_FILE="$COPY_SONNET_OUT" ;;
 esac
 
 if [ -f "$WIN_FILE" ]; then
