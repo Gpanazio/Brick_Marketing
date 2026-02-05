@@ -67,6 +67,10 @@
         .node[data-provider="revision"] .node-subtext { color: #f97316; }
         .node[data-provider="revision"] .node-title { color: #f97316; }
         @keyframes pulse-revision { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        /* Loop nodes (Copy Senior ↔ Wall auto-revision) */
+        .node[data-provider="loop-wall"] { background: rgba(5, 5, 5, 0.95); border: 1px solid #333; }
+        .node[data-provider="loop-copy"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; }
         .disabled[data-provider] { border-left-color: #222 !important; }
         .disabled[data-provider] .node-subtext { color: #333 !important; }
 
@@ -1054,6 +1058,111 @@ OUTPUT (Proposta Completa)`;
                 makeDraggable(el);
             });
 
+            // DYNAMIC LOOP NODES - Detecta arquivos do loop Copy Senior ↔ Wall (_v2, _v3)
+            const loopWallFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('WALL'));
+            const loopCopyFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('COPY_SENIOR'));
+            
+            loopWallFiles.forEach((wallFile, idx) => {
+                const vNum = wallFile.name.match(/_v(\d+)\.json/i)[1];
+                const loopId = `loop-wall-${vNum}`;
+                
+                // Extrair score e status do JSON
+                fetch(`${API_URL}/file/${currentMode}/wip/${wallFile.name}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        const score = data.score_final || 0;
+                        const status = data.status || 'PROCESSING';
+                        const statusColor = status === 'APPROVED' ? '#22c55e' : (status === 'REJECTED' ? '#ef4444' : '#f97316');
+                        const statusIcon = status === 'APPROVED' ? '✓' : (status === 'REJECTED' ? '✗' : '🔄');
+                        
+                        const el = document.createElement('div');
+                        el.className = 'node';
+                        el.setAttribute('data-provider', 'loop-wall');
+                        el.id = loopId;
+                        el.style.position = 'absolute';
+                        
+                        // Posição: abaixo do WALL original (n7), em cascade vertical
+                        const wallNode = document.getElementById('n7');
+                        if (wallNode && !savedPositions[loopId]) {
+                            const wallLeft = parseInt(wallNode.style.left) || wallNode.offsetLeft;
+                            const wallTop = parseInt(wallNode.style.top) || wallNode.offsetTop;
+                            el.style.left = `${wallLeft}px`;
+                            el.style.top = `${wallTop + 200 + (idx * 160)}px`; // 200px abaixo + 160px por versão
+                        } else if (savedPositions[loopId]) {
+                            el.style.left = savedPositions[loopId].left;
+                            el.style.top = savedPositions[loopId].top;
+                        } else {
+                            el.style.left = `${centerX + 600}px`;
+                            el.style.top = `${1950 + (idx * 160)}px`;
+                        }
+                        
+                        el.style.transform = 'none';
+                        el.style.borderLeft = `2px solid ${statusColor}`;
+                        
+                        el.innerHTML = `
+                            <div class="node-led" style="background: ${statusColor}; box-shadow: 0 0 8px ${statusColor};"></div>
+                            <div class="node-id">${loopId.toUpperCase()} // Loop_v${vNum}</div>
+                            <div class="node-title">WALL v${vNum}</div>
+                            <div class="node-subtext" style="color: ${statusColor};">
+                                ${statusIcon} ${score}/100 · ${status}
+                            </div>
+                        `;
+                        
+                        el.ondblclick = () => {
+                            const loopNode = { id: loopId, title: `WALL v${vNum}`, label: `Wall_Loop_${vNum}`, model: 'OPUS' };
+                            openPanel(loopNode, projectFiles);
+                        };
+                        container.appendChild(el);
+                        makeDraggable(el);
+                    })
+                    .catch(err => console.error(`Failed to load loop wall ${vNum}:`, err));
+            });
+            
+            loopCopyFiles.forEach((copyFile, idx) => {
+                const vNum = copyFile.name.match(/_v(\d+)\.json/i)[1];
+                const loopId = `loop-copy-${vNum}`;
+                
+                const el = document.createElement('div');
+                el.className = 'node';
+                el.setAttribute('data-provider', 'loop-copy');
+                el.id = loopId;
+                el.style.position = 'absolute';
+                
+                // Posição: abaixo do COPY SENIOR original (n6), em cascade vertical
+                const copyNode = document.getElementById('n6');
+                if (copyNode && !savedPositions[loopId]) {
+                    const copyLeft = parseInt(copyNode.style.left) || copyNode.offsetLeft;
+                    const copyTop = parseInt(copyNode.style.top) || copyNode.offsetTop;
+                    el.style.left = `${copyLeft}px`;
+                    el.style.top = `${copyTop + 200 + (idx * 160)}px`;
+                } else if (savedPositions[loopId]) {
+                    el.style.left = savedPositions[loopId].left;
+                    el.style.top = savedPositions[loopId].top;
+                } else {
+                    el.style.left = `${centerX + 300}px`;
+                    el.style.top = `${1950 + (idx * 160)}px`;
+                }
+                
+                el.style.transform = 'none';
+                el.style.borderLeft = `2px solid #f97316`;
+                
+                el.innerHTML = `
+                    <div class="node-led" style="background: #f97316; box-shadow: 0 0 8px #f97316;"></div>
+                    <div class="node-id">${loopId.toUpperCase()} // Loop_v${vNum}</div>
+                    <div class="node-title">COPY SENIOR v${vNum}</div>
+                    <div class="node-subtext" style="color: #f97316;">
+                        🔄 REVISÃO
+                    </div>
+                `;
+                
+                el.ondblclick = () => {
+                    const loopNode = { id: loopId, title: `COPY SENIOR v${vNum}`, label: `Copy_Loop_${vNum}`, model: 'SONNET' };
+                    openPanel(loopNode, projectFiles);
+                };
+                container.appendChild(el);
+                makeDraggable(el);
+            });
+
             // DYNAMIC REVISION NODES - Detecta arquivos REVISAO_1, REVISAO_2... e cria nós ao lado do HUMAN
             const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
             activeRevisionLinks = [];
@@ -1238,12 +1347,24 @@ OUTPUT (Proposta Completa)`;
         }
 
         function openPanel(n, files) {
-            const searchTerms = fileMapping[n.title] || [n.title];
-            // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall
-            const file = files.find(f => 
-                !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
-                searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()))
-            );
+            let file;
+            
+            // Detectar nodes de loop (WALL vN, COPY SENIOR vN)
+            if (n.id.startsWith('loop-wall-')) {
+                const vNum = n.id.replace('loop-wall-', '');
+                file = files.find(f => f.name.includes('WALL') && f.name.includes(`_v${vNum}.json`));
+            } else if (n.id.startsWith('loop-copy-')) {
+                const vNum = n.id.replace('loop-copy-', '');
+                file = files.find(f => f.name.includes('COPY_SENIOR') && f.name.includes(`_v${vNum}.json`));
+            } else {
+                const searchTerms = fileMapping[n.title] || [n.title];
+                // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall (mas permitir pro openPanel de loop nodes)
+                file = files.find(f => 
+                    !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
+                    searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()))
+                );
+            }
+            
             const body = document.getElementById('panel-body');
             
             if (n.title === 'BRIEFING_INPUT') {
