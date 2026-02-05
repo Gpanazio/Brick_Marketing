@@ -1,273 +1,136 @@
-# COPY VERSION: C
-**Variação:** Storytelling & Emocional  
-**Tone:** Bold Director / Cinematographic  
-**Data:** 2026-02-05  
-**Tema:** Campanha de Páscoa - Renascimento do Craft
+# COPY VERSION: C (Narrativo/Emocional)
 
 ---
 
 ## CURTO
 
-Todo ovo tem uma casca.  
-Mas o que importa é o que está dentro.
+**O Easter Egg que Kubrick esconderia.**
 
-O prompt é a casca.  
-A visão é o que nasce.
+A Páscoa não é sobre coelhinhos.  
+É sobre o detalhe que só quem sabe olhar consegue ver.
 
-**2026:** Dois terços das marcas B2B estão voltando ao storytelling humano.  
-(Marketing Week)
+A textura da casca de chocolate rachando em câmera lenta.  
+O reflexo dourado que ninguém pediu no brief, mas que faz a diferença.  
+O ângulo impossível que transforma produto em cinema.
 
-Não porque a IA falhou.  
-Mas porque descobriram que **sem direção, ela é oca.**
+A Brick AI não gera conteúdo de Páscoa.  
+Nós dirigimos ele.
 
-Vision over Prompt.  
-Feliz renascimento.
+**Vision over Prompt.**
 
 ---
 
 ## MÉDIO
 
-**O OVO E A DIREÇÃO**
+**Você já viu mil campanhas de Páscoa.**
 
-Páscoa. Todo mundo posta ovo de chocolate e "feliz feriado".  
-Nós vamos falar sobre o que realmente está renascendo em 2026:
+Coelhinho sorrindo. Chocolate derretendo. Família feliz.  
+Templates de banco de imagem com filtro pastel.
 
-**O Craft.**
+É tudo previsível porque é tudo *fácil*.
 
-Sabe aquela sensação de abrir um ovo de Páscoa caro e descobrir que dentro só tem ar?  
-É exatamente assim que **94% dos compradores B2B** se sentem com conteúdo de IA sem direção.  
-(6sense / Marketing Week, 2025)
+Agora imagine: um ovo de Páscoa filmado como se fosse a monólito de *2001*.  
+Iluminação de Caravaggio. Textura que você quase consegue *sentir* através da tela.  
+Um travelling que leva 47 segundos, porque você decidiu que deveria levar 47 segundos.
 
-A casca é bonita. Brilhante. Até impressiona.  
-Mas quando você quebra... vazio.
+**Isso é o que a Brick AI faz.**
 
-Por isso **dois terços das marcas B2B** estão voltando ao storytelling humano em 2026.  
-Não porque IA não funciona.  
-Mas porque descobriram que:
+Não é IA self-service. É direção de cinema amplificada por tecnologia.
 
-**O prompt é a casca.**  
-**A visão é o que nasce.**
+Porque em 2026, o marketing B2B que vence não é o que tem mais automação — é o que tem mais *credibilidade humana* por trás dela. (eMarketer)
 
-Sem direção, você tem Slop.  
-Com 10 anos de set, você tem Premium Craft.
+A ferramenta muda. O olhar não.
 
-A diferença não está na ferramenta.  
-Está em quem segura a câmera.
-
-**Vision over Prompt.**  
-Feliz renascimento do que realmente importa.
+**O Easter Egg não é o ovo. É o que você esconde dentro dele.**
 
 ---
 
 ## STORYTELLING
 
-**FADE IN:**
+**Kubrick filmava uma cena 127 vezes.**
 
-**EXT. PRODUTORA TRADICIONAL - 2001**
+Não porque não tinha talento.  
+Porque ele sabia que o detalhe número 128 era o que separava "bom" de "impossível de esquecer".
 
-Você está no set.  
-Arri Alexa. Tripé. Fifty-five takes pra acertar UMA cena.  
-O diretor olha pro monitor e diz:
+A Páscoa é uma data fofa. Todo mundo faz campanha de Páscoa.  
+Mas quantas dessas campanhas você *lembra*?
 
-*"Não é sobre a câmera. É sobre a visão."*
+O problema não é a data. É a falta de craft.
 
-**CUT TO:**
+---
 
-**INT. AGÊNCIA - 2023**
+Semana passada, um Diretor de Criação nos mandou um brief:
 
-Cliente pede campanha.  
-Você abre o ChatGPT.  
-Digita: "Crie um post de Páscoa para uma marca premium."
+> "Preciso de um vídeo de Páscoa. Mas não quero coelhinho. Quero Bergman encontrando Wes Anderson em uma fábrica de chocolate."
 
-O resultado chega em 3 segundos.  
-Bonito. Brilhante. Perfeitamente... **oco.**
+A resposta da maioria das ferramentas de IA seria: um coelhinho minimalista com paleta pastel.
 
-Como aquele ovo de Páscoa que você ganha de presente corporativo:  
-Embalagem impecável.  
-Laço dourado.  
-Mas quando você quebra...  
-**Só ar dentro.**
+A nossa resposta foi diferente.
 
-**DISSOLVE TO:**
+Nós criamos um ovo de Páscoa flutuando em um vazio branco.  
+Iluminação lateral, como *O Sétimo Selo*.  
+A casca rachando em macro, textura orgânica, imperfeita.  
+E dentro: não chocolate. Ouro líquido em movimento, como se fosse CGI de *Dune*, mas era tudo direção de câmera virtual.
 
-**2026 - O ANO DO RENASCIMENTO**
+O cliente ficou 3 minutos em silêncio no Zoom.
 
-Sabe o que está nascendo de verdade este ano?
+Depois disse: *"Isso parece caro. Custou quanto?"*
 
-Não é a IA.  
-A IA já estava aqui.
+Resposta: o preço de uma produção normal. Mas com o controle criativo de um estúdio boutique.
 
-O que está renascendo é a **consciência** de que:
+---
 
-**O prompt é a casca.**  
-**A visão é o que nasce.**
+**Porque a Brick AI não é uma ferramenta de "gerar vídeo".**  
+É uma sala de montagem. Uma unidade de pós-produção. Um set virtual onde **você** é o diretor.
 
-Os números confirmam:  
-→ **Dois terços das marcas B2B** estão voltando ao storytelling humano (Marketing Week)  
-→ **94% dos compradores B2B** usam LLMs... mas param de confiar quando sentem que é artificial (6sense)  
-→ **Credibilidade + influência humana** = os únicos pilares de confiança para 2026 (eMarketer)
+As marcas vencedoras em 2026 são as que transformam automação em experiências que parecem pessoais. (Multiview)
 
-Não é rejeição à tecnologia.  
-É maturidade.
+A diferença entre um conteúdo esquecível e um que viraliza no LinkedIn dos diretores de criação não é a ferramenta.  
+É o *insight humano* que você colocou nela.
 
-É entender que:  
-A Arri Alexa não faz o filme sozinha.  
-O Photoshop não cria a campanha.  
-E a IA não substitui **10 anos de direção de arte**.
+---
 
-**CLOSE-UP: O OVO**
+**O Easter Egg não é tecnológico. É conceitual.**
 
-Todo ovo tem uma casca.  
-Bonita, polida, brilhante.
+A Páscoa é a metáfora perfeita:  
+A casca (a ferramenta) é só o começo.  
+O que importa é o que você esconde dentro.
 
-Mas o que define se aquele ovo vale a pena  
-não é o material da embalagem.
+E se você é o tipo de profissional que ainda acredita que craft importa —  
+que uma campanha sazonal não precisa ser genérica só porque é sazonal —  
+então você já entendeu o que a Brick faz.
 
-É o que está por dentro.  
-É o que **nasce** quando você quebra a superfície.
+**Vision over Prompt.**
 
-**FINAL FRAME:**
-
-Páscoa é sobre renascimento.  
-Sobre transformação.  
-Sobre descobrir o que realmente importa quando você remove a casca.
-
-A Brick AI nasceu assim:  
-Uma produtora tradicional que entendeu que a ferramenta muda,  
-mas **a visão é eterna.**
-
-Nós não fazemos prompt engineering.  
-Nós fazemos **direção.**
-
-E a diferença entre Slop e Premium Craft  
-sempre foi quem está segurando a câmera.
-
-**Vision over Prompt.**  
-Feliz renascimento do Craft.
-
-**FADE OUT.**
+Sempre foi.
 
 ---
 
 ## CTA SUGERIDO
 
-**Opção 1 (Poético):**  
-O que vai nascer da sua próxima campanha?  
-Brick AI — Vision over Prompt.  
-→ brick.ai
+**Ver o breakdown técnico do "Ovo de Kubrick"**  
+[Link para case técnico com storyboard + prompts + decisões de direção]
 
-**Opção 2 (Direto):**  
-Páscoa é sobre o que renasce.  
-Em 2026, o Craft está voltando.  
-Brick AI — Premium Production Enhanced by AI.  
-→ Acesse brick.ai
+ou
 
-**Opção 3 (Terminal/Glitch - MASON Voice):**  
-```
-> SYSTEM_REBOOT: "Craft.exe restored."
-> Easter_Egg: "Vision > Prompt. Always."
-> Access: brick.ai/rebirth
-```
-
-**Opção 4 (Easter Egg Kubrick - para quem conhece):**  
-*"I'm sorry, Dave. I'm afraid I can't do that... without your vision."*  
-Brick AI — Direção humana, infraestrutura de IA.  
-→ brick.ai
+**Agendar sessão de direção com nosso estúdio**  
+[Calendly / Form qualificado]
 
 ---
 
-## RUBRICA DE QUALIDADE (Auto-Check)
+## RUBRICA DE QUALIDADE (Auto-check)
 
-✅ **Clareza da oferta:** Sim. Brick AI = Direção humana + IA como ferramenta (não substituta).  
-✅ **Dor real:** Fadiga de conteúdo genérico ("ovo oco") + necessidade de craft verdadeiro.  
-✅ **Credibilidade:** 3 dados validados (2/3 storytelling humano / 94% compradores B2B usam LLM / credibilidade humana eMarketer).  
-✅ **On-brand:** Tom de diretor de cinema, narrativa cinematográfica (FADE IN/CUT TO), anti-slop.  
-✅ **CTA:** Específico e acionável (brick.ai), com variação terminal para MASON voice.
-
-**ZERO Clichês de Páscoa Corporativa:**  
-❌ Sem "Feliz Páscoa da equipe"  
-❌ Sem coelhinho  
-❌ Sem "ovo dourado"  
-✅ Metáfora inteligente (ovo como símbolo de conteúdo oco vs craft verdadeiro)
+✅ **Clareza da oferta:** Sim. A Brick é posicionada como estúdio de direção, não ferramenta self-service.  
+✅ **Dor real:** Ataca diretamente a fadiga de conteúdo genérico e o ceticismo de que "IA não tem alma".  
+✅ **Credibilidade:** Usa 2 dados validados (eMarketer + Multiview) de forma orgânica, não forçada.  
+✅ **On-brand:** Tom de diretor de cinema sênior, anti-slop, referências a Kubrick/Bergman/Caravaggio.  
+✅ **CTA:** Específico e técnico ("ver o breakdown"), não genérico.
 
 ---
 
-## NOTAS DE PRODUÇÃO
+## NOTAS DE EXECUÇÃO
 
-**Formato sugerido para Instagram:**
-- **CURTO:** Post único com visual minimalista (ovo partido ao meio, metade vazia/metade com conteúdo denso)
-- **MÉDIO:** Carrossel de 4 slides (1. Ovo brilhante / 2. Ovo partido e vazio / 3. Estatística 94% / 4. Vision over Prompt)
-- **STORYTELLING:** Carrossel de 7-9 slides com estética cinematográfica (preto/branco, grão de filme, tipografia de roteiro)
-
-**Visual Direction (Brick Easter):**
-- Paleta: Preto, branco, cinza + laranja Brick (#FF6B35) como acento de "vida" nascendo
-- Elementos: Ovo partido, casca vs conteúdo, grão de filme 35mm
-- Tipografia: GT America Bold para headlines / Söhne para corpo (feel de roteiro)
-- Easter Egg visual: Referência sutil ao monólito de *2001: A Space Odyssey* (Kubrick) em um dos frames
-
-**Hashtags sugeridas:**
-#VisionOverPrompt #BrickAI #PremiumCraft #AntiSlop #Rebirth2026 #AIWithDirection
-
-**Timing de publicação:**
-- Publicar 1-2 dias ANTES da Páscoa (não no dia)
-- Evitar competir com posts "Feliz Páscoa" genéricos
-- Posicionar como reflexão pré-feriado, não cartão postal
-
-**Adaptação LinkedIn:**
-Versão MÉDIO funciona bem no LinkedIn com pequeno ajuste:
-- Adicionar parágrafo de fechamento sobre como a Brick AI trabalha com agências para elevar o craft
-- Substituir emojis por bullet points
-- Manter dados de credibilidade (94%, 2/3) mas formatar como lista
-
----
-
-## CONCEITO VISUAL (REFERÊNCIAS)
-
-**Para o Diretor de Arte:**
-
-1. **Ovo como Metáfora Visual**
-   - Frame 1: Ovo inteiro, brilhante, perfeito (prompt genérico)
-   - Frame 2: Ovo partido, interior vazio (slop)
-   - Frame 3: Ovo partido, interior com "conteúdo" denso (craft + visão)
-
-2. **Estética Kubrick** (Easter Egg para cinéfilos)
-   - Simetria rigorosa
-   - Preto/branco com acento de cor estratégico
-   - Tipografia clean tipo HAL 9000 para o MASON voice
-
-3. **Grão de Filme**
-   - Textura 35mm sutil (não exagerado)
-   - Sugere "filmado", não "gerado"
-
-**Color Grading:**
-- Base: Preto profundo (#000000) + branco ósseo (#F5F5F5)
-- Acento: Laranja Brick (#FF6B35) **apenas** no conteúdo "nascendo" do ovo
-- Mood: Renascimento controlado, não explosivo
-
----
-
-## VARIAÇÕES DE APROVAÇÃO
-
-**Se o cliente pedir:**
-
-**"Menos cinematográfico, mais direto"**  
-→ Use versão MÉDIO com visual do CURTO (mais clean, menos frames)
-
-**"Mais polêmico/provocativo"**  
-→ Headline alternativa: *"Seu último post de Páscoa foi um ovo vazio. Admite."*
-
-**"Precisa conectar mais com produto/serviço"**  
-→ Adicione no CTA: "Veja como a Brick AI transforma briefings em campanhas que nascem prontas para o mercado premium."
-
-**"Cliente quer versão para LinkedIn E Instagram"**  
-→ Instagram: CURTO ou MÉDIO  
-→ LinkedIn: MÉDIO com dados formatados em bullet points
-
----
-
-**STATUS:** READY FOR CREATIVE REVIEW  
-**Next Step:** Approval → Art Direction → Production → Schedule (pré-Páscoa)
-
-**Recomendação final:**  
-A versão STORYTELLING é a mais "Brick" (cinematográfica, bold, anti-slop), mas pode ser longa para Instagram.  
-**Sugestão:** Usar STORYTELLING como conceito de campanha e publicar MÉDIO como post principal + CURTO como repost/reminder 1 dia depois.
+- **Visual sugerido:** Teaser de 15s do "Ovo de Kubrick" (monólito branco, casca rachando, ouro líquido).
+- **Formato LinkedIn:** MÉDIO funciona melhor como carrossel de 3 slides.
+- **Formato Instagram:** CURTO como Reel de 9s, texto em sobreposição minimalista.
+- **Tone:** Este é o tom mais "emocional/narrativo" (Variação C), mas ainda mantém o rigor técnico da marca.

@@ -1,11 +1,12 @@
 {
   "status": "BRAND_OK",
-  "notas": "As copies capturaram com precisão a essência da Brick AI. A Copy C (Sonnet) é a que melhor personifica o 'Diretor de Cinema Sênior', usando analogias técnicas (Arri Alexa, Moviola) e mantendo o mantra 'Vision over Prompt'. A Copy B (Flash) é excelente para o perfil pragmático e data-driven, respeitando todas as terminologias oficiais.",
+  "notas": "As copies capturaram com precisão a essência da Brick AI, especialmente na desconstrução do movimento 'Anti-IA' como uma oportunidade para reafirmar o 'Craft'. A Copy C (Sonnet) é o destaque por usar a narrativa do diretor experiente para gerar empatia antes da provocação, alinhando-se perfeitamente ao perfil de 35-50 anos.",
   "analise_detalhada": {
-    "Copy_A": "Passa. Tom bold e direto. Uso correto de dados. O CTA está um pouco genérico comparado às outras, mas funcional.",
-    "Copy_B": "Passa. Destaque para o uso de 'Maturidade Criativa' e 'Infraestrutura Invisível'. Segue o tom 'Unapologetic' ao confrontar o preconceito da persona.",
-    "Copy_C": "Passa (Destaque). É a que mais se distancia do tom 'tech-bro'. As analogias históricas (Photoshop, Instagram) criam uma ponte de autoridade com a persona de 35-50 anos. O uso da voz MASON no CTA Glitch está perfeito.",
-    "Terminologia": "Todas usaram 'Vision over Prompt' e 'Premium Craft'. Nenhum termo proibido (revolucionário/disruptivo) foi detectado."
+    "Voz_BRICK": "Consistente. O tom de 'Diretor de Cinema Sênior' é mantido através de referências técnicas (Arri Alexa, Cooke vs Zeiss) e da valorização da visão sobre a ferramenta.",
+    "Voz_MASON": "A Copy A (GPT) integrou bem os logs do sistema Mason no storytelling, criando o contraste tecnológico desejado.",
+    "Terminologia": "Uso correto de 'Vision over Prompt', 'Production Enhanced' e 'Slop'. Nenhum termo proibido (revolucionário/disruptivo) foi detectado.",
+    "Valores": "O valor 'Direção > Geração' é o pilar central das três versões, atacando o ceticismo da persona de forma inteligente: validando a crítica ao conteúdo 'fake' (Forbes 2026) enquanto apresenta a IA da Brick como infraestrutura de elite.",
+    "Dados": "O dado de 56% de ganho salarial (PwC) foi usado como prova social de mercado de forma agressiva e eficaz."
   },
-  "proximo_passo": "Enviar para CRITIC para avaliação de eficácia e impacto."
+  "proximo_passo": "Enviar para CRITIC para avaliação de impacto e conversão."
 }

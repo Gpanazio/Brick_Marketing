@@ -1,30 +1,11 @@
 {
-  "vencedor": "C",
-  "modelo_vencedor": "sonnet",
-  "copy_vencedora": "**O Easter Egg que Kubrick esconderia.**\n\nA Páscoa não é sobre coelhinhos.  \nÉ sobre o detalhe que só quem sabe olhar consegue ver.\n\nA textura da casca de chocolate rachando em câmera lenta.  \nO reflexo dourado que ninguém pediu no brief, mas que faz a diferença.  \nO ângulo impossível que transforma produto em cinema.\n\nA Brick AI não gera conteúdo de Páscoa.  \nNós dirigimos ele.\n\n**Vision over Prompt.**\n\n---\n\n**Você já viu mil campanhas de Páscoa.**\n\nCoelhinho sorrindo. Chocolate derretendo. Família feliz.  \nTemplates de banco de imagem com filtro pastel.\n\nÉ tudo previsível porque é tudo *fácil*.\n\nAgora imagine: um ovo de Páscoa filmado como se fosse a monólito de *2001*.  \nIluminação de Caravaggio. Textura que você quase consegue *sentir* através da tela.  \nUm travelling que leva 47 segundos, porque você decidiu que deveria levar 47 segundos.\n\n**Isso é o que a Brick AI faz.**\n\nNão é IA self-service. É direção de cinema amplificada por tecnologia.\n\nPorque em 2026, o marketing B2B que vence não é o que tem mais automação — é o que tem mais *credibilidade humana* por trás dela. (eMarketer)\n\nA ferramenta muda. O olhar não.\n\n**O Easter Egg não é o ovo. É o que você esconde dentro dele.**\n\n---\n\n**Kubrick filmava uma cena 127 vezes.**\n\nNão porque não tinha talento.  \nPorque ele sabia que o detalhe número 128 era o que separava "bom" de "impossível de esquecer".\n\nA Páscoa é uma data fofa. Todo mundo faz campanha de Páscoa.  \nMas quantas dessas campanhas você *lembra*?\n\nO problema não é a data. É a falta de craft.\n\n---\n\nSemana passada, um Diretor de Criação nos mandou um brief:\n\n> "Preciso de um vídeo de Páscoa. Mas não quero coelhinho. Quero Bergman encontrando Wes Anderson em uma fábrica de chocolate."\n\nA resposta da maioria das ferramentas de IA seria: um coelhinho minimalista com paleta pastel.\n\nA nossa resposta foi diferente.\n\nNós criamos um ovo de Páscoa flutuando em um vazio branco.  \nIluminação lateral, como *O Sétimo Selo*.  \nA casca rachando em macro, textura orgânica, imperfeita.  \nE dentro: não chocolate. Ouro líquido em movimento, como se fosse CGI de *Dune*, mas era tudo direção de câmera virtual.\n\nO cliente ficou 3 minutos em silêncio no Zoom.\n\nDepois disse: *"Isso parece caro. Custou quanto?"*\n\nResposta: o preço de uma produção normal. Mas com o controle criativo de um estúdio boutique.\n\n---\n\n**Porque a Brick AI não é uma ferramenta de "gerar vídeo".**  \nÉ uma sala de montagem. Uma unidade de pós-produção. Um set virtual onde **você** é o diretor.\n\nAs marcas vencedoras em 2026 são as que transformam automação em experiências que parecem pessoais. (Multiview)\n\nA diferença entre um conteúdo esquecível e um que viraliza no LinkedIn dos diretores de criação não é a ferramenta.  \nÉ o *insight humano* que você colocou nela.\n\n---\n\n**O Easter Egg não é tecnológico. É conceitual.**\n\nA Páscoa é a metáfora perfeita:  \nA casca (a ferramenta) é só o começo.  \nO que importa é o que você esconde dentro.\n\nE se você é o tipo de profissional que ainda acredita que craft importa —  \nque uma campanha sazonal não precisa ser genérica só porque é sazonal —  \nentão você já entendeu o que a Brick faz.\n\n**Vision over Prompt.**\n\nSempre foi.\n\n---\n\n**Ver o breakdown técnico do "Ovo de Kubrick"**  \n[Link para case técnico com storyboard + prompts + decisões de direção]\n\nou\n\n**Agendar sessão de direção com nosso estúdio**  \n[Calendly / Form qualificado]",
-  "pontos_fortes": [
-    "Diferenciação brutal: ninguém mais está fazendo campanha de Páscoa assim",
-    "Referências cinematográficas criam credibilidade instantânea com a persona (35-50 anos, decisores)",
-    "História do cliente ('3 minutos em silêncio') funciona como social proof orgânico",
-    "CTA específico e técnico ('Ver o breakdown') atrai quem valoriza craft, não curiosos",
-    "Vocabulário técnico de set (travelling, macro, iluminação lateral) separa Brick de tools genéricas"
-  ],
-  "pontos_fracos": [
-    "Texto muito longo para Instagram/LinkedIn — risco de perda de atenção",
-    "Último parágrafo ('O Easter Egg não é tecnológico. É conceitual') flerta com autoajuda",
-    "Repetição de 'Vision over Prompt' pode soar como mantra corporativo se mal executado",
-    "Falta especificidade no preço/investimento — 'preço de uma produção normal' é vago"
-  ],
-  "ajustes_sugeridos": [
-    "Cortar 30% do bloco de storytelling: manter apenas a história do 'Bergman encontrando Wes Anderson' e remover a metáfora do Easter Egg conceitual",
-    "Substituir 'preço de uma produção normal' por range concreto ou 'investimento a partir de X'",
-    "Adicionar linha técnica sobre o MASON no storytelling (ex: 'MASON processou 847 frames em 12 minutos') para ancorar a poesia no craft",
-    "CTA: trocar placeholder [Link] por URL real ou remover segunda opção (manter apenas 'Ver breakdown técnico')"
-  ],
-  "veredito": "APPROVED_WITH_NOTES",
-  "justificativa_eliminacao": {
-    "Copy_A": "Funcional mas genérica. CTA fraco ('Fala com a Brick AI') não qualifica lead. Não tem gancho memorável para competir com o ruído de feriado.",
-    "Copy_B": "Eliminada por corporativês letal ('vantagem competitiva', 'commodity virou'). Soa como relatório de consultoria, não como set de cinema. Perde completamente a energia da marca."
+  "agent": "CRITIC",
+  "job_id": "1770303771859_campanha_de_p_scoa_pra_brick_ai",
+  "status": "ERROR",
+  "error": {
+    "reason": "All retries failed",
+    "timestamp": "2026-02-05T12:19:11-03:00",
+    "retries_attempted": 3
   },
-  "nota_do_critic": "A Copy C é arriscada, mas é a única que tem chance real de viralizar entre diretores de criação no LinkedIn. As outras duas são esquecíveis. Prefiro aprovar algo com personalidade que precisa de ajuste do que algo 'seguro' que ninguém vai compartilhar."
+  "placeholder": true
 }

@@ -1,12 +1,35 @@
 {
-  "status": "BRAND_OK",
-  "notas": "As copies capturaram com perfeição a dualidade da marca. O uso da metáfora do 'ovo oco' para criticar o 'slop' de IA genérica é um 'approach' brilhante que ressoa com o público sênior de criação sem ser infantil. O tom de diretor de cinema é mantido com maestria, especialmente na Copy C.",
-  "analise_detalhada": {
-    "Voz_BRICK": "A persona de 'Diretor de Cinema Sênior' transborda na Copy C com o uso de termos técnicos (Arri Alexa, Takes, Moviola) e estrutura de roteiro (FADE IN, CUT TO). Isso valida a experiência de 10 anos da marca.",
-    "Voz_MASON": "As opções de CTA com 'MASON Voice' (Opção 3 da Copy C) seguem exatamente a diretriz de tom de terminal/glitch para a IA do sistema.",
-    "Terminologia": "Uso impecável de 'Vision over Prompt', 'Premium Craft' e 'Production Enhanced'. Nenhum termo proibido (revolucionário/disruptivo) foi detectado.",
-    "Valores": "O valor 'Direção > Geração' é o pilar central de todos os textos, atacando a dor do ceticismo da persona de forma elegante.",
-    "Sazonalidade": "Desafio de Páscoa superado com sucesso: zero coelhinhos, zero clichês corporativos, foco total em 'Renascimento do Craft'."
+  "status": "BRAND_FAIL",
+  "problemas": [
+    {
+      "trecho": "Páscoa não é sobre chocolate. É sobre o renascimento do craft. Em um mercado saturado de conteúdos genéricos, 2026 marca o retorno ao 'storytelling humano' (eMarketer).",
+      "problema": "A Copy B soa excessivamente como 'tech bro' ou relatório de consultoria. O uso de 'storytelling humano' entre aspas e a citação de dados logo no início quebra a energia de set e o tom de Diretor de Cinema Sênior.",
+      "sugestao": "Remover o 'economês' e focar no craft. Ex: 'Páscoa não é chocolate. É luz, textura e intenção. Enquanto o mercado se afoga em genéricos, a gente volta para o que importa: o olhar do diretor.'"
+    },
+    {
+      "trecho": "A vantagem competitiva não é mais a tecnologia em si — que virou commodity — mas o insight humano por trás dela.",
+      "problema": "Uso de corporativês ('vantagem competitiva', 'commodity'). Um diretor não fala de 'vantagem competitiva', ele fala de visão e resultado.",
+      "sugestao": "Substituir por algo focado em direção. Ex: 'A ferramenta está na mão de todos. A diferença é quem sabe o que fazer com ela antes do REC.'"
+    },
+    {
+      "trecho": "O Easter Egg que Kubrick esconderia.",
+      "problema": "Embora a Copy C seja excelente em tom, ela flerta com o 'cringe' ao tentar ser poética demais ('O Easter Egg não é o ovo. É o que você esconde dentro dele').",
+      "sugestao": "Manter a referência a Kubrick mas ancorar mais na 'Energia de Set'. Menos filosofia, mais craft técnico."
+    }
+  ],
+  "analise_por_versao": {
+    "Copy_A": {
+      "veredito": "BRAND_OK",
+      "notas": "É a mais equilibrada. O uso da dualidade BRICK/MASON no storytelling está perfeito e respeita a terminologia (Production Enhanced, Craft). O tom é seco e direto, como um diretor em deadline."
+    },
+    "Copy_B": {
+      "veredito": "BRAND_FAIL",
+      "notas": "Muito focada em 'mercado' e 'tendências'. Soa como uma startup de SaaS tentando parecer profunda. Termos como 'Vantagem competitiva' e 'Commodity' são red flags de corporativês."
+    },
+    "Copy_C": {
+      "veredito": "BRAND_OK (com ressalvas)",
+      "notas": "O tom de 'Diretor Sênior' está lá, as referências cinematográficas (Bergman, Caravaggio) são excelentes para a marca, mas o final fica um pouco 'palestra motivacional'. Precisa de um pouco mais de 'suor e café'."
+    }
   },
-  "proximo_passo": "Enviar para CRITIC para avaliação de impacto final."
+  "proximo_passo": "Devolver para COPYWRITER. Instrução: Seguir o modelo da Copy A (Dualidade MASON/BRICK) ou o refinamento narrativo da Copy C, eliminando o tom de consultoria da Copy B."
 }

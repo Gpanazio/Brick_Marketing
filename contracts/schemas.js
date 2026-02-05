@@ -85,18 +85,17 @@ const BRAND_GUARDIAN = {
     }
 };
 
-const CRITIC = {
-    name: 'CRITIC',
-    required: ['winner'],
+const COPY_SENIOR = {
+    name: 'COPY_SENIOR',
+    required: ['vencedor', 'copy_revisada', 'veredito'],
     properties: {
-        winner: { type: 'string', enum: ['A', 'B', 'C', 'a', 'b', 'c'] },
+        vencedor: { type: 'string', enum: ['A', 'B', 'C', 'a', 'b', 'c'] },
         modelo_vencedor: { type: 'string' },
-        copy_vencedora: { type: 'string' },
         pontos_fortes: { type: 'array' },
         pontos_fracos: { type: 'array' },
-        ajustes_sugeridos: { type: 'array' },
-        veredito: { type: 'string', enum: ['APPROVED', 'APPROVED_WITH_NOTES', 'REJECTED'] },
-        scores: { type: 'object' }
+        alteracoes_aplicadas: { type: 'array' },
+        copy_revisada: { type: 'string' },
+        veredito: { type: 'string', enum: ['APPROVED', 'REJECTED'] }
     }
 };
 
@@ -233,8 +232,9 @@ const schemas = {
     CLAIMS: CLAIMS_CHECKER, // Alias
     BRAND_GUARDIAN,
     BRAND_GUARDIANS: BRAND_GUARDIAN, // Alias
-    CRITIC,
-    CRITICS: CRITIC, // Alias
+    COPY_SENIOR,
+    CRITICS: COPY_SENIOR, // Alias (backwards compat)
+    CRITIC: COPY_SENIOR, // Alias
     FILTRO_FINAL,
     WALL: FILTRO_FINAL, // Alias
 

@@ -40,3 +40,31 @@
     }
   ]
 } | Score: 0 | Duration: ms
+[2026-02-05T12:24:17-03:00] Pipeline finalizado: roteirizacao_set | Decision: {
+  "decision": "NO-GO",
+  "reasoning": "Score 41/100 com 2 dealbreakers absolutos. A dor é real mas a solução proposta é fundamentalmente inviável: os diferenciais técnicos (3D + fadiga) são impossíveis ou contraproducentes, o mercado é pequeno e hostil, a execução exige capital e expertise que a Brick AI não possui, e um competitor (Filmustage) já ocupa o espaço de 'IA para pré-produção' com tração real. Mesmo o melhor ângulo ('Assassino de Overtime') promete algo que a tecnologia proposta não consegue entregar de forma verificável. Arquivar.",
+  "next_steps": [
+    "Arquivar ideia no estado atual",
+    "Extrair aprendizado: 'dor real em indústria de nicho ≠ oportunidade viável para nós'",
+    "Se houver interesse residual no espaço de film tech, investigar oportunidades de MENOR escopo: plugin/integração para Filmustage ao invés de competir, ou ferramenta SaaS simples de otimização de luz natural (sem 3D, sem fadiga, preço <$200/projeto)",
+    "Redirecionar energia de ideação para mercados onde a Brick AI tem vantagem competitiva real"
+  ],
+  "risks": [
+    "Dealbreaker absoluto #1: Impossibilidade de modelar variáveis humanas (fadiga, dinâmicas interpessoais) — sem dados estruturados, sem consentimento, sem viabilidade técnica",
+    "Dealbreaker absoluto #2: Modelo de negócio do 3D é quebrado em todas as configurações (cobrar, dar grátis, ou depender do cliente)",
+    "Mercado pequeno (~500 produções endereçáveis) com incumbente de 30 anos e switching costs culturais/sindicais",
+    "Filmustage já à frente no espaço de IA para pré-produção com brand e base de usuários",
+    "Custo estimado de $1M+ com break-even em ano 3 no cenário otimista",
+    "Responsabilidade legal: cronograma gerado por IA que resulta em acidente no set = risco jurídico não quantificado"
+  ],
+  "mitigations": [
+    "Não aplicável — mitigações não resolvem dealbreakers absolutos. Cada 'correção' destrói um pilar da proposta original (remover 3D = sem diferencial, remover fadiga = weather app glorificado, reduzir escopo = commodity de $200 que não justifica o desenvolvimento)"
+  ],
+  "learnings": [
+    "Dor real ≠ solução viável. A distância entre 'o problema existe' e 'nós conseguimos resolvê-lo de forma rentável' é onde a maioria das ideias morre.",
+    "Diferenciais técnicos precisam ser validados ANTES de virar selling point. '3D map' soa impressionante mas é operacionalmente inviável.",
+    "Indústrias tradicionais (cinema, construção, medicina) têm switching costs invisíveis (culturais, sindicais, de reputação) que não aparecem em análises superficiais.",
+    "Quando o Devil encontra dealbreakers absolutos com evidências sólidas, respeitar o veredito — não tentar 'salvar' a ideia por apego emocional.",
+    "MARKET_SCAN falhando 3x pode ser sinal de mercado opaco/pequeno demais para ter dados públicos — isso por si só é informação."
+  ]
+} | Score: 0 | Duration: ms

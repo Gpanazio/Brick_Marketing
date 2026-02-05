@@ -61,7 +61,7 @@ RESEARCHER_ROLE=$(cat "$ROLES_DIR/TOPIC_RESEARCHER.md" 2>/dev/null || echo "N/A"
 CLAIMS_ROLE=$(cat "$ROLES_DIR/CLAIMS_CHECKER.md" 2>/dev/null || echo "N/A")
 COPYWRITER_ROLE=$(cat "$ROLES_DIR/COPYWRITER.md" 2>/dev/null || echo "N/A")
 BRAND_ROLE=$(cat "$ROLES_DIR/BRAND_GUARDIAN.md" 2>/dev/null || echo "N/A")
-CRITIC_ROLE=$(cat "$ROLES_DIR/CRITIC.md" 2>/dev/null || echo "N/A")
+CRITIC_ROLE=$(cat "$ROLES_DIR/COPY_SENIOR.md" 2>/dev/null || echo "N/A")
 WALL_ROLE=$(cat "$ROLES_DIR/FILTRO_FINAL.md" 2>/dev/null || echo "N/A")
 
 # ============================================
@@ -463,10 +463,10 @@ if [ ! -f "$BRAND_GUARD_OUT" ] || ! validate_json "$BRAND_GUARD_OUT"; then
 fi
 
 # ============================================
-# ETAPA 7: CRITIC (GPT 5.2)
+# ETAPA 7: COPY SENIOR (GPT 5.2)
 # ============================================
 echo ""
-echo "⏳ ETAPA 7: Critic (GPT 5.2)"
+echo "⏳ ETAPA 7: Copy Senior (GPT 5.2)"
 STEP_START=$(start_timer)
 CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_CRITICS.json"
 CRITIC_LOG="$LOG_DIR/${JOB_ID}_07_CRITICS.log"
@@ -550,7 +550,7 @@ while [ $attempt -le $max_retries ]; do
 BRIEFING:
 ${BRIEFING_CONTENT}
 
-COPY VENCEDORA + ANÁLISE DO CRITIC:
+COPY REVISADA PELO COPY SENIOR + ANÁLISE:
 ${CRITIC_CONTENT}
 
 ---
@@ -583,28 +583,39 @@ fi
 # FINAL: Montar arquivo consolidado
 # ============================================
 FINAL_OUT="$WIP_DIR/${JOB_ID}_FINAL.md"
-WINNER=$(jq -r '.winner // .copy_winner // .winner_copy // "C"' "$CRITIC_OUT" 2>/dev/null | tr -d '"')
-case "$WINNER" in
-  A|a) WIN_FILE="$COPY_GPT_OUT" ;; 
-  B|b) WIN_FILE="$COPY_FLASH_OUT" ;; 
-  C|c) WIN_FILE="$COPY_SONNET_OUT" ;; 
-  *) WIN_FILE="$COPY_SONNET_OUT" ;;
-esac
+WINNER=$(jq -r '.vencedor // .winner // "C"' "$CRITIC_OUT" 2>/dev/null | tr -d '"')
 
-if [ -f "$WIN_FILE" ]; then
-  {
-    echo "# FINAL (vencedora: $WINNER)"
-    echo ""
-    cat "$WIN_FILE"
-    echo ""
-    echo "---"
-    echo ""
-    echo "## WALL (JSON)"
-    cat "$WALL_OUT" 2>/dev/null || true
-  } > "$FINAL_OUT"
-else
-  echo "# FINAL (placeholder)" > "$FINAL_OUT"
+# Extrair copy_revisada do COPY SENIOR (versão final editada)
+COPY_REVISADA=$(jq -r '.copy_revisada // empty' "$CRITIC_OUT" 2>/dev/null)
+
+# Fallback: se não tem copy_revisada, usar copy original do vencedor
+if [ -z "$COPY_REVISADA" ]; then
+  case "$WINNER" in
+    A|a) WIN_FILE="$COPY_GPT_OUT" ;; 
+    B|b) WIN_FILE="$COPY_FLASH_OUT" ;; 
+    C|c) WIN_FILE="$COPY_SONNET_OUT" ;; 
+    *) WIN_FILE="$COPY_SONNET_OUT" ;;
+  esac
+  COPY_REVISADA=$(cat "$WIN_FILE" 2>/dev/null || echo "Copy não encontrada")
 fi
+
+{
+  echo "# COPY FINAL (vencedora: $WINNER — revisada pelo Copy Senior)"
+  echo ""
+  echo "$COPY_REVISADA"
+  echo ""
+  echo "---"
+  echo ""
+  echo "## ALTERAÇÕES APLICADAS"
+  jq -r '.alteracoes_aplicadas[]? // empty' "$CRITIC_OUT" 2>/dev/null | while read -r alt; do
+    echo "- $alt"
+  done
+  echo ""
+  echo "---"
+  echo ""
+  echo "## WALL (JSON)"
+  cat "$WALL_OUT" 2>/dev/null || true
+} > "$FINAL_OUT"
 
 # ============================================
 # SUMÁRIO DO PIPELINE

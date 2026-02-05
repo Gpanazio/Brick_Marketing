@@ -1,0 +1,22 @@
+Gateway agent failed; falling back to embedded: Error: gateway timeout after 180000ms
+Gateway target: ws://127.0.0.1:18789
+Source: local loopback
+Config: /Users/gabrielpanazio/.openclaw/openclaw.json
+Bind: loopback
+[agent/embedded] read tool called without path: toolCallId=toolu_01SBZWXmYpBcLn8uFCMdzhGi argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_016TeSVMt5s7oDPnGCZwSLMz argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_01HEWz8EqCLLY6AwjUiQrkZB argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_01CQYhKYSevj4wt6c5GtttuR argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_01EUsZ8HeyhxoTx5YDYwKTMC argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_014R6FVc4Dp97wUUQArjb7Hw argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_01WDy11qWUvDYH66q9hm9WWj argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_01GDM7KVbj5kL6T7cXPwL9L3 argsType=object
+[agent/embedded] read tool called without path: toolCallId=toolu_01E4fjRkty7B9k7WLcE64LuA argsType=object
+[agent/embedded] embedded run timeout: runId=brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-wall sessionId=brick-mkt-1770303771859_campanha_de_p_scoa_pra_brick_ai-wall timeoutMs=150000
+[agent/embedded] Profile anthropic:default timed out (possible rate limit). Trying next account...
+[diagnostic] lane task error: lane=main durationMs=150072 error="FailoverError: LLM request timed out."
+[diagnostic] lane task error: lane=session:agent:opus:main durationMs=150074 error="FailoverError: LLM request timed out."
+[diagnostic] lane task error: lane=main durationMs=16 error="FailoverError: No available auth profile for anthropic (all in cooldown or unavailable)."
+[diagnostic] lane task error: lane=session:agent:opus:main durationMs=19 error="FailoverError: No available auth profile for anthropic (all in cooldown or unavailable)."
+[diagnostic] lane task error: lane=main durationMs=9 error="FailoverError: No available auth profile for anthropic (all in cooldown or unavailable)."
+[diagnostic] lane task error: lane=session:agent:opus:main durationMs=10 error="FailoverError: No available auth profile for anthropic (all in cooldown or unavailable)."

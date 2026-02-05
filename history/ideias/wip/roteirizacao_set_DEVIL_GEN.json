@@ -1,0 +1,76 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "roteirizacao_set",
+  "failure_scenarios": [
+    {
+      "name": "O Cemitério das Film Tech Startups",
+      "category": "market",
+      "description": "A indústria cinematográfica tem um histórico brutal de matar startups de tecnologia. Movie Magic Scheduling domina há 30+ anos não por ser o melhor, mas porque 1st ADs aprenderam nele, sindicatos recomendam ele, e ninguém é demitido por escolher o padrão. Você está propondo substituir uma ferramenta que pessoas gastaram DÉCADAS dominando. O 'switching cost' não é só financeiro - é emocional, de carreira, de reputação.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Casos reais: Celtx prometeu revolucionar roteiros (fracassou contra Final Draft), Set Scouter tentou digitalizar locations (morreu em 2019), até o Yamdu com funding europeu patina há anos para ganhar tração nos EUA. A resistência cultural é documentada em posts de r/FilmIndustryLA onde ADs rejeitam até features gratuitas se mudarem o workflow.",
+      "mitigation": "Impossível mitigar completamente. Única saída seria não competir com Movie Magic, mas ser um 'add-on' - o que dilui completamente o valor da proposta e vira uma feature, não um produto."
+    },
+    {
+      "name": "A Falácia da IA Que Entende Sets",
+      "category": "execution",
+      "description": "Vocês estão prometendo uma IA que otimiza baseada em 'fadiga da equipe'. Como diabos uma IA vai saber que o DP teve uma briga com a esposa e está irritado? Ou que a atriz principal tem ansiedade em cenas de intimidade e precisa filmá-las cedo quando está descansada? Ou que o diretor SEMPRE muda de ideia no set e qualquer cronograma rígido vira lixo? Sets reais são 70% política humana, 30% logística. Vocês estão otimizando a parte fácil e ignorando o que realmente quebra cronogramas.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "Entrevistas com 1st ADs revelam que os maiores desvios de schedule vêm de fatores imprevisíveis: atores atrasados, diretores indecisos, equipamento quebrado, permissões canceladas. Um estudo da Film Independent mostrou que apenas 12% dos atrasos em indie films eram relacionados a 'má logística' - o resto era drama humano ou força maior. A IA proposta não resolve 88% do problema.",
+      "mitigation": "Pivot radical: focar APENAS em otimização de luz natural + clima (isso é matematicamente modelável), abandonar a promessa de otimizar 'fadiga da equipe' (impossível sem sensores biométricos e anos de ML training com dados privados que ninguém vai compartilhar)."
+    },
+    {
+      "name": "O Buraco Negro do 'Mapa 3D'",
+      "category": "execution",
+      "description": "O 'diferencial' do mapa 3D é na verdade um dealbreaker disfarçado. Para funcionar, alguém precisa: (1) Escanear o set inteiro em 3D - com que equipamento? LiDAR? Photogrammetry? (2) Processar e alimentar no sistema - quem faz isso? O overworked location scout? (3) Manter atualizado se o set mudar. Isso adiciona uma etapa cara e trabalhosa ANTES de gerar valor. Produções pequenas não vão pagar por isso. Produções grandes já têm 3D pipelines próprios (VFX) e não vão confiar no seu.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "A Matterport tentou vender scanning 3D para real estate e precisou de anos de evangelização + hardware subsidiado para ganhar tração. No cinema, o problema é pior: sets são temporários, mudam constantemente, e cada produção é única. O custo de aquisição por produção seria astronômico. A não ser que você DESSE o scanner de graça + equipe para operar, ninguém vai adotar.",
+      "mitigation": "Matar o 'diferencial' do 3D. Trabalhar com plantas 2D simples (que já existem) + fotos. Isso destrói o único diferencial técnico da proposta, tornando-a uma feature incremental de softwares existentes."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Filmustage já está comendo esse mercado e tem tração real",
+      "why_angel_missed": "Angel focou em 'diferenciação técnica' (3D maps) mas ignorou que Filmustage já tem AI breakdown de roteiro, já tem usuários pagantes, e pode adicionar scheduling como feature em 6 meses. Eles têm brand, dados de usuários, e relationships com produtoras. Vocês teriam que construir tudo do zero e AINDA competir com eles."
+    },
+    {
+      "risk": "Custo real de go-to-market: $500k-$1M antes do primeiro cliente pagar",
+      "why_angel_missed": "Desenvolver: IA de NLP para scripts ($100k em ML eng), integração weather API ($20k), 3D pipeline ($150k + hardware), UI/UX específica de cinema ($80k), validação com ADs reais ($50k em consultoria), compliance com sindicatos ($?), sales team especializado em film industry ($200k/ano), presença em festivals/eventos ($30k/ano). Brick AI tem esse budget disponível ANTES de validar product-market fit?"
+    },
+    {
+      "risk": "Sales cycle de 6-12 meses + necessidade de piloto gratuito = cash flow nightmare",
+      "why_angel_missed": "Produtoras de cinema tomam decisões de tech em ciclos de pré-produção (3-6 meses antes de filmar). Você precisa: (1) convencer o 1st AD a testar (2 meses), (2) fazer piloto gratuito em produção real (1-3 meses), (3) apresentar resultados (1 mês), (4) negociar contrato com legal da produtora (2-4 meses). Isso significa 6-12 meses entre primeiro contato e primeiro dólar. Quantas vendas simultâneas vocês conseguem gerenciar? Quantos meses de runway vocês têm?"
+    },
+    {
+      "risk": "Responsabilidade legal: E se o cronograma gerado pela IA causar um acidente no set?",
+      "why_angel_missed": "Sets de filmagem são ambientes de alto risco. Se a IA sugerir um cronograma que resulta em equipe exausta → acidente → processo, quem é responsável? Vocês vão ter seguro para cobrir isso? Os termos de serviço vão precisar de tantos disclaimers que ninguém vai confiar na ferramenta para decisões críticas."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "economic",
+      "description": "ROI negativo nos primeiros 24 meses: Custo de desenvolvimento ($500k) + custo de sales/marketing em indústria de nicho ($300k) + custo de suporte/consultoria ($200k) = $1M. Mercado endereçável realista: ~500 produções indie/mid-size nos EUA que poderiam pagar. Preço viável: $2k-5k por produção (mais caro que isso vão preferir Movie Magic + assistente humano). Revenue potencial ano 1: $100k (10 clientes × $10k), ano 2: $400k (50 clientes × $8k). Break-even em ano 3 se TUDO der certo. Investidor pergunta: por que não colocar esse $1M em algo com payback em 12 meses?",
+      "is_absolute": false
+    },
+    {
+      "type": "technical",
+      "description": "Impossibilidade de modelar variáveis humanas críticas: A promessa central ('otimização baseada em fadiga da equipe, dinâmicas de elenco') requer dados que (1) não existem em formato estruturado, (2) são sensíveis demais para compartilhar (saúde mental, conflitos), (3) mudam dia a dia de forma imprevisível. Sem isso, a IA vira um 'weather app com calendário fancy' - algo que Google Calendar + Dark Sky já fazem de graça.",
+      "is_absolute": true
+    },
+    {
+      "type": "economic",
+      "description": "Dependência fatal de hardware proprietário: O 'diferencial' do mapa 3D cria um modelo de negócio quebrado. Opção A: Cobrar pelo scanning → adiciona custo proibitivo, ninguém compra. Opção B: Dar scanner de graça → capex insustentável. Opção C: Depender de cliente trazer próprio 3D scan → adoção zero (ninguém tem isso). Todas as opções matam o negócio.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 2,
+    "verdict": "FAIL",
+    "reasoning": "Esta ideia tem dois dealbreakers absolutos (modelagem de variáveis humanas impossível + modelo de negócio quebrado do 3D) e três failure scenarios de alta probabilidade/impacto crítico. Mesmo se você matasse o 'diferencial' do 3D, ficaria com um produto que: (1) não resolve o problema real (drama humano no set), (2) compete com incumbentes entrincheirados, (3) tem ROI negativo por 24+ meses, (4) exige expertise de domínio que a Brick AI não tem. O PAIN_CHECK passou porque o problema é real, mas a SOLUÇÃO PROPOSTA é fundamentalmente inviável. Recomendação: KILL imediatamente ou PIVOT para algo muito mais específico (ex: apenas otimização de luz natural para indie films, sem 3D, sem promessas de 'fadiga da equipe', preço de $200/projeto). Mas isso seria um produto diferente - um add-on commodity, não um 'agente de IA revolucionário'."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-05T12:45:22-03:00"
+}

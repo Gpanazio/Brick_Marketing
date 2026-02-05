@@ -1,0 +1,67 @@
+{
+  "idea_name": "Agente de IA para Roteirização de Sets Reais",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "A dor é real e monetizada — overtime em produções devora budgets e Movie Magic domina justamente porque scheduling importa. Porém, a solução proposta ataca apenas ~12% das causas reais de atraso (logística pura). Os 88% restantes (drama humano, imprevistos, diretores indecisos) são intratáveis por IA sem dados que simplesmente não existem. A dor existe, mas o mapeamento dor→solução é fraco."
+      },
+      "mercado": {
+        "pontos": 8,
+        "max": 25,
+        "feedback": "MARKET_SCAN falhou (3 tentativas), o que já é um sinal — informação de mercado difícil de obter sugere nicho opaco. Pelos dados indiretos: TAM realista é ~500 produções mid-size nos EUA. Movie Magic está entrincheirado há 30+ anos com switching costs brutais (culturais, sindicais, de carreira). Filmustage já tem tração com AI para breakdown de roteiros e pode adicionar scheduling como feature em meses. Mercado pequeno, incumbentes fortes, e um competitor de IA já à frente. Terreno hostil."
+      },
+      "diferenciacao": {
+        "pontos": 8,
+        "max": 25,
+        "feedback": "Os dois 'diferenciais' centrais colapsam sob escrutínio. (1) Mapa 3D: exige scanning caro, temporário e trabalhoso — cria barreira de adoção que mata o produto antes de gerar valor. O Devil demonstrou que todas as 3 opções de modelo de negócio para 3D são inviáveis. (2) Otimização de fadiga: requer dados biométricos e psicológicos que ninguém vai compartilhar e que não existem em formato estruturado. Sem esses dois pilares, resta 'API de clima + calendário', que é commodity. O ângulo 'Assassino de Overtime' é narrativamente forte mas tecnicamente oco."
+      },
+      "execucao": {
+        "pontos": 5,
+        "max": 20,
+        "feedback": "Completamente fora do escopo da Brick AI. Requer: expertise profunda em produção cinematográfica (não temos), $500k-$1M em desenvolvimento antes do primeiro cliente, sales cycle de 6-12 meses com pilotos gratuitos, compliance sindical, seguro de responsabilidade civil para ambientes de set de alto risco, e equipe de vendas especializada em film industry. O cash flow seria negativo por 24+ meses no cenário otimista. A Brick AI não tem nem o capital, nem o domínio, nem o runway para isso."
+      }
+    },
+    "score_final": 41,
+    "status": "NO-GO",
+    "confidence": "high"
+  },
+  "note_on_status": "Score 41 tecnicamente cai em REVISIT (40-59), mas a presença de 2 dealbreakers ABSOLUTOS identificados pelo Devil (impossibilidade técnica de modelar variáveis humanas + modelo de negócio quebrado do 3D) eleva a decisão para NO-GO. Um REVISIT pressupõe que ajustes de ângulo podem salvar a ideia — aqui, o problema é estrutural.",
+  "note_on_market_scan": "MARKET_SCAN falhou após 3 tentativas. A avaliação de mercado foi feita com dados indiretos do PAIN_CHECK e ANGLE_GEN. Se o MARKET_SCAN tivesse rodado, o score de mercado poderia variar ±5 pontos, mas não alteraria a decisão final dada a gravidade dos dealbreakers técnicos e econômicos.",
+  "recommendation": {
+    "decision": "NO-GO",
+    "reasoning": "Score 41/100 com 2 dealbreakers absolutos. A dor é real mas a solução proposta é fundamentalmente inviável: os diferenciais técnicos (3D + fadiga) são impossíveis ou contraproducentes, o mercado é pequeno e hostil, a execução exige capital e expertise que a Brick AI não possui, e um competitor (Filmustage) já ocupa o espaço de 'IA para pré-produção' com tração real. Mesmo o melhor ângulo ('Assassino de Overtime') promete algo que a tecnologia proposta não consegue entregar de forma verificável. Arquivar.",
+    "next_steps": [
+      "Arquivar ideia no estado atual",
+      "Extrair aprendizado: 'dor real em indústria de nicho ≠ oportunidade viável para nós'",
+      "Se houver interesse residual no espaço de film tech, investigar oportunidades de MENOR escopo: plugin/integração para Filmustage ao invés de competir, ou ferramenta SaaS simples de otimização de luz natural (sem 3D, sem fadiga, preço <$200/projeto)",
+      "Redirecionar energia de ideação para mercados onde a Brick AI tem vantagem competitiva real"
+    ],
+    "risks": [
+      "Dealbreaker absoluto #1: Impossibilidade de modelar variáveis humanas (fadiga, dinâmicas interpessoais) — sem dados estruturados, sem consentimento, sem viabilidade técnica",
+      "Dealbreaker absoluto #2: Modelo de negócio do 3D é quebrado em todas as configurações (cobrar, dar grátis, ou depender do cliente)",
+      "Mercado pequeno (~500 produções endereçáveis) com incumbente de 30 anos e switching costs culturais/sindicais",
+      "Filmustage já à frente no espaço de IA para pré-produção com brand e base de usuários",
+      "Custo estimado de $1M+ com break-even em ano 3 no cenário otimista",
+      "Responsabilidade legal: cronograma gerado por IA que resulta em acidente no set = risco jurídico não quantificado"
+    ],
+    "mitigations": [
+      "Não aplicável — mitigações não resolvem dealbreakers absolutos. Cada 'correção' destrói um pilar da proposta original (remover 3D = sem diferencial, remover fadiga = weather app glorificado, reduzir escopo = commodity de $200 que não justifica o desenvolvimento)"
+    ],
+    "learnings": [
+      "Dor real ≠ solução viável. A distância entre 'o problema existe' e 'nós conseguimos resolvê-lo de forma rentável' é onde a maioria das ideias morre.",
+      "Diferenciais técnicos precisam ser validados ANTES de virar selling point. '3D map' soa impressionante mas é operacionalmente inviável.",
+      "Indústrias tradicionais (cinema, construção, medicina) têm switching costs invisíveis (culturais, sindicais, de reputação) que não aparecem em análises superficiais.",
+      "Quando o Devil encontra dealbreakers absolutos com evidências sólidas, respeitar o veredito — não tentar 'salvar' a ideia por apego emocional.",
+      "MARKET_SCAN falhando 3x pode ser sinal de mercado opaco/pequeno demais para ter dados públicos — isso por si só é informação."
+    ]
+  },
+  "pipeline_inputs_summary": {
+    "pain_check": "PASS — dor real e ativa, mas red flags sobre resistência cultural e variáveis imprevisíveis",
+    "market_scan": "ERROR — falhou após 3 tentativas, avaliação feita com dados indiretos",
+    "angel_gen": "PASS — ângulo 'Assassino de Overtime' forte narrativamente (score 88), mas premissas técnicas frágeis",
+    "devil_gen": "FAIL — risco catastrófico, 2 dealbreakers absolutos, 3 failure scenarios de alta probabilidade"
+  },
+  "timestamp": "2026-02-05T16:30:00-03:00"
+}

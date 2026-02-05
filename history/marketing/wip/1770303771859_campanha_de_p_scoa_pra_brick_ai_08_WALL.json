@@ -1,0 +1,68 @@
+{
+  "score_final": 73,
+  "status": "REJECTED",
+  "pipeline_integrity": {
+    "critic_status": "ERROR — CRITIC falhou (3 retries). Nenhuma copy vencedora foi selecionada pelo pipeline. WALL avaliou diretamente as 3 copies e selecionou Copy C (Sonnet/Narrativo) como a mais forte.",
+    "brand_guardian_status": "Copy A: BRAND_OK | Copy B: BRAND_FAIL | Copy C: BRAND_OK (com ressalvas). Brand Guardian recomendou retorno ao COPYWRITER.",
+    "briefing_quality": "INSUFICIENTE — briefing contém apenas 'Campanha de Páscoa pra Brick AI'. Sem plataforma, sem público-alvo, sem budget, sem timing, sem deliverables. Isso cascateou em copies sem direção clara.",
+    "wall_note": "Estou avaliando sem CRITIC — operando como juiz único. Score pode variar com CRITIC funcional."
+  },
+  "copy_avaliada": "Copy C (Sonnet/Narrativo-Emocional)",
+  "razao_da_escolha": "Brand Guardian aprovou Copy A e Copy C. Copy C é significativamente mais desenvolvida (4 blocos com storytelling completo + CTA duplo + notas de execução), tem referências cinematográficas mais ricas, e inclui um mini-case que tenta demonstrar o serviço. Copy A é sólida mas curta demais para avaliar plenamente.",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 16,
+      "max": 25,
+      "feedback": "Melhor que as copies anteriores: 'Não é IA self-service. É direção de cinema amplificada por tecnologia' e 'É uma sala de montagem. Uma unidade de pós-produção. Um set virtual onde você é o diretor.' O storytelling com o 'Ovo de Kubrick' tangibiliza bem o serviço — mostra COMO a Brick trabalha (brief → direção criativa → resultado cinematográfico). PORÉM: ainda falta ancorar em deliverable concreto. O que eu COMPRO? Um vídeo? Uma campanha? Quanto tempo leva? Range de preço? A frase 'o preço de uma produção normal' é vaga. Para 20+: adicionar 'Campanha de Páscoa dirigida (conceito + vídeo + adaptações) em X dias' ou algo tangível."
+    },
+    "dor_real": {
+      "pontos": 17,
+      "max": 20,
+      "feedback": "Dor bem identificada e dramatizada. 'Você já viu mil campanhas de Páscoa. Coelhinho sorrindo. Chocolate derretendo. Templates de banco de imagem com filtro pastel. É tudo previsível porque é tudo fácil.' — Isso é a dor real de diretores de criação. 'Quantas dessas campanhas você lembra?' — pergunta retórica eficaz. O anti-dor está claro: Brick AI faz campanha sazonal que NÃO é genérica. Desconto: a dor poderia ser mais urgente. 'Templates de Páscoa' é relatable mas não é existencial. Para 20: conectar com consequência (ex: 'Seu cliente vê o mesmo post que o concorrente dele. Aí pergunta por que está pagando agência.')."
+    },
+    "credibilidade": {
+      "pontos": 13,
+      "max": 20,
+      "feedback": "Claims de dados VERIFICADOS (3/3 pelo Claims Checker): eMarketer (credibilidade humana em 2026) e Multiview (automação → experiências pessoais) estão corretos e citados de forma orgânica. Ponto forte sobre as copies anteriores. PROBLEMA SÉRIO: O mini-case do 'Ovo de Kubrick' é aparentemente FICCIONAL. 'Semana passada, um Diretor de Criação nos mandou um brief' — isso aconteceu de verdade? Se é inventado, é um risco enorme: se alguém perguntar 'qual cliente?', a resposta é silêncio. O 'cliente ficou 3 minutos em silêncio no Zoom' é storytelling poderoso MAS se for ficção, destrói a credibilidade que os dados construíram. Para 18+: (1) Se o case é real, nomear o cliente ou ao menos dizer 'NDA impede nome, mas o case é real'. (2) Se é ficção, REMOVER e substituir por case real dos 10 anos de estúdio, ou reformular como hipotético explícito ('Imagine se...')."
+    },
+    "on_brand": {
+      "pontos": 17,
+      "max": 20,
+      "feedback": "Tom de diretor de cinema sênior forte. Referências cinematográficas excelentes e específicas: Kubrick (127 takes), Bergman (O Sétimo Selo), Wes Anderson, Caravaggio, 2001, Dune. 'Vision over Prompt' bem posicionado como fechamento. Nenhum termo proibido. Anti-Slop presente ('templates de banco de imagem'). RESSALVAS (alinhado com Brand Guardian): (1) 'O Easter Egg não é o ovo. É o que você esconde dentro dele' — flerta com palestra motivacional. Menos filosofia, mais suor de set. (2) 'A ferramenta muda. O olhar não.' — bonito mas genérico, poderia ser de qualquer studio. (3) O final 'se você é o tipo de profissional que ainda acredita que craft importa' soa ligeiramente pedante. Para 20: trocar frases filosóficas por uma última imagem técnica concreta. Ex: 'A casca rachando em macro, 4K, 23.976fps. Direção é saber que esse frame vale 3 segundos a mais.'."
+    },
+    "cta_especifico": {
+      "pontos": 10,
+      "max": 15,
+      "feedback": "Significativamente melhor que as copies anteriores. Duas opções claras e inteligentes: (1) 'Ver o breakdown técnico do Ovo de Kubrick' — CTA de conteúdo, baixa fricção, específico. Excelente para LinkedIn. (2) 'Agendar sessão de direção com nosso estúdio' — CTA de conversão, moderada fricção. Bom para interessados quentes. PORÉM: ambos ainda são templates com [links placeholder]. Para 13+: o CTA do 'breakdown técnico' é forte — mas o case precisa EXISTIR. Se o 'Ovo de Kubrick' é ficção, o CTA aponta pra nada. Recomendo: criar o case real primeiro (pode ser um mini-projeto interno), depois publicar a copy com link funcional."
+    }
+  },
+  "rejection_reasons": [
+    "Pipeline incompleto: CRITIC falhou — nenhuma copy vencedora selecionada oficialmente",
+    "Briefing insuficiente: 'Campanha de Páscoa pra Brick AI' sem plataforma/público/budget/timing — cascateou em falta de direção",
+    "Credibilidade comprometida: Mini-case do 'Ovo de Kubrick' aparenta ser ficcional — risco alto se publicado como real"
+  ],
+  "destaques_positivos": [
+    "Tom de voz consistente e rico — referências cinematográficas específicas (Kubrick, Bergman, Caravaggio) elevam o brand",
+    "Claims verificados (3/3) e citados organicamente — melhor integração de dados que copies anteriores",
+    "Dor bem dramatizada — 'templates de banco de imagem com filtro pastel' é relatable e específico",
+    "Estrutura de CTA duplo (conteúdo + conversão) é a melhor abordagem vista até agora",
+    "Notas de execução (formato por plataforma) mostram pensamento estratégico"
+  ],
+  "pontos_de_melhoria": [
+    "CRÍTICO: Resolver o case ficcional — ou criar o 'Ovo de Kubrick' como projeto real (mini-produção interna) ou reformular como hipotético explícito",
+    "CRÍTICO: Enriquecer o briefing antes de reprocessar — definir plataforma (Instagram? LinkedIn? Ambos?), público-alvo, timing de publicação, budget se aplicável",
+    "IMPORTANTE: Ancorar oferta em deliverable tangível — 'campanha de Páscoa dirigida em X dias' ou 'vídeo conceitual + adaptações em X dias'",
+    "IMPORTANTE: Trocar trechos filosóficos ('O Easter Egg não é o ovo') por imagem técnica concreta (Brand Guardian pediu 'mais suor e café')",
+    "DESEJÁVEL: Criar o breakdown técnico real para que o CTA 1 funcione (storyboard + decisões de direção)"
+  ],
+  "feedback_for_douglas": "Pipeline falhou em 2 pontos: (1) CRITIC não rodou (3 retries falhos — verificar rate limits ou timeout). (2) Briefing original é insuficiente ('Campanha de Páscoa pra Brick AI' sem nenhum detalhe). RECOMENDAÇÃO: Antes de reprocessar, ENRICHECER o briefing com: plataforma(s), público-alvo, timing de publicação, tom desejado. Depois, reprocessar com Copy C como base, focando em: (1) substituir case ficcional por real ou hipotético explícito, (2) adicionar deliverable concreto na oferta, (3) substituir trechos filosóficos por craft técnico. Copy C está a 7 pontos de aprovação — os ajustes são cirúrgicos, não estruturais.",
+  "verdict": "REJECTED — Score 73/100. Copy C é a mais forte candidata, com tom excelente e claims verificados, mas esbarra em 3 problemas: pipeline incompleto (CRITIC falhou), briefing insuficiente (cascateou em falta de direção), e mini-case aparentemente ficcional (risco de credibilidade). NÃO é para descartar — está a 7 pontos de aprovação. Os ajustes são cirúrgicos.",
+  "next_step": "RESTART_PIPELINE_WITH_FEEDBACK",
+  "recommend_return_to": "COPYWRITER",
+  "pre_requisitos_para_reprocessar": [
+    "Enriquecer briefing: plataforma, público-alvo, timing, budget",
+    "Resolver status do case 'Ovo de Kubrick': criar como projeto real ou reformular como hipotético",
+    "Verificar e corrigir CRITIC (3 retries falhos — possível rate limit ou timeout)"
+  ],
+  "notas_para_gabriel": "Essa copy é a que mais me animou até agora em termos de potencial. O tom de 'Kubrick filmava 127 vezes' é memorável, o CTA de 'breakdown técnico' é inteligente, e a estrutura narrativa funciona. O problema é que ela construiu a casa em cima de um case que pode não existir. Se você criar o 'Ovo de Kubrick' como mini-projeto real (1-2 dias de produção interna), essa copy vira uma arma de marketing com case real + breakdown técnico + CTA funcional. Aí sim é 85+. Também preciso ser honesto: o briefing 'Campanha de Páscoa pra Brick AI' é fino demais pra gerar copy publicável. Adicione 3-4 linhas de contexto (pra quem? onde? quando?) e o pipeline entrega muito melhor."
+}
