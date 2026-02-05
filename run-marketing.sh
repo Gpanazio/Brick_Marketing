@@ -628,7 +628,7 @@ INSTRUÇÕES:
         if [ -f "$COPY_SENIOR_V" ] && validate_json "$COPY_SENIOR_V"; then
             DURATION=$(get_duration_ms $STEP_START)
             echo "✅ Copy Senior v$LOOP_COUNT concluído"
-            print_duration $DURATION "Copy Senior Loop $LOOP_COUNT"
+            print_duration $DURATION "Copy_Senior_Loop_$LOOP_COUNT"
             break
         fi
         

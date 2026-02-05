@@ -524,6 +524,10 @@
             'REVISÃO 2': ['REVISAO_2'],
             'REVISÃO 3': ['REVISAO_3'],
             'REVISÃO 4': ['REVISAO_4'],
+            'COPY SENIOR v2': ['COPY_SENIOR_v2'],
+            'COPY SENIOR v3': ['COPY_SENIOR_v3'],
+            'WALL v2': ['WALL_v2'],
+            'WALL v3': ['WALL_v3'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
@@ -1059,64 +1063,12 @@ OUTPUT (Proposta Completa)`;
             });
 
             // DYNAMIC LOOP NODES - Detecta arquivos do loop Copy Senior ↔ Wall (_v2, _v3)
+            // Usa projectFiles.content (já carregado pelo /api/state), NÃO fetch separado
             const loopWallFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('WALL'));
             const loopCopyFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('COPY_SENIOR'));
             
-            loopWallFiles.forEach((wallFile, idx) => {
-                const vNum = wallFile.name.match(/_v(\d+)\.json/i)[1];
-                const loopId = `loop-wall-${vNum}`;
-                
-                // Extrair score e status do JSON
-                fetch(`${API_URL}/file/${currentMode}/wip/${wallFile.name}`)
-                    .then(r => r.json())
-                    .then(data => {
-                        const score = data.score_final || 0;
-                        const status = data.status || 'PROCESSING';
-                        const statusColor = status === 'APPROVED' ? '#22c55e' : (status === 'REJECTED' ? '#ef4444' : '#f97316');
-                        const statusIcon = status === 'APPROVED' ? '✓' : (status === 'REJECTED' ? '✗' : '🔄');
-                        
-                        const el = document.createElement('div');
-                        el.className = 'node';
-                        el.setAttribute('data-provider', 'loop-wall');
-                        el.id = loopId;
-                        el.style.position = 'absolute';
-                        
-                        // Posição: abaixo do WALL original (n8), em cascade vertical
-                        const wallNode = document.getElementById('n8');
-                        if (wallNode && !savedPositions[loopId]) {
-                            const wallLeft = parseInt(wallNode.style.left) || wallNode.offsetLeft;
-                            const wallTop = parseInt(wallNode.style.top) || wallNode.offsetTop;
-                            el.style.left = `${wallLeft}px`;
-                            el.style.top = `${wallTop + 200 + (idx * 160)}px`; // 200px abaixo + 160px por versão
-                        } else if (savedPositions[loopId]) {
-                            el.style.left = savedPositions[loopId].left;
-                            el.style.top = savedPositions[loopId].top;
-                        } else {
-                            el.style.left = `${centerX + 600}px`;
-                            el.style.top = `${1950 + (idx * 160)}px`;
-                        }
-                        
-                        el.style.transform = 'none';
-                        el.style.borderLeft = `2px solid ${statusColor}`;
-                        
-                        el.innerHTML = `
-                            <div class="node-led" style="background: ${statusColor}; box-shadow: 0 0 8px ${statusColor};"></div>
-                            <div class="node-id">${loopId.toUpperCase()} // Loop_v${vNum}</div>
-                            <div class="node-title">WALL v${vNum}</div>
-                            <div class="node-subtext" style="color: ${statusColor};">
-                                ${statusIcon} ${score}/100 · ${status}
-                            </div>
-                        `;
-                        
-                        el.ondblclick = () => {
-                            const loopNode = { id: loopId, title: `WALL v${vNum}`, label: `Wall_Loop_${vNum}`, model: 'OPUS' };
-                            openPanel(loopNode, projectFiles);
-                        };
-                        container.appendChild(el);
-                        makeDraggable(el);
-                    })
-                    .catch(err => console.error(`Failed to load loop wall ${vNum}:`, err));
-            });
+            // Posição base: 400px à direita do centro do pipeline
+            const loopBaseX = centerX + 400;
             
             loopCopyFiles.forEach((copyFile, idx) => {
                 const vNum = copyFile.name.match(/_v(\d+)\.json/i)[1];
@@ -1124,41 +1076,56 @@ OUTPUT (Proposta Completa)`;
                 
                 const el = document.createElement('div');
                 el.className = 'node';
-                el.setAttribute('data-provider', 'loop-copy');
                 el.id = loopId;
                 el.style.position = 'absolute';
-                
-                // Posição: abaixo do COPY SENIOR original (n7), em cascade vertical
-                const copyNode = document.getElementById('n7');
-                if (copyNode && !savedPositions[loopId]) {
-                    const copyLeft = parseInt(copyNode.style.left) || copyNode.offsetLeft;
-                    const copyTop = parseInt(copyNode.style.top) || copyNode.offsetTop;
-                    el.style.left = `${copyLeft}px`;
-                    el.style.top = `${copyTop + 200 + (idx * 160)}px`;
-                } else if (savedPositions[loopId]) {
-                    el.style.left = savedPositions[loopId].left;
-                    el.style.top = savedPositions[loopId].top;
-                } else {
-                    el.style.left = `${centerX + 300}px`;
-                    el.style.top = `${1950 + (idx * 160)}px`;
-                }
-                
+                el.style.left = `${loopBaseX}px`;
+                el.style.top = `${1350 + (idx * 200)}px`; // 1350 = mesma altura do COPY SENIOR (n7)
                 el.style.transform = 'none';
-                el.style.borderLeft = `2px solid #f97316`;
+                el.style.borderLeft = '4px solid #f97316';
                 
                 el.innerHTML = `
                     <div class="node-led" style="background: #f97316; box-shadow: 0 0 8px #f97316;"></div>
-                    <div class="node-id">${loopId.toUpperCase()} // Loop_v${vNum}</div>
+                    <div class="node-id">LOOP // COPY_SENIOR_v${vNum}</div>
                     <div class="node-title">COPY SENIOR v${vNum}</div>
-                    <div class="node-subtext" style="color: #f97316;">
-                        🔄 REVISÃO
-                    </div>
+                    <div class="node-subtext" style="color: #f97316;">REVISÃO AUTO</div>
                 `;
                 
-                el.ondblclick = () => {
-                    const loopNode = { id: loopId, title: `COPY SENIOR v${vNum}`, label: `Copy_Loop_${vNum}`, model: 'SONNET' };
-                    openPanel(loopNode, projectFiles);
-                };
+                el.ondblclick = () => openPanel({ id: loopId, title: `COPY SENIOR v${vNum}` }, projectFiles);
+                container.appendChild(el);
+                makeDraggable(el);
+            });
+            
+            loopWallFiles.forEach((wallFile, idx) => {
+                const vNum = wallFile.name.match(/_v(\d+)\.json/i)[1];
+                const loopId = `loop-wall-${vNum}`;
+                
+                // Parsear content direto (já veio do /api/state, sem fetch)
+                let score = 0, status = 'PROCESSING';
+                try {
+                    const data = JSON.parse(wallFile.content);
+                    score = data.score_final || 0;
+                    status = data.status || 'PROCESSING';
+                } catch(e) { /* content inválido, usar defaults */ }
+                
+                const color = status === 'APPROVED' ? '#22c55e' : '#ef4444';
+                
+                const el = document.createElement('div');
+                el.className = 'node';
+                el.id = loopId;
+                el.style.position = 'absolute';
+                el.style.left = `${loopBaseX}px`;
+                el.style.top = `${1550 + (idx * 200)}px`; // 1550 = mesma altura do WALL (n8)
+                el.style.transform = 'none';
+                el.style.borderLeft = `4px solid ${color}`;
+                
+                el.innerHTML = `
+                    <div class="node-led" style="background: ${color}; box-shadow: 0 0 8px ${color};"></div>
+                    <div class="node-id">LOOP // WALL_v${vNum}</div>
+                    <div class="node-title">WALL v${vNum}</div>
+                    <div class="node-subtext" style="color: ${color}; font-weight: bold;">${score}/100 · ${status}</div>
+                `;
+                
+                el.ondblclick = () => openPanel({ id: loopId, title: `WALL v${vNum}` }, projectFiles);
                 container.appendChild(el);
                 makeDraggable(el);
             });
@@ -1232,9 +1199,21 @@ OUTPUT (Proposta Completa)`;
             const svg = document.getElementById('conn-svg');
             svg.innerHTML = '';
             
-            let currentLinks = linksMarketing;
-            if (currentMode === 'projetos') currentLinks = linksProjetos;
-            if (currentMode === 'ideias') currentLinks = linksIdeias;
+            let currentLinks = [...linksMarketing];
+            if (currentMode === 'projetos') currentLinks = [...linksProjetos];
+            if (currentMode === 'ideias') currentLinks = [...linksIdeias];
+
+            // CONDICIONAL: Se Wall rejeitou e existe loop aprovado, redirecionar fluxo
+            if (currentMode === 'marketing') {
+                // Encontrar o último Wall aprovado (v2, v3... ou original)
+                const lastApprovedWall = document.getElementById('loop-wall-3') || document.getElementById('loop-wall-2');
+                if (lastApprovedWall) {
+                    // Remover n8→n9 (WALL original não vai pro HUMAN)
+                    currentLinks = currentLinks.filter(([f,t]) => !(f === 'n8' && t === 'n9'));
+                    // Adicionar: último Wall aprovado → HUMAN
+                    currentLinks.push([lastApprovedWall.id, 'n9']);
+                }
+            }
 
             // Desenhar links normais do pipeline
             currentLinks.forEach(([fId, tId]) => {
@@ -1291,44 +1270,35 @@ OUTPUT (Proposta Completa)`;
                 svg.appendChild(line);
             });
             
-            // Desenhar linhas do loop automático (WALL → COPY SENIOR v2 → WALL v2, etc)
-            const loopNodes = Array.from(document.querySelectorAll('[data-provider^="loop-"]'));
-            loopNodes.forEach(loopNode => {
-                const loopId = loopNode.id;
-                let sourceId, targetId;
+            // Desenhar linhas do loop automático
+            // Fluxo: n8 (WALL) → loop-copy-2 → loop-wall-2 [→ loop-copy-3 → loop-wall-3]
+            const loopLinks = [];
+            // Primeiro loop: WALL original (n8) → COPY SENIOR v2
+            if (document.getElementById('loop-copy-2')) loopLinks.push(['n8', 'loop-copy-2']);
+            // COPY SENIOR v2 → WALL v2
+            if (document.getElementById('loop-copy-2') && document.getElementById('loop-wall-2')) loopLinks.push(['loop-copy-2', 'loop-wall-2']);
+            // Se teve v3: WALL v2 → COPY SENIOR v3 → WALL v3
+            if (document.getElementById('loop-copy-3')) loopLinks.push(['loop-wall-2', 'loop-copy-3']);
+            if (document.getElementById('loop-copy-3') && document.getElementById('loop-wall-3')) loopLinks.push(['loop-copy-3', 'loop-wall-3']);
+            
+            loopLinks.forEach(([fId, tId]) => {
+                const f = document.getElementById(fId), t = document.getElementById(tId);
+                if (!f || !t) return;
                 
-                if (loopId.startsWith('loop-copy-')) {
-                    const vNum = loopId.replace('loop-copy-', '');
-                    // COPY SENIOR vN vem do WALL v(N-1) OU do WALL original (n8) se v2
-                    sourceId = vNum === '2' ? 'n8' : `loop-wall-${parseInt(vNum) - 1}`;
-                    targetId = `loop-wall-${vNum}`;
-                    
-                    const source = document.getElementById(sourceId);
-                    const target = document.getElementById(targetId);
-                    if (!source || !target) return;
-                    
-                    const sR = source.getBoundingClientRect();
-                    const tR = target.getBoundingClientRect();
-                    const cR = document.getElementById('node-container').getBoundingClientRect();
-                    
-                    // Linha vertical do WALL até COPY SENIOR (mesmo X, Y diferente)
-                    const x1 = sR.left + sR.width / 2 - cR.left;
-                    const y1 = sR.bottom - cR.top;
-                    const x2 = tR.left + tR.width / 2 - cR.left;
-                    const y2 = tR.top - cR.top;
-                    
-                    if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
-                    
-                    const pathData = `M ${x1} ${y1} L ${x1} ${(y1 + y2) / 2} L ${x2} ${(y1 + y2) / 2} L ${x2} ${y2}`;
-                    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                    line.setAttribute("d", pathData);
-                    line.setAttribute("stroke", "#f97316");
-                    line.setAttribute("stroke-width", "2");
-                    line.setAttribute("stroke-dasharray", "8,4");
-                    line.setAttribute("opacity", "0.7");
-                    line.setAttribute("fill", "none");
-                    svg.appendChild(line);
-                }
+                const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
+                const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.bottom - cR.top;
+                const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top - cR.top;
+                
+                if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
+                
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
+                line.setAttribute("stroke", "#f97316");
+                line.setAttribute("stroke-width", "2");
+                line.setAttribute("stroke-dasharray", "8,4");
+                line.setAttribute("opacity", "0.7");
+                line.setAttribute("fill", "none");
+                svg.appendChild(line);
             });
         }
 
@@ -1387,23 +1357,13 @@ OUTPUT (Proposta Completa)`;
         }
 
         function openPanel(n, files) {
-            let file;
-            
-            // Detectar nodes de loop (WALL vN, COPY SENIOR vN)
-            if (n.id.startsWith('loop-wall-')) {
-                const vNum = n.id.replace('loop-wall-', '');
-                file = files.find(f => f.name.includes('WALL') && f.name.includes(`_v${vNum}.json`));
-            } else if (n.id.startsWith('loop-copy-')) {
-                const vNum = n.id.replace('loop-copy-', '');
-                file = files.find(f => f.name.includes('COPY_SENIOR') && f.name.includes(`_v${vNum}.json`));
-            } else {
-                const searchTerms = fileMapping[n.title] || [n.title];
-                // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall (mas permitir pro openPanel de loop nodes)
-                file = files.find(f => 
-                    !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
-                    searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()))
-                );
-            }
+            const searchTerms = fileMapping[n.title] || [n.title];
+            // Se o titulo contiver "v2" ou "v3", permitir arquivos versionados; senao filtrar
+            const isLoopNode = /v\d+/.test(n.title);
+            const file = files.find(f => {
+                if (!isLoopNode && /_v\d+\.(json|md)$/i.test(f.name)) return false;
+                return searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()));
+            });
             
             const body = document.getElementById('panel-body');
             

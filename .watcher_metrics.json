@@ -3,8 +3,8 @@
   "totalPipelinesRun": 9,
   "successfulPipelines": 7,
   "failedPipelines": 2,
-  "filesSynced": 167,
-  "lastCleanup": "2026-02-05T18:08:21.966Z",
+  "filesSynced": 183,
+  "lastCleanup": "2026-02-05T20:08:21.976Z",
   "byMode": {
     "marketing": {
       "runs": 6,
