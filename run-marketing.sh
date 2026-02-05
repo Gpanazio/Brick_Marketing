@@ -522,7 +522,43 @@ Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os a
 done
 
 if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
-    create_json_placeholder "$CRITIC_OUT" "COPY_SENIOR" "$JOB_ID" "All retries failed"
+    echo "⚠️ GPT falhou após $max_retries tentativas. Tentando fallback Sonnet..."
+    
+    openclaw agent --agent sonnet \
+      --session-id "brick-mkt-${JOB_ID}-copy-senior-fallback-$(date +%s)" \
+      --message "${CRITIC_ROLE}
+
+---
+
+BRIEFING:
+${BRIEFING_CONTENT}
+
+COPY A (GPT):
+${COPY_A}
+
+COPY B (Flash):
+${COPY_B}
+
+COPY C (Sonnet):
+${COPY_C}
+
+BRAND GUARDIAN:
+${GUARD_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os ajustes necessários diretamente no texto e entregue a copy_revisada final. Salve o resultado JSON no arquivo: ${CRITIC_OUT}" \
+      --timeout 180 --json 2>&1 | tee -a "$CRITIC_LOG"
+    
+    if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Copy Senior concluído via fallback Sonnet"
+        print_duration $DURATION "Etapa 7"
+    else
+        echo "❌ Fallback Sonnet também falhou. Criando placeholder..."
+        create_json_placeholder "$CRITIC_OUT" "COPY_SENIOR" "$JOB_ID" "All retries failed (GPT + Sonnet fallback)"
+    fi
 fi
 
 # ============================================
