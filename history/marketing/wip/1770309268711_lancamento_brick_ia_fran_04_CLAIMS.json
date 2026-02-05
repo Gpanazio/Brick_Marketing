@@ -1,0 +1,44 @@
+{
+  "claims_validados": [
+    {
+      "claim": "88% dos profissionais de marketing já utilizam IA em suas atividades diárias em 2026.",
+      "status": "VERIFICADO",
+      "fonte_original": "TOTVS Blog / Pesquisas de Mercado 2026",
+      "fonte_verificacao": "https://www.totvs.com/blog/marketing-e-vendas/tendencias-marketing-digital-ecommerce/",
+      "confianca": "alta",
+      "notas": "Dado confirmado no blog oficial da TOTVS publicado em dez/2025 projetando o cenário de 2026."
+    },
+    {
+      "claim": "A tendência para 2026 é o avanço dos modelos híbridos (conteúdo + performance) e IA integrada ao fluxo de trabalho.",
+      "status": "PARCIAL",
+      "fonte_original": "RD Station / PressWorks 2026",
+      "fonte_verificacao": "https://www.rdstation.com/blog/marketing/tendencias-marketing-e-vendas/",
+      "confianca": "média",
+      "notas": "As fontes citam IA integrada e conteúdo estratégico, mas o termo 'modelo híbrido' aparece mais associado a marketing de afiliados e performance no Valor Econômico. Recomenda-se focar na 'IA integrada ao fluxo criativo' para maior precisão."
+    },
+    {
+      "claim": "O mercado de ferramentas de IA (Sora, Runway Gen-4, Veo 3.1) atingiu maturidade, tornando o controle criativo e a precisão os novos diferenciais.",
+      "status": "VERIFICADO",
+      "fonte_original": "Cyberlink / Pxz.ai Review 2026",
+      "fonte_verificacao": "https://pxz.ai/blog/veo-31-vs-top-ai-video-generators-2026",
+      "confianca": "alta",
+      "notas": "Confirmado por reviews de jan/2026 que comparam Veo 3.1 e Runway Gen-4, destacando que a diferença agora reside no controle fino (fine-grained control) e na unidade estética."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "88% dos profissionais de marketing usam IA diariamente (TOTVS 2026)",
+    "A vantagem competitiva em 2026 não é a tecnologia (commodity), mas o controle criativo/direção (Pxz.ai)",
+    "IA integrada ao fluxo de trabalho é a principal tendência de eficiência (RD Station)"
+  ],
+  "estatisticas_evitar": [
+    "Termo 'modelo híbrido' sem explicar que se refere a conteúdo + performance",
+    "Qualquer claim de que a IA faz o trabalho sozinha, já que a tendência é curadoria humana (Meio & Mensagem 2026)"
+  ],
+  "resumo": {
+    "total_claims": 3,
+    "verificados": 2,
+    "duvidosos": 0,
+    "parciais": 1,
+    "recomendacao": "Os dados são sólidos e muito recentes (dez/2025 e jan/2026). O Copywriter pode usar com confiança, focando especialmente no dado de 88% da TOTVS para gerar autoridade."
+  }
+}

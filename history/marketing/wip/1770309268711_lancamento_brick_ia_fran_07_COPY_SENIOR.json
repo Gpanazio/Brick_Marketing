@@ -1,0 +1,11 @@
+{
+  "agent": "COPY_SENIOR",
+  "job_id": "1770309268711_lan_amento_brick_ia",
+  "status": "ERROR",
+  "error": {
+    "reason": "All retries failed",
+    "timestamp": "2026-02-05T13:38:24-03:00",
+    "retries_attempted": 3
+  },
+  "placeholder": true
+}

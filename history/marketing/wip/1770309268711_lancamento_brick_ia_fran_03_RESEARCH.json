@@ -1,0 +1,74 @@
+{
+  "tema": "Lançamento Brick AI - Pós-Carnaval 2026",
+  "keywords_principais": [
+    "production enhanced",
+    "direção de IA",
+    "AI video craft",
+    "vision over prompt",
+    "high-end AI production",
+    "anti-slop video"
+  ],
+  "dados_credibilidade": [
+    {
+      "dado": "88% dos profissionais de marketing já utilizam IA em suas atividades diárias em 2026.",
+      "fonte": "TOTVS Blog / Pesquisas de Mercado 2026",
+      "url": "https://www.totvs.com/blog/marketing-e-vendas/tendencias-marketing-digital-ecommerce/"
+    },
+    {
+      "dado": "A tendência para 2026 é o avanço dos modelos híbridos (conteúdo + performance) e IA integrada ao fluxo de trabalho.",
+      "fonte": "RD Station / PressWorks 2026",
+      "url": "https://www.rdstation.com/blog/marketing/tendencias-marketing-e-vendas/"
+    },
+    {
+      "dado": "O mercado de ferramentas de IA (Sora, Runway Gen-4, Veo 3.1) atingiu maturidade, tornando o controle criativo e a precisão os novos diferenciais.",
+      "fonte": "Cyberlink / Pxz.ai Review 2026",
+      "url": "https://pxz.ai/blog/veo-31-vs-top-ai-video-generators-2026"
+    }
+  ],
+  "tendencias_atuais": [
+    "Fadiga de 'AI Slop': O público B2B está filtrando conteúdos gerados automaticamente sem curadoria.",
+    "Retorno ao Storytelling Profundo: Em 2026, marcas buscam fugir do 'genérico de IA' para manter a credibilidade humana.",
+    "Vídeo Nativo no LinkedIn: Continua sendo o formato de maior alcance orgânico, especialmente quando acompanhado de insights técnicos.",
+    "Personalização via Dados Próprios: Uso de IA para criar experiências que pareçam pessoais e não automações de massa."
+  ],
+  "angulos_concorrentes": [
+    {
+      "concorrente": "Runway / Luma / Sora",
+      "posicionamento": "Plataformas de autoatendimento (SaaS).",
+      "fraqueza": "Exigem tempo e 'olhar' que diretores de marketing ocupados não têm; geram resultados sem unidade estética sem direção profissional."
+    },
+    {
+      "concorrente": "Produtoras tradicionais",
+      "posicionamento": "Ouro da produção convencional.",
+      "fraqueza": "Incapazes de viabilizar projetos 'impossíveis' ou de alto custo/prazo sem o auxílio de IA otimizada."
+    }
+  ],
+  "oportunidades_diferenciacao": [
+    "Posicionamento 'Anti-IA Mal Feita': O vídeo de lançamento ataca o maior medo da persona (parecer amador).",
+    "10 Anos de Set + IA: A Brick é a ponte entre o cinema clássico e o futuro sintético.",
+    "O conceito de 'Production Enhanced' tira o foco da ferramenta e coloca no resultado impossível.",
+    "Narrativa de 'Direção sobre Geração': Qualquer um faz o prompt, poucos dirigem a cena."
+  ],
+  "brand_guidelines_relevantes": {
+    "tom": "Bold & Unapologetic (Diretor Sênior)",
+    "terminologia": [
+      "Production Enhanced",
+      "Vision over Prompt",
+      "Full AI Production",
+      "Set infinito"
+    ],
+    "proibido": [
+      "Revolucionário",
+      "Disruptivo",
+      "Game-changer",
+      "Mágica"
+    ]
+  },
+  "fontes_consultadas": [
+    "https://www.totvs.com/blog/marketing-e-vendas/tendencias-marketing-digital-ecommerce/",
+    "https://www.rdstation.com/blog/marketing/tendencias-marketing-e-vendas/",
+    "https://pxz.ai/blog/veo-31-vs-top-ai-video-generators-2026",
+    "https://www.cyberlink.com/blog/cool-video-effects/4396/best-ai-video-generator",
+    "Brand Guidelines Brick AI (Hardcoded)"
+  ]
+}

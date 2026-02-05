@@ -1,0 +1,53 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou brands in-house",
+    "experiencia": "10+ anos no mercado (Digital Nativo/Consolidado)"
+  },
+  "dores": [
+    "Orçamento de produção cada vez mais apertado",
+    "Deadline impossível ('pra ontem')",
+    "Pressão por inovação em IA sem perda de qualidade (craft)",
+    "Medo de parecer ultrapassado perante a concorrência",
+    "Ceticismo com IA devido a resultados 'trash/fake' do mercado"
+  ],
+  "linguagem_comum": [
+    "brief",
+    "deck",
+    "approach",
+    "key visual",
+    "budget",
+    "deadline",
+    "entrega",
+    "aprovação",
+    "craft",
+    "produção premium",
+    "ROI"
+  ],
+  "objecoes": [
+    "IA não tem craft/alma",
+    "Cliente não vai aceitar qualidade de IA (padrão 'uncanny valley')",
+    "Ainda não está bom o suficiente para marcas premium",
+    "Medo de substituição vs. Medo de resultados amadores"
+  ],
+  "motivadores_de_action": [
+    "Ser visto como o primeiro a usar IA 'da forma certa' (inovador com bom gosto)",
+    "Viabilizar projetos impossíveis/caros que o budget original não cobriria",
+    "Entregar produção premium com agilidade de IA",
+    "Manter a competitividade da agência/marca em 2026"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (feed profissional)",
+    "Newsletters: B9, Meio & Mensagem, Marketing Dive",
+    "Eventos: Cannes Lions, SXSW, Wave Festival",
+    "Podcasts: Projeto Draft, B9Cast"
+  ],
+  "alinhamento_briefing_persona": {
+    "status": "TOTALMENTE ALINHADO",
+    "observacoes": "O briefing foca em 'Production Enhanced' e 'viabilizar o impossível', o que ataca diretamente a objeção de que IA é para 'fazer fácil/barato'. A escolha do vídeo de lançamento (criticando a IA mal feita) ressoa perfeitamente com o ceticismo e o 'craft' exigido pela persona de 10+ anos de experiência."
+  },
+  "fontes_consultadas": [
+    "Persona Oficial Brick AI (Hardcoded)",
+    "Briefing de Lançamento Brick AI"
+  ]
+}
