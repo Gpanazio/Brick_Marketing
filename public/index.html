@@ -1004,6 +1004,12 @@ OUTPUT (Proposta Completa)`;
             const centerX = container.offsetWidth / 2;
             
             nodes.forEach(n => {
+                // OUTPUT só aparece se o projeto foi aprovado (existe na pasta done)
+                if (n.title === 'OUTPUT') {
+                    const isApproved = currentState.done.some(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
+                    if (!isApproved) return; // Pula a renderização do OUTPUT
+                }
+                
                 const el = document.createElement('div');
                 const providerMap = {
                     'GPT': 'openai', 'GPT 5.2': 'openai', 'GPT-5.2': 'openai', 'GPT-4O': 'openai',
