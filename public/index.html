@@ -1102,8 +1102,28 @@ OUTPUT (Proposta Completa)`;
                 container.appendChild(el);
                 makeDraggable(el);
                 
-                // Adicionar conexão visual: HUMAN -> REVISAO_N
-                linksMarketing.push(['n9', revId]);
+                // Adicionar conexão visual: HUMAN -> REVISAO_N (Evita duplicar na array original)
+                const revLink = ['n9', revId];
+                
+                // Modificar lógica de desenho para conexões de revisão
+                const drawLink = ([fId, tId]) => {
+                    const f = document.getElementById(fId), t = document.getElementById(tId);
+                    if(!f || !t) return;
+                    
+                    const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
+                    const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
+                    const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
+                    
+                    if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
+
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    // Conexão horizontal simples para revisões (lado a lado)
+                    line.setAttribute("d", `M ${x1 + fR.width/2} ${y1} L ${x2 - tR.width/2} ${y2}`);
+                    line.setAttribute("class", "conn-line active");
+                    line.setAttribute("style", "stroke: #f97316; opacity: 0.5; stroke-dasharray: 4;");
+                    svg.appendChild(line);
+                };
+                drawLink(revLink);
             });
 
             updateConnections();
