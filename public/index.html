@@ -470,10 +470,9 @@
             { id: 'n7', x: 0, y: 1550, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.2' },
             { id: 'n8', x: 0, y: 1800, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
             { id: 'n9', x: 0, y: 2050, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n11', x: 0, y: 2300, title: 'SOCIAL_SLICE', label: 'Social_Content', model: 'DOUGLAS' },
-            { id: 'n10', x: 0, y: 2550, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n10', x: 0, y: 2300, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n11'],['n11','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
 
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -696,7 +695,7 @@ OUTPUT (Proposta Completa)`;
 ▼ (score ≥ 80)
 09. HUMAN - aprovação ou revisão
 │
-├─► [APROVAR] → SOCIAL_SLICE → OUTPUT
+├─► [APROVAR] → OUTPUT
 │
 └─► [REVISAR] → REVISÃO 1 (Modelo Campeão + Feedback)
                 │
@@ -711,7 +710,6 @@ OUTPUT (Proposta Completa)`;
                     <div>• Wall (Opus) score final: ≥80 aprova, &lt;80 rejeita</div>
                     <div>• Aprovação humana obrigatória</div>
                     <div>• <strong>Sistema de Revisões:</strong> Humano pode pedir ajustes → Modelo Campeão gera REVISÃO N → Aparece como nó destacado ao lado</div>
-                    <div>• Social Slice fatiado para redes sociais</div>
                 `;
             }
 
