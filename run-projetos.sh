@@ -23,6 +23,7 @@ fi
 
 PROJECT_ROOT="$HOME/projects/Brick_Marketing"
 WIP_DIR="$PROJECT_ROOT/history/projetos/wip"
+ROLES_DIR="$PROJECT_ROOT/roles"
 
 echo "🎬 Brick AI Projects Pipeline"
 echo "📋 Briefing: $(basename $BRIEFING_FILE)"
@@ -32,6 +33,15 @@ echo "---"
 mkdir -p "$WIP_DIR"
 
 BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
+ROLES_DIR="$PROJECT_ROOT/roles"
+
+# Carregar todos os role files
+BRAND_DIGEST_ROLE=$(cat "$ROLES_DIR/BRAND_DIGEST.md" 2>/dev/null || echo "N/A")
+CREATIVE_ROLE=$(cat "$ROLES_DIR/CREATIVE_IDEATION.md" 2>/dev/null || echo "N/A")
+CRITIC_ROLE=$(cat "$ROLES_DIR/CONCEPT_CRITIC.md" 2>/dev/null || echo "N/A")
+EXECUTION_ROLE=$(cat "$ROLES_DIR/EXECUTION_DESIGN.md" 2>/dev/null || echo "N/A")
+PROPOSAL_ROLE=$(cat "$ROLES_DIR/PROPOSAL_WRITER.md" 2>/dev/null || echo "N/A")
+DIRECTOR_ROLE=$(cat "$ROLES_DIR/PROJECT_DIRECTOR.md" 2>/dev/null || echo "N/A")
 
 # ETAPA 0: Douglas (Ingestion)
 echo "⏳ ETAPA 0: Douglas (Ingestion)"
@@ -41,21 +51,20 @@ echo "✅ Briefing salvo"
 # ETAPA 1: BRAND DIGEST (Flash)
 echo ""
 echo "⏳ ETAPA 1: Brand Digest (Flash)"
-BRAND_OUT="$WIP_DIR/${JOB_ID}_BRAND_DIGEST.md"
+BRAND_OUT="$WIP_DIR/${JOB_ID}_BRAND_DIGEST.json"
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-brand" \
-  --message "Você é o BRAND_DIGEST do Brick AI War Room.
+  --message "${BRAND_DIGEST_ROLE}
+
+---
 
 BRIEFING DO CLIENTE:
 ${BRIEFING_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Extraia o DNA da marca/projeto: tom, valores, assets mencionados, público-alvo
-2. Identifique o objetivo central do projeto
-3. Liste as referências e constraints mencionadas
-4. Resuma em formato estruturado (Markdown)
-5. Escreva o resultado no arquivo: ${BRAND_OUT}
-6. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Extraia a essência da marca conforme seu role acima e salve o resultado JSON no arquivo: ${BRAND_OUT}" \
   --timeout 120 --json > /dev/null 2>&1
 
 if [ -f "$BRAND_OUT" ]; then
@@ -74,63 +83,63 @@ IDEATION_GPT_OUT="$WIP_DIR/${JOB_ID}_IDEATION_GPT.md"
 IDEATION_FLASH_OUT="$WIP_DIR/${JOB_ID}_IDEATION_FLASH.md"
 IDEATION_SONNET_OUT="$WIP_DIR/${JOB_ID}_IDEATION_SONNET.md"
 
-# GPT
-openclaw agent \
-  --session-id "brick-proj-${JOB_ID}-ideation-gpt" \
-  --message "Você é o CREATIVE_IDEATION (Conceito A) do Brick AI War Room.
-
-BRIEFING:
+IDEATION_CONTEXT="BRIEFING:
 ${BRIEFING_CONTENT}
 
 BRAND DIGEST:
-${BRAND_CONTENT}
+${BRAND_CONTENT}"
+
+# GPT (ousado)
+openclaw agent \
+  --session-id "brick-proj-${JOB_ID}-ideation-gpt" \
+  --message "${CREATIVE_ROLE}
+
+VARIAÇÃO: Conceito A - Ousado e Surpreendente
+
+---
+
+${IDEATION_CONTEXT}
+
+---
 
 INSTRUÇÕES:
-1. Crie UM conceito criativo forte para este projeto
-2. Inclua: nome do conceito, tagline, direção visual, narrativa central, referências
-3. Seja ousado e diferente -- este é o conceito que surpreende
-4. Escreva o resultado como Markdown no arquivo: ${IDEATION_GPT_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Gere seu conceito criativo conforme seu role acima (foco: ousadia, surpresa) e salve no arquivo Markdown: ${IDEATION_GPT_OUT}" \
   --timeout 120 --json > /dev/null 2>&1 &
 GPT_PID=$!
 
-# Flash
+# Flash (pragmático)
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-ideation-flash" \
-  --message "Você é o CREATIVE_IDEATION (Conceito B) do Brick AI War Room.
+  --message "${CREATIVE_ROLE}
 
-BRIEFING:
-${BRIEFING_CONTENT}
+VARIAÇÃO: Conceito B - Pragmático e Executável
 
-BRAND DIGEST:
-${BRAND_CONTENT}
+---
+
+${IDEATION_CONTEXT}
+
+---
 
 INSTRUÇÕES:
-1. Crie UM conceito criativo forte para este projeto
-2. Inclua: nome do conceito, tagline, direção visual, narrativa central, referências
-3. Priorize clareza e eficiência -- este é o conceito pragmático e executável
-4. Escreva o resultado como Markdown no arquivo: ${IDEATION_FLASH_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Gere seu conceito criativo conforme seu role acima (foco: clareza, executabilidade) e salve no arquivo Markdown: ${IDEATION_FLASH_OUT}" \
   --timeout 120 --json > /dev/null 2>&1 &
 FLASH_PID=$!
 
-# Sonnet
+# Sonnet (emocional)
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-ideation-sonnet" \
-  --message "Você é o CREATIVE_IDEATION (Conceito C) do Brick AI War Room.
+  --message "${CREATIVE_ROLE}
 
-BRIEFING:
-${BRIEFING_CONTENT}
+VARIAÇÃO: Conceito C - Emocional e Storytelling
 
-BRAND DIGEST:
-${BRAND_CONTENT}
+---
+
+${IDEATION_CONTEXT}
+
+---
 
 INSTRUÇÕES:
-1. Crie UM conceito criativo forte para este projeto
-2. Inclua: nome do conceito, tagline, direção visual, narrativa central, referências
-3. Foque em storytelling e emoção -- este é o conceito que emociona
-4. Escreva o resultado como Markdown no arquivo: ${IDEATION_SONNET_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Gere seu conceito criativo conforme seu role acima (foco: emoção, narrativa) e salve no arquivo Markdown: ${IDEATION_SONNET_OUT}" \
   --timeout 120 --json > /dev/null 2>&1 &
 SONNET_PID=$!
 
@@ -153,13 +162,15 @@ done
 # ETAPA 3: CONCEPT CRITIC (Gemini Pro)
 echo ""
 echo "⏳ ETAPA 3: Concept Critic (Gemini Pro)"
-CRITIC_OUT="$WIP_DIR/${JOB_ID}_CONCEPT_CRITIC.md"
+CRITIC_OUT="$WIP_DIR/${JOB_ID}_CONCEPT_CRITIC.json"
 IDEATION_GPT_CONTENT=$(cat "$IDEATION_GPT_OUT" 2>/dev/null || echo "N/A")
 IDEATION_FLASH_CONTENT=$(cat "$IDEATION_FLASH_OUT" 2>/dev/null || echo "N/A")
 IDEATION_SONNET_CONTENT=$(cat "$IDEATION_SONNET_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-critic" \
-  --message "Você é o CONCEPT_CRITIC do Brick AI War Room. Juiz imparcial de conceitos.
+  --message "${CRITIC_ROLE}
+
+---
 
 BRIEFING ORIGINAL:
 ${BRIEFING_CONTENT}
@@ -167,22 +178,19 @@ ${BRIEFING_CONTENT}
 BRAND DIGEST:
 ${BRAND_CONTENT}
 
-CONCEITO A (GPT):
+CONCEITO GPT:
 ${IDEATION_GPT_CONTENT}
 
-CONCEITO B (Flash):
+CONCEITO FLASH:
 ${IDEATION_FLASH_CONTENT}
 
-CONCEITO C (Sonnet):
+CONCEITO SONNET:
 ${IDEATION_SONNET_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Avalie os 3 conceitos com critérios: originalidade, aderência ao briefing, executabilidade, impacto emocional
-2. Dê score 0-100 para cada
-3. Escolha o MELHOR e justifique
-4. Sugira melhorias para o conceito vencedor
-5. Escreva o resultado como Markdown no arquivo: ${CRITIC_OUT}
-6. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Avalie os 3 conceitos conforme seu role acima e salve o resultado JSON no arquivo: ${CRITIC_OUT}" \
   --timeout 150 --json > /dev/null 2>&1
 
 if [ -f "$CRITIC_OUT" ]; then
@@ -195,24 +203,27 @@ fi
 # ETAPA 4: EXECUTION DESIGN (Gemini Pro)
 echo ""
 echo "⏳ ETAPA 4: Execution Design (Gemini Pro)"
-EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.md"
+EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.json"
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-exec" \
-  --message "Você é o EXECUTION_DESIGN do Brick AI War Room. Diretor visual/técnico.
+  --message "${EXECUTION_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
 
+BRAND DIGEST:
+${BRAND_CONTENT}
+
 CONCEITO VENCEDOR (do Critic):
 ${CRITIC_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Transforme o conceito vencedor em um plano de execução visual detalhado
-2. Inclua: paleta de cores, tipografia, referências visuais, storyboard conceitual, assets necessários
-3. Defina o tom visual e a direção de arte
-4. Escreva o resultado como Markdown no arquivo: ${EXEC_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Crie o plano de execução conforme seu role acima e salve o resultado JSON no arquivo: ${EXEC_OUT}" \
   --timeout 150 --json > /dev/null 2>&1
 
 if [ -f "$EXEC_OUT" ]; then
@@ -229,10 +240,15 @@ COPY_OUT="$WIP_DIR/${JOB_ID}_COPYWRITER.md"
 EXEC_CONTENT=$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-copy" \
-  --message "Você é o COPYWRITER do Brick AI War Room. Roteirista profissional.
+  --message "${PROPOSAL_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
+
+BRAND DIGEST:
+${BRAND_CONTENT}
 
 CONCEITO + CRÍTICA:
 ${CRITIC_CONTENT}
@@ -240,12 +256,10 @@ ${CRITIC_CONTENT}
 DIREÇÃO VISUAL:
 ${EXEC_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Escreva o roteiro/copy final baseado no conceito aprovado e direção visual
-2. Inclua: título, subtítulo, corpo do texto, CTAs, variações por canal se relevante
-3. Respeite o tom e as constraints do briefing
-4. Escreva o resultado como Markdown no arquivo: ${COPY_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Escreva a copy final conforme seu role acima e salve o resultado Markdown no arquivo: ${COPY_OUT}" \
   --timeout 150 --json > /dev/null 2>&1
 
 if [ -f "$COPY_OUT" ]; then
@@ -260,12 +274,18 @@ echo ""
 echo "⏳ ETAPA 6: Director (Gemini Pro)"
 DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.md"
 COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
+DIRECTOR_ROLE=$(cat "$ROLES_DIR/DIRECTOR.md" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-proj-${JOB_ID}-director" \
-  --message "Você é o DIRECTOR do Brick AI War Room. Avaliador final de execução.
+  --message "${DIRECTOR_ROLE}
+
+---
 
 BRIEFING ORIGINAL:
 ${BRIEFING_CONTENT}
+
+BRAND DIGEST:
+${BRAND_CONTENT}
 
 CONCEITO + CRÍTICA:
 ${CRITIC_CONTENT}
@@ -276,13 +296,10 @@ ${EXEC_CONTENT}
 ROTEIRO/COPY:
 ${COPY_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Avalie a proposta completa: conceito + visual + copy
-2. Score de 0-100 para cada dimensão e score final
-3. Se score >= 85: APROVADO para review humano
-4. Se score < 85: liste os problemas e o que precisa melhorar
-5. Escreva o resultado como Markdown no arquivo: ${DIRECTOR_OUT}
-6. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Avalie a proposta completa conforme seu role acima e salve o resultado Markdown no arquivo: ${DIRECTOR_OUT}" \
   --timeout 180 --json > /dev/null 2>&1
 
 if [ -f "$DIRECTOR_OUT" ]; then

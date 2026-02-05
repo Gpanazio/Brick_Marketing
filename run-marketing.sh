@@ -33,7 +33,16 @@ mkdir -p "$WIP_DIR"
 
 BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
 ROLES_DIR="$PROJECT_ROOT/roles"
+
+# Carregar todos os role files
+VALIDATOR_ROLE=$(cat "$ROLES_DIR/BRIEF_VALIDATOR.md" 2>/dev/null || echo "N/A")
 AUDIENCE_ROLE=$(cat "$ROLES_DIR/AUDIENCE_ANALYST.md" 2>/dev/null || echo "N/A")
+RESEARCHER_ROLE=$(cat "$ROLES_DIR/TOPIC_RESEARCHER.md" 2>/dev/null || echo "N/A")
+CLAIMS_ROLE=$(cat "$ROLES_DIR/CLAIMS_CHECKER.md" 2>/dev/null || echo "N/A")
+COPYWRITER_ROLE=$(cat "$ROLES_DIR/COPYWRITER.md" 2>/dev/null || echo "N/A")
+BRAND_ROLE=$(cat "$ROLES_DIR/BRAND_GUARDIAN.md" 2>/dev/null || echo "N/A")
+CRITIC_ROLE=$(cat "$ROLES_DIR/CRITIC.md" 2>/dev/null || echo "N/A")
+WALL_ROLE=$(cat "$ROLES_DIR/FILTRO_FINAL.md" 2>/dev/null || echo "N/A")
 
 # ETAPA 0: Douglas (Ingestion)
 echo "⏳ ETAPA 0: Douglas (Ingestion)"
@@ -46,18 +55,17 @@ echo "⏳ ETAPA 1: Brief Validator (Flash)"
 VALIDATOR_OUT="$WIP_DIR/${JOB_ID}_01_VALIDATOR.json"
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-validator" \
-  --message "Você é o BRIEF_VALIDATOR do Brick AI War Room.
+  --message "${VALIDATOR_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Avalie o briefing: público-alvo definido? Objetivo claro? Canal especificado? Formato definido?
-2. Liste lacunas encontradas com sugestões de preenchimento
-3. NÃO trave o pipeline -- sugira e siga
-4. Escreva JSON no arquivo: ${VALIDATOR_OUT}
-5. Estrutura: { \"status\": \"PASS/FAIL\", \"missing_fields\": [...], \"suggestions\": [...], \"can_proceed\": true }
-6. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Avalie o briefing conforme seu role acima e salve o resultado JSON no arquivo: ${VALIDATOR_OUT}" \
   --timeout 90 --json > /dev/null 2>&1
 
 [ -f "$VALIDATOR_OUT" ] && echo "✅ Validator concluído" || { echo "⚠️ Placeholder criado"; echo '{"status":"PASS","can_proceed":true}' > "$VALIDATOR_OUT"; }
@@ -68,24 +76,17 @@ echo "⏳ ETAPA 2: Audience Analyst (Flash)"
 AUDIENCE_OUT="$WIP_DIR/${JOB_ID}_02_AUDIENCE.json"
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-audience" \
-  --message "Você é o AUDIENCE_ANALYST do Brick AI War Room.
+  --message "${AUDIENCE_ROLE}
 
-REGRA ABSOLUTA: NÃO invente personas. NÃO pesquise público do zero. Use EXCLUSIVAMENTE a persona hardcoded abaixo.
-
-PERSONA OFICIAL DA BRICK AI:
-${AUDIENCE_ROLE}
+---
 
 BRIEFING PROPOSTO:
 ${BRIEFING_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Compare o briefing contra a persona hardcoded acima
-2. AVALIE se o conteúdo proposto está alinhado com essa audiência conhecida
-3. Aponte desalinhamentos: tom errado pro público? Canal inadequado? Tema que não ressoa com as dores/motivadores da persona?
-4. Score de alinhamento (0-100) com justificativa
-5. Escreva JSON no arquivo: ${AUDIENCE_OUT}
-6. Estrutura: { \"alignment_score\": N, \"persona_used\": \"Brick AI Official\", \"fits\": [...], \"mismatches\": [...], \"recommendation\": \"...\" }
-7. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Avalie o alinhamento do briefing com a persona oficial conforme seu role acima. Salve o resultado JSON no arquivo: ${AUDIENCE_OUT}" \
   --timeout 120 --json > /dev/null 2>&1
 
 [ -f "$AUDIENCE_OUT" ] && echo "✅ Audience concluído" || { echo "⚠️ Placeholder criado"; echo '{"personas":[]}' > "$AUDIENCE_OUT"; }
@@ -97,7 +98,9 @@ RESEARCH_OUT="$WIP_DIR/${JOB_ID}_03_RESEARCH.json"
 AUDIENCE_CONTENT=$(cat "$AUDIENCE_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-research" \
-  --message "Você é o TOPIC_RESEARCHER do Brick AI War Room.
+  --message "${RESEARCHER_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
@@ -105,12 +108,10 @@ ${BRIEFING_CONTENT}
 PÚBLICO-ALVO:
 ${AUDIENCE_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Pesquise tendências e tópicos relevantes para este público e produto
-2. Identifique hooks, ângulos e referências culturais que funcionam
-3. Liste 5 insights acionáveis
-4. Escreva JSON no arquivo: ${RESEARCH_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Pesquise conforme seu role acima e salve o resultado JSON no arquivo: ${RESEARCH_OUT}" \
   --timeout 120 --json > /dev/null 2>&1
 
 [ -f "$RESEARCH_OUT" ] && echo "✅ Research concluído" || { echo "⚠️ Placeholder criado"; echo '{"insights":[]}' > "$RESEARCH_OUT"; }
@@ -122,7 +123,9 @@ CLAIMS_OUT="$WIP_DIR/${JOB_ID}_04_CLAIMS.json"
 RESEARCH_CONTENT=$(cat "$RESEARCH_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-claims" \
-  --message "Você é o CLAIMS_CHECKER do Brick AI War Room. Filtro de modéstia e autoridade.
+  --message "${CLAIMS_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
@@ -130,13 +133,10 @@ ${BRIEFING_CONTENT}
 RESEARCH:
 ${RESEARCH_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Verifique se o briefing faz claims que não pode provar
-2. Filtre linguagem hype/exagerada
-3. Sugira versões mais seguras e autoritativas
-4. Escreva JSON no arquivo: ${CLAIMS_OUT}
-5. Estrutura: { \"flagged_claims\": [...], \"safe_alternatives\": [...], \"risk_level\": \"low/medium/high\" }
-6. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Valide claims conforme seu role acima e salve o resultado JSON no arquivo: ${CLAIMS_OUT}" \
   --timeout 90 --json > /dev/null 2>&1
 
 [ -f "$CLAIMS_OUT" ] && echo "✅ Claims concluído" || { echo "⚠️ Placeholder criado"; echo '{"risk_level":"low"}' > "$CLAIMS_OUT"; }
@@ -164,48 +164,54 @@ ${CLAIMS_CONTENT}"
 # GPT
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-copy-gpt" \
-  --message "Você é o COPYWRITER A (estilo direto e persuasivo) do Brick AI War Room.
+  --message "${COPYWRITER_ROLE}
+
+VARIAÇÃO: Copywriter A - Estilo direto e persuasivo
+
+---
 
 ${COPY_CONTEXT}
 
+---
+
 INSTRUÇÕES:
-1. Escreva copy/conteúdo completo para o canal especificado no briefing
-2. Inclua: headline, corpo, CTA, variações se aplicável
-3. Tom: direto, persuasivo, sem floreios
-4. Escreva no arquivo: ${COPY_GPT_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Escreva a copy conforme seu role acima (tom direto, persuasivo) e salve no arquivo: ${COPY_GPT_OUT}" \
   --timeout 150 --json > /dev/null 2>&1 &
 GPT_PID=$!
 
 # Flash
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-copy-flash" \
-  --message "Você é o COPYWRITER B (estilo eficiente e data-driven) do Brick AI War Room.
+  --message "${COPYWRITER_ROLE}
+
+VARIAÇÃO: Copywriter B - Estilo eficiente e data-driven
+
+---
 
 ${COPY_CONTEXT}
 
+---
+
 INSTRUÇÕES:
-1. Escreva copy/conteúdo completo para o canal especificado no briefing
-2. Inclua: headline, corpo, CTA, variações se aplicável
-3. Tom: eficiente, baseado em dados, pragmático
-4. Escreva no arquivo: ${COPY_FLASH_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Escreva a copy conforme seu role acima (tom eficiente, pragmático) e salve no arquivo: ${COPY_FLASH_OUT}" \
   --timeout 150 --json > /dev/null 2>&1 &
 FLASH_PID=$!
 
 # Sonnet
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-copy-sonnet" \
-  --message "Você é o COPYWRITER C (estilo narrativo e emocional) do Brick AI War Room.
+  --message "${COPYWRITER_ROLE}
+
+VARIAÇÃO: Copywriter C - Estilo narrativo e emocional
+
+---
 
 ${COPY_CONTEXT}
 
+---
+
 INSTRUÇÕES:
-1. Escreva copy/conteúdo completo para o canal especificado no briefing
-2. Inclua: headline, corpo, CTA, variações se aplicável
-3. Tom: narrativo, emocional, storytelling
-4. Escreva no arquivo: ${COPY_SONNET_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Escreva a copy conforme seu role acima (tom narrativo, storytelling) e salve no arquivo: ${COPY_SONNET_OUT}" \
   --timeout 150 --json > /dev/null 2>&1 &
 SONNET_PID=$!
 
@@ -225,7 +231,9 @@ COPY_B=$(cat "$COPY_FLASH_OUT" 2>/dev/null || echo "N/A")
 COPY_C=$(cat "$COPY_SONNET_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-brand-guard" \
-  --message "Você é o BRAND_GUARDIAN do Brick AI War Room.
+  --message "${BRAND_ROLE}
+
+---
 
 BRIEFING ORIGINAL:
 ${BRIEFING_CONTENT}
@@ -239,12 +247,10 @@ ${COPY_B}
 COPY C (Sonnet):
 ${COPY_C}
 
+---
+
 INSTRUÇÕES:
-1. Valide cada copy contra o tom, valores e constraints da marca
-2. Flagge qualquer desvio de brand, claim perigoso ou inconsistência
-3. Score de aderência 0-100 para cada
-4. Escreva JSON no arquivo: ${BRAND_GUARD_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Valide as copies conforme seu role acima e salve o resultado JSON no arquivo: ${BRAND_GUARD_OUT}" \
   --timeout 120 --json > /dev/null 2>&1
 
 [ -f "$BRAND_GUARD_OUT" ] && echo "✅ Brand Guardians concluído" || { echo "⚠️ Placeholder criado"; echo '{"scores":{}}' > "$BRAND_GUARD_OUT"; }
@@ -256,7 +262,9 @@ CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_CRITICS.json"
 GUARD_CONTENT=$(cat "$BRAND_GUARD_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-critic" \
-  --message "Você é o CRITIC do Brick AI War Room. Advogado do diabo. Impede que lixo seja publicado.
+  --message "${CRITIC_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
@@ -273,14 +281,10 @@ ${COPY_C}
 BRAND GUARDIAN:
 ${GUARD_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Escolha a MELHOR copy entre A, B e C
-2. Justifique com argumentos concretos
-3. Score final para cada (0-100)
-4. Liste problemas remanescentes na copy vencedora
-5. Escreva JSON no arquivo: ${CRITIC_OUT}
-6. Estrutura: { \"winner\": \"A/B/C\", \"scores\": {\"A\": N, \"B\": N, \"C\": N}, \"reasoning\": \"...\", \"issues\": [...] }
-7. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Avalie as copies conforme seu role acima e salve o resultado JSON no arquivo: ${CRITIC_OUT}" \
   --timeout 180 --json > /dev/null 2>&1
 
 [ -f "$CRITIC_OUT" ] && echo "✅ Critic concluído" || { echo "⚠️ Placeholder criado"; echo '{"winner":"C"}' > "$CRITIC_OUT"; }
@@ -292,7 +296,9 @@ WALL_OUT="$WIP_DIR/${JOB_ID}_08_WALL.json"
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
 openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-wall" \
-  --message "Você é o WALL (Filtro Final) do Brick AI War Room. Última barreira antes da publicação.
+  --message "${WALL_ROLE}
+
+---
 
 BRIEFING:
 ${BRIEFING_CONTENT}
@@ -300,14 +306,10 @@ ${BRIEFING_CONTENT}
 COPY VENCEDORA + ANÁLISE DO CRITIC:
 ${CRITIC_CONTENT}
 
+---
+
 INSTRUÇÕES:
-1. Revisão final: gramática, tom, claims, aderência à marca
-2. Score final de publicação (0-100)
-3. Se >= 80: APPROVED
-4. Se < 80: REJECTED com lista de correções
-5. Escreva JSON no arquivo: ${WALL_OUT}
-6. Estrutura: { \"final_score\": N, \"status\": \"APPROVED/REJECTED\", \"notes\": \"...\" }
-7. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+Faça a revisão final conforme seu role acima e salve o resultado JSON no arquivo: ${WALL_OUT}" \
   --timeout 150 --json > /dev/null 2>&1
 
 [ -f "$WALL_OUT" ] && echo "✅ Wall concluído" || { echo "⚠️ Placeholder criado"; echo '{"status":"APPROVED","final_score":0}' > "$WALL_OUT"; }
