@@ -32,6 +32,8 @@ echo "---"
 mkdir -p "$WIP_DIR"
 
 BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
+ROLES_DIR="$PROJECT_ROOT/roles"
+AUDIENCE_ROLE=$(cat "$ROLES_DIR/AUDIENCE_ANALYST.md" 2>/dev/null || echo "N/A")
 
 # ETAPA 0: Douglas (Ingestion)
 echo "⏳ ETAPA 0: Douglas (Ingestion)"
@@ -68,18 +70,21 @@ openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-audience" \
   --message "Você é o AUDIENCE_ANALYST do Brick AI War Room.
 
-Você NÃO gera personas nem inventa público-alvo. Seu papel é AVALIAR se o conteúdo proposto está alinhado com a audiência real do canal/marca.
+REGRA ABSOLUTA: NÃO invente personas. NÃO pesquise público do zero. Use EXCLUSIVAMENTE a persona hardcoded abaixo.
 
-BRIEFING:
+PERSONA OFICIAL DA BRICK AI:
+${AUDIENCE_ROLE}
+
+BRIEFING PROPOSTO:
 ${BRIEFING_CONTENT}
 
 INSTRUÇÕES:
-1. Identifique qual audiência o briefing pretende atingir (pelo canal, tom e tema)
-2. AVALIE se o conteúdo proposto faz sentido para essa audiência
-3. Aponte desalinhamentos: tom errado pro público? Canal inadequado? Tema que não ressoa?
+1. Compare o briefing contra a persona hardcoded acima
+2. AVALIE se o conteúdo proposto está alinhado com essa audiência conhecida
+3. Aponte desalinhamentos: tom errado pro público? Canal inadequado? Tema que não ressoa com as dores/motivadores da persona?
 4. Score de alinhamento (0-100) com justificativa
 5. Escreva JSON no arquivo: ${AUDIENCE_OUT}
-6. Estrutura: { \"alignment_score\": N, \"target_audience\": \"...\", \"fits\": [...], \"mismatches\": [...], \"recommendation\": \"...\" }
+6. Estrutura: { \"alignment_score\": N, \"persona_used\": \"Brick AI Official\", \"fits\": [...], \"mismatches\": [...], \"recommendation\": \"...\" }
 7. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
   --timeout 120 --json > /dev/null 2>&1
 
