@@ -656,9 +656,24 @@ app.post('/api/rerun', (req, res) => {
     const briefingDir = path.join(root, 'briefing');
     let briefingFile = null;
     
-    if (fs.existsSync(briefingDir)) {
-        const files = fs.readdirSync(briefingDir);
-        briefingFile = files.find(f => f.includes(jobId) || f.startsWith(jobId));
+    // Helper de busca
+    const findFile = (dir) => {
+        if (!fs.existsSync(dir)) return null;
+        return fs.readdirSync(dir).find(f => f.includes(jobId));
+    };
+
+    // 1. Tenta na pasta briefing
+    briefingFile = findFile(briefingDir);
+
+    // 2. Se não achar, tenta recuperar de WIP/DONE (pode ser um _PROCESSED.md ou _RAW_IDEA.md) e restaurar
+    if (!briefingFile) {
+        const wipFile = findFile(path.join(root, 'wip'));
+        if (wipFile && wipFile.includes('RAW_IDEA')) {
+            // Recuperar do WIP
+            fs.copyFileSync(path.join(root, 'wip', wipFile), path.join(briefingDir, wipFile));
+            briefingFile = wipFile;
+            log('info', 'rerun_restored_from_wip', { file: wipFile });
+        }
     }
     
     if (!briefingFile) {
