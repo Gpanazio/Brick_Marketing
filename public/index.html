@@ -370,7 +370,7 @@
 
     <!-- APPROVAL MODAL -->
     <div id="approval-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'approval-modal') closeApprovalModal()">
-        <div class="bg-[#050505] border border-[#DC2626] w-full max-w-xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
+        <div class="bg-[#050505] border border-[#DC2626] w-full max-xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
             <div class="p-8 border-b border-[#222]">
                 <button onclick="closeApprovalModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">APROVAR CAMPANHA</h2>
@@ -465,9 +465,10 @@
             { id: 'n7', x: 0, y: 1550, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.2' },
             { id: 'n8', x: 0, y: 1800, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
             { id: 'n9', x: 0, y: 2050, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
-            { id: 'n10', x: 0, y: 2300, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
+            { id: 'n11', x: 0, y: 2300, title: 'SOCIAL_SLICE', label: 'Social_Content', model: 'DOUGLAS' },
+            { id: 'n10', x: 0, y: 2550, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n6'],['n5b','n6'],['n5c','n6'],['n6','n7'],['n7','n8'],['n8','n9'],['n9','n11'],['n11','n10']];
 
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -511,6 +512,7 @@
             'COPY SENIOR': ['07_', 'COPY_SENIOR', 'CRITIC'],
             'DIRECTOR': ['DIRECTOR'],
             'WALL': ['08_', 'FILTRO', 'WALL'],
+            'SOCIAL_SLICE': ['SOCIAL_SLICE'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
@@ -547,6 +549,11 @@
             document.getElementById('btn-back-lobby').classList.remove('hidden');
             document.getElementById('btn-scheme').classList.remove('hidden');
             document.getElementById('header-sector').textContent = mode.toUpperCase();
+            
+            if (socket && socket.connected) {
+                socket.emit('subscribe', mode);
+            }
+            
             fetchState();
             // Auto-refresh a cada 10 segundos
             if (refreshInterval) clearInterval(refreshInterval);
@@ -681,6 +688,9 @@ OUTPUT (Proposta Completa)`;
 09. HUMAN - aprovação final
 │
 ▼
+11. SOCIAL SLICE (Douglas)
+│
+▼
 OUTPUT (Copy Final)`;
 
                 info.innerHTML = `
@@ -690,8 +700,8 @@ OUTPUT (Copy Final)`;
                     <div>• Brand Guardians valida todas as versões</div>
                     <div>• Copy Senior (GPT-5.2) escolhe a melhor, aplica ajustes e entrega copy_revisada</div>
                     <div>• Wall (Opus) score final: ≥80 aprova, &lt;80 rejeita</div>
-                    <div>• Loop inteligente: máximo 3 tentativas antes de escalar pra humano</div>
                     <div>• Aprovação humana obrigatória</div>
+                    <div>• Social Slice fatiado para redes sociais</div>
                 `;
             }
 
@@ -743,13 +753,9 @@ OUTPUT (Copy Final)`;
                 if (m) return m[1];
 
                 // Projetos/Ideias: usar prefixo antes do último "_ROLE"
-                // Ex: 180_seguros_2026_BRAND_DIGEST.md -> 180_seguros_2026
-                // Ex: roteirizacao_set_PAIN_CHECK.json -> roteirizacao_set
                 const roleSuffixes = [
-                    // Projetos
                     'BRAND_DIGEST','CREATIVE_IDEATION','IDEATION_GPT','IDEATION_FLASH','IDEATION_SONNET','CONCEPT_CRITIC','EXECUTION_DESIGN',
                     'COPYWRITER','DIRECTOR','FINAL','PROCESSED','BRIEFING_INPUT',
-                    // Ideias
                     'PAIN_CHECK','MARKET_SCAN','ANGLE_GEN','DEVIL_GEN','VIABILITY','DECISION','RAW_IDEA'
                 ];
                 for (const role of roleSuffixes) {
@@ -757,7 +763,6 @@ OUTPUT (Copy Final)`;
                     if (idx > 0) return name.slice(0, idx);
                 }
 
-                // Fallback: antes de __ ou antes da extensão
                 if (name.includes('__')) return name.split('__')[0];
                 return name.replace(/\.[^.]+$/, '');
             }
@@ -855,7 +860,6 @@ OUTPUT (Copy Final)`;
             const agentsCount = projectFiles.filter(f => !f.name.includes('BRIEFING') && !f.name.includes('PROCESSED') && !f.name.includes('FINAL')).length;
             const filesCount = projectFiles.length;
 
-            // Calcular duração baseado nos timestamps dos arquivos
             const timestamps = projectFiles.map(f => new Date(f.mtime).getTime()).filter(t => !isNaN(t));
             let duration = '--';
             if (timestamps.length > 1) {
@@ -867,7 +871,6 @@ OUTPUT (Copy Final)`;
                 duration = diffMin > 0 ? `${diffMin}m ${diffSec % 60}s` : `${diffSec}s`;
             }
 
-            // Detectar estágio atual
             const hasFinal = projectFiles.some(f => f.name.includes('FINAL'));
             const stage = hasFinal ? 'READY FOR APPROVAL' : 'PROCESSING';
 
@@ -897,7 +900,6 @@ OUTPUT (Copy Final)`;
             const count = Object.keys(savedPositions).length;
             document.getElementById('saved-positions-count').textContent = count;
             
-            // Mostrar/esconder botão de limpeza baseado se tem posições salvas
             const clearBtn = document.getElementById('btn-clear-layout');
             if (clearBtn) {
                 if (count > 0) {
@@ -918,7 +920,6 @@ OUTPUT (Copy Final)`;
         }
 
         function resetLayout() {
-            // Custom modal ao invés de browser confirm
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-[300]';
             modal.innerHTML = `
@@ -926,9 +927,6 @@ OUTPUT (Copy Final)`;
                     <h3 class="font-brick text-xl text-white uppercase mb-4">⚠️ RESETAR LAYOUT</h3>
                     <p class="text-sm text-[#aaa] mb-6 leading-relaxed">
                         Isso vai <strong class="text-[#DC2626]">apagar todas as posições salvas</strong> dos nós do modo <strong class="text-white">${currentMode.toUpperCase()}</strong> e restaurar o layout padrão.
-                    </p>
-                    <p class="text-sm text-[#666] mb-6 italic">
-                        Essa ação não pode ser desfeita.
                     </p>
                     <div class="flex gap-3">
                         <button onclick="this.closest('.fixed').remove()" class="flex-1 border border-[#333] text-[#aaa] font-mono text-xs py-2 px-4 hover:border-white hover:text-white transition-colors">
@@ -950,12 +948,9 @@ OUTPUT (Copy Final)`;
         }
 
         function clearLayoutQuick() {
-            // Limpar SEM confirmação (rápido)
             localStorage.removeItem(`node_positions_${currentMode}`);
             updateLayoutIndicator();
             renderNodeGraphic();
-            
-            // Feedback visual: toast rápido
             const toast = document.createElement('div');
             toast.className = 'fixed bottom-8 right-8 bg-[#DC2626] text-white px-6 py-3 font-mono text-xs uppercase tracking-wider z-[300]';
             toast.textContent = `✓ Layout ${currentMode} resetado`;
@@ -976,41 +971,7 @@ OUTPUT (Copy Final)`;
             if (currentMode === 'projetos') nodes = nodeDefProjetos;
             if (currentMode === 'ideias') nodes = nodeDefIdeias;
 
-            // Carregar posições salvas do localStorage
             let savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
-            
-            // VALIDAÇÃO DE EMERGÊNCIA: Detectar e limpar posições malucas
-            let hasInvalidPositions = false;
-            for (const [nodeId, pos] of Object.entries(savedPositions)) {
-                // Extrair valores numéricos (remover "px")
-                const leftVal = parseInt(pos.left);
-                const topVal = parseInt(pos.top);
-                
-                // Se valores são absurdos ou inválidos, marcar pra limpeza
-                if (isNaN(leftVal) || isNaN(topVal) || 
-                    leftVal < -1000 || leftVal > 10000 || 
-                    topVal < -1000 || topVal > 10000 ||
-                    pos.left.includes('calc')) {
-                    console.warn(`Posição inválida detectada para ${nodeId}:`, pos);
-                    hasInvalidPositions = true;
-                }
-            }
-            
-            // Se detectou posições inválidas, LIMPAR TUDO
-            if (hasInvalidPositions) {
-                console.warn('⚠️ Posições malucas detectadas! Limpando localStorage automaticamente...');
-                localStorage.removeItem(`node_positions_${currentMode}`);
-                savedPositions = {}; // Resetar pra objeto vazio
-                
-                // Toast de emergência
-                const toast = document.createElement('div');
-                toast.className = 'fixed top-8 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black px-6 py-3 font-mono text-xs uppercase tracking-wider z-[300] border-2 border-yellow-400';
-                toast.innerHTML = '⚠️ Posições inválidas detectadas e removidas automaticamente';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            }
-            
-            // Calcular centro da tela UMA VEZ (antes do loop)
             const centerX = container.offsetWidth / 2;
             
             nodes.forEach(n => {
@@ -1029,14 +990,11 @@ OUTPUT (Copy Final)`;
                 el.id = n.id;
                 el.style.position = 'absolute';
                 
-                // Se tem posição salva E é válida, usar ela
                 if (savedPositions[n.id] && savedPositions[n.id].left && savedPositions[n.id].top) {
-                    // Garantir que sejam strings com "px"
                     el.style.left = savedPositions[n.id].left;
                     el.style.top = savedPositions[n.id].top;
                 } else {
-                    // Usar posição padrão (SEMPRE em pixels puros, nunca calc)
-                    const defaultLeft = centerX + n.x - 160; // 160 = metade da largura do nó (320/2)
+                    const defaultLeft = centerX + n.x - 160;
                     el.style.left = `${defaultLeft}px`;
                     el.style.top = `${n.y}px`;
                 }
@@ -1044,8 +1002,6 @@ OUTPUT (Copy Final)`;
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 const hasFile = projectFiles.some(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
-                // Não desabilitar: BRIEFING_INPUT (n0), Douglas, e nodes humanos (DECISION etc)
-                // Nodes humanos ficam ativos quando o pipeline chegou neles (node anterior tem arquivo)
                 if(!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
 
                 el.innerHTML = `
@@ -1085,20 +1041,13 @@ OUTPUT (Copy Final)`;
                 const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
                 const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
                 
-                // Validar que as coordenadas não são absurdas (NaN, Infinity, ou fora da viewport razoável)
-                if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2) || 
-                    !isFinite(x1) || !isFinite(y1) || !isFinite(x2) || !isFinite(y2) ||
-                    Math.abs(x1) > 10000 || Math.abs(y1) > 10000 || Math.abs(x2) > 10000 || Math.abs(y2) > 10000) {
-                    console.warn(`Coordenadas inválidas detectadas para link ${fId} → ${tId}:`, {x1, y1, x2, y2});
-                    return;
-                }
+                if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2) || !isFinite(x1) || !isFinite(y1) || !isFinite(x2) || !isFinite(y2)) return;
 
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
                 
                 const isActive = !f.classList.contains('disabled') && !t.classList.contains('disabled');
-                const lineClass = `conn-line ${isActive ? 'active' : ''}`;
-                line.setAttribute("class", lineClass);
+                line.setAttribute("class", `conn-line ${isActive ? 'active' : ''}`);
                 svg.appendChild(line);
 
                 if(!f.classList.contains('disabled') && !t.classList.contains('disabled')) {
@@ -1115,55 +1064,20 @@ OUTPUT (Copy Final)`;
         function makeDraggable(el) {
             let p1=0,p2=0,p3=0,p4=0; 
             el.onmousedown = (e) => {
-                // Não arrastar se clicou num botão
                 if (e.target.tagName === 'BUTTON') return;
-                
-                e.preventDefault(); 
-                p3=e.clientX; 
-                p4=e.clientY;
-                el.style.zIndex = '100'; // Trazer pra frente enquanto arrasta
-                
+                e.preventDefault(); p3=e.clientX; p4=e.clientY;
+                el.style.zIndex = '100';
                 document.onmouseup = () => { 
-                    el.style.zIndex = '10'; // Voltar z-index normal
-                    
-                    // Salvar posição final no localStorage (SEMPRE em pixels puros)
+                    el.style.zIndex = '10';
                     const nodePositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
-                    
-                    // Garantir que sejam valores numéricos puros com "px"
-                    const finalLeft = el.offsetLeft;
-                    const finalTop = el.offsetTop;
-                    
-                    // Validar que não são valores absurdos (fora da viewport)
-                    if (finalLeft < -500 || finalLeft > 5000 || finalTop < -500 || finalTop > 5000) {
-                        console.warn(`Posição inválida detectada para ${el.id}: left=${finalLeft}, top=${finalTop}. Não salvando.`);
-                        el.style.borderColor = '#DC2626'; // Flash vermelho = erro
-                        setTimeout(() => { el.style.borderColor = ''; }, 400);
-                    } else {
-                        nodePositions[el.id] = {
-                            left: `${finalLeft}px`,
-                            top: `${finalTop}px`
-                        };
-                        localStorage.setItem(`node_positions_${currentMode}`, JSON.stringify(nodePositions));
-                        
-                        // Atualizar contador de posições salvas
-                        updateLayoutIndicator();
-                        
-                        // Feedback visual: flash verde = salvou com sucesso
-                        el.style.borderColor = '#4ade80';
-                        setTimeout(() => { el.style.borderColor = ''; }, 200);
-                    }
-                    
-                    document.onmouseup = null; 
-                    document.onmousemove = null; 
+                    nodePositions[el.id] = { left: `${el.offsetLeft}px`, top: `${el.offsetTop}px` };
+                    localStorage.setItem(`node_positions_${currentMode}`, JSON.stringify(nodePositions));
+                    updateLayoutIndicator();
+                    document.onmouseup = null; document.onmousemove = null; 
                 };
-                
                 document.onmousemove = (e) => {
-                    p1=p3-e.clientX; 
-                    p2=p4-e.clientY; 
-                    p3=e.clientX; 
-                    p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px"; 
-                    el.style.left = (el.offsetLeft-p1)+"px";
+                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
+                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
                     updateConnections();
                 };
             };
@@ -1173,165 +1087,57 @@ OUTPUT (Copy Final)`;
             function formatValue(val, key) {
                 if (typeof val === 'boolean') return val ? '<span class="text-green-500">✓</span>' : '<span class="text-red-500">✗</span>';
                 if (typeof val === 'number') {
-                    const isScore = key && (key.includes('score') || key.includes('nota') || key.includes('pontos') || key.includes('max'));
-                    if (isScore || (val >= 0 && val <= 100)) {
+                    const isScore = key && (key.includes('score') || key.includes('nota') || key.includes('pontos'));
+                    if (isScore) {
                         const color = val >= 80 ? 'text-green-500' : val >= 60 ? 'text-yellow-500' : 'text-red-500';
                         return `<span class="${color} font-bold">${val}</span>`;
                     }
                     return `<span class="text-white">${val}</span>`;
                 }
                 if (typeof val === 'string') {
-                    // Status badges
-                    const statusColors = {
-                        'PASS': 'bg-green-900 text-green-400', 'APPROVED': 'bg-green-900 text-green-400',
-                        'BRAND_OK': 'bg-green-900 text-green-400', 'GO': 'bg-green-900 text-green-400',
-                        'FAIL': 'bg-red-900 text-red-400', 'REJECTED': 'bg-red-900 text-red-400',
-                        'BRAND_FAIL': 'bg-red-900 text-red-400', 'NO_GO': 'bg-red-900 text-red-400',
-                        'BLOCKED': 'bg-red-900 text-red-400',
-                        'APPROVED_WITH_NOTES': 'bg-yellow-900 text-yellow-400',
-                        'CONDITIONAL_GO': 'bg-yellow-900 text-yellow-400', 'REVISIT': 'bg-yellow-900 text-yellow-400'
-                    };
-                    if (statusColors[val]) return `<span class="px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider ${statusColors[val]}">${val.replace(/_/g, ' ')}</span>`;
-                    // Long strings → render as markdown
+                    const statusColors = { 'PASS': 'bg-green-900 text-green-400', 'APPROVED': 'bg-green-900 text-green-400', 'FAIL': 'bg-red-900 text-red-400', 'REJECTED': 'bg-red-900 text-red-400' };
+                    if (statusColors[val]) return `<span class="px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider ${statusColors[val]}">${val}</span>`;
                     if (val.length > 200) return `<div class="text-[#ccc] leading-relaxed mt-2 prose-sm">${marked.parse(val)}</div>`;
                     return `<span class="text-[#ccc]">${val}</span>`;
                 }
                 return val;
             }
-
             function renderAny(val, key, depth) {
                 if (val === null || val === undefined) return '<span class="text-[#666] italic">--</span>';
-                if (Array.isArray(val)) {
-                    if (val.length === 0) return '<span class="text-[#666] italic">Nenhum</span>';
-                    return '<div class="space-y-2 mt-2">' + val.map(item => {
-                        if (typeof item === 'object' && item !== null) {
-                            return `<div class="border-l-2 border-[#333] pl-4 py-2 space-y-1">${Object.entries(item).map(([k,v]) => 
-                                `<div class="text-sm"><span class="text-[#666] font-mono">${k.replace(/_/g,' ')}:</span> ${renderAny(v, k, depth+1)}</div>`
-                            ).join('')}</div>`;
-                        }
-                        return `<div class="text-sm text-[#aaa]">• ${item}</div>`;
-                    }).join('') + '</div>';
-                }
-                if (typeof val === 'object') {
-                    return `<div class="${depth > 0 ? 'pl-4 mt-2' : ''} space-y-3">${Object.entries(val).map(([k,v]) => {
-                        const label = k.replace(/_/g, ' ');
-                        const rendered = renderAny(v, k, depth+1);
-                        return `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${label}:</span> ${rendered}</div>`;
-                    }).join('')}</div>`;
-                }
+                if (Array.isArray(val)) return '<div class="space-y-2 mt-2">' + val.map(item => typeof item === 'object' ? renderAny(item, key, depth+1) : `<div class="text-sm text-[#aaa]">• ${item}</div>`).join('') + '</div>';
+                if (typeof val === 'object') return `<div class="${depth > 0 ? 'pl-4 mt-2' : ''} space-y-3">${Object.entries(val).map(([k,v]) => `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${k.replace(/_/g,' ')}:</span> ${renderAny(v, k, depth+1)}</div>`).join('')}</div>`;
                 return formatValue(val, key);
             }
-
             let html = '<div class="space-y-6">';
             for (const [key, value] of Object.entries(json)) {
-                html += `<div class="border-b border-[#222] pb-5">`;
-                html += `<div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>`;
-                html += renderAny(value, key, 0);
-                html += '</div>';
+                html += `<div class="border-b border-[#222] pb-5"><div class="text-sm font-mono text-[#DC2626] uppercase tracking-wider mb-3 font-semibold">${key.replace(/_/g, ' ')}</div>${renderAny(value, key, 0)}</div>`;
             }
-            html += '</div>';
-            return html;
+            return html + '</div>';
         }
 
         function openPanel(n, files) {
             const searchTerms = fileMapping[n.title] || [n.title];
             const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
             const body = document.getElementById('panel-body');
-            
             if (file) {
                 let content = file.content;
-                const isApproved = localStorage.getItem(`approved_${selectedJobId}`) === 'true';
-                
-                try {
-                    const json = JSON.parse(content);
-                    content = formatJSON(json);
-                } catch(e) {
-                    content = marked.parse(content);
-                    // Remover linha "Aguardando aprovação" se foi aprovado
-                    if (isApproved && (n.title === 'OUTPUT' || n.title === 'HUMAN')) {
-                        content = content.replace(/\*\*Aguardando sua aprovação para prosseguir\.\*\*/gi, '');
-                    }
-                }
-                
-                // Adicionar banner de aprovação se foi aprovado
-                if (isApproved && (n.title === 'OUTPUT' || n.title === 'HUMAN')) {
-                    const approvalBanner = `<div class="bg-green-900/30 border border-green-600 p-4 mb-6 font-mono text-sm text-green-400">
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">✅</span>
-                            <div>
-                                <div class="font-bold uppercase tracking-wide">CAMPANHA APROVADA</div>
-                                <div class="text-xs text-green-500 mt-1">Aprovado em ${new Date(parseInt(localStorage.getItem(`approved_${selectedJobId}_timestamp`))).toLocaleString('pt-BR')}</div>
-                            </div>
-                        </div>
-                    </div>`;
-                    content = approvalBanner + content;
-                }
-                
+                try { const json = JSON.parse(content); content = formatJSON(json); } catch(e) { content = marked.parse(content); }
                 body.innerHTML = content;
             } else {
                 body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Aguardando execução do agente...</div>';
             }
-            
             document.getElementById('panel-title').textContent = n.title;
             document.getElementById('agent-panel').classList.add('open');
         }
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
         
-        // --- Draft auto-save (localStorage) ---
-        const DRAFT_KEY = 'warroom_briefing_draft';
-        
-        function saveDraft() {
-            const title = document.getElementById('briefing-title')?.value || '';
-            const content = document.getElementById('briefing-content')?.value || '';
-            const mode = document.getElementById('briefing-mode')?.value || 'marketing';
-            if (title || content) {
-                localStorage.setItem(DRAFT_KEY, JSON.stringify({ title, content, mode, ts: Date.now() }));
-            }
-        }
-        
-        function loadDraft() {
-            try {
-                const raw = localStorage.getItem(DRAFT_KEY);
-                if (!raw) return null;
-                const draft = JSON.parse(raw);
-                // Descartar rascunhos com mais de 24h
-                if (Date.now() - draft.ts > 86400000) { localStorage.removeItem(DRAFT_KEY); return null; }
-                return draft;
-            } catch(e) { return null; }
-        }
-        
-        function clearDraft() {
-            localStorage.removeItem(DRAFT_KEY);
-        }
-        
-        function initDraftListeners() {
-            const titleEl = document.getElementById('briefing-title');
-            const contentEl = document.getElementById('briefing-content');
-            const modeEl = document.getElementById('briefing-mode');
-            if (titleEl) titleEl.addEventListener('input', saveDraft);
-            if (contentEl) contentEl.addEventListener('input', saveDraft);
-            if (modeEl) modeEl.addEventListener('change', saveDraft);
-        }
-        
         function openNewBriefing() {
             document.getElementById('briefing-modal').classList.remove('hidden');
-            
-            const draft = loadDraft();
-            if (draft && (draft.title || draft.content)) {
-                document.getElementById('briefing-title').value = draft.title || '';
-                document.getElementById('briefing-content').value = draft.content || '';
-                document.getElementById('briefing-mode').value = draft.mode || currentMode || 'marketing';
-                showNotification('📝 Rascunho restaurado.');
-            } else {
-                document.getElementById('briefing-title').value = '';
-                document.getElementById('briefing-content').value = '';
-                document.getElementById('briefing-mode').value = currentMode || 'marketing';
-            }
-            
-            document.getElementById('briefing-title').focus();
+            document.getElementById('briefing-title').value = '';
+            document.getElementById('briefing-content').value = '';
+            document.getElementById('briefing-mode').value = currentMode || 'marketing';
             updateCostEstimate();
-            initDraftListeners();
         }
         
         async function updateCostEstimate() {
@@ -1341,529 +1147,153 @@ OUTPUT (Copy Final)`;
                 const data = await res.json();
                 document.getElementById('cost-value').textContent = `$${data.totalCost}`;
                 document.getElementById('steps-value').textContent = data.steps;
-            } catch(e) {
-                document.getElementById('cost-value').textContent = '$--';
-                document.getElementById('steps-value').textContent = '--';
-            }
+            } catch(e) {}
         }
         
-        function closeBriefingModal() {
-            document.getElementById('briefing-modal').classList.add('hidden');
-            // Nao limpa draft aqui -- so limpa no submit com sucesso
-            // Assim se fechar sem querer, o draft sobrevive
-        }
+        function closeBriefingModal() { document.getElementById('briefing-modal').classList.add('hidden'); }
         
         async function submitBriefing() {
             const title = document.getElementById('briefing-title').value.trim();
             const content = document.getElementById('briefing-content').value.trim();
             const mode = document.getElementById('briefing-mode').value;
-            
-            if (!title) {
-                showNotification('⚠️ Título é obrigatório.', 'error');
-                return;
-            }
-            
-            if (!content) {
-                showNotification('⚠️ Descrição é obrigatória.', 'error');
-                return;
-            }
-            
+            if (!title || !content) { showNotification('⚠️ Preencha todos os campos.', 'error'); return; }
             try {
                 const res = await fetch(`${API_URL}/briefing`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'brick-squad-2026'
-                    },
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ title, content, mode })
                 });
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    clearDraft();
-                    closeBriefingModal();
-                    showNotification(`✅ Briefing "${title}" criado! Douglas será notificado.`);
-                    
-                    // Atualizar estado
-                    setTimeout(() => {
-                        if (!currentMode) enterMode(mode);
-                        fetchState();
-                    }, 500);
-                } else {
-                    const err = await res.json();
-                    showNotification(`❌ Erro: ${err.error || 'Falha ao criar briefing'}`, 'error');
-                }
-            } catch(e) {
-                console.error('Erro ao criar briefing:', e);
-                showNotification('❌ Erro ao criar briefing. Tente novamente.', 'error');
-            }
+                if (res.ok) { closeBriefingModal(); showNotification(`✅ Briefing "${title}" criado!`); setTimeout(fetchState, 1000); }
+            } catch(e) {}
         }
 
-        function openFeedbackModal(e) {
-            e.stopPropagation();
-            document.getElementById('feedback-modal').classList.remove('hidden');
-            document.getElementById('feedback-text').value = '';
-            document.getElementById('feedback-text').focus();
-        }
-
-        function closeFeedbackModal() {
-            document.getElementById('feedback-modal').classList.add('hidden');
-        }
-
+        function openFeedbackModal(e) { e.stopPropagation(); document.getElementById('feedback-modal').classList.remove('hidden'); document.getElementById('feedback-text').value = ''; }
+        function closeFeedbackModal() { document.getElementById('feedback-modal').classList.add('hidden'); }
         async function submitFeedback() {
             const feedback = document.getElementById('feedback-text').value.trim();
-            if (!feedback) {
-                showNotification('⚠️ Escreva o feedback antes de enviar.', 'error');
-                return;
-            }
-
+            if (!feedback) return;
             try {
                 const res = await fetch(`${API_URL}/feedback`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'brick-squad-2026'
-                    },
-                    body: JSON.stringify({
-                        jobId: selectedJobId,
-                        mode: currentMode,
-                        feedback: feedback,
-                        timestamp: new Date().toISOString()
-                    })
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
+                    body: JSON.stringify({ jobId: selectedJobId, mode: currentMode, feedback: feedback })
                 });
-
-                if (res.ok) {
-                    closeFeedbackModal();
-                    showNotification('✅ FEEDBACK ENVIADO! Pipeline será reiniciado.');
-                } else {
-                    showNotification('❌ Erro ao enviar feedback. Tente novamente.', 'error');
-                }
-            } catch(e) {
-                console.error('Erro ao enviar feedback:', e);
-                showNotification('❌ Erro ao enviar feedback. Tente novamente.', 'error');
-            }
+                if (res.ok) { closeFeedbackModal(); showNotification('✅ FEEDBACK ENVIADO!'); }
+            } catch(e) {}
         }
 
         function aprovarCampanha(e) {
             e.stopPropagation();
-            const projectTitle = document.getElementById('ng-title').textContent;
-            document.getElementById('approval-project').textContent = projectTitle;
-            
-            // Buscar score real do WALL
-            const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
-            const projectFiles = allFiles.filter(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
-            const wallFile = projectFiles.find(f => f.name.includes('WALL') || f.name.includes('FILTRO') || f.name.includes('08_'));
-            
-            let score = '--';
-            let model = 'WALL';
-            
-            if (wallFile) {
-                try {
-                    const data = JSON.parse(wallFile.content);
-                    score = data.score_final || data.score || '--';
-                    model = 'OPUS (WALL)';
-                } catch(e) {
-                    // Se não conseguir parsear, manter valores default
-                }
-            }
-            
-            document.getElementById('approval-score').textContent = `${score}/100`;
-            document.getElementById('approval-score').className = score >= 80 
-                ? 'text-green-500 font-mono font-bold' 
-                : 'text-yellow-500 font-mono font-bold';
-            document.getElementById('approval-model').textContent = model;
-            
+            document.getElementById('approval-project').textContent = document.getElementById('ng-title').textContent;
             document.getElementById('approval-modal').classList.remove('hidden');
         }
-
-        function closeApprovalModal() {
-            document.getElementById('approval-modal').classList.add('hidden');
-        }
-
+        function closeApprovalModal() { document.getElementById('approval-modal').classList.add('hidden'); }
         async function confirmApproval() {
             try {
                 const res = await fetch(`${API_URL}/approve`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'brick-squad-2026'
-                    },
-                    body: JSON.stringify({
-                        jobId: selectedJobId,
-                        mode: currentMode,
-                        timestamp: new Date().toISOString()
-                    })
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
+                    body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
                 });
-
-                if (res.ok) {
-                    // Salvar aprovação no localStorage
-                    localStorage.setItem(`approved_${selectedJobId}`, 'true');
-                    localStorage.setItem(`approved_${selectedJobId}_timestamp`, Date.now().toString());
-                    
-                    closeApprovalModal();
-                    showNotification('🎉 CAMPANHA APROVADA! Movida para APROVADOS.');
-                    
-                    // Fechar node graphic e voltar pro lobby
-                    closeNodeGraphic();
-                    
-                    // Atualizar estado (os arquivos foram movidos para done/)
-                    setTimeout(() => {
-                        fetchState();
-                    }, 1000);
-                } else {
-                    showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
-                }
-            } catch(e) {
-                console.error('Erro ao aprovar:', e);
-                showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
-            }
+                if (res.ok) { closeApprovalModal(); closeNodeGraphic(); showNotification('🎉 CAMPANHA APROVADA!'); setTimeout(fetchState, 1000); }
+            } catch(e) {}
         }
 
         async function rerunJob() {
-            if (!confirm('⚠️ Tem certeza? Isso apagará todo o progresso atual e reiniciará o pipeline do zero.')) return;
-            
+            if (!confirm('⚠️ Reiniciar pipeline do zero?')) return;
             try {
                 const res = await fetch(`${API_URL}/rerun`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'brick-squad-2026'
-                    },
-                    body: JSON.stringify({
-                        jobId: selectedJobId,
-                        mode: currentMode
-                    })
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
+                    body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
                 });
-
-                if (res.ok) {
-                    showNotification('🔄 Job reiniciado! Aguarde o processamento.');
-                    // Limpar cache local de posições pra evitar fantasmas? Não precisa.
-                    fetchState();
-                } else {
-                    const err = await res.json();
-                    showNotification(`❌ Erro: ${err.error}`, 'error');
-                }
-            } catch(e) {
-                console.error('Erro ao reiniciar job:', e);
-                showNotification('❌ Erro de conexão.', 'error');
-            }
+                if (res.ok) showNotification('🔄 Job reiniciado!');
+            } catch(e) {}
         }
 
         function showNotification(msg, type = 'success') {
-            // Simple notification (can be enhanced later)
-            const notification = document.createElement('div');
-            notification.className = `fixed top-8 right-8 z-[400] bg-${type === 'error' ? 'red' : 'green'}-600 text-white px-6 py-4 font-mono text-sm border border-${type === 'error' ? 'red' : 'green'}-500 shadow-2xl`;
-            notification.textContent = msg;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 4000);
+            const n = document.createElement('div');
+            n.className = `fixed top-8 right-8 z-[400] bg-${type === 'error' ? 'red' : 'green'}-600 text-white px-6 py-4 font-mono text-sm border border-${type === 'error' ? 'red' : 'green'}-500 shadow-2xl`;
+            n.textContent = msg; document.body.appendChild(n); setTimeout(() => n.remove(), 4000);
         }
 
-        // ============================================
-        // REVISION SYSTEM
-        // ============================================
-        let currentRevisionData = null;
-
         function getJobRevisionInfo(jobId) {
-            if (!currentState) return { status: null, hasRevision: false, hasFeedback: false };
-
-            // Check for revision diff (V2 exists)
-            const rev = currentState.revisions?.find(r =>
-                r.job_id === jobId ||
-                (r.job_id && r.job_id.startsWith(jobId)) ||
-                (r.filename && r.filename.includes(jobId))
-            );
-
-            // Check for pending feedback (Douglas still processing)
-            const feedback = currentState.pendingFeedbacks?.find(f =>
-                f.jobId === jobId ||
-                (f.jobId && f.jobId.startsWith(jobId)) ||
-                (f.jobId && jobId.startsWith(f.jobId))
-            );
-
-            if (rev && rev.status === 'pending') {
-                return { status: 'pending', hasRevision: true, hasFeedback: !!feedback };
-            } else if (rev && rev.status === 'approved') {
-                return { status: 'approved', hasRevision: true, hasFeedback: false };
-            } else if (rev && rev.status === 'rejected') {
-                return { status: null, hasRevision: false, hasFeedback: false };
-            } else if (feedback) {
-                return { status: 'feedback_pending', hasRevision: false, hasFeedback: true, feedbackText: feedback.text };
-            }
-
-            return { status: null, hasRevision: false, hasFeedback: false };
+            if (!currentState) return { status: null };
+            const rev = currentState.revisions?.find(r => r.job_id === jobId || (r.filename && r.filename.includes(jobId)));
+            const feedback = currentState.pendingFeedbacks?.find(f => f.jobId === jobId);
+            if (rev && rev.status === 'pending') return { status: 'pending' };
+            if (feedback) return { status: 'feedback_pending' };
+            return { status: null };
         }
 
         async function loadRevisionData(jobId) {
-            try {
-                const res = await fetch(`${API_URL}/revisions/${jobId}?mode=${currentMode}`);
-                currentRevisionData = await res.json();
-                return currentRevisionData;
-            } catch(e) {
-                console.error('Failed to load revision data:', e);
-                return null;
-            }
+            try { const res = await fetch(`${API_URL}/revisions/${jobId}?mode=${currentMode}`); return await res.json(); } catch(e) { return null; }
         }
 
         function openRevisionModal(jobId, title) {
             document.getElementById('revision-job-title').textContent = title || jobId;
             document.getElementById('revision-modal').classList.remove('hidden');
-            document.getElementById('revision-tab-content').innerHTML =
-                '<div class="text-center text-[#666] py-12 font-mono">Carregando...</div>';
-
             loadRevisionData(jobId).then(data => {
-                if (!data || !data.hasRevision) {
-                    document.getElementById('revision-tab-content').innerHTML =
-                        '<div class="text-center text-[#666] py-12 font-mono">Nenhuma revisão disponível para este projeto.</div>';
-                    document.getElementById('revision-actions-bar').style.display = 'none';
-                    return;
-                }
-
-                document.getElementById('revision-actions-bar').style.display = 'flex';
-
-                // Show feedback text
-                const feedbackText = data.feedbacks && data.feedbacks.length > 0
-                    ? data.feedbacks[data.feedbacks.length - 1].text || '--'
-                    : '--';
-                document.getElementById('revision-feedback-text').textContent = feedbackText;
-
-                // Show status
-                const status = data.diff?.status || 'pending';
-                const statusLabel = document.getElementById('revision-status-label');
-                statusLabel.textContent = status === 'approved' ? 'Aprovada' : status === 'rejected' ? 'Rejeitada' : 'Pendente';
-                statusLabel.className = status === 'approved' ? 'text-blue-500' : status === 'rejected' ? 'text-[#666]' : 'text-[#f97316]';
-
-                // Hide action buttons if already resolved
-                if (status !== 'pending') {
-                    document.getElementById('revision-actions-bar').querySelectorAll('button').forEach(b => b.style.display = 'none');
-                }
-
-                renderRevisionTab('overview');
+                const content = document.getElementById('revision-tab-content');
+                if (!data || !data.hasRevision) { content.innerHTML = '<div class="text-center py-12 font-mono">Nenhuma revisão disponível.</div>'; return; }
+                currentRevisionData = data;
+                renderRevisionTab('sidebyside');
             });
         }
 
-        function closeRevisionModal() {
-            document.getElementById('revision-modal').classList.add('hidden');
-            currentRevisionData = null;
-        }
-
-        function switchRevisionTab(tab, btn) {
-            document.querySelectorAll('#revision-modal .rev-tab-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-            renderRevisionTab(tab);
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
+        function closeRevisionModal() { document.getElementById('revision-modal').classList.add('hidden'); }
+        function switchRevisionTab(tab, btn) { document.querySelectorAll('.rev-tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderRevisionTab(tab); }
         function renderRevisionTab(tab) {
-            const container = document.getElementById('revision-tab-content');
-            if (!currentRevisionData) return;
-
-            const { original, revision, diff } = currentRevisionData;
-
-            if (tab === 'overview') {
-                if (diff && diff.changes && diff.changes.length > 0) {
-                    let html = '<div class="space-y-4">';
-                    html += `<div class="text-[10px] font-mono text-[#666] uppercase tracking-wider mb-4">${diff.changes.length} alteração(ões)</div>`;
-                    diff.changes.forEach((change, i) => {
-                        const typeLabel = change.type === 'add' ? 'ADIÇÃO' : change.type === 'remove' ? 'REMOÇÃO' : 'EDIÇÃO';
-                        const typeColor = change.type === 'add' ? 'text-green-500' : change.type === 'remove' ? 'text-red-500' : 'text-[#f97316]';
-                        const typeClass = change.type === 'add' ? 'diff-added' : change.type === 'remove' ? 'diff-removed' : 'diff-edit';
-
-                        html += `<div class="${typeClass}">`;
-                        html += `<div class="flex justify-between items-center mb-2">`;
-                        html += `<span class="font-mono text-[10px] ${typeColor} uppercase tracking-wider font-bold">${typeLabel}</span>`;
-                        html += `<span class="font-mono text-[10px] text-[#666]">${change.section || 'Seção ' + (i+1)}</span>`;
-                        html += `</div>`;
-                        if (change.before) {
-                            html += `<div class="text-[#666] text-sm mb-2"><span class="text-red-400 font-mono text-[9px] mr-2">ANTES:</span>${escapeHtml(change.before)}</div>`;
-                        }
-                        if (change.after) {
-                            html += `<div class="text-[#ccc] text-sm"><span class="text-green-400 font-mono text-[9px] mr-2">DEPOIS:</span>${escapeHtml(change.after)}</div>`;
-                        }
-                        html += `</div>`;
-                    });
-                    html += '</div>';
-                    container.innerHTML = html;
-                } else {
-                    container.innerHTML = '<div class="text-center text-[#666] py-8 font-mono text-sm">Nenhum changelog detalhado. Use "Lado a Lado" para comparar manualmente.</div>';
-                }
-            } else if (tab === 'sidebyside') {
-                const originalContent = original ? marked.parse(original.content) : '<div class="text-[#666] italic">Original não encontrado</div>';
-                const revisionContent = revision ? marked.parse(revision.content) : '<div class="text-[#666] italic">Revisão não disponível</div>';
-
-                container.innerHTML = `
-                    <div class="flex gap-4" style="height: 100%;">
-                        <div class="comparison-col bg-[#0a0a0a] border border-[#222]">
-                            <h4 class="text-[#666]">Original (V1)</h4>
-                            <div class="text-sm text-[#aaa] leading-relaxed">${originalContent}</div>
-                        </div>
-                        <div class="comparison-col bg-[#0a0a0a] border border-green-900">
-                            <h4 class="text-green-500">Revisão (V2)</h4>
-                            <div class="text-sm text-[#ccc] leading-relaxed">${revisionContent}</div>
-                        </div>
-                    </div>
-                `;
-            } else if (tab === 'diff') {
-                const originalLines = original ? original.content.split('\n') : [];
-                const revisionLines = revision ? revision.content.split('\n') : [];
-
-                let html = '<div class="bg-[#0a0a0a] border border-[#222] p-6 font-mono text-xs leading-relaxed overflow-x-auto">';
-                const maxLines = Math.max(originalLines.length, revisionLines.length);
-                for (let i = 0; i < maxLines; i++) {
-                    const origLine = originalLines[i] || '';
-                    const revLine = revisionLines[i] || '';
-                    if (origLine === revLine) {
-                        html += `<div class="text-[#555] py-0.5">${escapeHtml(origLine) || '&nbsp;'}</div>`;
-                    } else {
-                        if (origLine) html += `<div class="text-red-400 bg-red-900/20 py-0.5 px-2 -mx-2">- ${escapeHtml(origLine)}</div>`;
-                        if (revLine) html += `<div class="text-green-400 bg-green-900/20 py-0.5 px-2 -mx-2">+ ${escapeHtml(revLine)}</div>`;
-                    }
-                }
-                html += '</div>';
-                container.innerHTML = html;
+            const c = document.getElementById('revision-tab-content');
+            const { original, revision } = currentRevisionData;
+            if (tab === 'sidebyside') {
+                c.innerHTML = `<div class="flex gap-4 h-full"><div class="comparison-col bg-[#0a0a0a] border border-[#222]"><h4>Original</h4><div class="text-sm text-[#aaa]">${marked.parse(original?.content || '')}</div></div><div class="comparison-col bg-[#0a0a0a] border border-green-900"><h4>Revisão</h4><div class="text-sm text-[#ccc]">${marked.parse(revision?.content || '')}</div></div></div>`;
             }
         }
 
         async function revisionAction(action) {
-            if (!currentRevisionData || !currentRevisionData.jobId) return;
             const jobId = currentRevisionData.jobId;
-
-            if (action === 'approve') {
-                try {
-                    const res = await fetch(`${API_URL}/revisions/${jobId}/approve`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ mode: currentMode })
-                    });
-                    if (res.ok) {
-                        closeRevisionModal();
-                        showNotification('Revisão aprovada. V2 é a versão oficial agora.');
-                        fetchState();
-                    } else {
-                        const err = await res.json();
-                        showNotification('Erro: ' + (err.error || 'Falha ao aprovar'), 'error');
-                    }
-                } catch(e) { showNotification('Erro de conexão.', 'error'); }
-            } else if (action === 'reject') {
-                try {
-                    const res = await fetch(`${API_URL}/revisions/${jobId}/reject`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ mode: currentMode })
-                    });
-                    if (res.ok) {
-                        closeRevisionModal();
-                        showNotification('Revisão rejeitada. Original mantido.');
-                        fetchState();
-                    } else { showNotification('Erro ao rejeitar.', 'error'); }
-                } catch(e) { showNotification('Erro de conexão.', 'error'); }
-            } else if (action === 'rerun') {
-                closeRevisionModal();
-                rerunJob();
-            }
-        }
-
-        async function quickRevisionApprove(jobId) {
             try {
-                const res = await fetch(`${API_URL}/revisions/${jobId}/approve`, {
+                const res = await fetch(`${API_URL}/revisions/${jobId}/${action === 'approve' ? 'approve' : 'reject'}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ mode: currentMode })
                 });
-                if (res.ok) {
-                    showNotification('Revisão aprovada.');
-                    fetchState();
-                } else { showNotification('Erro ao aprovar revisão.', 'error'); }
-            } catch(e) { showNotification('Erro de conexão.', 'error'); }
+                if (res.ok) { closeRevisionModal(); fetchState(); }
+            } catch(e) {}
         }
 
-        async function quickRevisionReject(jobId) {
-            try {
-                const res = await fetch(`${API_URL}/revisions/${jobId}/reject`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mode: currentMode })
-                });
-                if (res.ok) {
-                    showNotification('Revisão rejeitada. Original mantido.');
-                    fetchState();
-                } else { showNotification('Erro ao rejeitar.', 'error'); }
-            } catch(e) { showNotification('Erro de conexão.', 'error'); }
-        }
-
-        // WebSocket connection (com fallback para polling)
         let socket = null;
-        let useWebSocket = true;
-        
         function initWebSocket() {
             try {
                 socket = io();
-                
-                socket.on('connect', () => {
-                    console.log('🔌 WebSocket conectado');
+                socket.on('connect', () => { 
                     document.getElementById('connection-status').textContent = 'WebSocket_Active';
-                    document.getElementById('connection-status').className = 'text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest';
-                    useWebSocket = true;
-                    
-                    // Subscrever ao modo atual
-                    if (currentMode) {
-                        socket.emit('subscribe', currentMode);
-                    }
+                    if (currentMode) socket.emit('subscribe', currentMode);
                 });
-                
-                socket.on('stateUpdate', (state) => {
-                    if (state.mode === currentMode) {
-                        // Buscar conteúdo completo via API (socket só envia metadata)
-                        fetchState();
-                    }
-                });
-                
-                socket.on('disconnect', () => {
-                    console.log('🔌 WebSocket desconectado, usando polling');
-                    document.getElementById('connection-status').textContent = 'Polling_Mode';
-                    document.getElementById('connection-status').className = 'text-[9px] font-mono text-yellow-500 mt-2 uppercase tracking-widest';
-                    useWebSocket = false;
-                });
-                
-                socket.on('connect_error', () => {
-                    console.log('🔌 WebSocket erro, usando polling');
-                    useWebSocket = false;
-                });
-                
-            } catch(e) {
-                console.log('🔌 WebSocket não disponível, usando polling');
-                useWebSocket = false;
-            }
+                socket.on('stateUpdate', (state) => { if (state.mode === currentMode) fetchState(); });
+            } catch(e) {}
         }
         
-        // Subscrever quando mudar de modo
-        const originalEnterMode = enterMode;
-        enterMode = function(mode) {
-            originalEnterMode(mode);
-            if (socket && socket.connected) {
-                socket.emit('subscribe', mode);
-            }
-        };
+        function enterMode(mode) {
+            currentMode = mode;
+            localStorage.setItem('last_mode', mode);
+            if (mode) window.location.hash = mode;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('project-lobby').classList.remove('hidden');
+            document.getElementById('btn-back-lobby').classList.remove('hidden');
+            document.getElementById('btn-scheme').classList.remove('hidden');
+            document.getElementById('header-sector').textContent = mode.toUpperCase();
+            if (socket && socket.connected) socket.emit('subscribe', mode);
+            fetchState();
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(fetchState, 10000);
+        }
         
         window.onload = () => {
-            // Limpar posições salvas que podem estar corrompidas
-            ['marketing', 'projetos', 'ideias'].forEach(m => localStorage.removeItem(`node_positions_${m}`));
-            
             initWebSocket();
             const savedMode = (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');
-            if (savedMode) {
-                enterMode(savedMode);
-            }
-            // Fallback: polling a cada 10s (só se WebSocket falhar)
-            setInterval(() => {
-                if (!useWebSocket && currentMode) {
-                    fetchState();
-                }
-            }, 10000);
+            if (savedMode) enterMode(savedMode);
         };
     </script>
 </body>
