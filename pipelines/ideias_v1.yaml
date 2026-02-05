@@ -1,0 +1,79 @@
+name: "Brick AI Ideas Pipeline v1"
+description: "Pipeline rápido para estruturação de ideias brutas (Fast Track)."
+version: "1.0"
+
+variables:
+  roles_dir: "~/projects/Brick_Marketing/roles"
+  wip_dir: "~/projects/Brick_Marketing/history/ideias/wip"
+
+steps:
+  - id: "00_douglas"
+    name: "Douglas Orchestrator"
+    agent: "main"
+    task: |
+      (Passo implícito de cópia do input)
+      Copie {{input_file}} para {{wip_dir}}/{{job_id}}_RAW_IDEA.md
+    condition:
+      check: "never" # Maestro já faz a cópia inicial, só renomeamos aqui conceitualmente
+
+  - id: "01_pain_check"
+    name: "Pain Check (Validation)"
+    model: "flash"
+    timeout: 60
+    task: |
+      Você é o PAIN_CHECK.
+      **Job ID:** {{job_id}}
+      **Input:** {{input_file}} (RAW_IDEA)
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_PAIN_CHECK.json
+      - Avalie: Dor real? Público existe? Urgência?
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_PAIN_CHECK.json"
+      condition: "exists"
+
+  - id: "02_market_scan"
+    name: "Market Scan (Research)"
+    model: "flash"
+    timeout: 90
+    task: |
+      Você é o MARKET_SCAN.
+      **Job ID:** {{job_id}}
+      **Leia:** {{wip_dir}}/{{job_id}}_PAIN_CHECK.json
+      **Output:**
+      - Salve Markdown em: {{wip_dir}}/{{job_id}}_MARKET_SCAN.md
+      - Pesquise concorrentes e soluções similares.
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_MARKET_SCAN.md"
+      condition: "exists"
+
+  - id: "03_angle_gen"
+    name: "Angle Gen (Creative)"
+    model: "sonnet"
+    timeout: 90
+    task: |
+      Você é o ANGLE_GEN.
+      **Job ID:** {{job_id}}
+      **Leia:** 
+      1. Pain Check: {{wip_dir}}/{{job_id}}_PAIN_CHECK.json
+      2. Market Scan: {{wip_dir}}/{{job_id}}_MARKET_SCAN.md
+      **Output:**
+      - Salve Markdown em: {{wip_dir}}/{{job_id}}_ANGLE_GEN.md
+      - Gere 3 ângulos únicos de abordagem.
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_ANGLE_GEN.md"
+      condition: "exists"
+
+  - id: "04_viability"
+    name: "Viability (Supreme Judge)"
+    model: "opus"
+    timeout: 120
+    task: |
+      Você é o VIABILITY.
+      **Job ID:** {{job_id}}
+      **Leia:** Todos os anteriores.
+      **Output:**
+      - Salve JSON em: {{wip_dir}}/{{job_id}}_VIABILITY.json
+      - Score final (0-100), Veredito (Go/No-Go).
+    output_check:
+      file: "{{wip_dir}}/{{job_id}}_VIABILITY.json"
+      condition: "exists"
