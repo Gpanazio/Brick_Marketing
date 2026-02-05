@@ -1,23 +1,24 @@
 # COPY VERSION: A
 
 ## CURTO
-Páscoa não é coelhinho. É renascimento.
-2/3 das marcas B2B estão tornando o storytelling mais humano em 2026 (Marketing Week).
-A Brick não faz prompt. Faz direção.
+Páscoa não é template. É direção.
+Em 2026, confiança vem do equilíbrio entre visibilidade por IA e credibilidade humana (eMarketer).
+A Brick faz o impossível parecer feito à mão.
 
 ## MÉDIO
-Páscoa, aqui, não é tema fofo. É prova de visão.
-Enquanto o feed enche de ovo genérico, a Brick trata a data como renascimento de craft.
-E o mercado está pedindo isso: **2/3 das marcas B2B** estão mudando táticas para dar um “sentimento mais humano” ao storytelling em 2026 (Marketing Week).
-Humanizar não é romantizar. É direção precisa, estética intencional, execução premium.
+Se a sua Páscoa parece banco de imagens, o problema não é o feriado. É a direção.
+Em 2026, o sucesso do marketing B2B depende de equilibrar visibilidade por IA com credibilidade humana (eMarketer).
+A Brick AI trabalha exatamente nessa linha: Production Enhanced, com craft e controle de set.
+Nada de coelhinho. Só cinema e intenção.
 
 ## STORYTELLING
-A casca é bonita. O conteúdo é vazio.
-Essa é a Páscoa corporativa que todo diretor quer esquecer.
-A Brick faz o oposto: renasce o craft sem nostalgia, com IA no pipeline e direção no comando.
-Não é sobre a ferramenta. É sobre visão. “Vision over Prompt”.
-E o mercado já disse para onde vai: **2/3 das marcas B2B** estão migrando para storytelling com sensação mais humana em 2026 (Marketing Week).
-Se o seu feed parece um banco de imagens, talvez esteja na hora de renascer também.
+[BRICK] A casca é perfeita. O conteúdo é raso.
+[BRICK] Isso é Páscoa genérica — bonita, descartável, esquecível.
+[MASON] LOG: credibility_required
+[MASON] LOG: human_influence=critical
+[BRICK] A Brick usa IA para destravar o impossível, não para esconder falta de direção.
+[BRICK] Em 2026, o jogo é visibilidade + credibilidade humana (eMarketer).
+[BRICK] É por isso que nosso “Easter Egg” não é coelho. É craft.
 
 ## CTA SUGERIDO
-Quer uma Páscoa com direção — não template? Fala com a Brick AI e a gente mostra o set.
+Quer uma Páscoa com direção de cinema? Fala com a Brick AI e a gente monta o set.
