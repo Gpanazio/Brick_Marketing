@@ -1188,7 +1188,10 @@ OUTPUT (Copy Final)`;
             try {
                 const res = await fetch(`${API_URL}/briefing`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'brick-squad-2026'
+                    },
                     body: JSON.stringify({ title, content, mode })
                 });
                 
@@ -1233,7 +1236,10 @@ OUTPUT (Copy Final)`;
             try {
                 const res = await fetch(`${API_URL}/feedback`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'brick-squad-2026'
+                    },
                     body: JSON.stringify({
                         jobId: selectedJobId,
                         mode: currentMode,
@@ -1294,7 +1300,10 @@ OUTPUT (Copy Final)`;
             try {
                 const res = await fetch(`${API_URL}/approve`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'brick-squad-2026'
+                    },
                     body: JSON.stringify({
                         jobId: selectedJobId,
                         mode: currentMode,
