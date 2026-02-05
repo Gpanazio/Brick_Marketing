@@ -301,7 +301,7 @@ app.get('/api/estimate', (req, res) => {
             { name: 'COPYWRITER', model: 'flash', label: 'Copy B (Flash)' },
             { name: 'COPYWRITER', model: 'sonnet', label: 'Copy C (Sonnet)' },
             { name: 'BRAND_GUARDIANS', model: 'flash' },
-            { name: 'CRITICS', model: 'opus' },
+            { name: 'COPY_SENIOR', model: 'gpt' },
             { name: 'WALL', model: 'opus' }
         ],
         projetos: [

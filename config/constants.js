@@ -1,7 +1,7 @@
 // Configuração centralizada do Brick AI Squad
 module.exports = {
     THRESHOLDS: {
-        CRITIC_LITE: {
+        COPY_SENIOR: {
             pass: 65,
             weights: {
                 clareza_oferta: 0.25,
@@ -11,7 +11,7 @@ module.exports = {
                 cta_especifico: 0.15
             }
         },
-        CRITIC_OPUS: {
+        WALL: {
             pass: 80
         },
         COPYWRITER: {
@@ -47,7 +47,7 @@ module.exports = {
         'CLAIMS': 600,
         'COPYWRITER': 1500,
         'BRAND_GUARDIANS': 800,
-        'CRITICS': 1000,
+        'COPY_SENIOR': 2000,
         'WALL': 1000,
         // Ideias
         'PAIN_CHECK': 600,
@@ -71,7 +71,7 @@ module.exports = {
         'CLAIMS': 3500,
         'COPYWRITER': 5000,
         'BRAND_GUARDIANS': 8000,
-        'CRITICS': 10000,
+        'COPY_SENIOR': 10000,
         'WALL': 12000,
         // Ideias
         'PAIN_CHECK': 2000,

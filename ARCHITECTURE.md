@@ -37,9 +37,9 @@ BRIEFING -> DOUGLAS -> VALIDATOR -> AUDIENCE -> RESEARCHER -> CLAIMS
                                          COPYWRITER_FLASH ────┤|
                                          COPYWRITER_SONNET ───┘|
                                                                 |
-                                       BRAND_GUARDIAN -> CRITIC -> WALL -> [HUMANO]
+                                       BRAND_GUARDIAN -> COPY_SENIOR -> WALL -> [HUMANO]
 ```
-Modelos: Flash (etapas 1-4,6), GPT+Flash+Sonnet (etapa 5), Opus (etapas 7-8)
+Modelos: Flash (etapas 1-4,6), GPT+Flash+Sonnet (etapa 5), GPT (etapa 7), Opus (etapa 8)
 
 ### Projetos (run-projetos.sh)
 ```
@@ -105,7 +105,7 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 - {JOB_ID}_05B_COPY_FLASH.md
 - {JOB_ID}_05C_COPY_SONNET.md
 - {JOB_ID}_06_BRAND_GUARDIANS.json
-- {JOB_ID}_07_CRITICS.json
+- {JOB_ID}_07_COPY_SENIOR.json
 - {JOB_ID}_08_WALL.json
 
 ### Projetos
@@ -145,7 +145,7 @@ Retorna breakdown por step com input + output tokens e custo estimado.
 ### Custo Estimado por Pipeline
 | Pipeline   | Steps | Custo Total | Maior Gasto                    |
 |-----------|-------|-------------|--------------------------------|
-| Marketing | 10    | ~$0.55      | Opus: CRITICS + WALL (~$0.48)  |
+| Marketing | 10    | ~$0.35      | Opus: WALL (~$0.25) + GPT: Copy Senior (~$0.05) |
 | Projetos  | 8     | ~$0.16      | GPT + Sonnet Ideation (~$0.06) |
 | Ideias    | 5     | ~$0.22      | Opus: VIABILITY (~$0.16)       |
 

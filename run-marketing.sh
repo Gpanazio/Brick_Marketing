@@ -468,8 +468,8 @@ fi
 echo ""
 echo "⏳ ETAPA 7: Copy Senior (GPT 5.2)"
 STEP_START=$(start_timer)
-CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_CRITICS.json"
-CRITIC_LOG="$LOG_DIR/${JOB_ID}_07_CRITICS.log"
+CRITIC_OUT="$WIP_DIR/${JOB_ID}_07_COPY_SENIOR.json"
+CRITIC_LOG="$LOG_DIR/${JOB_ID}_07_COPY_SENIOR.log"
 GUARD_CONTENT=$(cat "$BRAND_GUARD_OUT" 2>/dev/null || echo "N/A")
 
 attempt=1
@@ -479,7 +479,7 @@ while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
     openclaw agent --agent gpt \
-      --session-id "brick-mkt-${JOB_ID}-critic" \
+      --session-id "brick-mkt-${JOB_ID}-copy-senior" \
       --message "${CRITIC_ROLE}
 
 ---
@@ -502,12 +502,12 @@ ${GUARD_CONTENT}
 ---
 
 INSTRUÇÕES:
-Avalie as copies conforme seu role acima e salve o resultado JSON no arquivo: ${CRITIC_OUT}" \
+Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os ajustes necessários diretamente no texto e entregue a copy_revisada final. Salve o resultado JSON no arquivo: ${CRITIC_OUT}" \
       --timeout 180 --json 2>&1 | tee "$CRITIC_LOG"
     
     if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
-        echo "✅ Critic concluído"
+        echo "✅ Copy Senior concluído"
         print_duration $DURATION "Etapa 7"
         break
     fi
@@ -522,7 +522,7 @@ Avalie as copies conforme seu role acima e salve o resultado JSON no arquivo: ${
 done
 
 if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
-    create_json_placeholder "$CRITIC_OUT" "CRITIC" "$JOB_ID" "All retries failed"
+    create_json_placeholder "$CRITIC_OUT" "COPY_SENIOR" "$JOB_ID" "All retries failed"
 fi
 
 # ============================================

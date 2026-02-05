@@ -434,7 +434,7 @@
             'COPY_B': ['05B_', 'COPY_FLASH', 'COPY_B'],
             'COPY_C': ['05C_', 'COPY_SONNET', 'COPY_C'],
             'BRAND': ['06_', 'BRAND'],
-            'COPY SENIOR': ['07_', 'CRITIC', 'COPY_SENIOR'],
+            'COPY SENIOR': ['07_', 'COPY_SENIOR', 'CRITIC'],
             'DIRECTOR': ['DIRECTOR'],
             'WALL': ['08_', 'FILTRO', 'WALL'],
             'HUMAN': ['FINAL', 'READY'],
@@ -1300,7 +1300,7 @@ OUTPUT (Copy Final)`;
                 try {
                     const data = JSON.parse(wallFile.content);
                     score = data.score_final || data.score || '--';
-                    model = 'CLAUDE OPUS';
+                    model = 'OPUS (WALL)';
                 } catch(e) {
                     // Se não conseguir parsear, manter valores default
                 }
