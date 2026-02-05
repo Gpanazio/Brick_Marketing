@@ -315,6 +315,29 @@ Faça a revisão final conforme seu role acima e salve o resultado JSON no arqui
 [ -f "$WALL_OUT" ] && echo "✅ Wall concluído" || { echo "⚠️ Placeholder criado"; echo '{"status":"APPROVED","final_score":0}' > "$WALL_OUT"; }
 
 # FINAL
+FINAL_OUT="$WIP_DIR/${JOB_ID}_FINAL.md"
+WINNER=$(jq -r '.winner // .copy_winner // .winner_copy // "C"' "$CRITIC_OUT" 2>/dev/null | tr -d '"')
+case "$WINNER" in
+  A|a) WIN_FILE="$COPY_A_OUT" ;; 
+  B|b) WIN_FILE="$COPY_B_OUT" ;; 
+  C|c) WIN_FILE="$COPY_C_OUT" ;; 
+  *) WIN_FILE="$COPY_C_OUT" ;;
+esac
+
+if [ -f "$WIN_FILE" ]; then
+  {
+    echo "# FINAL (vencedora: $WINNER)"
+    echo ""
+    cat "$WIN_FILE"
+    echo ""
+    echo "---"
+    echo "\n## WALL (JSON)"
+    cat "$WALL_OUT" 2>/dev/null || true
+  } > "$FINAL_OUT"
+else
+  echo "# FINAL (placeholder)" > "$FINAL_OUT"
+fi
+
 echo ""
 echo "🏁 Pipeline Marketing Finalizado"
 echo "📁 Arquivos em: $WIP_DIR"
