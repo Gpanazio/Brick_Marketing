@@ -1101,28 +1101,41 @@ app.get('/api/revisions/:jobId', (req, res) => {
 // API: Approve revision (V2 becomes the official FINAL)
 app.post('/api/revisions/:jobId/approve', (req, res) => {
     const { jobId } = req.params;
-    const { mode } = req.body;
+    const { mode, revisionNumber } = req.body;
     const root = getModeRoot(mode || 'marketing');
     const wipDir = path.join(root, 'wip');
 
     const originalFile = findFileByPattern(wipDir, jobId, 'FINAL.md');
-    const v2File = findFileByPattern(wipDir, jobId, 'FINAL_v2.md');
+    // Suporte para novo padrão REVISAO_N ou padrão antigo FINAL_v2
+    const revPattern = revisionNumber ? `REVISAO_${revisionNumber}.md` : 'FINAL_v2.md';
+    const v2File = findFileByPattern(wipDir, jobId, revPattern);
     const diffFile = findFileByPattern(wipDir, jobId, 'revision_diff.json');
 
-    if (!originalFile || !v2File) {
-        return res.status(404).json({ error: 'Original ou revisão não encontrados' });
+    if (!v2File) {
+        return res.status(404).json({ error: `Revisão não encontrada: ${revPattern}` });
     }
 
     try {
-        const originalPath = path.join(wipDir, originalFile.name);
         const v2Path = path.join(wipDir, v2File.name);
 
-        // Backup original: _FINAL.md → _FINAL_v1_original.md
-        const backupName = originalFile.name.replace('_FINAL.md', '_FINAL_v1_original.md');
-        fs.renameSync(originalPath, path.join(wipDir, backupName));
-
-        // Promote V2: _FINAL_v2.md → _FINAL.md
-        fs.renameSync(v2Path, originalPath);
+        // Novo sistema: Aprovar revisão significa substituir o SOCIAL_SLICE ou OUTPUT relevante
+        if (revisionNumber) {
+            // Encontrar o arquivo de output (SOCIAL_SLICE ou FINAL)
+            const outputFile = findFileByPattern(wipDir, jobId, 'SOCIAL_SLICE.md') || originalFile;
+            if (outputFile) {
+                const outputPath = path.join(wipDir, outputFile.name);
+                const backupName = outputFile.name.replace('.md', `_backup_v${revisionNumber}.md`);
+                fs.renameSync(outputPath, path.join(wipDir, backupName));
+                fs.copyFileSync(v2Path, outputPath);
+                log('info', 'revision_approved_new', { jobId, revisionNumber, backup: backupName });
+            }
+        } else {
+            // Sistema antigo (backward compatibility): FINAL_v2 → FINAL
+            const originalPath = path.join(wipDir, originalFile.name);
+            const backupName = originalFile.name.replace('_FINAL.md', '_FINAL_v1_original.md');
+            fs.renameSync(originalPath, path.join(wipDir, backupName));
+            fs.renameSync(v2Path, originalPath);
+        }
 
         // Update diff status
         if (diffFile) {
@@ -1160,7 +1173,7 @@ app.post('/api/revisions/:jobId/approve', (req, res) => {
 // API: Reject revision (keep original, archive feedback)
 app.post('/api/revisions/:jobId/reject', (req, res) => {
     const { jobId } = req.params;
-    const { mode } = req.body;
+    const { mode, revisionNumber } = req.body;
     const root = getModeRoot(mode || 'marketing');
     const wipDir = path.join(root, 'wip');
     const feedbackDir = path.join(root, 'feedback');
@@ -1168,13 +1181,18 @@ app.post('/api/revisions/:jobId/reject', (req, res) => {
 
     if (!fs.existsSync(archivedDir)) fs.mkdirSync(archivedDir, { recursive: true });
 
-    const v2File = findFileByPattern(wipDir, jobId, 'FINAL_v2.md');
+    // Suporte para novo padrão REVISAO_N ou padrão antigo FINAL_v2
+    const revPattern = revisionNumber ? `REVISAO_${revisionNumber}.md` : 'FINAL_v2.md';
+    const v2File = findFileByPattern(wipDir, jobId, revPattern);
     const diffFile = findFileByPattern(wipDir, jobId, 'revision_diff.json');
 
     try {
-        // Delete V2
+        // Delete revisão
         if (v2File) {
-            fs.unlinkSync(path.join(wipDir, v2File.name));
+            const v2Path = path.join(wipDir, v2File.name);
+            const archivedName = v2File.name.replace('.md', `_rejected_${Date.now()}.md`);
+            fs.renameSync(v2Path, path.join(archivedDir, archivedName));
+            log('info', 'revision_rejected', { jobId, revisionNumber, archived: archivedName });
         }
 
         // Update diff status
