@@ -68,15 +68,19 @@ openclaw agent \
   --session-id "brick-mkt-${JOB_ID}-audience" \
   --message "Você é o AUDIENCE_ANALYST do Brick AI War Room.
 
+Você NÃO gera personas nem inventa público-alvo. Seu papel é AVALIAR se o conteúdo proposto está alinhado com a audiência real do canal/marca.
+
 BRIEFING:
 ${BRIEFING_CONTENT}
 
 INSTRUÇÕES:
-1. Defina o público-alvo detalhado: demografia, psicografia, comportamento, dores, desejos
-2. Mapeie personas (2-3 personas distintas)
-3. Identifique os canais onde este público está
-4. Escreva JSON no arquivo: ${AUDIENCE_OUT}
-5. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
+1. Identifique qual audiência o briefing pretende atingir (pelo canal, tom e tema)
+2. AVALIE se o conteúdo proposto faz sentido para essa audiência
+3. Aponte desalinhamentos: tom errado pro público? Canal inadequado? Tema que não ressoa?
+4. Score de alinhamento (0-100) com justificativa
+5. Escreva JSON no arquivo: ${AUDIENCE_OUT}
+6. Estrutura: { \"alignment_score\": N, \"target_audience\": \"...\", \"fits\": [...], \"mismatches\": [...], \"recommendation\": \"...\" }
+7. O arquivo DEVE ser criado em disco. Use a ferramenta write para salvar." \
   --timeout 120 --json > /dev/null 2>&1
 
 [ -f "$AUDIENCE_OUT" ] && echo "✅ Audience concluído" || { echo "⚠️ Placeholder criado"; echo '{"personas":[]}' > "$AUDIENCE_OUT"; }
