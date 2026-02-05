@@ -1,5 +1,31 @@
 node_modules/
 .env
 .DS_Store
-
 server.log
+
+# Python venv (nao precisa no repo)
+.venv/
+__pycache__/
+*.pyc
+
+# Watcher state (local only)
+.watcher_state*.json
+
+# OpenClaw workspace files (nao sao do projeto)
+AGENTS.md
+BOOTSTRAP.md
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
+MEMORY.md
+memory/
+
+# Metrics/telemetry
+.metrics.json
+
+# OS
+Thumbs.db
+*.swp
+*~
