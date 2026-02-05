@@ -369,6 +369,7 @@
         let currentState = null;
         let currentMode = null;
         let selectedJobId = null;
+        let refreshInterval = null;
 
         const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -460,6 +461,8 @@
 
         function enterMode(mode) {
             currentMode = mode;
+            localStorage.setItem('last_mode', mode);
+            if (mode) window.location.hash = mode;
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('project-lobby').classList.remove('hidden');
             document.getElementById('btn-back-lobby').classList.remove('hidden');
@@ -467,11 +470,15 @@
             document.getElementById('header-sector').textContent = mode.toUpperCase();
             fetchState();
             // Auto-refresh a cada 10 segundos
-            setInterval(fetchState, 10000);
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(fetchState, 10000);
         }
 
         function goHome() {
             currentMode = null;
+            localStorage.removeItem('last_mode');
+            history.replaceState(null, '', window.location.pathname);
+            if (refreshInterval) { clearInterval(refreshInterval); refreshInterval = null; }
             document.getElementById('welcome-screen').classList.remove('hidden');
             document.getElementById('project-lobby').classList.add('hidden');
             document.getElementById('btn-back-lobby').classList.add('hidden');
@@ -1469,6 +1476,10 @@ OUTPUT (Copy Final)`;
         
         window.onload = () => {
             initWebSocket();
+            const savedMode = (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');
+            if (savedMode) {
+                enterMode(savedMode);
+            }
             // Fallback: polling a cada 10s (só se WebSocket falhar)
             setInterval(() => {
                 if (!useWebSocket && currentMode) {
