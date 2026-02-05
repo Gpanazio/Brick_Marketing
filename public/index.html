@@ -547,12 +547,17 @@ OUTPUT (Copy Final)`;
         }
 
         function extractTitle(files) {
-            // Procura por BRIEFING_INPUT ou PROCESSED
-            const briefingFile = files.find(f => f.name.includes('BRIEFING_INPUT') || f.name.includes('PROCESSED'));
+            // Procura por BRIEFING_INPUT, PROCESSED ou RAW_IDEA (Ideias)
+            const briefingFile = files.find(f => 
+                f.name.includes('BRIEFING_INPUT') || 
+                f.name.includes('PROCESSED') || 
+                f.name.includes('RAW_IDEA')
+            );
             if (!briefingFile || !briefingFile.content) return null;
 
-            // Extrai título da primeira linha markdown (# BRIEFING: Título)
-            const match = briefingFile.content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:)?\s*(.+)$/m);
+            // Extrai título da primeira linha markdown
+            // Suporta: # BRIEFING: X, # BRIEFING PROCESSADO: X, # RAW IDEA: X
+            const match = briefingFile.content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:|RAW IDEA:)?\s*(.+)$/m);
             return match ? match[1].trim() : null;
         }
 
