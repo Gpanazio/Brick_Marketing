@@ -271,7 +271,7 @@ async function notifyDouglas(data) {
 
     // Try OpenClaw Gateway Wake API (local gateway)
     try {
-        const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL || 'http://localhost:18888';
+        const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL || 'http://localhost:18789';
         await fetch(`${gatewayUrl}/api/cron/wake`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

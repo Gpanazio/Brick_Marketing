@@ -69,7 +69,7 @@ Consultar: `roles/BRAND_GUARDIAN.md`
 ```json
 {
   "score_final": 85,
-  "aprovado": true,
+  "status": "APPROVED",
   "breakdown": {
     "clareza_oferta": {
       "pontos": 23,
@@ -106,9 +106,9 @@ Consultar: `roles/BRAND_GUARDIAN.md`
     "CTA muito genérico - adicionar link direto",
     "Credibilidade pode ser mais forte com case visual"
   ],
-  "veredito": "APROVADO - Copy está pronta para aprovação humana. Ajustes sugeridos são opcionais.",
-  "proximo_passo": "HUMAN_APPROVAL",
-  "recomendar_retorno": null
+  "verdict": "APPROVED - Copy ready for human approval. Suggested improvements are optional.",
+  "next_step": "HUMAN_APPROVAL",
+  "recommend_return_to": null
 }
 ```
 
@@ -117,15 +117,15 @@ Consultar: `roles/BRAND_GUARDIAN.md`
 ```json
 {
   "score_final": 68,
-  "aprovado": false,
+  "status": "REJECTED",
   "breakdown": { ... },
-  "razoes_reprovacao": [
+  "rejection_reasons": [
     "Clareza da oferta muito vaga (12/25)",
     "CTA inexistente (0/15)"
   ],
-  "feedback_para_douglas": "Copy precisa de retrabalho. Focar em: 1) Clareza da oferta - especificar EXATAMENTE o que vendemos, 2) Adicionar CTA claro com próximo passo.",
-  "proximo_passo": "REINICIAR_PIPELINE_COM_FEEDBACK",
-  "recomendar_retorno": "COPYWRITER" 
+  "feedback_for_douglas": "Copy precisa de retrabalho. Focar em: 1) Clareza da oferta - especificar EXATAMENTE o que vendemos, 2) Adicionar CTA claro com próximo passo.",
+  "next_step": "RESTART_PIPELINE_WITH_FEEDBACK",
+  "recommend_return_to": "COPYWRITER" 
 }
 ```
 
@@ -135,11 +135,11 @@ Consultar: `roles/BRAND_GUARDIAN.md`
 3. **Priorizar** - Se tem 10 problemas, listar os 3 críticos
 4. **Consultar brand guidelines** - Sempre checar `BRAND_GUARDIAN.md`
 5. **Não inventar requisitos** - Seguir apenas a rubrica acima
-6. **Definir `recomendar_retorno`**:
+6. **Definir `recommend_return_to`**:
    - `COPYWRITER` se o problema é estrutura/clareza/oferta
    - `DIRECTOR` se o problema é ajuste fino (CTA/tom/polimento)
 
 ## CRITÉRIO DE APROVAÇÃO
-- **Score ≥ 80:** APROVADO → segue pra HUMAN
-- **Score < 80:** REPROVADO → volta pro DOUGLAS com feedback (max 3 loops)
-- **Score < 50:** BLOQUEADO → escalar pra Gabriel direto (problema crítico no briefing)
+- **Score ≥ 80:** APPROVED → segue pra HUMAN
+- **Score < 80:** REJECTED → volta pro DOUGLAS com feedback (max 3 loops)
+- **Score < 50:** BLOCKED → escalar pra Gabriel direto (problema crítico no briefing)

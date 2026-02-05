@@ -575,9 +575,13 @@ OUTPUT (Copy Final)`;
 
                 // Projetos/Ideias: usar prefixo antes do último "_ROLE"
                 // Ex: 180_seguros_2026_BRAND_DIGEST.md -> 180_seguros_2026
+                // Ex: roteirizacao_set_PAIN_CHECK.json -> roteirizacao_set
                 const roleSuffixes = [
+                    // Projetos
                     'BRAND_DIGEST','CREATIVE_IDEATION','CONCEPT_CRITIC','EXECUTION_DESIGN',
-                    'COPYWRITER','DIRECTOR','FINAL','PROCESSED','BRIEFING_INPUT'
+                    'COPYWRITER','DIRECTOR','FINAL','PROCESSED','BRIEFING_INPUT',
+                    // Ideias
+                    'PAIN_CHECK','MARKET_SCAN','ANGLE_GEN','VIABILITY','DECISION','GO_NOGO','RAW_IDEA'
                 ];
                 for (const role of roleSuffixes) {
                     const idx = name.indexOf(`_${role}`);

@@ -32,7 +32,7 @@
 ### Se PASSA:
 ```json
 {
-  "status": "APROVADO",
+  "status": "PASS",
   "briefing_estruturado": {
     "objetivo": "...",
     "publico": "...",
@@ -48,7 +48,7 @@
 ### Se NÃO PASSA:
 ```json
 {
-  "status": "INCOMPLETO",
+  "status": "FAIL",
   "faltando": [
     "PÚBLICO - Especificar cargo e senioridade",
     "FORMATO - Quantos posts? Que tipo?"

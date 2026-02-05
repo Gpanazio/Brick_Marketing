@@ -8,10 +8,10 @@
     "copy_flash": { "enabled": true, "model": "flash" },
     "copy_sonnet": { "enabled": true, "model": "sonnet" },
     "guardian": { "enabled": true, "model": "flash" },
-    "critics": { "enabled": true, "model": "gpt" },
-    "opus": { "enabled": true, "model": "opus" }
+    "critics": { "enabled": true, "model": "opus" },
+    "wall": { "enabled": true, "model": "opus" }
   },
-  "version": "3.3",
+  "version": "3.4",
   "mode": "marketing",
-  "lastUpdate": "2026-02-03T18:28:00.000Z"
+  "lastUpdate": "2026-02-04T22:52:00.000Z"
 }

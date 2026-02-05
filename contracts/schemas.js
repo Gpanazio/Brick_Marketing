@@ -42,12 +42,28 @@ module.exports = {
             return { valid: true };
         }
     },
-    criticOpus: {
-        required: ['decisao', 'score'],
+    critic: {
+        required: ['vencedor', 'veredito', 'copy_vencedora'],
         validate: (data) => {
             if (!data || typeof data !== 'object') return { valid: false, error: 'Data must be object' };
-            if (!['PUBLICAR', 'REVISAR', 'REJEITAR'].includes(data.decisao)) {
-                return { valid: false, error: 'decisao must be PUBLICAR, REVISAR, or REJEITAR' };
+            if (!['A', 'B', 'C'].includes(data.vencedor)) {
+                return { valid: false, error: 'vencedor must be A, B, or C' };
+            }
+            if (!['APPROVED', 'APPROVED_WITH_NOTES', 'REJECTED'].includes(data.veredito)) {
+                return { valid: false, error: 'veredito must be APPROVED, APPROVED_WITH_NOTES, or REJECTED' };
+            }
+            return { valid: true };
+        }
+    },
+    filtroFinal: {
+        required: ['score_final', 'status', 'breakdown'],
+        validate: (data) => {
+            if (!data || typeof data !== 'object') return { valid: false, error: 'Data must be object' };
+            if (!['APPROVED', 'REJECTED'].includes(data.status)) {
+                return { valid: false, error: 'status must be APPROVED or REJECTED' };
+            }
+            if (typeof data.score_final !== 'number' || data.score_final < 0 || data.score_final > 100) {
+                return { valid: false, error: 'score_final must be number between 0-100' };
             }
             return { valid: true };
         }
