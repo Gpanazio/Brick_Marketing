@@ -44,6 +44,26 @@
 
         .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
         .disabled .node-led { background: #333; box-shadow: none; }
+        .node[data-provider="openai"] { border-left: 2px solid #10a37f; }
+        .node[data-provider="openai"] .node-led { background: #10a37f; box-shadow: 0 0 8px #10a37f; }
+        .node[data-provider="openai"] .node-subtext { color: #10a37f; }
+        .node[data-provider="gemini-flash"] { border-left: 2px solid #4285f4; }
+        .node[data-provider="gemini-flash"] .node-led { background: #4285f4; box-shadow: 0 0 8px #4285f4; }
+        .node[data-provider="gemini-flash"] .node-subtext { color: #4285f4; }
+        .node[data-provider="gemini-pro"] { border-left: 2px solid #00bcd4; }
+        .node[data-provider="gemini-pro"] .node-led { background: #00bcd4; box-shadow: 0 0 8px #00bcd4; }
+        .node[data-provider="gemini-pro"] .node-subtext { color: #00bcd4; }
+        .node[data-provider="sonnet"] { border-left: 2px solid #d97706; }
+        .node[data-provider="sonnet"] .node-led { background: #d97706; box-shadow: 0 0 8px #d97706; }
+        .node[data-provider="sonnet"] .node-subtext { color: #d97706; }
+        .node[data-provider="opus"] { border-left: 2px solid #9333ea; }
+        .node[data-provider="opus"] .node-led { background: #9333ea; box-shadow: 0 0 8px #9333ea; }
+        .node[data-provider="opus"] .node-subtext { color: #9333ea; }
+        .node[data-provider="human"] { border-left: 2px solid #fff; }
+        .node[data-provider="human"] .node-led { background: #fff; box-shadow: 0 0 8px #fff; }
+        .node[data-provider="human"] .node-subtext { color: #fff; }
+        .disabled[data-provider] { border-left-color: #222 !important; }
+        .disabled[data-provider] .node-subtext { color: #333 !important; }
 
         .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
         .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
@@ -871,7 +891,17 @@ OUTPUT (Copy Final)`;
             
             nodes.forEach(n => {
                 const el = document.createElement('div');
+                const providerMap = {
+                    'GPT': 'openai', 'GPT 5.2': 'openai',
+                    'GEMINI FLASH': 'gemini-flash',
+                    'GEMINI PRO': 'gemini-pro',
+                    'CLAUDE SONNET': 'sonnet',
+                    'CLAUDE OPUS': 'opus',
+                    'APPROVAL': 'human'
+                };
+                const provider = providerMap[n.model] || '';
                 el.className = `node ${n.douglas?'node-douglas':''}`;
+                if (provider) el.setAttribute('data-provider', provider);
                 el.id = n.id;
                 el.style.position = 'absolute';
                 
