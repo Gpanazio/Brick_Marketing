@@ -499,37 +499,6 @@
         const linksIdeias = [['i0','id'],['id','i1'],['i1','i2'],['i2','i3a'],['i2','i3b'],['i3a','i4'],['i3b','i4'],['i4','i5']];
 
         const fileMapping = {
-            'BRIEFING_INPUT': ['BRIEFING', 'PROCESSED'],
-            'DOUGLAS': ['PROCESSED'],
-            'VALIDATOR': ['VALIDATOR'],
-            'AUDIENCE': ['AUDIENCE'],
-            'RESEARCH': ['RESEARCH'],
-            'FACT_CHECK': ['CLAIMS'],
-            'COPY_A': ['COPY_GPT'],
-            'COPY_B': ['COPY_FLASH'],
-            'COPY_C': ['COPY_SONNET'],
-            'BRAND': ['BRAND_GUARDIAN'],
-            'COPY SENIOR': ['COPY_SENIOR'],
-            'WALL': ['WALL'],
-            'SOCIAL_SLICE': ['SOCIAL_SLICE'],
-            'OUTPUT': ['FINAL'],
-            // Projetos
-            'BRAND_DIGEST': ['BRAND_DIGEST'],
-            'IDEATION_GPT': ['IDEATION_GPT'],
-            'IDEATION_FLASH': ['IDEATION_FLASH'],
-            'IDEATION_SONNET': ['IDEATION_SONNET'],
-            'CONCEPT_CRITIC': ['CONCEPT_CRITIC'],
-            'EXECUTION_DESIGN': ['EXECUTION_DESIGN'],
-            'COPYWRITER': ['PROPOSAL_WRITER', 'COPYWRITER'],
-            'DIRECTOR': ['DIRECTOR'],
-            // Ideias
-            'PAIN_CHECK': ['PAIN_CHECK'],
-            'MARKET_SCAN': ['MARKET_SCAN'],
-            'ANGLE_GEN': ['ANGLE_GEN'],
-            'DEVIL_GEN': ['DEVIL_GEN'],
-            'VIABILITY': ['VIABILITY'],
-            'DECISION': ['DECISION']
-        };
             'BRIEFING_INPUT': ['BRIEFING_INPUT', 'lan_amento'],
             'DOUGLAS': ['PROCESSED'],
             'VALIDATOR': ['01_', 'VALIDATOR'],
@@ -543,6 +512,7 @@
             'COPY SENIOR': ['07_', 'COPY_SENIOR', 'CRITIC'],
             'DIRECTOR': ['DIRECTOR'],
             'WALL': ['08_', 'FILTRO', 'WALL'],
+            'SOCIAL_SLICE': ['SOCIAL_SLICE'],
             'HUMAN': ['FINAL', 'READY'],
             'OUTPUT': ['FINAL', 'READY'],
             'BRAND_DIGEST': ['BRAND_DIGEST'],
@@ -598,136 +568,73 @@
         }
 
         function openScheme() {
-            const modal = document.getElementById('scheme-modal');
-            const title = document.getElementById('scheme-mode-title');
-            const diagram = document.getElementById('scheme-diagram');
+            const diag = document.getElementById('scheme-diagram');
             const info = document.getElementById('scheme-info');
+            document.getElementById('scheme-mode-title').textContent = currentMode.toUpperCase();
 
-            title.textContent = (currentMode || 'MARKETING').toUpperCase();
-
-            if (currentMode === 'ideias') {
-                diagram.textContent = `RAW IDEA
-│
-▼
-00. DOUGLAS (Orchestrator)
-│
-▼
-01. PAIN CHECK (Flash) - Validação da dor
-│
-▼
-02. MARKET SCAN (Flash) - Referências/Mercado
-│
-├──────────────┬──────────────┤
-▼              ▼
-03a. ANGLE GEN    03b. DEVIL GEN
-(Sonnet/Angel)    (Sonnet/Devil)
-├──────────────┴──────────────┤
-▼
-04. VIABILITY (Opus) - Juiz de Viabilidade
-│
-▼
-05. DECISION (Human) - Go / No-Go`;
-
-                info.innerHTML = `
-                    <div>• Validação ultra-rápida de conceitos</div>
-                    <div>• Problem Scoping para evitar ideias sem demanda</div>
-                    <div>• Análise de concorrência automática</div>
-                    <div>• Angel vs Devil: ângulos criativos em paralelo</div>
-                    <div>• Score final de viabilidade pelo Opus (juiz imparcial)</div>
+            if (currentMode === 'marketing') {
+                diag.textContent = `
+[BRIEFING] → [VALIDATOR]
+               ↓
+[RESEARCH] ← [AUDIENCE]
+    ↓          ↓
+    └─→ [FACT_CHECK]
+          ↓
+  ┌───────┼───────┐
+[COPY_A] [COPY_B] [COPY_C]
+  └───────┼───────┘
+          ↓
+     [BRAND_GUARD]
+          ↓
+    [COPY_SENIOR]
+          ↓
+       [WALL]
+          ↓
+       [HUMAN]
+          ↓
+    [SOCIAL_SLICE]
+          ↓
+       [OUTPUT]
                 `;
+                info.innerHTML = "Pipeline focado em geração de conteúdo de marketing com validação de persona e fatos.";
             } else if (currentMode === 'projetos') {
-                diagram.textContent = `BRIEFING
-│
-▼
-00. DOUGLAS (Pré-processador) - lê PDFs/imagens/anexos
-│
-▼
-01. BRAND DIGEST (Flash) - extrai DNA/tom/assets
-│
-├────────────────┬────────────────┤
-▼                ▼                ▼
-02a. IDEATION    02b. IDEATION    02c. IDEATION
-(GPT)            (Flash)          (Sonnet)
-├────────────────┴────────────────┤
-▼
-03. CONCEPT CRITIC (Gemini Pro) - escolhe melhor
-│
-▼
-04. EXECUTION DESIGN (Gemini Pro) - direção visual
-│
-▼
-05. COPYWRITER (GPT 5.2) - roteiro com constraints
-│
-▼
-06. DIRECTOR (Gemini Pro) - avalia execução (loop até ≥85)
-│
-▼
-07. HUMAN - aprovação final
-│
-▼
-OUTPUT (Proposta Completa)`;
-
-                info.innerHTML = `
-                    <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
-                    <div>• Brand Digest extrai DNA da marca</div>
-                    <div>• 3 conceitos criativos paralelos</div>
-                    <div>• Critic escolhe o melhor conceito</div>
-                    <div>• Director loop até score ≥85</div>
-                    <div>• Aprovação humana obrigatória</div>
+                diag.textContent = `
+[BRIEFING] → [BRAND_DIGEST]
+               ↓
+  ┌────────────┼────────────┐
+[IDEATION_A] [IDEATION_B] [IDEATION_C]
+  └────────────┼────────────┘
+               ↓
+        [CONCEPT_CRITIC]
+               ↓
+       [EXECUTION_DESIGN]
+               ↓
+          [COPYWRITER]
+               ↓
+           [DIRECTOR]
+               ↓
+            [HUMAN]
+               ↓
+           [OUTPUT]
                 `;
+                info.innerHTML = "Pipeline para criação de propostas e conceitos criativos sênior.";
             } else {
-                diagram.textContent = `BRIEFING
-│
-▼
-00. DOUGLAS (Pré-processador) - lê PDFs/imagens/anexos
-│
-▼
-01. BRIEF VALIDATOR (Flash)
-│
-▼
-02. AUDIENCE ══► 03. RESEARCHER (Flash)
-│
-▼
-04. CLAIMS CHECKER (Flash)
-│
-├──────────┼──────────┐
-▼          ▼          ▼
-┌────────┐ ┌────────┐ ┌────────┐
-│COPY A  │ │COPY B  │ │COPY C  │
-│GPT-5.2 │ │ FLASH  │ │SONNET  │
-└────────┘ └────────┘ └────────┘
-│          │          │
-└──────────┼──────────┘
-           ▼
-06. BRAND GUARDIANS (Flash) - valida as 3
-│
-▼
-07. COPY SENIOR (GPT 5.2) - julga, revisa e entrega copy final
-│
-▼
-08. WALL (Opus) - score final
-│
-├─► (SE score < 80) → volta COPYWRITER (05)
-│
-▼ (score ≥ 80)
-09. HUMAN - aprovação final
-│
-▼
-OUTPUT (Copy Final)`;
-
-                info.innerHTML = `
-                    <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
-                    <div>• Validação automática em cada nó</div>
-                    <div>• Três versões criativas paralelas (A/B/C)</div>
-                    <div>• Brand Guardians valida todas as versões</div>
-                    <div>• Copy Senior (GPT-5.2) escolhe a melhor, aplica ajustes e entrega copy_revisada</div>
-                    <div>• Wall (Opus) score final: ≥80 aprova, &lt;80 rejeita</div>
-                    <div>• Loop inteligente: máximo 3 tentativas antes de escalar pra humano</div>
-                    <div>• Aprovação humana obrigatória</div>
+                diag.textContent = `
+[IDEA_INPUT] → [PAIN_CHECK]
+                 ↓
+           [MARKET_SCAN]
+                 ↓
+          ┌──────┴──────┐
+      [ANGEL]       [DEVIL]
+          └──────┬──────┘
+                 ↓
+            [VIABILITY]
+                 ↓
+             [HUMAN]
                 `;
+                info.innerHTML = "Pipeline para validação rápida de viabilidade de ideias.";
             }
-
-            modal.classList.remove('hidden');
+            document.getElementById('scheme-modal').classList.remove('hidden');
         }
 
         function closeScheme() {
@@ -799,6 +706,7 @@ OUTPUT (Copy Final)`;
                 if(!wipGroups[id]) wipGroups[id] = []; wipGroups[id].push(f);
             });
             
+            doneGroups = {}; // Reset local variable to avoid issues
             doneFiles.forEach(f => {
                 const id = getProjectId(f.name);
                 if(!doneGroups[id]) doneGroups[id] = []; doneGroups[id].push(f);
@@ -1873,13 +1781,25 @@ OUTPUT (Copy Final)`;
         }
         
         // Subscrever quando mudar de modo
-        const originalEnterMode = enterMode;
-        enterMode = function(mode) {
-            originalEnterMode(mode);
+        function enterMode(mode) {
+            currentMode = mode;
+            localStorage.setItem('last_mode', mode);
+            if (mode) window.location.hash = mode;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('project-lobby').classList.remove('hidden');
+            document.getElementById('btn-back-lobby').classList.remove('hidden');
+            document.getElementById('btn-scheme').classList.remove('hidden');
+            document.getElementById('header-sector').textContent = mode.toUpperCase();
+            
             if (socket && socket.connected) {
                 socket.emit('subscribe', mode);
             }
-        };
+            
+            fetchState();
+            // Auto-refresh a cada 10 segundos
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(fetchState, 10000);
+        }
         
         window.onload = () => {
             // Limpar posições salvas que podem estar corrompidas
