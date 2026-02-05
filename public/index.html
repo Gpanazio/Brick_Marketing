@@ -1290,6 +1290,46 @@ OUTPUT (Proposta Completa)`;
                 line.setAttribute("opacity", "0.7");
                 svg.appendChild(line);
             });
+            
+            // Desenhar linhas do loop automático (WALL → COPY SENIOR v2 → WALL v2, etc)
+            const loopNodes = Array.from(document.querySelectorAll('[data-provider^="loop-"]'));
+            loopNodes.forEach(loopNode => {
+                const loopId = loopNode.id;
+                let sourceId, targetId;
+                
+                if (loopId.startsWith('loop-copy-')) {
+                    const vNum = loopId.replace('loop-copy-', '');
+                    // COPY SENIOR vN vem do WALL v(N-1) OU do WALL original (n7) se v2
+                    sourceId = vNum === '2' ? 'n7' : `loop-wall-${parseInt(vNum) - 1}`;
+                    targetId = `loop-wall-${vNum}`;
+                    
+                    const source = document.getElementById(sourceId);
+                    const target = document.getElementById(targetId);
+                    if (!source || !target) return;
+                    
+                    const sR = source.getBoundingClientRect();
+                    const tR = target.getBoundingClientRect();
+                    const cR = document.getElementById('node-container').getBoundingClientRect();
+                    
+                    // Linha vertical do WALL até COPY SENIOR (mesmo X, Y diferente)
+                    const x1 = sR.left + sR.width / 2 - cR.left;
+                    const y1 = sR.bottom - cR.top;
+                    const x2 = tR.left + tR.width / 2 - cR.left;
+                    const y2 = tR.top - cR.top;
+                    
+                    if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
+                    
+                    const pathData = `M ${x1} ${y1} L ${x1} ${(y1 + y2) / 2} L ${x2} ${(y1 + y2) / 2} L ${x2} ${y2}`;
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    line.setAttribute("d", pathData);
+                    line.setAttribute("stroke", "#f97316");
+                    line.setAttribute("stroke-width", "2");
+                    line.setAttribute("stroke-dasharray", "8,4");
+                    line.setAttribute("opacity", "0.7");
+                    line.setAttribute("fill", "none");
+                    svg.appendChild(line);
+                }
+            });
         }
 
         function makeDraggable(el) {
