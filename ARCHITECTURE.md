@@ -127,6 +127,37 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 - {JOB_ID}_DEVIL_GEN.md
 - {JOB_ID}_VIABILITY.json
 
+## Estimativa de Custos
+
+### Endpoint: GET /api/estimate?mode=marketing|projetos|ideias
+
+Retorna breakdown por step com input + output tokens e custo estimado.
+
+### Precos por Modelo (USD por 1M tokens)
+| Modelo | Agent  | Output   | Input    |
+|--------|--------|----------|----------|
+| Flash  | flash  | $0.40    | $0.075   |
+| Pro    | pro    | $10.00   | $1.25    |
+| GPT    | gpt    | $10.00   | $2.50    |
+| Sonnet | sonnet | $15.00   | $3.00    |
+| Opus   | opus   | $75.00   | $15.00   |
+
+### Custo Estimado por Pipeline
+| Pipeline   | Steps | Custo Total | Maior Gasto                    |
+|-----------|-------|-------------|--------------------------------|
+| Marketing | 10    | ~$0.55      | Opus: CRITICS + WALL (~$0.48)  |
+| Projetos  | 8     | ~$0.16      | GPT + Sonnet Ideation (~$0.06) |
+| Ideias    | 5     | ~$0.22      | Opus: VIABILITY (~$0.16)       |
+
+### Configuracao
+- `config/constants.js`: MODEL_COSTS_OUTPUT, MODEL_COSTS_INPUT, AVG_TOKENS_PER_STEP, AVG_INPUT_TOKENS_PER_STEP
+- Input tokens crescem ao longo do pipeline (contexto acumulado: 2k na primeira etapa, 12k na ultima)
+- Margem de erro: ±30%
+
+### IMPORTANTE
+As definicoes de pipeline no endpoint DEVEM espelhar exatamente os scripts `run-*.sh`.
+Se mudar um script, atualizar o endpoint tambem.
+
 ## Como Adicionar Nova Etapa
 
 1. Criar role file em roles/ seguindo o padrao existente
