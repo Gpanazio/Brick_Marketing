@@ -736,10 +736,30 @@ OUTPUT (Proposta Completa)`;
             const targetFile = briefingFile || fallbackFile;
             if (!targetFile || !targetFile.content) return null;
 
+            // Se for PROCESSED, tenta pegar o título, se for BRIEFING_INPUT, tenta pegar o conteúdo original
+            let content = targetFile.content;
+            
             // Extrai título da primeira linha markdown
-            // Suporta: # BRIEFING: X, # BRIEFING PROCESSADO: X, # RAW IDEA: X
-            const match = targetFile.content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:|RAW IDEA:)?\s*(.+)$/m);
+            const match = content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:|RAW IDEA:)?\s*(.+)$/m);
             return match ? match[1].trim() : null;
+        }
+
+        function getBriefingContent(files) {
+            // Prioridade total para o arquivo original de INPUT
+            const inputFile = files.find(f => f.name.includes('BRIEFING_INPUT'));
+            if (inputFile && inputFile.content) {
+                // Se for JSON (do server.js), extrai o campo content
+                try {
+                    const json = JSON.parse(inputFile.content);
+                    if (json.content) return json.content;
+                } catch(e) {}
+                
+                // Se for Markdown, tenta remover o cabeçalho # BRIEFING: se existir
+                let c = inputFile.content;
+                const match = c.match(/^#\s*(?:BRIEFING:|RAW IDEA:).*\n([\s\S]*)$/m);
+                return match ? match[1].trim() : c;
+            }
+            return null;
         }
 
         function renderLobby() {
@@ -1184,6 +1204,17 @@ OUTPUT (Proposta Completa)`;
             const searchTerms = fileMapping[n.title] || [n.title];
             const file = files.find(f => searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase())));
             const body = document.getElementById('panel-body');
+            
+            if (n.title === 'BRIEFING_INPUT') {
+                const rawContent = getBriefingContent(files);
+                if (rawContent) {
+                    body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${rawContent}</div>`;
+                    document.getElementById('panel-title').textContent = 'BRIEFING ORIGINAL';
+                    document.getElementById('agent-panel').classList.add('open');
+                    return;
+                }
+            }
+
             if (file) {
                 let content = file.content;
                 try { const json = JSON.parse(content); content = formatJSON(json); } catch(e) { content = marked.parse(content); }
