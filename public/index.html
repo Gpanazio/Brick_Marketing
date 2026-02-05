@@ -466,6 +466,8 @@
             document.getElementById('btn-scheme').classList.remove('hidden');
             document.getElementById('header-sector').textContent = mode.toUpperCase();
             fetchState();
+            // Auto-refresh a cada 10 segundos
+            setInterval(fetchState, 10000);
         }
 
         function goHome() {
