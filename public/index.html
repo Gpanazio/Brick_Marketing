@@ -1103,19 +1103,19 @@ OUTPUT (Proposta Completa)`;
                 makeDraggable(el);
                 
                 // Adicionar conexão visual: HUMAN -> REVISAO_N
-                const revLink = ['n9', revId];
-                
-                const drawRevLink = ([fId, tId]) => {
-                    const f = document.getElementById(fId), t = document.getElementById(tId);
+                const drawRevLink = () => {
+                    const f = document.getElementById('n9'), t = el;
                     if(!f || !t) return;
                     
-                    const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = container.getBoundingClientRect();
+                    const cR = container.getBoundingClientRect();
+                    const fR = f.getBoundingClientRect();
+                    const tR = t.getBoundingClientRect();
                     
                     // Pontos de conexão: meio da borda direita do Human -> meio da borda esquerda da Revisão
-                    const x1 = f.offsetLeft + f.offsetWidth;
-                    const y1 = f.offsetTop + f.offsetHeight / 2;
-                    const x2 = t.offsetLeft;
-                    const y2 = t.offsetTop + t.offsetHeight / 2;
+                    const x1 = fR.right - cR.left;
+                    const y1 = fR.top - cR.top + fR.height / 2;
+                    const x2 = tR.left - cR.left;
+                    const y2 = tR.top - cR.top + tR.height / 2;
                     
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     line.setAttribute("d", `M ${x1} ${y1} L ${x2} ${y2}`);
@@ -1124,9 +1124,11 @@ OUTPUT (Proposta Completa)`;
                     line.setAttribute("fill", "none");
                     line.setAttribute("stroke-dasharray", "5,5");
                     line.setAttribute("opacity", "0.6");
+                    line.setAttribute("class", "revision-link");
                     svg.appendChild(line);
                 };
-                drawRevLink(revLink);
+                // Garantir que os elementos já estão no DOM
+                setTimeout(drawRevLink, 0);
             });
 
             updateConnections();
