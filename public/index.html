@@ -679,8 +679,8 @@ OUTPUT (Copy Final)`;
                 approvedList.appendChild(card);
             });
             
-            // Renderizar projetos em andamento (vermelho)
-            Object.keys(wipGroups).sort().reverse().forEach(id => {
+            // Renderizar projetos em andamento (vermelho) - excluir os que já estão em done/aprovados
+            Object.keys(wipGroups).filter(id => !doneGroups[id]).sort().reverse().forEach(id => {
                 const files = wipGroups[id];
                 const extractedTitle = extractTitle(files);
                 const title = extractedTitle || id.replace(/_/g, ' ');
