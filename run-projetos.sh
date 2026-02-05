@@ -166,7 +166,7 @@ CRITIC_OUT="$WIP_DIR/${JOB_ID}_CONCEPT_CRITIC.json"
 IDEATION_GPT_CONTENT=$(cat "$IDEATION_GPT_OUT" 2>/dev/null || echo "N/A")
 IDEATION_FLASH_CONTENT=$(cat "$IDEATION_FLASH_OUT" 2>/dev/null || echo "N/A")
 IDEATION_SONNET_CONTENT=$(cat "$IDEATION_SONNET_OUT" 2>/dev/null || echo "N/A")
-openclaw agent --agent flash \
+openclaw agent --agent pro \
   --session-id "brick-proj-${JOB_ID}-critic" \
   --message "${CRITIC_ROLE}
 
@@ -205,7 +205,7 @@ echo ""
 echo "⏳ ETAPA 4: Execution Design (Gemini Pro)"
 EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.json"
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
-openclaw agent --agent flash \
+openclaw agent --agent pro \
   --session-id "brick-proj-${JOB_ID}-exec" \
   --message "${EXECUTION_ROLE}
 
@@ -275,7 +275,7 @@ echo "⏳ ETAPA 6: Director (Gemini Pro)"
 DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.md"
 COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
 DIRECTOR_ROLE=$(cat "$ROLES_DIR/DIRECTOR.md" 2>/dev/null || echo "N/A")
-openclaw agent --agent flash \
+openclaw agent --agent pro \
   --session-id "brick-proj-${JOB_ID}-director" \
   --message "${DIRECTOR_ROLE}
 
