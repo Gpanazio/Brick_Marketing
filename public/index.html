@@ -1081,8 +1081,8 @@ OUTPUT (Proposta Completa)`;
                         el.id = loopId;
                         el.style.position = 'absolute';
                         
-                        // Posição: abaixo do WALL original (n7), em cascade vertical
-                        const wallNode = document.getElementById('n7');
+                        // Posição: abaixo do WALL original (n8), em cascade vertical
+                        const wallNode = document.getElementById('n8');
                         if (wallNode && !savedPositions[loopId]) {
                             const wallLeft = parseInt(wallNode.style.left) || wallNode.offsetLeft;
                             const wallTop = parseInt(wallNode.style.top) || wallNode.offsetTop;
@@ -1128,8 +1128,8 @@ OUTPUT (Proposta Completa)`;
                 el.id = loopId;
                 el.style.position = 'absolute';
                 
-                // Posição: abaixo do COPY SENIOR original (n6), em cascade vertical
-                const copyNode = document.getElementById('n6');
+                // Posição: abaixo do COPY SENIOR original (n7), em cascade vertical
+                const copyNode = document.getElementById('n7');
                 if (copyNode && !savedPositions[loopId]) {
                     const copyLeft = parseInt(copyNode.style.left) || copyNode.offsetLeft;
                     const copyTop = parseInt(copyNode.style.top) || copyNode.offsetTop;
@@ -1299,8 +1299,8 @@ OUTPUT (Proposta Completa)`;
                 
                 if (loopId.startsWith('loop-copy-')) {
                     const vNum = loopId.replace('loop-copy-', '');
-                    // COPY SENIOR vN vem do WALL v(N-1) OU do WALL original (n7) se v2
-                    sourceId = vNum === '2' ? 'n7' : `loop-wall-${parseInt(vNum) - 1}`;
+                    // COPY SENIOR vN vem do WALL v(N-1) OU do WALL original (n8) se v2
+                    sourceId = vNum === '2' ? 'n8' : `loop-wall-${parseInt(vNum) - 1}`;
                     targetId = `loop-wall-${vNum}`;
                     
                     const source = document.getElementById(sourceId);
