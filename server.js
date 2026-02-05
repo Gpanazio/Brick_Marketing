@@ -1,5 +1,6 @@
 // Startup log - helps debug Railway deployment issues
 console.log(`[STARTUP] Node ${process.version} | PID ${process.pid} | PORT ${process.env.PORT || 3000}`);
+console.log(`[STARTUP] HOME=${process.env.HOME} | RAILWAY_ENVIRONMENT=${process.env.RAILWAY_ENVIRONMENT}`);
 
 const express = require('express');
 const http = require('http');
@@ -132,7 +133,8 @@ setInterval(saveMetrics, 5 * 60 * 1000); // Salva a cada 5min
 // Paths - Use persistent volume for Railway
 // Force persistent volume path on Railway (detect via RAILWAY_ENVIRONMENT or Railway-specific PORT behavior)
 const IS_RAILWAY = process.env.RAILWAY_ENVIRONMENT || (process.env.PORT && !process.env.HOME?.includes('gabrielpanazio'));
-const HISTORY_ROOT = process.env.RAILWAY_VOLUME_MOUNT_PATH || (IS_RAILWAY ? '/data' : (process.env.HISTORY_PATH || path.join(__dirname, 'history')));
+const HISTORY_ROOT = IS_RAILWAY ? '/api/history' : (process.env.HISTORY_PATH || path.join(__dirname, 'history'));
+console.log(`[STARTUP] IS_RAILWAY=${IS_RAILWAY} | HISTORY_ROOT=${HISTORY_ROOT}`);
 const MARKETING_ROOT = path.join(HISTORY_ROOT, 'marketing');
 const PROJETOS_ROOT = path.join(HISTORY_ROOT, 'projetos');
 const IDEIAS_ROOT = path.join(HISTORY_ROOT, 'ideias');
@@ -178,14 +180,27 @@ const stateLimiter = rateLimit({
 app.use('/api/state', stateLimiter);
 
 // Ensure directories exist (including failed/)
-[MARKETING_ROOT, PROJETOS_ROOT, IDEIAS_ROOT].forEach(root => {
-    ['briefing', 'wip', 'done', 'failed'].forEach(dir => {
-        const dirPath = path.join(root, dir);
-        if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+console.log(`[STARTUP] Creating directories...`);
+try {
+    if (!fs.existsSync(HISTORY_ROOT)) {
+        console.log(`[STARTUP] Creating HISTORY_ROOT: ${HISTORY_ROOT}`);
+        fs.mkdirSync(HISTORY_ROOT, { recursive: true });
+    }
+    [MARKETING_ROOT, PROJETOS_ROOT, IDEIAS_ROOT].forEach(root => {
+        ['briefing', 'wip', 'done', 'failed'].forEach(dir => {
+            const dirPath = path.join(root, dir);
+            if (!fs.existsSync(dirPath)) {
+                console.log(`[STARTUP] Creating dir: ${dirPath}`);
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+        });
     });
-});
-if (!fs.existsSync(HISTORY_ROOT)) fs.mkdirSync(HISTORY_ROOT, { recursive: true });
-console.log(`[STORAGE] History root: ${HISTORY_ROOT} (Railway: ${IS_RAILWAY ? 'YES' : 'NO'})`);
+    console.log(`[STORAGE] History root: ${HISTORY_ROOT} (Railway: ${IS_RAILWAY ? 'YES' : 'NO'})`);
+} catch (err) {
+    console.error(`[STARTUP ERROR] Failed to create directories: ${err.message}`);
+    console.error(`[STARTUP ERROR] Stack: ${err.stack}`);
+    // Don't exit - let the app start anyway
+}
 
 // Auth middleware - ALLOW ALL READ-ONLY ACCESS FOR DASHBOARD
 const authMiddleware = (req, res, next) => {
