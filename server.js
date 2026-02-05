@@ -240,12 +240,15 @@ const getFiles = (dir, mode = 'marketing') => {
     const root = getModeRoot(mode);
     const dirPath = path.join(root, dir);
     if (!fs.existsSync(dirPath)) return [];
-    return fs.readdirSync(dirPath).filter(f => !f.startsWith('.')).map(f => ({
-        name: f,
-        path: path.join(dir, f),
-        content: fs.readFileSync(path.join(dirPath, f), 'utf-8'),
-        mtime: fs.statSync(path.join(dirPath, f)).mtime.toISOString()
-    }));
+    return fs.readdirSync(dirPath)
+        .filter(f => !f.startsWith('.'))
+        .filter(f => fs.statSync(path.join(dirPath, f)).isFile())
+        .map(f => ({
+            name: f,
+            path: path.join(dir, f),
+            content: fs.readFileSync(path.join(dirPath, f), 'utf-8'),
+            mtime: fs.statSync(path.join(dirPath, f)).mtime.toISOString()
+        }));
 };
 
 // API: Health check (Railway uses this to verify deployment)
