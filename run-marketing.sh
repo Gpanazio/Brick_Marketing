@@ -564,6 +564,167 @@ if [ ! -f "$WALL_OUT" ] || ! validate_json "$WALL_OUT"; then
 fi
 
 # ============================================
+# LOOP AUTOMÁTICO: Copy Senior ↔ Wall
+# ============================================
+# Se Wall rejeitar (score < 80), Copy Senior revisa e Wall avalia de novo
+# Max 3 iterações totais
+
+LOOP_COUNT=1
+MAX_LOOPS=3
+WALL_SCORE=$(jq -r '.score_final // 0' "$WALL_OUT" 2>/dev/null)
+
+echo ""
+echo "📊 Wall Score: $WALL_SCORE/100"
+
+while [ "$WALL_SCORE" -lt 80 ] && [ $LOOP_COUNT -lt $MAX_LOOPS ]; do
+    LOOP_COUNT=$((LOOP_COUNT + 1))
+    echo ""
+    echo "🔄 Loop $LOOP_COUNT/$MAX_LOOPS - Wall rejeitou, Copy Senior revisando..."
+    
+    # Arquivos versionados
+    COPY_SENIOR_V="${WIP_DIR}/${JOB_ID}_06_COPY_SENIOR_v${LOOP_COUNT}.json"
+    WALL_V="${WIP_DIR}/${JOB_ID}_07_WALL_v${LOOP_COUNT}.json"
+    
+    # Identificar modelo vencedor da rodada original
+    WINNING_MODEL=$(jq -r '.modelo_vencedor // "sonnet"' "$CRITIC_OUT" 2>/dev/null)
+    
+    # Copy Senior recebe feedback do Wall e gera revisão
+    STEP_START=$(start_timer)
+    attempt=1
+    backoff=2
+    
+    while [ $attempt -le $max_retries ]; do
+        echo "  >> Copy Senior v$LOOP_COUNT - Tentativa $attempt/$max_retries"
+        
+        openclaw agent --agent "$WINNING_MODEL" \
+          --session-id "brick-mkt-${JOB_ID}-copy-senior-loop-${LOOP_COUNT}-$(date +%s)" \
+          --message "${CRITIC_ROLE}
+
+---
+
+CONTEXTO DO LOOP:
+- Esta é a revisão $LOOP_COUNT de $MAX_LOOPS
+- Wall rejeitou com score $WALL_SCORE/100 (precisa 80+)
+
+---
+
+COPY ATUAL (vencedora anterior):
+${COPY_REVISADA}
+
+---
+
+FEEDBACK DO WALL:
+$(cat "$WALL_OUT")
+
+---
+
+INSTRUÇÕES:
+1. Leia o feedback detalhado do Wall (breakdown + pontos_de_melhoria)
+2. Aplique os ajustes cirúrgicos necessários
+3. Gere copy_revisada melhorada
+4. Salve JSON no arquivo: ${COPY_SENIOR_V}" \
+          --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_06_COPY_SENIOR_v${LOOP_COUNT}.log"
+        
+        if [ -f "$COPY_SENIOR_V" ] && validate_json "$COPY_SENIOR_V"; then
+            DURATION=$(get_duration_ms $STEP_START)
+            echo "✅ Copy Senior v$LOOP_COUNT concluído"
+            print_duration $DURATION "Copy Senior Loop $LOOP_COUNT"
+            break
+        fi
+        
+        if [ $attempt -lt $max_retries ]; then
+            echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+            sleep $backoff
+            backoff=$((backoff * 2))
+        fi
+        
+        attempt=$((attempt + 1))
+    done
+    
+    if [ ! -f "$COPY_SENIOR_V" ] || ! validate_json "$COPY_SENIOR_V"; then
+        echo "❌ Copy Senior v$LOOP_COUNT falhou após $max_retries tentativas - abortando loop"
+        break
+    fi
+    
+    # Atualizar COPY_REVISADA com nova versão
+    COPY_REVISADA=$(jq -r '.copy_revisada // empty' "$COPY_SENIOR_V" 2>/dev/null)
+    
+    if [ -z "$COPY_REVISADA" ]; then
+        echo "⚠️ Copy Senior v$LOOP_COUNT não gerou copy_revisada - abortando loop"
+        break
+    fi
+    
+    # Wall avalia nova versão
+    echo ""
+    echo "⏳ Wall v$LOOP_COUNT - Avaliando revisão..."
+    STEP_START=$(start_timer)
+    attempt=1
+    backoff=2
+    
+    while [ $attempt -le $max_retries ]; do
+        echo "  >> Tentativa $attempt/$max_retries"
+        
+        openclaw agent --agent opus \
+          --session-id "brick-mkt-${JOB_ID}-wall-loop-${LOOP_COUNT}" \
+          --message "${WALL_ROLE}
+
+---
+
+COPY REVISADA (versão $LOOP_COUNT):
+${COPY_REVISADA}
+
+---
+
+CONTEXTO:
+Esta é a avaliação $LOOP_COUNT após feedback anterior. Seja justo: se os ajustes foram aplicados corretamente, aprove.
+
+---
+
+INSTRUÇÕES:
+Avalie esta copy revisada conforme seu role e salve o resultado JSON no arquivo: ${WALL_V}" \
+          --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_07_WALL_v${LOOP_COUNT}.log"
+        
+        if [ -f "$WALL_V" ] && validate_json "$WALL_V"; then
+            DURATION=$(get_duration_ms $STEP_START)
+            echo "✅ Wall v$LOOP_COUNT concluído"
+            print_duration $DURATION "Wall Loop $LOOP_COUNT"
+            break
+        fi
+        
+        if [ $attempt -lt $max_retries ]; then
+            echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+            sleep $backoff
+            backoff=$((backoff * 2))
+        fi
+        
+        attempt=$((attempt + 1))
+    done
+    
+    if [ ! -f "$WALL_V" ] || ! validate_json "$WALL_V"; then
+        echo "❌ Wall v$LOOP_COUNT falhou após $max_retries tentativas - abortando loop"
+        break
+    fi
+    
+    # Atualizar score para próxima iteração
+    WALL_SCORE=$(jq -r '.score_final // 0' "$WALL_V" 2>/dev/null)
+    WALL_OUT="$WALL_V"  # Usar versão mais recente pro FINAL
+    CRITIC_OUT="$COPY_SENIOR_V"  # Usar versão mais recente pro FINAL
+    
+    echo "📊 Wall Score v$LOOP_COUNT: $WALL_SCORE/100"
+    
+    if [ "$WALL_SCORE" -ge 80 ]; then
+        echo "✅ Copy aprovada no loop $LOOP_COUNT!"
+        break
+    fi
+done
+
+if [ "$WALL_SCORE" -lt 80 ]; then
+    echo ""
+    echo "⚠️ Copy não atingiu 80 pontos após $LOOP_COUNT loops (score final: $WALL_SCORE)"
+    echo "📋 Pipeline seguirá com a melhor versão gerada"
+fi
+
+# ============================================
 # FINAL: Montar arquivo consolidado
 # ============================================
 FINAL_OUT="$WIP_DIR/${JOB_ID}_FINAL.md"
