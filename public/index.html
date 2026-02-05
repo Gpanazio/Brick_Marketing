@@ -1478,6 +1478,9 @@ OUTPUT (Copy Final)`;
         };
         
         window.onload = () => {
+            // Limpar posições salvas que podem estar corrompidas
+            ['marketing', 'projetos', 'ideias'].forEach(m => localStorage.removeItem(`node_positions_${m}`));
+            
             initWebSocket();
             const savedMode = (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');
             if (savedMode) {
