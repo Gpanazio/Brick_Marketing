@@ -160,6 +160,7 @@
             </div>
             <div class="flex gap-4">
                 <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-4 py-2 uppercase tracking-widest">← Back_To_Lobby</button>
+                <button onclick="rerunJob()" class="text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">↻ Re-run</button>
                 <button onclick="openScheme()" class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
@@ -1332,6 +1333,36 @@ OUTPUT (Copy Final)`;
             } catch(e) {
                 console.error('Erro ao aprovar:', e);
                 showNotification('❌ Erro ao aprovar. Tente novamente.', 'error');
+            }
+        }
+
+        async function rerunJob() {
+            if (!confirm('⚠️ Tem certeza? Isso apagará todo o progresso atual e reiniciará o pipeline do zero.')) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/rerun`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'brick-squad-2026'
+                    },
+                    body: JSON.stringify({
+                        jobId: selectedJobId,
+                        mode: currentMode
+                    })
+                });
+
+                if (res.ok) {
+                    showNotification('🔄 Job reiniciado! Aguarde o processamento.');
+                    // Limpar cache local de posições pra evitar fantasmas? Não precisa.
+                    fetchState();
+                } else {
+                    const err = await res.json();
+                    showNotification(`❌ Erro: ${err.error}`, 'error');
+                }
+            } catch(e) {
+                console.error('Erro ao reiniciar job:', e);
+                showNotification('❌ Erro de conexão.', 'error');
             }
         }
 

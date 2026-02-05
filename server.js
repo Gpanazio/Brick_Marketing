@@ -647,6 +647,45 @@ app.post('/api/retry', (req, res) => {
     }
 });
 
+// API: Re-run job (move back to briefing and clear progress)
+app.post('/api/rerun', (req, res) => {
+    const { jobId, mode } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    
+    // Encontrar arquivo de briefing original
+    const briefingDir = path.join(root, 'briefing');
+    let briefingFile = null;
+    
+    if (fs.existsSync(briefingDir)) {
+        const files = fs.readdirSync(briefingDir);
+        briefingFile = files.find(f => f.includes(jobId) || f.startsWith(jobId));
+    }
+    
+    if (!briefingFile) {
+        // Se não achar no briefing, tentar recuperar do WIP ou History (backup)
+        // Por simplificação: tenta achar qualquer arquivo com esse ID
+        return res.status(404).json({ error: 'Briefing original não encontrado para re-run' });
+    }
+    
+    // Limpar arquivos WIP/DONE/FAILED relacionados a esse JobID
+    ['wip', 'done', 'failed', 'approved'].forEach(dir => {
+        const dirPath = path.join(root, dir);
+        if (fs.existsSync(dirPath)) {
+            const files = fs.readdirSync(dirPath).filter(f => f.includes(jobId));
+            files.forEach(f => fs.unlinkSync(path.join(dirPath, f)));
+        }
+    });
+    
+    // "Tocar" o arquivo de briefing para mudar o mtime e o watcher pegar de novo
+    const briefingPath = path.join(briefingDir, briefingFile);
+    const content = fs.readFileSync(briefingPath, 'utf-8');
+    fs.writeFileSync(briefingPath, content); // Re-escreve para atualizar timestamp
+    
+    log('info', 'job_rerun_triggered', { jobId, mode });
+    emitStateUpdate(mode || 'marketing');
+    res.json({ success: true, message: 'Job reiniciado' });
+});
+
 // API: Get history
 app.get('/api/history', (req, res) => {
     if (!fs.existsSync(HISTORY_ROOT)) {
