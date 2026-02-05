@@ -656,38 +656,70 @@ app.post('/api/rerun', (req, res) => {
     const briefingDir = path.join(root, 'briefing');
     let briefingFile = null;
     
-    // Helper de busca
-    const findFile = (dir) => {
+    // Helper de busca - procura arquivo que contém o jobId
+    const findFile = (dir, id) => {
         if (!fs.existsSync(dir)) return null;
-        return fs.readdirSync(dir).find(f => f.includes(jobId));
+        return fs.readdirSync(dir).find(f => f.includes(id));
     };
 
-    // 1. Tenta na pasta briefing
-    briefingFile = findFile(briefingDir);
+    // 1. Tenta na pasta briefing diretamente
+    briefingFile = findFile(briefingDir, jobId);
 
-    // 2. Se não achar, tenta recuperar de WIP/DONE (pode ser um _PROCESSED.md ou _RAW_IDEA.md) e restaurar
+    // 2. Se não achar, pode ser que o jobId do frontend veio do WIP (ID diferente do briefing).
+    //    Procurar no WIP um arquivo com esse jobId que contenha o Job ID original no conteúdo.
     if (!briefingFile) {
-        const wipFile = findFile(path.join(root, 'wip'));
-        if (wipFile && wipFile.includes('RAW_IDEA')) {
-            // Recuperar do WIP
-            fs.copyFileSync(path.join(root, 'wip', wipFile), path.join(briefingDir, wipFile));
-            briefingFile = wipFile;
-            log('info', 'rerun_restored_from_wip', { file: wipFile });
+        const wipDir = path.join(root, 'wip');
+        if (fs.existsSync(wipDir)) {
+            // Procurar RAW_IDEA ou PROCESSED que contenha referência ao briefing original
+            const wipFiles = fs.readdirSync(wipDir).filter(f => f.includes(jobId));
+            for (const wf of wipFiles) {
+                const content = fs.readFileSync(path.join(wipDir, wf), 'utf-8');
+                // Extrair Job ID original do conteúdo (ex: **Job ID:** 1770288147944_luta_de_boxe)
+                const jobIdMatch = content.match(/\*\*Job ID:\*\*\s*(\S+)/);
+                if (jobIdMatch) {
+                    const originalJobId = jobIdMatch[1];
+                    briefingFile = findFile(briefingDir, originalJobId);
+                    if (briefingFile) {
+                        log('info', 'rerun_found_via_content', { wipFile: wf, originalJobId });
+                        break;
+                    }
+                }
+            }
+            
+            // 3. Fallback: recuperar RAW_IDEA do WIP como briefing
+            if (!briefingFile) {
+                const rawFile = wipFiles.find(f => f.includes('RAW_IDEA'));
+                const processedFile = wipFiles.find(f => f.includes('PROCESSED'));
+                const sourceFile = rawFile || processedFile;
+                
+                if (sourceFile) {
+                    // Criar um briefing limpo a partir do WIP
+                    const cleanName = jobId + '.md';
+                    fs.copyFileSync(path.join(wipDir, sourceFile), path.join(briefingDir, cleanName));
+                    briefingFile = cleanName;
+                    log('info', 'rerun_restored_from_wip', { source: sourceFile, newBriefing: cleanName });
+                }
+            }
         }
     }
     
     if (!briefingFile) {
-        // Se não achar no briefing, tentar recuperar do WIP ou History (backup)
-        // Por simplificação: tenta achar qualquer arquivo com esse ID
         return res.status(404).json({ error: 'Briefing original não encontrado para re-run' });
     }
     
-    // Limpar arquivos WIP/DONE/FAILED relacionados a esse JobID
+    // Limpar TODOS os arquivos WIP/DONE/FAILED relacionados a esse JobID
+    // Também limpar por jobId extraído do conteúdo (pode ter IDs derivados)
+    const idsToClean = [jobId];
     ['wip', 'done', 'failed', 'approved'].forEach(dir => {
         const dirPath = path.join(root, dir);
         if (fs.existsSync(dirPath)) {
-            const files = fs.readdirSync(dirPath).filter(f => f.includes(jobId));
-            files.forEach(f => fs.unlinkSync(path.join(dirPath, f)));
+            const files = fs.readdirSync(dirPath).filter(f => {
+                return idsToClean.some(id => f.includes(id));
+            });
+            files.forEach(f => {
+                fs.unlinkSync(path.join(dirPath, f));
+                log('info', 'rerun_cleanup', { dir, file: f });
+            });
         }
     });
     
@@ -696,9 +728,9 @@ app.post('/api/rerun', (req, res) => {
     const content = fs.readFileSync(briefingPath, 'utf-8');
     fs.writeFileSync(briefingPath, content); // Re-escreve para atualizar timestamp
     
-    log('info', 'job_rerun_triggered', { jobId, mode });
+    log('info', 'job_rerun_triggered', { jobId, mode, briefingFile });
     emitStateUpdate(mode || 'marketing');
-    res.json({ success: true, message: 'Job reiniciado' });
+    res.json({ success: true, message: 'Job reiniciado', briefingFile });
 });
 
 // API: Get history
