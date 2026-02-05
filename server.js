@@ -424,22 +424,15 @@ async function notifyDouglas(data) {
         return; // OpenClaw wake is enough
     }
     
-    let message = '';
-    
-    // Check if it's feedback or new briefing
-    if (data.feedbackAction) {
-        message = `🔄 FEEDBACK: ${data.feedbackText}
+    // Só envia Telegram aqui para FEEDBACK (evita duplicar alerta de briefing)
+    if (!data.feedbackAction) {
+        return;
+    }
+
+    const message = `🔄 FEEDBACK: ${data.feedbackText}
 
 Projeto: ${data.jobId}
 Modo: ${data.mode}`;
-    } else {
-        message = `/briefing ${data.mode} ${data.jobId}
-
-Título: ${data.title}
-Arquivos: ${data.filesCount || 0}
-
-API: https://brickmarketing-production.up.railway.app/api/state?mode=${data.mode}`;
-    }
     
     try {
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -450,7 +443,7 @@ API: https://brickmarketing-production.up.railway.app/api/state?mode=${data.mode
                 text: message
             })
         });
-        log('info', 'douglas_command_sent', { jobId: data.jobId, type: data.feedbackAction ? 'feedback' : 'briefing' });
+        log('info', 'douglas_command_sent', { jobId: data.jobId, type: 'feedback' });
     } catch (e) {
         log('error', 'douglas_command_failed', { error: e.message });
     }
