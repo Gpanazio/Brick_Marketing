@@ -676,50 +676,50 @@ OUTPUT (Proposta completa)`;
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">01. BRAND DIGEST <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#fff;font-weight:700;">01. BRAND DIGEST <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Extrai identidade visual, tom, valores e posicionamento da marca do briefing. Output: JSON. Role: <code>BRAND_DIGEST.md</code>
-                        <br><strong>LLM real:</strong> google/gemini-3-flash-preview (agent: flash)</div>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">02. CREATIVE IDEATION (GPT + Flash + Sonnet) <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">3 modelos geram conceitos criativos simultaneamente:
-                        <br>• <span style="color:#10a37f;">GPT</span>: Conceito A (Ousado, surpreendente)
-                        <br>• <span style="color:#4285f4;">Flash</span>: Conceito B (Pragmático, executável)
-                        <br>• <span style="color:#d97706;">Sonnet</span>: Conceito C (Emocional, storytelling)
+                        <br>• <span style="color:#10a37f;">GPT-5.2 Codex</span>: Conceito A (Ousado, surpreendente)
+                        <br>• <span style="color:#4285f4;">Gemini 3 Flash</span>: Conceito B (Pragmático, executável)
+                        <br>• <span style="color:#d97706;">Claude Sonnet 4.5</span>: Conceito C (Emocional, storytelling)
                         <br>Output: 3 arquivos Markdown. Role: <code>CREATIVE_IDEATION.md</code>
-                        <br><strong>LLMs reais:</strong> openai-codex/gpt-5.2-codex, google/gemini-3-flash-preview, anthropic/claude-sonnet-4-5</div>
+                        <br><strong>Modelos:</strong> GPT-5.2 Codex (<code>openai-codex/gpt-5.2-codex</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">03. CONCEPT CRITIC <span style="color:#00bcd4;">(Pro)</span></div>
+                        <div style="color:#fff;font-weight:700;">03. CONCEPT CRITIC <span style="color:#00bcd4;">(Gemini 3 Pro)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Avalia os 3 conceitos e escolhe o vencedor com fundamentação. Output: JSON. Role: <code>CONCEPT_CRITIC.md</code>
-                        <br><strong>LLM real:</strong> google/gemini-3-pro-preview (agent: pro)</div>
+                        <br><strong>Modelo:</strong> Gemini 3 Pro (Preview) — <code>google/gemini-3-pro-preview</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;padding:12px;background:#0a0a0a;border-left:3px solid #f97316;">
                         <div style="color:#f97316;font-weight:700;margin-bottom:8px;">🔄 LOOP AUTOMÁTICO (Max 3 rodadas)</div>
                         
                         <div style="margin-bottom:12px;">
-                            <div style="color:#fff;font-weight:700;">04. EXECUTION DESIGN <span style="color:#00bcd4;">(Pro)</span></div>
+                            <div style="color:#fff;font-weight:700;">04. EXECUTION DESIGN <span style="color:#00bcd4;">(Gemini 3 Pro)</span></div>
                             <div style="color:#888;font-size:10px;margin-top:2px;">Transforma conceito em plano executável: visual system, copy framework, UX, specs técnicas. Se receber feedback do Director (loop), aplica correções e documenta no campo <code>director_feedback_response</code>. Output: JSON. Role: <code>EXECUTION_DESIGN.md</code>
-                            <br><strong>LLM real:</strong> google/gemini-3-pro-preview (agent: pro)</div>
+                            <br><strong>Modelo:</strong> Gemini 3 Pro (Preview) — <code>google/gemini-3-pro-preview</code></div>
                         </div>
 
                         <div style="margin-bottom:12px;">
-                            <div style="color:#fff;font-weight:700;">05. PROPOSAL <span style="color:#10a37f;">(GPT)</span></div>
+                            <div style="color:#fff;font-weight:700;">05. PROPOSAL <span style="color:#10a37f;">(GPT-5.2 Codex)</span></div>
                             <div style="color:#888;font-size:10px;margin-top:2px;">Roteiro/copy final baseado na execução. Output: Markdown. Role: <code>PROPOSAL_WRITER.md</code>
-                            <br><strong>LLM real:</strong> openai-codex/gpt-5.2-codex (agent: gpt)</div>
+                            <br><strong>Modelo:</strong> GPT-5.2 Codex — <code>openai-codex/gpt-5.2-codex</code></div>
                         </div>
 
                         <div style="margin-bottom:12px;">
-                            <div style="color:#fff;font-weight:700;">06. DIRECTOR <span style="color:#00bcd4;">(Pro)</span></div>
+                            <div style="color:#fff;font-weight:700;">06. DIRECTOR <span style="color:#00bcd4;">(Gemini 3 Pro)</span></div>
                             <div style="color:#888;font-size:10px;margin-top:2px;">Avalia execução com olhar de diretor de fotografia (20 anos de set). Verifica clichês visuais, estrutura narrativa, frame icônico. Score 0-100 + veredito:
                             <br>• <span style="color:#22c55e;">APROVAR</span> (85-100): Execução tem craft, segue pro HUMAN
                             <br>• <span style="color:#f59e0b;">REFINAR</span> (60-84): Volta pro step 04 com feedback
                             <br>• <span style="color:#ef4444;">REPENSAR</span> (0-59): Execução cafona, volta pro IDEATION
                             <br>Output: JSON. Role: <code>PROJECT_DIRECTOR.md</code>
-                            <br><strong>LLM real:</strong> google/gemini-3-pro-preview (agent: pro)</div>
+                            <br><strong>Modelo:</strong> Gemini 3 Pro (Preview) — <code>google/gemini-3-pro-preview</code></div>
                         </div>
 
                         <div style="color:#f97316;font-size:10px;margin-top:8px;">
@@ -794,45 +794,45 @@ PROCESSED.md ─── Briefing enriquecido
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">01. BRIEF VALIDATOR <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#fff;font-weight:700;">01. BRIEF VALIDATOR <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Valida se o briefing tem todas as informações necessárias: público, objetivo, canal, formato. Gera JSON com status PASS/FAIL e lista de campos faltantes. Role: <code>BRIEF_VALIDATOR.md</code>
-                        <br><strong>LLM real:</strong> google/gemini-3-flash-preview (agent: flash)</div>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">02. AUDIENCE ANALYST <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#fff;font-weight:700;">02. AUDIENCE ANALYST <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Avalia alinhamento do briefing com a persona oficial da Brick AI e o Brand Guide completo. Persona hardcoded no role file. Recebe BRAND_GUIDE.md inteiro. Role: <code>AUDIENCE_ANALYST.md</code>
-                        <br><strong>LLM real:</strong> google/gemini-3-flash-preview (agent: flash)</div>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">03. TOPIC RESEARCHER <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#fff;font-weight:700;">03. TOPIC RESEARCHER <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Pesquisa dados de mercado, tendências e referências relevantes pro tema do briefing. Alimenta os copywriters com munição factual. Role: <code>TOPIC_RESEARCHER.md</code>
-                        <br><strong>LLM real:</strong> google/gemini-3-flash-preview (agent: flash)</div>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">04. CLAIMS CHECKER <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#fff;font-weight:700;">04. CLAIMS CHECKER <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Filtro anti-hype. Valida se claims são verificáveis e sustentados por dados. Proíbe termos como "revolucionário", "disruptivo", "game-changer". Garante autoridade segura. Role: <code>CLAIMS_CHECKER.md</code>
-                        <br><strong>LLM real:</strong> google/gemini-3-flash-preview (agent: flash)</div>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">05. COPYWRITERS x3 <span style="color:#10a37f;">(GPT)</span> <span style="color:#4285f4;">(Flash)</span> <span style="color:#d97706;">(Sonnet)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Três modelos escrevem em paralelo com estilos diferentes: A (direto/persuasivo), B (eficiente/data-driven), C (narrativo/emocional). Todos recebem BRAND_GUIDE.md completo e respeitam tom, terminologia e red flags. Role: <code>COPYWRITER.md</code>
-                        <br><strong>LLMs reais:</strong> openai-codex/gpt-5.2-codex, google/gemini-3-flash-preview, anthropic/claude-sonnet-4-5</div>
+                        <br><strong>Modelos:</strong> GPT-5.2 Codex (<code>openai-codex/gpt-5.2-codex</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">06. COPY SENIOR <span style="color:#10a37f;">(GPT 5.2)</span></div>
+                        <div style="color:#fff;font-weight:700;">06. COPY SENIOR <span style="color:#10a37f;">(GPT-5.2 Codex)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Diretor de Criação Sênior. Avalia as 3 copies, escolhe a melhor (vencedor A/B/C), aplica TODOS os ajustes necessários diretamente no texto e entrega <code>copy_revisada</code> final. Não só sugere — executa. Role: <code>COPY_SENIOR.md</code>
-                        <br><strong>LLM real:</strong> openai-codex/gpt-5.2-codex (agent: gpt, fallback: sonnet se falhar)</div>
+                        <br><strong>Modelo:</strong> GPT-5.2 Codex — <code>openai-codex/gpt-5.2-codex</code> (fallback: Claude Sonnet 4.5)</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">07. WALL <span style="color:#9333ea;">(Opus)</span> + Brand Guardian</div>
+                        <div style="color:#fff;font-weight:700;">07. WALL <span style="color:#9333ea;">(Claude Opus 4.6)</span> + Brand Guardian</div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Último portão. Score de 0-100 com rubrica de 5 critérios: Clareza da Oferta (25pts), Dor Real (20pts), Credibilidade (20pts), On-Brand (20pts, usando BRAND_GUARDIAN.md completo), CTA Específico (15pts). Score ≥80 aprova, &lt;80 rejeita e volta pro Copy Senior com feedback detalhado (max 3 loops). Role: <code>FILTRO_FINAL.md</code> + <code>BRAND_GUARDIAN.md</code>
-                        <br><strong>LLM real:</strong> anthropic/claude-opus-4-6 (agent: opus)</div>
+                        <br><strong>Modelo:</strong> Claude Opus 4.6 — <code>anthropic/claude-opus-4-6</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
