@@ -470,10 +470,10 @@
             { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'GEMINI FLASH' },
             { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'GEMINI FLASH' },
             { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker', model: 'GEMINI FLASH' },
-            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5.2' },
+            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5.1' },
             { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'GEMINI FLASH' },
             { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
-            { id: 'n7', x: 0, y: 1350, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.2' },
+            { id: 'n7', x: 0, y: 1350, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.1' },
             { id: 'n8', x: 0, y: 1550, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
             { id: 'n9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'n10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
@@ -684,11 +684,11 @@ OUTPUT (Proposta completa)`;
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">02. CREATIVE IDEATION (GPT + Flash + Sonnet) <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">3 modelos geram conceitos criativos simultaneamente:
-                        <br>• <span style="color:#10a37f;">GPT-5.2</span>: Conceito A (Ousado, surpreendente)
+                        <br>• <span style="color:#10a37f;">GPT-5.1</span>: Conceito A (Ousado, surpreendente)
                         <br>• <span style="color:#4285f4;">Gemini 3 Flash</span>: Conceito B (Pragmático, executável)
                         <br>• <span style="color:#d97706;">Claude Sonnet 4.5</span>: Conceito C (Emocional, storytelling)
                         <br>Output: 3 arquivos Markdown. Role: <code>CREATIVE_IDEATION.md</code>
-                        <br><strong>Modelos:</strong> GPT-5.2 (<code>openai/gpt-5.2</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
+                        <br><strong>Modelos:</strong> GPT-5.1 (<code>openai-codex/gpt-5.1</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
@@ -707,9 +707,9 @@ OUTPUT (Proposta completa)`;
                         </div>
 
                         <div style="margin-bottom:12px;">
-                            <div style="color:#fff;font-weight:700;">05. PROPOSAL <span style="color:#10a37f;">(GPT-5.2)</span></div>
+                            <div style="color:#fff;font-weight:700;">05. PROPOSAL <span style="color:#10a37f;">(GPT-5.1)</span></div>
                             <div style="color:#888;font-size:10px;margin-top:2px;">Roteiro/copy final baseado na execução. Output: Markdown. Role: <code>PROPOSAL_WRITER.md</code>
-                            <br><strong>Modelo:</strong> GPT-5.2 — <code>openai/gpt-5.2</code></div>
+                            <br><strong>Modelo:</strong> GPT-5.1 — <code>openai-codex/gpt-5.1</code></div>
                         </div>
 
                         <div style="margin-bottom:12px;">
@@ -763,7 +763,7 @@ PROCESSED.md ─── Briefing enriquecido
 ▼              ▼              ▼
 ┌────────────┐ ┌────────────┐ ┌────────────┐
 │ COPY A     │ │ COPY B     │ │ COPY C     │
-│ GPT-5.2    │ │ FLASH      │ │ SONNET     │
+│ GPT-5.1    │ │ FLASH      │ │ SONNET     │
 │ (Direto)   │ │ (Data)     │ │ (Narrativo)│
 └────────────┘ └────────────┘ └────────────┘
 ├──────────────┴──────────────┘
@@ -820,13 +820,13 @@ PROCESSED.md ─── Briefing enriquecido
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">05. COPYWRITERS x3 <span style="color:#10a37f;">(GPT)</span> <span style="color:#4285f4;">(Flash)</span> <span style="color:#d97706;">(Sonnet)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Três modelos escrevem em paralelo com estilos diferentes: A (direto/persuasivo), B (eficiente/data-driven), C (narrativo/emocional). Todos recebem BRAND_GUIDE.md completo e respeitam tom, terminologia e red flags. Role: <code>COPYWRITER.md</code>
-                        <br><strong>Modelos:</strong> GPT-5.2 (<code>openai/gpt-5.2</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
+                        <br><strong>Modelos:</strong> GPT-5.1 (<code>openai-codex/gpt-5.1</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">06. COPY SENIOR <span style="color:#10a37f;">(GPT-5.2)</span></div>
+                        <div style="color:#fff;font-weight:700;">06. COPY SENIOR <span style="color:#10a37f;">(GPT-5.1)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Diretor de Criação Sênior. Avalia as 3 copies, escolhe a melhor (vencedor A/B/C), aplica TODOS os ajustes necessários diretamente no texto e entrega <code>copy_revisada</code> final. Não só sugere — executa. Role: <code>COPY_SENIOR.md</code>
-                        <br><strong>Modelo:</strong> GPT-5.2 — <code>openai/gpt-5.2</code> (fallback: Claude Sonnet 4.5)</div>
+                        <br><strong>Modelo:</strong> GPT-5.1 — <code>openai-codex/gpt-5.1</code> (fallback: Claude Sonnet 4.5)</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
@@ -1153,7 +1153,7 @@ PROCESSED.md ─── Briefing enriquecido
                 
                 const el = document.createElement('div');
                 const providerMap = {
-                    'GPT': 'openai', 'GPT 5.2': 'openai', 'GPT-5.2': 'openai', 'GPT-4O': 'openai',
+                    'GPT': 'openai', 'GPT 5.2': 'openai', 'GPT-5.1': 'openai', 'GPT-4O': 'openai',
                     'GEMINI FLASH': 'gemini-flash', 'FLASH': 'gemini-flash',
                     'GEMINI PRO': 'gemini-pro', 'GEMINI 3 PRO': 'gemini-pro',
                     'CLAUDE SONNET': 'sonnet', 'SONNET': 'sonnet',
