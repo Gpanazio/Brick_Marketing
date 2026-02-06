@@ -628,41 +628,104 @@
                 diagram.textContent = `BRIEFING
 │
 ▼
-00. DOUGLAS (Pré-processador) - lê PDFs/imagens/anexos
+00. DOUGLAS (Orchestrator) - Ingestion
 │
 ▼
-01. BRAND DIGEST (Flash) - extrai DNA/tom/assets
+01. BRAND DIGEST (Flash) - Extrai DNA/tom/valores da marca
 │
 ├────────────────┬────────────────┤
 ▼                ▼                ▼
 02a. IDEATION    02b. IDEATION    02c. IDEATION
-(GPT)            (Flash)          (Sonnet)
+(GPT - Ousado)   (Flash - Pragm)  (Sonnet - Emoc)
 ├────────────────┴────────────────┤
 ▼
-03. CONCEPT CRITIC (Gemini Pro) - escolhe melhor
+03. CONCEPT CRITIC (Pro) - Escolhe vencedor + fundamenta
 │
 ▼
-04. EXECUTION DESIGN (Gemini Pro) - direção visual
+╔═══════════════════════════════════════╗
+║  LOOP EXECUTION ↔ DIRECTOR (Max 3x)   ║
+╠═══════════════════════════════════════╣
+║  04. EXECUTION DESIGN (Pro)           ║
+║      └─ Visual system + specs         ║
+║  ▼                                    ║
+║  05. PROPOSAL (GPT)                   ║
+║      └─ Roteiro/copy final            ║
+║  ▼                                    ║
+║  06. DIRECTOR (Pro)                   ║
+║      └─ Veredito: APROVAR/REFINAR     ║
+║                                       ║
+║  Se REFINAR → volta pro step 04       ║
+║  com feedback detalhado               ║
+╚═══════════════════════════════════════╝
 │
 ▼
-05. COPYWRITER (GPT 5.2) - roteiro com constraints
+HUMAN - Aprovação final (só se Director aprovou)
 │
 ▼
-06. DIRECTOR (Gemini Pro) - avalia execução (loop até ≥85)
-│
-▼
-07. HUMAN - aprovação final
-│
-▼
-OUTPUT (Proposta Completa)`;
+OUTPUT (Proposta completa)`;
 
                 info.innerHTML = `
-                    <div>• Douglas pré-processa anexos (PDFs, imagens)</div>
-                    <div>• Brand Digest extrai DNA da marca</div>
-                    <div>• 3 conceitos criativos paralelos</div>
-                    <div>• Critic escolhe o melhor conceito</div>
-                    <div>• Director loop até score ≥85</div>
-                    <div>• Aprovação humana obrigatória</div>
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">00. DOUGLAS (Orchestrator)</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Ingestion do briefing bruto. Role: <code>N/A</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">01. BRAND DIGEST <span style="color:#4285f4;">(Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Extrai identidade visual, tom, valores e posicionamento da marca do briefing. Output: JSON. Role: <code>BRAND_DIGEST.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">02. CREATIVE IDEATION (GPT + Flash + Sonnet) <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">3 modelos geram conceitos criativos simultaneamente:
+                        <br>• <span style="color:#10a37f;">GPT</span>: Conceito A (Ousado, surpreendente)
+                        <br>• <span style="color:#4285f4;">Flash</span>: Conceito B (Pragmático, executável)
+                        <br>• <span style="color:#a855f7;">Sonnet</span>: Conceito C (Emocional, storytelling)
+                        <br>Output: 3 arquivos Markdown. Role: <code>CREATIVE_IDEATION.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">03. CONCEPT CRITIC <span style="color:#00bcd4;">(Pro)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia os 3 conceitos e escolhe o vencedor com fundamentação. Output: JSON. Role: <code>CONCEPT_CRITIC.md</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;padding:12px;background:#0a0a0a;border-left:3px solid #f97316;">
+                        <div style="color:#f97316;font-weight:700;margin-bottom:8px;">🔄 LOOP AUTOMÁTICO (Max 3 rodadas)</div>
+                        
+                        <div style="margin-bottom:12px;">
+                            <div style="color:#fff;font-weight:700;">04. EXECUTION DESIGN <span style="color:#00bcd4;">(Pro)</span></div>
+                            <div style="color:#888;font-size:10px;margin-top:2px;">Transforma conceito em plano executável: visual system, copy framework, UX, specs técnicas. Se receber feedback do Director (loop), aplica correções e documenta no campo <code>director_feedback_response</code>. Output: JSON. Role: <code>EXECUTION_DESIGN.md</code></div>
+                        </div>
+
+                        <div style="margin-bottom:12px;">
+                            <div style="color:#fff;font-weight:700;">05. PROPOSAL <span style="color:#10a37f;">(GPT)</span></div>
+                            <div style="color:#888;font-size:10px;margin-top:2px;">Roteiro/copy final baseado na execução. Output: Markdown. Role: <code>PROPOSAL_WRITER.md</code></div>
+                        </div>
+
+                        <div style="margin-bottom:12px;">
+                            <div style="color:#fff;font-weight:700;">06. DIRECTOR <span style="color:#00bcd4;">(Pro)</span></div>
+                            <div style="color:#888;font-size:10px;margin-top:2px;">Avalia execução com olhar de diretor de fotografia (20 anos de set). Verifica clichês visuais, estrutura narrativa, frame icônico. Score 0-100 + veredito:
+                            <br>• <span style="color:#22c55e;">APROVAR</span> (85-100): Execução tem craft, segue pro HUMAN
+                            <br>• <span style="color:#f59e0b;">REFINAR</span> (60-84): Volta pro step 04 com feedback
+                            <br>• <span style="color:#ef4444;">REPENSAR</span> (0-59): Execução cafona, volta pro IDEATION
+                            <br>Output: JSON. Role: <code>PROJECT_DIRECTOR.md</code></div>
+                        </div>
+
+                        <div style="color:#f97316;font-size:10px;margin-top:8px;">
+                            ⚠️ Se Director reprovar (REFINAR/REPENSAR), o loop reinicia no step 04 com feedback detalhado. Arquivos versionados: <code>_v2</code>, <code>_v3</code>. Loop para quando aprovado OU atinge 3 rodadas.
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">HUMAN - Aprovação Final</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Só recebe projetos aprovados pelo Director. Botões: Aprovar (move pra done/) ou Rejeitar. Output: <code>FINAL.md</code> (compilação de todos os outputs).</div>
+                    </div>
+
+                    <div style="color:#666;font-size:10px;margin-top:16px;padding-top:16px;border-top:1px solid #222;">
+                        📊 <strong>Custo estimado:</strong> ~$0.16/projeto (inclui input+output tokens)<br>
+                        ⏱️ <strong>Tempo médio:</strong> 2-3 minutos (sem loop) | 4-6 minutos (com loop)<br>
+                        🔄 <strong>Taxa de loop:</strong> ~30% dos projetos precisam de 1+ revisões
+                    </div>
                 `;
             } else {
                 diagram.textContent = `BRIEFING (input do usuário)
