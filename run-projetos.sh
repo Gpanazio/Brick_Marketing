@@ -367,44 +367,83 @@ if [ "$VEREDITO" = "APROVAR" ]; then
     echo "✅ Projeto aprovado - criando FINAL.md"
     
     FINAL_OUT="$WIP_DIR/${JOB_ID}_FINAL.md"
+    
+    # Extrair campos importantes do Director
+    CONCEITO_AVALIADO=$(echo "$DIRECTOR_CONTENT" | jq -r '.conceito_avaliado // "N/A"' 2>/dev/null)
+    RESUMO_HONESTO=$(echo "$DIRECTOR_CONTENT" | jq -r '.resumo_honesto // "N/A"' 2>/dev/null)
+    FRAME_ICONICO=$(echo "$DIRECTOR_CONTENT" | jq -r '.frame_iconico.descricao_atual // "N/A"' 2>/dev/null)
+    
+    # Extrair nome do conceito vencedor
+    CONCEITO_NOME=$(echo "$CRITIC_CONTENT" | jq -r '.conceito_escolhido // .winner // "N/A"' 2>/dev/null)
+    
     cat > "$FINAL_OUT" <<EOF
-# PROJETO APROVADO PELO DIRECTOR
-**Job ID:** ${JOB_ID}
-**Data:** $(date -Iseconds)
-**Veredito:** ${VEREDITO}
-**Score:** ${SCORE}/100
-**Rodadas:** ${LOOP_COUNT}
+# ✅ PROJETO APROVADO
+
+**Conceito:** ${CONCEITO_AVALIADO}  
+**Score Director:** ${SCORE}/100  
+**Rodadas:** ${LOOP_COUNT}  
+**Status:** Pronto para aprovação humana
 
 ---
 
-## BRAND DIGEST
-\`\`\`json
-${BRAND_CONTENT}
-\`\`\`
+## 📊 VEREDITO DO DIRECTOR
+
+${RESUMO_HONESTO}
+
+**Frame Icônico:** ${FRAME_ICONICO}
 
 ---
 
-## CONCEITO VENCEDOR
-\`\`\`json
-${CRITIC_CONTENT}
-\`\`\`
+## 🎨 CONCEITO CRIATIVO
 
----
+**Escolhido:** ${CONCEITO_NOME}
 
-## EXECUTION DESIGN (Final)
-\`\`\`json
-${EXEC_CONTENT}
-\`\`\`
-
----
-
-## PROPOSAL (Final)
 ${COPY_CONTENT}
 
 ---
 
-## DIRECTOR FEEDBACK (Final)
+## 📋 DETALHES TÉCNICOS
+
+<details>
+<summary>Brand Digest (clique para expandir)</summary>
+
+\`\`\`json
+${BRAND_CONTENT}
+\`\`\`
+
+</details>
+
+<details>
+<summary>Concept Critic (clique para expandir)</summary>
+
+\`\`\`json
+${CRITIC_CONTENT}
+\`\`\`
+
+</details>
+
+<details>
+<summary>Execution Design (clique para expandir)</summary>
+
+\`\`\`json
+${EXEC_CONTENT}
+\`\`\`
+
+</details>
+
+<details>
+<summary>Director Feedback Completo (clique para expandir)</summary>
+
+\`\`\`json
 ${DIRECTOR_CONTENT}
+\`\`\`
+
+</details>
+
+---
+
+**Job ID:** \`${JOB_ID}\`  
+**Data:** $(date -Iseconds)
 EOF
     
     echo "✅ FINAL.md criado"
