@@ -1,0 +1,22 @@
+{
+  "idea_name": "Campanha Duloren - Estética Sensual/Quase Erótica",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "A questão é real: trata-se de um job comercial ativo com briefing e referências enviadas pelo cliente (Duloren). A relevância é alta devido ao risco de imagem da marca, complexidade técnica (água/espelhos) e potencial de censura/polêmica legal. É acionável pois exige a decisão entre três conceitos criativos para viabilizar a produção e a veiculação sem cruzar a linha da proibição absoluta em redes sociais."
+  },
+  "evidence": [
+    "Job ID 1770403330086_campanha_duloren ativo no sistema.",
+    "Solicitação explícita do cliente por estética 'quase erótica' com referências visuais de câmera zenital e interação múltipla de modelos.",
+    "Histórico de mercado da Duloren focado em campanhas provocativas e sensuais."
+  ],
+  "red_flags": [
+    "Risco de censura algorítmica em plataformas digitais (Meta/TikTok) devido ao teor sexual sugerido.",
+    "Complexidade técnica elevada para execução de cenários com água e espelhos simultâneos, o que pode impactar o orçamento e a segurança no set.",
+    "Linha tênue entre sensualidade artística e vulgaridade, exigindo direção de arte de elite."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-06T19:50:00Z"
+}

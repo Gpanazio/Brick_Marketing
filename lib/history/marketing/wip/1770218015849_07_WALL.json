@@ -1,0 +1,86 @@
+{
+  "score_final": 73,
+  "status": "REJECTED",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 15,
+      "max": 25,
+      "feedback": "Posicionamento forte ('o impossível agora é direção, não orçamento') mas a OFERTA TANGÍVEL está ausente. O leitor entende a FILOSOFIA da Brick AI, mas não o que COMPRA. 'Production Enhanced. 10 anos de set.' é manifesto, não serviço. Falta a linha que transforma posicionamento em deliverable: 'Produção de vídeo com IA sob direção de cinema' ou 'Do briefing ao filme final'. Comparação: a versão médio chega mais perto ('produção premium em prazos que antes inviabilizavam o projeto') mas ainda é genérica — produção premium de quê? Vídeo? Conteúdo? Filme? Especificar."
+    },
+    "dor_real": {
+      "pontos": 18,
+      "max": 20,
+      "feedback": "Ponto mais forte da copy. 'Ideia grande, deck aprovado, orçamento travado' é visceral e específico — todo diretor criativo viveu esse momento. É dor de CLIENTE, não dor de mercado. 'Viabilizar o que o budget cortava' ataca a restrição real. 'Prazos que antes inviabilizavam o projeto' adiciona a segunda dor (timeline). Quase perfeito. Perdeu 2 pontos porque falta ancoragem em dado externo (o dado Serasa Experian da outra copy faz falta aqui) — a dor é verdadeira mas auto-declarada."
+    },
+    "credibilidade": {
+      "pontos": 12,
+      "max": 20,
+      "feedback": "Um único pilar: '10 anos de set/direção'. É sólido e verificável, mas está sozinho. Sem número de projetos, sem referência a clientes ou segmentos, sem dado externo, sem portfolio. 'Padrão de cinema' é auto-declaração sem prova. Para um lançamento, '10 anos' é o mínimo — precisa de pelo menos mais um elemento: '150+ projetos', 'clientes em X setores', ou link para reel/portfolio. A credibilidade está no limiar entre 'razoável sem prova forte' (10 pts) e 'claims com fontes' (20 pts) — fico em 12 porque os 10 anos são verificáveis mas insuficientes isolados."
+    },
+    "on_brand": {
+      "pontos": 16,
+      "max": 20,
+      "feedback": "Tom geral de Diretor de Cinema Sênior está presente, especialmente no storytelling ('ideia grande, deck aprovado, orçamento travado' = puro set). Terminologia oficial correta: Production Enhanced ✅, Vision over Prompt ✅, Craft ✅. Sem termos proibidos (revolucionário, disruptivo, game-changer). PROBLEMA: 'fluxo' aparece implicitamente no médio ('fluxo de IA aplicado ao craft') e explicitamente no storytelling ('O fluxo determina a execução'). 'Fluxo' é linguagem de PROCESSO, não de CINEMA — contradiz o valor 'Resultado > Processo' do Brand Guardian ('Cliente quer o filme, não o pipeline'). 'Fluxo' soa como workflow diagram, não como diretor falando. Segundo problema menor: 'nasce para viabilizar' no médio tem tom de startup/press release, não de estúdio veterano."
+    },
+    "cta_especifico": {
+      "pontos": 12,
+      "max": 15,
+      "feedback": "'Agende uma apresentação em brick.ai' é bom: ação específica (apresentação), destino claro (brick.ai), baixa fricção conceitual. Melhor que 'entre em contato' ou 'saiba mais'. Perdeu 3 pontos por: (1) 'Conheça a Brick AI' antes do CTA é filler — não adiciona valor, dilui o impacto. (2) Falta indicação de duração/formato ('apresentação de 15 min' reduz fricção percebida). (3) Não sabemos se brick.ai tem mecanismo real de agendamento — se o prospect clica e cai numa homepage sem booking, a promessa quebra."
+    }
+  },
+  "destaques_positivos": [
+    "'Ideia grande, deck aprovado, orçamento travado' — melhor linha de identificação de dor de todas as copies avaliadas. É visceral, específica e universal para o público-alvo",
+    "'O impossível agora é direção, não orçamento' — reframe poderoso que posiciona a Brick AI como quem transforma a equação",
+    "'A ferramenta acelera. A direção decide.' — perfeita expressão do valor 'Craft > Tech'",
+    "'Não é automação. É direção aplicada com escala.' — diferenciação anti-slop clara e on-brand",
+    "Tom geral de diretor sênior consistente, sem escorregar para tech bro ou corporativês"
+  ],
+  "pontos_de_melhoria": [
+    "CRÍTICO: Oferta tangível ausente. Adicionar uma linha que diga O QUE o cliente recebe. Sugestão: 'Produção de vídeo com IA, dirigida por quem tem 10 anos de set. Do briefing ao filme final.' — no médio, entre o posicionamento e o CTA",
+    "CRÍTICO: Credibilidade precisa de segundo pilar. '10 anos' está sozinho. Sugestão: '10 anos de set. 150+ projetos entregues.' ou '10 anos dirigindo para marcas de [segmento].' — qualquer coisa que dê corpo ao claim",
+    "IMPORTANTE: Eliminar 'fluxo'. Aparece no médio ('fluxo de IA aplicado ao craft') e no storytelling ('O fluxo determina a execução'). Substituir por vocabulário de cinema: 'sistema de produção', 'pipeline de direção', ou simplesmente cortar. 'Fluxo' é processo; a Brick AI vende resultado."
+  ],
+  "brand_guardian_check": {
+    "status": "BRAND_WARNING",
+    "passes": [
+      "Terminologia oficial correta (Production Enhanced, Vision over Prompt, Craft)",
+      "Tom de diretor de cinema presente no storytelling",
+      "Sem termos proibidos (revolucionário, disruptivo, game-changer, mágica)",
+      "Não parece ChatGPT genérico",
+      "Diferencia de concorrentes"
+    ],
+    "flags": [
+      {
+        "trecho": "um fluxo de IA aplicado ao craft",
+        "problema": "'Fluxo' é linguagem de processo/workflow, não de cinema. Contradiz valor 'Resultado > Processo' — cliente quer o filme, não o pipeline.",
+        "sugestao": "Remover 'fluxo'. Reescrever: 'Somos uma produtora com 10 anos de direção. A IA entra como infraestrutura, não como atalho.'"
+      },
+      {
+        "trecho": "O fluxo determina a execução",
+        "problema": "Mesmo problema — 'fluxo' soa como documentação técnica, não como diretor no set.",
+        "sugestao": "'A direção determina a execução.' ou 'O sistema executa o que a visão comanda.' — manter a hierarquia Vision > System > Output."
+      },
+      {
+        "trecho": "A Brick AI nasce para viabilizar",
+        "problema": "'Nasce' é linguagem de press release / startup. Brick AI tem 10 anos — não está 'nascendo', está EVOLUINDO.",
+        "sugestao": "'A Brick AI existe para viabilizar' ou 'A Brick AI viabiliza' — direto, sem tom de lançamento."
+      }
+    ]
+  },
+  "rejection_reasons": [
+    "Clareza da oferta insuficiente (15/25) — posicionamento forte mas sem deliverable tangível. O prospect entende a filosofia, não o que compra.",
+    "Credibilidade com pilar único (12/20) — '10 anos' é sólido mas insuficiente sem segundo elemento de prova (projetos, clientes, portfolio).",
+    "Brand flag 'fluxo' (16/20) — termo aparece 2x e contradiz o valor 'Resultado > Processo'. Quebra a voz de diretor de cinema."
+  ],
+  "feedback_for_douglas": "A copy tem a MELHOR identificação de dor que já passou por este wall ('ideia grande, deck aprovado, orçamento travado' é ouro). O tom está correto no geral. São 3 ajustes cirúrgicos que levam de 73 para 80+:\n\n1. OFERTA TANGÍVEL: Adicionar uma linha no médio que diga o serviço. Sugestão: após 'Somos uma produtora com 10 anos de direção', adicionar 'Entregamos produção de vídeo com IA sob direção de cinema — do briefing ao filme final.'\n\n2. CREDIBILIDADE: Dar corpo ao '10 anos'. Sugestão: '10 anos de set. 150+ projetos entregues.' ou '10 anos dirigindo para marcas que exigem padrão de cinema.'\n\n3. MATAR 'FLUXO': Substituir 'fluxo de IA aplicado ao craft' por 'IA como infraestrutura de produção, não como atalho'. No storytelling, trocar 'O fluxo determina a execução' por 'A direção comanda. O sistema executa.'\n\nA dor está perfeita. O CTA está bom. O tom está 85% lá. São ajustes de bisturi, não de reescrita.",
+  "next_step": "RESTART_PIPELINE_WITH_FEEDBACK",
+  "recommend_return_to": "DIRECTOR",
+  "wall_notes": {
+    "quality_assessment": "Copy de qualidade média-alta com melhor pain point de todas as versões avaliadas. Está a 7 pontos da aprovação. Os problemas são pontuais (oferta implícita, credibilidade magra, 'fluxo'), não estruturais. Um round com o DIRECTOR (ajuste fino de tom + tangibilidade) deve resolver. Não precisa voltar ao COPYWRITER porque a estrutura e a narrativa estão sólidas.",
+    "brand_check": "BRAND_WARNING — não é FAIL (tom geral correto, terminologia correta, sem termos proibidos) mas tem 3 flags que precisam de correção antes de publicar.",
+    "loop_count": 1,
+    "max_loops": 3,
+    "comparison_note": "Esta copy tem pain point superior à FRAN 2 (18/20 vs 15-16/20) mas oferta e credibilidade inferiores (15/25 e 12/20 vs 22/25 e 17/20). Recomendo que o DIRECTOR use os pontos fortes de cada versão para convergir numa copy final."
+  },
+  "timestamp": "2026-02-06T19:08:00Z"
+}

@@ -164,7 +164,6 @@
             <div class="flex gap-4 items-center">
                 <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
                 <button id="btn-scheme" onclick="openScheme()" class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
-                <button id="btn-delete-project" onclick="confirmDeleteProject()" class="hidden text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">✕ Delete</button>
                 <div id="layout-indicator" class="hidden text-[10px] font-mono text-green-500/60 tracking-widest">
                     <span id="saved-positions-count">0</span> POSIÇÕES SALVAS
                 </div>
@@ -459,7 +458,6 @@
         let currentState = null;
         let currentMode = null;
         let selectedJobId = null;
-        let currentJobId = null;
         let refreshInterval = null;
         let activeRevisionLinks = [];
 
@@ -544,7 +542,7 @@
             'ANGLE_GEN': ['ANGLE_GEN', 'ANGLE'],
             'DEVIL_GEN': ['DEVIL_GEN', 'DEVIL'],
             'VIABILITY': ['VIABILITY', 'SCORE'],
-            'DECISION': ['VIABILITY']
+            'DECISION': ['DECISION', 'HUMAN']
         };
 
         async function fetchState() {
@@ -564,7 +562,6 @@
             document.getElementById('project-lobby').classList.remove('hidden');
             document.getElementById('btn-back-lobby').classList.remove('hidden');
             document.getElementById('btn-scheme').classList.remove('hidden');
-            document.getElementById('btn-delete-project').classList.add('hidden'); // Hide until viewing a project
             document.getElementById('header-sector').textContent = mode.toUpperCase();
             
             if (socket && socket.connected) {
@@ -579,7 +576,6 @@
 
         function goHome() {
             currentMode = null;
-            currentJobId = null;
             localStorage.removeItem('last_mode');
             history.replaceState(null, '', window.location.pathname);
             if (refreshInterval) { clearInterval(refreshInterval); refreshInterval = null; }
@@ -587,7 +583,6 @@
             document.getElementById('project-lobby').classList.add('hidden');
             document.getElementById('btn-back-lobby').classList.add('hidden');
             document.getElementById('btn-scheme').classList.add('hidden');
-            document.getElementById('btn-delete-project').classList.add('hidden');
             document.getElementById('header-sector').textContent = 'COMMAND_CENTER';
         }
 
@@ -1037,14 +1032,12 @@ PROCESSED.md ─── Briefing enriquecido
 
         function openNodeGraphic(id, title) {
             selectedJobId = id;
-            currentJobId = id; // Track for delete
             document.getElementById('ng-title').textContent = title;
             document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
             document.getElementById('main-ui').style.display = 'none';
             document.getElementById('btn-reset-layout').classList.remove('hidden');
             document.getElementById('btn-clear-layout').classList.remove('hidden');
-            document.getElementById('btn-delete-project').classList.remove('hidden'); // Show delete button
             document.getElementById('layout-indicator').classList.remove('hidden');
             updateLayoutIndicator();
             renderNodeGraphic();
@@ -1070,10 +1063,8 @@ PROCESSED.md ─── Briefing enriquecido
             document.getElementById('main-ui').style.display = 'flex';
             document.getElementById('btn-reset-layout').classList.add('hidden');
             document.getElementById('btn-clear-layout').classList.add('hidden');
-            document.getElementById('btn-delete-project').classList.add('hidden');
             document.getElementById('layout-indicator').classList.add('hidden');
             selectedJobId = null;
-            currentJobId = null;
         }
 
         function resetLayout() {
@@ -1422,41 +1413,6 @@ PROCESSED.md ─── Briefing enriquecido
                 const rawContent = getBriefingContent(files);
                 if (rawContent) {
                     body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${rawContent}</div>`;
-
-            if (n.title === 'DECISION' && file) {
-                try {
-                    const viability = JSON.parse(file.content);
-                    const score = viability.viability_assessment?.score_final || 0;
-                    const decision = viability.recommendation?.decision || 'N/A';
-                    const reasoning = viability.recommendation?.reasoning || '';
-                    const nota = viability.nota_final || '';
-                    let statusColor = '#666';
-                    let statusLabel = decision;
-                    if (decision === 'GO') { statusColor = '#10b981'; statusLabel = '✓ GO'; }
-                    else if (decision === 'NO-GO') { statusColor = '#ef4444'; statusLabel = '✗ NO-GO'; }
-                    else if (decision === 'REVISIT') { statusColor = '#f59e0b'; statusLabel = '⚠ REVISIT'; }
-                    else if (decision === 'CONDITIONAL GO') { statusColor = '#3b82f6'; statusLabel = '⚡ CONDITIONAL GO'; }
-                    body.innerHTML = `<div class="p-8 bg-[#0a0a0a] border border-[#222]">
-                        <div class="text-center mb-8">
-                            <div class="text-6xl font-bold mb-4" style="color: ${statusColor}">${score}/100</div>
-                            <div class="text-2xl font-bold mb-2" style="color: ${statusColor}">${statusLabel}</div>
-                        </div>
-                        <div class="border-t border-[#222] pt-6">
-                            <h3 class="text-xl font-bold mb-4 text-[#fff]">REASONING</h3>
-                            <p class="text-[#ccc] leading-relaxed whitespace-pre-wrap">${reasoning}</p>
-                        </div>
-                        ${nota ? `<div class="border-t border-[#222] pt-6 mt-6"><h3 class="text-xl font-bold mb-4 text-[#fff]">NOTA FINAL</h3><p class="text-[#ccc] leading-relaxed whitespace-pre-wrap">${nota}</p></div>` : ''}
-                        <div class="border-t border-[#222] pt-6 mt-6 text-center">
-                            <button onclick="viewFullViability('${n.id}')" class="bg-[#DC2626] hover:bg-white hover:text-black text-white font-bold py-3 px-6 text-xs uppercase tracking-wider transition-all">
-                                VER ANÁLISE COMPLETA
-                            </button>
-                        </div>
-                    </div>`;
-                    document.getElementById('panel-title').textContent = 'VEREDITO FINAL';
-                    document.getElementById('agent-panel').classList.add('open');
-                    return;
-                } catch(e) { console.error('Erro ao parsear VIABILITY:', e); }
-            }
                     document.getElementById('panel-title').textContent = 'BRIEFING ORIGINAL';
                     document.getElementById('agent-panel').classList.add('open');
                     return;
@@ -1475,27 +1431,6 @@ PROCESSED.md ─── Briefing enriquecido
         }
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
-        
-        function viewFullViability(nodeId) {
-            // Abre o painel com o JSON completo da VIABILITY (node i4)
-            const nodeDef = currentMode === 'ideias' ? nodeDefIdeias.find(n => n.title === 'VIABILITY') : null;
-            if (!nodeDef) return;
-            const files = allFilesCache.filter(f => {
-                const patterns = fileMapping['VIABILITY'] || [];
-                return patterns.some(p => f.name.includes(p));
-            });
-            const file = files.length ? files[0] : null;
-            if (!file) return;
-            const body = document.getElementById('panel-body');
-            try {
-                const json = JSON.parse(file.content);
-                body.innerHTML = formatJSON(json);
-                document.getElementById('panel-title').textContent = 'VIABILITY (ANÁLISE COMPLETA)';
-            } catch(e) {
-                body.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-mono text-[#ccc]">${file.content}</pre>`;
-                document.getElementById('panel-title').textContent = 'VIABILITY (ANÁLISE COMPLETA)';
-            }
-        }
         
         function openNewBriefing() {
             document.getElementById('briefing-modal').classList.remove('hidden');
@@ -1666,57 +1601,21 @@ PROCESSED.md ─── Briefing enriquecido
             } catch(e) {}
         }
         
-        // enterMode já definido acima (linha ~558)
-        
-        function confirmDeleteProject() {
-            if (!currentJobId || !currentMode) {
-                showNotification('⚠️ Nenhum projeto selecionado', 'error');
-                return;
-            }
-            
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-[300]';
-            modal.innerHTML = `
-                <div class="bg-[#050505] border border-[#DC2626] p-8 max-w-md">
-                    <h3 class="font-brick text-xl text-white uppercase mb-4">⚠️ DELETAR PROJETO</h3>
-                    <p class="text-[#ccc] text-sm mb-6 font-mono">Essa ação é IRREVERSÍVEL. Todos os arquivos deste projeto serão deletados permanentemente.</p>
-                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${currentJobId}</p>
-                    <div class="flex gap-4">
-                        <button onclick="this.closest('div.fixed').remove()" class="flex-1 bg-[#222] hover:bg-[#333] text-white font-mono text-xs uppercase py-3 px-6 transition-all">
-                            Cancelar
-                        </button>
-                        <button onclick="deleteProject(); this.closest('div.fixed').remove()" class="flex-1 bg-[#DC2626] hover:bg-white hover:text-black text-white font-mono text-xs uppercase py-3 px-6 transition-all">
-                            ✕ Deletar
-                        </button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
+        function enterMode(mode) {
+            currentMode = mode;
+            localStorage.setItem('last_mode', mode);
+            if (mode) window.location.hash = mode;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('project-lobby').classList.remove('hidden');
+            document.getElementById('btn-back-lobby').classList.remove('hidden');
+            document.getElementById('btn-scheme').classList.remove('hidden');
+            document.getElementById('header-sector').textContent = mode.toUpperCase();
+            if (socket && socket.connected) socket.emit('subscribe', mode);
+            fetchState();
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(fetchState, 10000);
         }
         
-        async function deleteProject() {
-            if (!currentJobId || !currentMode) return;
-            
-            try {
-                const res = await fetch(`${API_URL}/project/${currentJobId}?mode=${currentMode}`, {
-                    method: 'DELETE',
-                    headers: { 'X-API-Key': 'brick-squad-2026' }
-                });
-                const data = await res.json();
-                
-                if (data.success) {
-                    showNotification(`✓ Projeto deletado (${data.deletedCount} arquivos)`, 'success');
-                    closeNodeGraphic();
-                    fetchState();
-                } else {
-                    showNotification('✗ Erro ao deletar projeto', 'error');
-                }
-            } catch(e) {
-                console.error('Erro ao deletar:', e);
-                showNotification('✗ Falha na comunicação com o servidor', 'error');
-            }
-        }
-
         window.onload = () => {
             initWebSocket();
             const savedMode = (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');

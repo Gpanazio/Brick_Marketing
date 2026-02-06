@@ -1277,6 +1277,42 @@ process.on('unhandledRejection', (reason, promise) => {
     // Don't exit on unhandled rejection, just log it
 });
 
+// API: Delete project (all files matching jobId)
+app.delete('/api/project/:jobId', (req, res) => {
+    const { jobId } = req.params;
+    const { mode } = req.query;
+    
+    if (!jobId || !mode) {
+        return res.status(400).json({ error: 'jobId and mode required' });
+    }
+    
+    const root = getModeRoot(mode);
+    const dirs = ['briefing', 'wip', 'done', 'failed'];
+    let deletedCount = 0;
+    const deletedFiles = [];
+    
+    dirs.forEach(dir => {
+        const dirPath = path.join(root, dir);
+        if (!fs.existsSync(dirPath)) return;
+        
+        const files = fs.readdirSync(dirPath).filter(f => f.startsWith(jobId));
+        files.forEach(file => {
+            const filePath = path.join(dirPath, file);
+            try {
+                fs.unlinkSync(filePath);
+                deletedFiles.push(`${dir}/${file}`);
+                deletedCount++;
+                log('info', 'project_file_deleted', { jobId, file, dir, mode });
+            } catch(e) {
+                log('error', 'project_delete_failed', { jobId, file, dir, error: e.message });
+            }
+        });
+    });
+    
+    emitStateUpdate(mode);
+    res.json({ success: true, jobId, mode, deletedCount, files: deletedFiles });
+});
+
 // Start server - bind to 0.0.0.0 for Railway/Docker compatibility
 server = httpServer.listen(PORT, '0.0.0.0', () => {
     log('info', 'server_started', { port: PORT, host: '0.0.0.0', marketingRoot: MARKETING_ROOT, websocket: true });

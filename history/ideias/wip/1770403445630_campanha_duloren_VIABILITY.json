@@ -1,0 +1,65 @@
+{
+  "idea_name": "campanha_duloren",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 0,
+        "max": 30,
+        "feedback": "IMPOSSÍVEL AVALIAR. Pain Check retornou ERROR. Sem descrição da ideia original. Não há sequer um briefing para analisar — o campo 'IDEIA ORIGINAL' está vazio."
+      },
+      "contexto": {
+        "pontos": 0,
+        "max": 25,
+        "feedback": "IMPOSSÍVEL AVALIAR. Market Scan retornou ERROR. Zero dados de mercado, concorrência, pricing ou contexto."
+      },
+      "opcoes": {
+        "pontos": 0,
+        "max": 25,
+        "feedback": "IMPOSSÍVEL AVALIAR. Angel/Options retornou ERROR. Nenhuma opção foi gerada."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "IMPOSSÍVEL AVALIAR. Sem opções, não há execução para julgar."
+      },
+      "ajuste_risco": {
+        "pontos": 0,
+        "max": -30,
+        "feedback": "IMPOSSÍVEL AVALIAR. Devil retornou ERROR. Nenhum risco foi analisado. Ajuste neutro (0) porque não há base para penalizar nem isentar."
+      }
+    },
+    "score_before_risk": 0,
+    "score_final": 0,
+    "status": "BLOCKED",
+    "confidence": "none"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [],
+    "viability_response": [],
+    "remaining_risks": [
+      "Pipeline inteiro falhou — nenhum agente produziu output válido"
+    ]
+  },
+  "recommendation": {
+    "decision": "BLOCKED",
+    "action": "Re-executar pipeline completo desde o briefing",
+    "reasoning": "Score 0/100 — BLOCKED por falha total de pipeline. Todos os 4 inputs (Pain Check, Market Scan, Angel, Devil) retornaram ERROR. A ideia original sequer tem descrição (campo vazio). Não é possível emitir veredito sobre uma ideia que não foi analisada. Seria desonesto inventar uma avaliação sem dados. Este não é um NO-GO (que implica que a ideia foi analisada e rejeitada) — é uma falha técnica que exige re-execução.",
+    "next_steps": [
+      "VERIFICAR: O briefing original da 'campanha_duloren' existe? Localizar em history/ideias/ o arquivo de briefing correspondente ao job_id 1770403445630",
+      "DIAGNOSTICAR: Por que todos os 4 agentes falharam? Erro de modelo? Timeout? Briefing vazio/corrompido?",
+      "RE-EXECUTAR: Alimentar o pipeline novamente com o briefing correto, desde a Etapa 01 (Pain Check)",
+      "SE O BRIEFING NÃO EXISTIR: Solicitar ao humano que resubmeta a ideia com descrição"
+    ],
+    "risks_to_monitor": [],
+    "pivot_triggers": []
+  },
+  "pipeline_failure_report": {
+    "total_inputs": 4,
+    "successful_inputs": 0,
+    "failed_inputs": 4,
+    "briefing_present": false,
+    "root_cause_hypothesis": "Briefing original vazio ou ausente causou falha em cascata — sem input, nenhum agente conseguiu produzir output",
+    "action_required": "Re-executar pipeline com briefing válido"
+  },
+  "timestamp": "2026-02-06T19:07:00Z"
+}

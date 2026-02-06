@@ -1,0 +1,96 @@
+[2026-02-06T15:58:01-03:00] Pipeline iniciado: 1770403330086_campanha_duloren
+[2026-02-06T15:59:02-03:00] Pipeline iniciado: 1770403330086_campanha_duloren
+[2026-02-06T16:04:33-03:00] Pipeline iniciado: 1770403330086_campanha_duloren
+[2026-02-06T16:05:11-03:00] Pipeline iniciado: 1770403445630_campanha_duloren
+[2026-02-06T16:08:25-03:00] Pipeline finalizado: 1770403445630_campanha_duloren | Decision: {
+  "decision": "BLOCKED",
+  "action": "Re-executar pipeline completo desde o briefing",
+  "reasoning": "Score 0/100 — BLOCKED por falha total de pipeline. Todos os 4 inputs (Pain Check, Market Scan, Angel, Devil) retornaram ERROR. A ideia original sequer tem descrição (campo vazio). Não é possível emitir veredito sobre uma ideia que não foi analisada. Seria desonesto inventar uma avaliação sem dados. Este não é um NO-GO (que implica que a ideia foi analisada e rejeitada) — é uma falha técnica que exige re-execução.",
+  "next_steps": [
+    "VERIFICAR: O briefing original da 'campanha_duloren' existe? Localizar em history/ideias/ o arquivo de briefing correspondente ao job_id 1770403445630",
+    "DIAGNOSTICAR: Por que todos os 4 agentes falharam? Erro de modelo? Timeout? Briefing vazio/corrompido?",
+    "RE-EXECUTAR: Alimentar o pipeline novamente com o briefing correto, desde a Etapa 01 (Pain Check)",
+    "SE O BRIEFING NÃO EXISTIR: Solicitar ao humano que resubmeta a ideia com descrição"
+  ],
+  "risks_to_monitor": [],
+  "pivot_triggers": []
+} | Score: 0 | Duration: 194000ms
+[2026-02-06T16:11:57-03:00] Pipeline iniciado: 1770403330086_campanha_duloren
+[2026-02-06T16:32:56-03:00] Pipeline iniciado: 1770403330086_campanha_duloren
+[2026-02-06T16:35:40-03:00] Pipeline finalizado: 1770403330086_campanha_duloren | Decision: {
+  "decision": "REVISIT",
+  "action": "Obter informações críticas do cliente e re-executar pipeline. NÃO esperar os agentes — buscar os dados diretamente.",
+  "reasoning": "Score 47/100 — REVISIT. Esta é a SEGUNDA execução com pipeline incompleto (Market Scan e Angel falharam duas vezes). A campanha tem fundamentos sólidos: briefing detalhado, marca com DNA provocativo, três conceitos criativos desenvolvidos, equipe técnica capaz. O Devil levantou riscos gerenciáveis para a Duloren (nenhum é verdadeiramente absoluto para ESTA marca). PORÉM: sem dados de mercado e sem análise estratégica dos conceitos, o veredito permanece inconclusivo. A confiança é LOW. Com dados completos, tendência é CONDITIONAL GO (60-75).",
+  "information_needed": [
+    {
+      "item": "Budget disponível do cliente",
+      "why": "Sets com espelhos + água custam 25-40% a mais. Se <R$80k → simplificar para Conceito 1. Se >R$150k → três conceitos são viáveis.",
+      "priority": "critical"
+    },
+    {
+      "item": "Plano de mídia: digital paid, OOH, TV, earned?",
+      "why": "O único 'dealbreaker' do Devil (censura) SÓ é fatal se o plano for 100% paid digital. Mix com OOH/earned reduz risco drasticamente.",
+      "priority": "critical"
+    },
+    {
+      "item": "Quem é a influenciadora/talento?",
+      "why": "Define se a estética é empoderamento sofisticado ou constrangimento genérico. Casting é 80% da campanha.",
+      "priority": "high"
+    }
+  ],
+  "next_steps": [
+    "IMEDIATO: Perguntar ao cliente (ou ao Gabriel) sobre budget, plano de mídia e talento confirmado — não depender do pipeline para isso",
+    "EM PARALELO: Re-executar Market Scan e Angel uma terceira vez. Se falhar de novo, produzir análise manual dos conceitos.",
+    "COM DADOS: Re-avaliar com pipeline completo ou com dados manuais + Devil existente",
+    "ENQUANTO ESPERA: Usar ranking preliminar dos conceitos para adiantar planejamento"
+  ],
+  "preliminary_concept_ranking": {
+    "note": "Análise sem Angel — baseada no briefing e riscos do Devil. Sujeita a revisão.",
+    "ranking": [
+      {
+        "position": 1,
+        "concept": "Conceito 1: The Aftermath",
+        "rationale": "Menor risco de censura (zenital distancia câmera, composição orgânica com elementos não-humanos — taças, flores, frutas — dilui a 'sugestão'). Mais fácil de criar versão safe. Tecnicamente mais simples (espelho no chão + névoa, sem mirror room). Slogan forte.",
+        "risk_level": "medium",
+        "recommended_for": "Budget moderado, plano com paid digital"
+      },
+      {
+        "position": 2,
+        "concept": "Conceito 3: A Fluidez do Desejo",
+        "rationale": "Esteticamente mais impactante (tanque + chuva + glow). Potencial visual memorável. Risco moderado-alto de censura (transparência de lingerie molhada). Mais caro (tanque + sistema de chuva + iluminação quente/fria).",
+        "risk_level": "medium-high",
+        "recommended_for": "Budget alto, plano com forte earned/OOH"
+      },
+      {
+        "position": 3,
+        "concept": "Conceito 2: Narciso em Grupo",
+        "rationale": "Maior risco em TODAS as dimensões. Mirror room é pesadelo técnico (reflexos de crew infinitos). Closes em bocas/mãos + água é o mais difícil de manter safe. Beijo no próprio reflexo pode parecer narcisista sem o contexto certo.",
+        "risk_level": "high",
+        "recommended_for": "Apenas se budget for alto E plano for 100% earned/OOH (sem paid digital)"
+      }
+    ]
+  },
+  "risks_to_monitor": [
+    "Pipeline falhando pela segunda vez — considerar bypass manual se terceira tentativa falhar",
+    "Budget real vs complexidade técnica",
+    "Timing de produção vs lançamento desejado",
+    "Políticas de conteúdo Meta/TikTok para Q1 2026 (podem ter mudado)"
+  ]
+} | Score: 0 | Duration: 164000ms
+[2026-02-06T16:46:32-03:00] Pipeline iniciado: 1770403330086_campanha_duloren
+[2026-02-06T16:48:36-03:00] Pipeline finalizado: 1770403330086_campanha_duloren | Decision: {
+  "decision": "BLOCKED",
+  "action": "PARAR de re-executar o pipeline. Escalar para decisão humana com análise manual.",
+  "reasoning": "Score 25/100 — BLOCKED por falha sistêmica de pipeline. Terceira execução consecutiva com agentes falhando. Desta vez, apenas 1 de 4 inputs funcionou (Pain Check). As duas execuções anteriores tinham 2 de 4 (Pain Check + Devil) e produziram REVISIT 47/100 com análise completa. Re-executar pela quarta vez não vai resolver — o problema é técnico ou estrutural no pipeline, não na ideia.\n\nA IDEIA NÃO É O PROBLEMA. O briefing é sólido, a marca é estabelecida, os conceitos são detalhados. O que falta são dados de mercado e análise estratégica que o pipeline não consegue produzir para este caso.",
+  "next_steps": [
+    "PARAR re-execuções automáticas para este job_id",
+    "USAR as análises já produzidas nas execuções anteriores (Devil completo + 2x VIABILITY com ranking de conceitos e rebuttals detalhados)",
+    "OBTER DO CLIENTE as 3 informações críticas que destravam a decisão: (1) Budget, (2) Plano de mídia, (3) Influenciadora confirmada",
+    "COM ESSAS INFORMAÇÕES: O humano (Gabriel) pode tomar a decisão final usando as análises acumuladas como base — não precisa do pipeline completo"
+  ],
+  "accumulated_analysis_from_previous_runs": {
+    "devil_summary": "1 dealbreaker identificado (censura de plataformas — rebatido parcialmente: Duloren opera no limiar da censura há 30+ anos, versão safe + versão full é prática padrão). 3 cenários de falha: bloqueio de mídia paid (high/fatal), estouro de orçamento técnico (medium/critical), backlash reputacional (medium/critical). 3 riscos ocultos: Conar, pós-produção de reflexos, dependência de casting.",
+    "viability_summary": "Dois REVISIT (47/100) consistentes. Tendência a CONDITIONAL GO (60-75) com dados completos. Conceito 1 (The Aftermath) recomendado como menor risco. Conceito 3 (Fluidez do Desejo) como mais impactante visualmente. Conceito 2 (Narciso em Grupo) como mais arriscado.",
+    "key_insight": "Nenhum risco é verdadeiramente absoluto para a Duloren especificamente. A marca opera DENTRO do risco de censura e backlash por design. O que falta para decisão são dados operacionais (budget, mídia, talento), não mais análise."
+  }
+} | Score: 0 | Duration: 124000ms

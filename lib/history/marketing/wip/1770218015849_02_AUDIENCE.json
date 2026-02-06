@@ -1,0 +1,31 @@
+{
+  "idea_name": "Lançamento Brick AI - Alinhamento de Persona",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "A análise foca no alinhamento entre a proposta 'Artistas com Armas Nucleares' e o público-alvo de Diretores de Criação/Marketing. O desafio real é converter o ceticismo do mercado de 'IA é barato/fácil' para 'IA é a ferramenta para o impossível'. O posicionamento premium é relevante para evitar a comoditização."
+  },
+  "audience_alignment": {
+    "primary_persona": "Diretores de Marketing/Criação (Agências Médias/Grandes)",
+    "secondary_persona": "Produtoras de Vídeo (Parcerias Técnicas)",
+    "tone_match": "High - O tom 'Artistas com Armas Nucleares' ressoa com a busca por inovação e autoridade técnica desse público.",
+    "value_proposition_check": "A promessa de 'viabilizar o impossível' atende diretamente à dor de orçamentos e prazos que limitam grandes ideias criativas."
+  },
+  "brand_context_adherence": {
+    "status": "COMPLIANT",
+    "notes": "O briefing respeita rigorosamente o DNA da Brick: foco em serviço premium e storytelling técnico, fugindo da narrativa de 'IA como substituta de humanos'."
+  },
+  "evidence": [
+    "Foco explícito em 'Service Premium' vs 'SaaS'.",
+    "Público-alvo qualificado (Decisores de Agências).",
+    "Diferencial técnico baseado em 10 anos de experiência real de produção."
+  ],
+  "red_flags": [
+    "O budget de R$ 1.000 pode enfraquecer a percepção de 'Elite' no LinkedIn se mal distribuído.",
+    "Necessidade de provas visuais (Showreel) de altíssimo nível para sustentar o termo 'Armas Nucleares'."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-06T16:15:00Z"
+}
