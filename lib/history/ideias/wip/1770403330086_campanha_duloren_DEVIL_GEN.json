@@ -1,0 +1,62 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770403330086_campanha_duloren",
+  "failure_scenarios": [
+    {
+      "name": "Banimento algorítmico e perda de mídia paga",
+      "category": "market",
+      "description": "A campanha depende de alcance digital, mas o conteúdo proposto (surubão implícito, beijos múltiplos, transparência com água) cai em políticas de ‘sexual content’ e ‘sexually suggestive imagery’. Resultado: anúncios reprovados, shadowban e até restrição de conta — o que mata distribuição e ROI.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Meta Ads Policy proíbe ‘sexually suggestive content’ e ‘focus on body parts’. TikTok Ads Policy veda ‘sexually suggestive content’ e ‘simulated sexual acts’. Em 2023, anúncios de lingerie de marcas mainstream foram recusados por excesso de pele (relatos em fóruns oficiais Meta/AdEspresso).",
+      "mitigation": "Criar versão ‘safe’ com foco em textura/close de tecido, menos contato físico e sem beijo. Alternar mídia para OOH/TV fechada e landing com age-gating."
+    },
+    {
+      "name": "Estouro de orçamento por complexidade técnica",
+      "category": "execution",
+      "description": "Espelhos + água + múltiplos modelos + câmera zenital exigem rigging complexo, controle de reflexos, segurança elétrica e pós-produção pesada. Qualquer erro gera refilmagem. O custo real explode e o cronograma derrapa.",
+      "probability": "medium",
+      "impact": "critical",
+      "evidence": "Sets com espelho exigem limpeza de reflexos frame a frame (rotoscopia). Produções de moda com mirror rooms reportam +25–40% de custo por setup e pós. Água em set eleva seguros e logística (segurança elétrica e anti-derrapante).",
+      "mitigation": "Reduzir água e espelho real (usar acrílico/falso espelho), limitar número de modelos por take, e construir versão ‘digital’ parcial em pós — mas isso reduz o efeito premium do conceito."
+    },
+    {
+      "name": "Backlash público e risco Conar",
+      "category": "timing",
+      "description": "O tom ‘surubão’ pode ser lido como vulgar/objetificador e provocar denúncias ao Conar. Duloren já tem histórico de campanhas retiradas, então o risco de veto é alto, levando à retirada de mídia e dano reputacional.",
+      "probability": "medium",
+      "impact": "critical",
+      "evidence": "Duloren já foi alvo do Conar (ex.: campanha ‘Pacificar foi fácil. Quero ver dominar’, retirada). Em 2024, 83% dos processos no Conar resultaram em penalização.",
+      "mitigation": "Blindar com direção de arte editorial (referências Helmut Newton/Steven Klein) e limitar veiculação aberta. Ainda assim, risco de denúncia permanece."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Dependência crítica de casting perfeito",
+      "why_angel_missed": "Se o elenco não tiver química e sofisticação, o resultado cai para vulgaridade. A campanha depende 80% de expressão e presença dos modelos."
+    },
+    {
+      "risk": "Direitos de imagem e consentimento ampliados",
+      "why_angel_missed": "Conteúdo erótico exige contratos rígidos e liberação específica para uso em múltiplas plataformas; qualquer contestação gera retirada e passivo jurídico."
+    },
+    {
+      "risk": "Desalinhamento com o varejo",
+      "why_angel_missed": "Varejistas digitais podem recusar associar a marca a imagens muito explícitas, limitando canais de venda e performance."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "legal",
+      "description": "Se a campanha for interpretada como conteúdo sexual explícito por plataformas ou pelo Conar, a retirada é imediata. Sem mídia digital (principal canal de conversão), o ROI fica inviável.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "high",
+    "fatal_flaws_count": 1,
+    "verdict": "FAIL",
+    "reasoning": "A ideia é esteticamente forte, mas operacionalmente frágil: depende de aceitação algorítmica e regulatória que é improvável para conteúdo quase erótico. O risco de bloqueio + estouro de orçamento + backlash supera o upside. Sem versões ‘safe’ e estratégia de mídia restrita, é NO-GO."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-06T19:55:00Z"
+}
