@@ -136,7 +136,8 @@ echo ""
 echo "⏳ ETAPA 2: Market Scan (Flash)"
 echo "  📊 Resumindo contexto (economia de tokens)..."
 CONTEXT_SUMMARY=$(create_ideias_context "$JOB_ID" "$WIP_DIR")
-BRIEFING_SUMMARY=$(summarize_ideias_briefing "$PROCESSED_CONTENT" 400)
+RAW_CONTENT=$(cat "$RAW_FILE" 2>/dev/null || echo "N/A")
+BRIEFING_SUMMARY=$(summarize_ideias_briefing "$RAW_CONTENT" 400)
 STEP_START=$(start_timer)
 MARKET_OUT="$WIP_DIR/${JOB_ID}_MARKET_SCAN.md"
 MARKET_LOG="$LOG_DIR/${JOB_ID}_02_MARKET_SCAN.log"
