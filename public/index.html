@@ -71,6 +71,19 @@
         /* Loop nodes (Copy Senior ↔ Wall auto-revision) */
         .node[data-provider="loop-wall"] { background: rgba(5, 5, 5, 0.95); border: 1px solid #333; }
         .node[data-provider="loop-copy"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; }
+        /* Loop nodes Projetos (Execution ↔ Director) */
+        .node[data-provider="loop-exec"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; border: 1px solid #f97316; }
+        .node[data-provider="loop-exec"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
+        .node[data-provider="loop-exec"] .node-subtext { color: #f97316; }
+        .node[data-provider="loop-exec"] .node-title { color: #f97316; }
+        .node[data-provider="loop-dir"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; border: 1px solid #f97316; }
+        .node[data-provider="loop-dir"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
+        .node[data-provider="loop-dir"] .node-subtext { color: #f97316; }
+        .node[data-provider="loop-dir"] .node-title { color: #f97316; }
+        .node[data-provider="loop-prop"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; border: 1px solid #f97316; }
+        .node[data-provider="loop-prop"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
+        .node[data-provider="loop-prop"] .node-subtext { color: #f97316; }
+        .node[data-provider="loop-prop"] .node-title { color: #f97316; }
         .disabled[data-provider] { border-left-color: #222 !important; }
         .disabled[data-provider] .node-subtext { color: #333 !important; }
 
@@ -1208,9 +1221,103 @@ PROCESSED.md ─── Briefing enriquecido
                 makeDraggable(el);
             });
 
-            // DYNAMIC LOOP NODES - DESABILITADO (Gabriel pediu pra esconder)
+            // DYNAMIC LOOP NODES - Marketing (DESABILITADO - Gabriel pediu pra esconder)
             // const loopWallFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('WALL'));
             // const loopCopyFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('COPY_SENIOR'));
+
+            // DYNAMIC LOOP NODES - Projetos (Execution ↔ Director)
+            if (currentMode === 'projetos') {
+                const loopExecFiles = projectFiles.filter(f => /_v(\d+)\.(json|md)$/i.test(f.name) && f.name.includes('EXECUTION_DESIGN'));
+                const loopPropFiles = projectFiles.filter(f => /_v(\d+)\.(json|md)$/i.test(f.name) && f.name.includes('PROPOSAL'));
+                const loopDirFiles = projectFiles.filter(f => /_v(\d+)\.(json|md)$/i.test(f.name) && f.name.includes('DIRECTOR'));
+                
+                // Agrupar por versão (v2, v3...)
+                const loopVersions = new Set();
+                [...loopExecFiles, ...loopPropFiles, ...loopDirFiles].forEach(f => {
+                    const match = f.name.match(/_v(\d+)\./);
+                    if (match) loopVersions.add(parseInt(match[1]));
+                });
+                
+                const sortedVersions = [...loopVersions].sort((a,b) => a - b);
+                
+                sortedVersions.forEach((ver, idx) => {
+                    // Node EXECUTION v2/v3
+                    const execNode = document.getElementById('p4'); // EXECUTION_DESIGN original
+                    const dirNode = document.getElementById('p6'); // DIRECTOR original
+                    
+                    if (execNode) {
+                        const execTop = parseInt(execNode.style.top) || 1150;
+                        const execLeft = parseInt(execNode.style.left) || 0;
+                        const offset = (idx + 1) * 380; // Cada rodada de loop fica à direita
+                        
+                        // EXECUTION vN
+                        const execEl = document.createElement('div');
+                        execEl.className = 'node';
+                        execEl.setAttribute('data-provider', 'loop-exec');
+                        execEl.id = `loop-exec-${ver}`;
+                        execEl.style.position = 'absolute';
+                        execEl.style.left = savedPositions[`loop-exec-${ver}`]?.left || `${execLeft + offset}px`;
+                        execEl.style.top = savedPositions[`loop-exec-${ver}`]?.top || `${execTop}px`;
+                        execEl.style.transform = 'none';
+                        execEl.innerHTML = `
+                            <div class="node-led"></div>
+                            <div class="node-id">LOOP v${ver} // Revision</div>
+                            <div class="node-title">EXECUTION v${ver}</div>
+                            <div class="node-subtext">GEMINI PRO (LOOP ${ver})</div>
+                        `;
+                        execEl.ondblclick = () => {
+                            const file = projectFiles.find(f => f.name.includes(`EXECUTION_DESIGN_v${ver}`));
+                            if (file) openPanel({ id: `loop-exec-${ver}`, title: `EXECUTION DESIGN v${ver}` }, projectFiles);
+                        };
+                        container.appendChild(execEl);
+                        makeDraggable(execEl);
+                        
+                        // PROPOSAL vN
+                        const propEl = document.createElement('div');
+                        propEl.className = 'node';
+                        propEl.setAttribute('data-provider', 'loop-prop');
+                        propEl.id = `loop-prop-${ver}`;
+                        propEl.style.position = 'absolute';
+                        propEl.style.left = savedPositions[`loop-prop-${ver}`]?.left || `${execLeft + offset}px`;
+                        propEl.style.top = savedPositions[`loop-prop-${ver}`]?.top || `${execTop + 200}px`;
+                        propEl.style.transform = 'none';
+                        propEl.innerHTML = `
+                            <div class="node-led"></div>
+                            <div class="node-id">LOOP v${ver} // Revision</div>
+                            <div class="node-title">PROPOSAL v${ver}</div>
+                            <div class="node-subtext">GPT-5.1 (LOOP ${ver})</div>
+                        `;
+                        propEl.ondblclick = () => {
+                            const file = projectFiles.find(f => f.name.includes(`PROPOSAL_v${ver}`));
+                            if (file) openPanel({ id: `loop-prop-${ver}`, title: `PROPOSAL v${ver}` }, projectFiles);
+                        };
+                        container.appendChild(propEl);
+                        makeDraggable(propEl);
+                        
+                        // DIRECTOR vN
+                        const dirEl = document.createElement('div');
+                        dirEl.className = 'node';
+                        dirEl.setAttribute('data-provider', 'loop-dir');
+                        dirEl.id = `loop-dir-${ver}`;
+                        dirEl.style.position = 'absolute';
+                        dirEl.style.left = savedPositions[`loop-dir-${ver}`]?.left || `${execLeft + offset}px`;
+                        dirEl.style.top = savedPositions[`loop-dir-${ver}`]?.top || `${execTop + 400}px`;
+                        dirEl.style.transform = 'none';
+                        dirEl.innerHTML = `
+                            <div class="node-led"></div>
+                            <div class="node-id">LOOP v${ver} // Revision</div>
+                            <div class="node-title">DIRECTOR v${ver}</div>
+                            <div class="node-subtext">GEMINI PRO (LOOP ${ver})</div>
+                        `;
+                        dirEl.ondblclick = () => {
+                            const file = projectFiles.find(f => f.name.includes(`DIRECTOR_v${ver}`));
+                            if (file) openPanel({ id: `loop-dir-${ver}`, title: `DIRECTOR v${ver}` }, projectFiles);
+                        };
+                        container.appendChild(dirEl);
+                        makeDraggable(dirEl);
+                    }
+                });
+            }
 
             // DYNAMIC REVISION NODES - Detecta arquivos REVISAO_1, REVISAO_2... e cria nós ao lado do HUMAN
             const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
@@ -1295,13 +1402,40 @@ PROCESSED.md ─── Briefing enriquecido
 
             // CONDICIONAL: Se Wall rejeitou e existe loop aprovado, redirecionar fluxo
             if (currentMode === 'marketing') {
-                // Encontrar o último Wall aprovado (v2, v3... ou original)
                 const lastApprovedWall = document.getElementById('loop-wall-3') || document.getElementById('loop-wall-2');
                 if (lastApprovedWall) {
-                    // Remover n8→n9 (WALL original não vai pro HUMAN)
                     currentLinks = currentLinks.filter(([f,t]) => !(f === 'n8' && t === 'n9'));
-                    // Adicionar: último Wall aprovado → HUMAN
                     currentLinks.push([lastApprovedWall.id, 'n9']);
+                }
+            }
+            
+            // CONDICIONAL: Se Director rejeitou e existe loop, redirecionar fluxo em Projetos
+            if (currentMode === 'projetos') {
+                // Detectar versões de loop existentes
+                const loopVersions = [];
+                for (let v = 2; v <= 4; v++) {
+                    if (document.getElementById(`loop-exec-${v}`)) loopVersions.push(v);
+                }
+                
+                if (loopVersions.length > 0) {
+                    // Director original → Execution v2 (seta de retorno/loop)
+                    currentLinks.push(['p6', `loop-exec-${loopVersions[0]}`]);
+                    
+                    // Dentro de cada versão: Exec → Prop → Dir
+                    loopVersions.forEach(v => {
+                        currentLinks.push([`loop-exec-${v}`, `loop-prop-${v}`]);
+                        currentLinks.push([`loop-prop-${v}`, `loop-dir-${v}`]);
+                    });
+                    
+                    // Entre versões: Dir v2 → Exec v3
+                    for (let i = 0; i < loopVersions.length - 1; i++) {
+                        currentLinks.push([`loop-dir-${loopVersions[i]}`, `loop-exec-${loopVersions[i+1]}`]);
+                    }
+                    
+                    // Último Director do loop → HUMAN (substituindo Director original)
+                    const lastVer = loopVersions[loopVersions.length - 1];
+                    currentLinks = currentLinks.filter(([f,t]) => !(f === 'p6' && t === 'p9'));
+                    currentLinks.push([`loop-dir-${lastVer}`, 'p9']);
                 }
             }
 
