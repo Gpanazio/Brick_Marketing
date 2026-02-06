@@ -1,5 +1,5 @@
 # ROLES INDEX - Brick AI War Room
-*Atualizado: 05/02/2026 por Douglas (Opus 4.6)*
+*Atualizado: 06/02/2026 por Douglas (Opus 4.6)*
 
 ---
 
@@ -7,9 +7,14 @@
 
 Este é o pipeline principal. Recebe um briefing de marketing e produz copy publicável.
 
+### PRÉ-PIPELINE (Manual):
+Douglas processa briefing via OpenClaw session **antes** de executar o script bash. Interpreta, enriquece, decide se vale executar. Salva `{JOB_ID}_PROCESSED.md`.
+
+### PIPELINE AUTOMÁTICO (run-marketing.sh):
+
 | Etapa | Role File | Modelo | O que faz |
 |-------|-----------|--------|-----------|
-| 00 | (Douglas) | -- | Pré-processa briefing. Lê anexos, preenche lacunas se necessário. Salva PROCESSED.md |
+| -- | **Douglas (pré-pipeline)** | **Opus 4.6** | **Processa briefing manualmente via OpenClaw. Interpreta, enriquece, decide executar** |
 | 01 | BRIEF_VALIDATOR.md | Flash | Valida se briefing tem objetivo, público, formato e contexto. PASS/FAIL |
 | 02 | AUDIENCE_ANALYST.md | Flash | Avalia alinhamento com persona hardcoded + BRAND_GUIDE.md completo |
 | 03 | TOPIC_RESEARCHER.md | Flash | Pesquisa dados de mercado, tendências, referências verificáveis |

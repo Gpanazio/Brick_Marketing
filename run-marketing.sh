@@ -1,9 +1,11 @@
 #!/bin/bash
-# BRICK AI MARKETING PIPELINE v2.0
+# BRICK AI MARKETING PIPELINE v2.1
 # Executa pipeline de Marketing (Content & Flow)
 # Usa openclaw agent (sincrono) com retry, validação e logging
 #
-# Melhorias v2.0:
+# Melhorias v2.1:
+# - Context-summarizer integrado (economia ~40-50% tokens)
+# - Douglas removido do pipeline (processamento manual via OpenClaw)
 # - Retry com exponential backoff
 # - Validação de JSON output
 # - Logging completo (não descarta output)
@@ -15,6 +17,7 @@ PROJECT_ROOT="$SCRIPT_DIR"
 
 # Carregar utilitários
 source "$PROJECT_ROOT/lib/pipeline-utils.sh"
+source "$PROJECT_ROOT/lib/context-summarizer.sh"
 
 BRIEFING_FILE="$1"
 
@@ -43,10 +46,11 @@ mkdir -p "$LOG_DIR"
 # Timer do pipeline completo
 PIPELINE_START=$(start_timer)
 
-echo "📢 Brick AI Marketing Pipeline v2.0"
+echo "📢 Brick AI Marketing Pipeline v2.1"
 echo "📋 Briefing: $(basename $BRIEFING_FILE)"
 echo "🆔 Job ID: $JOB_ID"
 echo "📁 Logs: $LOG_DIR"
+echo "ℹ️  PRÉ-PIPELINE: Douglas processou briefing via OpenClaw"
 echo "---"
 
 # Log de início do pipeline
@@ -66,15 +70,9 @@ CRITIC_ROLE=$(cat "$ROLES_DIR/COPY_SENIOR.md" 2>/dev/null || echo "N/A")
 WALL_ROLE=$(cat "$ROLES_DIR/FILTRO_FINAL.md" 2>/dev/null || echo "N/A")
 
 # ============================================
-# ETAPA 0: Douglas (Ingestion)
+# PRÉ-PIPELINE: Douglas processa briefing manualmente via OpenClaw
+# Este script assume que {JOB_ID}_PROCESSED.md já foi criado
 # ============================================
-echo ""
-echo "⏳ ETAPA 0: Douglas (Ingestion)"
-STEP_START=$(start_timer)
-cp "$BRIEFING_FILE" "$WIP_DIR/${JOB_ID}_PROCESSED.md"
-DURATION=$(get_duration_ms $STEP_START)
-echo "✅ Briefing processado"
-print_duration $DURATION "Etapa 0"
 
 # ============================================
 # ETAPA 1: VALIDATOR (Flash)
@@ -299,28 +297,32 @@ fi
 # ============================================
 echo ""
 echo "⏳ ETAPA 5: Copywriters (3 modelos em paralelo)"
+echo "  📊 Resumindo contexto (economia de tokens)..."
 STEP_START=$(start_timer)
 COPY_GPT_OUT="$WIP_DIR/${JOB_ID}_05A_COPY_GPT.md"
 COPY_FLASH_OUT="$WIP_DIR/${JOB_ID}_05B_COPY_FLASH.md"
 COPY_SONNET_OUT="$WIP_DIR/${JOB_ID}_05C_COPY_SONNET.md"
-CLAIMS_CONTENT=$(cat "$CLAIMS_OUT" 2>/dev/null || echo "N/A")
+
+# Context-summarizer: reduz contexto de ~12k tokens pra ~4k
+CONTEXT_SUMMARY=$(create_marketing_context "$JOB_ID" "$WIP_DIR")
+
+# Briefing resumido (300 chars max)
+BRIEFING_SUMMARY=$(summarize_briefing "$BRIEFING_CONTENT" 300)
 
 COPY_CONTEXT="BRAND GUIDE (OBRIGATÓRIO - RESPEITAR RIGOROSAMENTE):
 ${BRAND_GUIDE}
 
 ---
 
-BRIEFING:
-${BRIEFING_CONTENT}
+BRIEFING RESUMIDO:
+${BRIEFING_SUMMARY}
 
-PÚBLICO:
-${AUDIENCE_CONTENT}
+CONTEXTO CONSOLIDADO (Validator + Audience + Research + Claims):
+${CONTEXT_SUMMARY}
 
-RESEARCH:
-${RESEARCH_CONTENT}
+---
 
-CLAIMS (respeitar):
-${CLAIMS_CONTENT}"
+NOTA: Contexto foi resumido para economia de tokens. Se precisar de detalhes completos de alguma etapa, solicite."
 
 # GPT (com logging)
 openclaw agent --agent gpt \
@@ -417,12 +419,23 @@ print_duration $DURATION "Etapa 5"
 # ============================================
 echo ""
 echo "⏳ ETAPA 6: Copy Senior (GPT 5.2)"
+echo "  📊 Resumindo copies (economia de tokens)..."
 STEP_START=$(start_timer)
 CRITIC_OUT="$WIP_DIR/${JOB_ID}_06_COPY_SENIOR.json"
 CRITIC_LOG="$LOG_DIR/${JOB_ID}_06_COPY_SENIOR.log"
-COPY_A=$(cat "$COPY_GPT_OUT" 2>/dev/null || echo "N/A")
-COPY_B=$(cat "$COPY_FLASH_OUT" 2>/dev/null || echo "N/A")
-COPY_C=$(cat "$COPY_SONNET_OUT" 2>/dev/null || echo "N/A")
+
+# Ler copies completas (serão resumidas antes de enviar)
+COPY_A_FULL=$(cat "$COPY_GPT_OUT" 2>/dev/null || echo "N/A")
+COPY_B_FULL=$(cat "$COPY_FLASH_OUT" 2>/dev/null || echo "N/A")
+COPY_C_FULL=$(cat "$COPY_SONNET_OUT" 2>/dev/null || echo "N/A")
+
+# Resumir copies pra 800 chars cada (suficiente pra julgar)
+COPY_A=$(summarize_briefing "$COPY_A_FULL" 800)
+COPY_B=$(summarize_briefing "$COPY_B_FULL" 800)
+COPY_C=$(summarize_briefing "$COPY_C_FULL" 800)
+
+# Resumir briefing (já foi feito antes, mas reusar aqui)
+BRIEFING_SUMMARY=$(summarize_briefing "$BRIEFING_CONTENT" 300)
 
 attempt=1
 backoff=2
@@ -436,17 +449,22 @@ while [ $attempt -le $max_retries ]; do
 
 ---
 
-BRIEFING:
-${BRIEFING_CONTENT}
+BRIEFING RESUMIDO:
+${BRIEFING_SUMMARY}
 
-COPY A (GPT):
+COPY A (GPT) - Primeiros 800 chars:
 ${COPY_A}
 
-COPY B (Flash):
+COPY B (Flash) - Primeiros 800 chars:
 ${COPY_B}
 
-COPY C (Sonnet):
+COPY C (Sonnet) - Primeiros 800 chars:
 ${COPY_C}
+
+NOTA: Copies resumidas para economia. Se precisar do texto completo de alguma, solicite pelos arquivos:
+- ${COPY_GPT_OUT}
+- ${COPY_FLASH_OUT}
+- ${COPY_SONNET_OUT}
 
 ---
 
@@ -515,10 +533,22 @@ fi
 # ============================================
 echo ""
 echo "⏳ ETAPA 7: Wall / Filtro Final (Opus)"
+echo "  📊 Resumindo contexto (economia MÁXIMA - Opus é caro)..."
 STEP_START=$(start_timer)
 WALL_OUT="$WIP_DIR/${JOB_ID}_07_WALL.json"
 WALL_LOG="$LOG_DIR/${JOB_ID}_07_WALL.log"
-CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
+
+# Copy Senior output completo
+CRITIC_FULL=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
+
+# Extrair apenas copy_revisada + score + justificativa (não precisa das 3 copies originais)
+COPY_REVISADA=$(echo "$CRITIC_FULL" | jq -r '.copy_revisada // "N/A"' 2>/dev/null)
+CRITIC_WINNER=$(echo "$CRITIC_FULL" | jq -r '.vencedor // "N/A"' 2>/dev/null)
+CRITIC_SCORE=$(echo "$CRITIC_FULL" | jq -r '.score_vencedor // "N/A"' 2>/dev/null)
+CRITIC_REASON=$(echo "$CRITIC_FULL" | jq -r '.justificativa // "N/A"' 2>/dev/null | head -c 400)
+
+# Briefing resumido
+BRIEFING_SUMMARY=$(summarize_briefing "$BRIEFING_CONTENT" 300)
 
 attempt=1
 backoff=2
@@ -538,11 +568,15 @@ ${BRAND_GUARDIAN}
 
 ---
 
-BRIEFING:
-${BRIEFING_CONTENT}
+BRIEFING RESUMIDO:
+${BRIEFING_SUMMARY}
 
-COPY REVISADA PELO COPY SENIOR + ANÁLISE:
-${CRITIC_CONTENT}
+COPY FINAL (escolhida e revisada pelo Copy Senior):
+Modelo vencedor: ${CRITIC_WINNER} (score: ${CRITIC_SCORE})
+Justificativa: ${CRITIC_REASON}
+
+TEXTO DA COPY:
+${COPY_REVISADA}
 
 ---
 

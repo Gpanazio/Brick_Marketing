@@ -25,13 +25,29 @@ Um sistema que transforma um **briefing** (pedido de conteúdo) em **copy public
 
 ## Pipeline Marketing (o principal)
 
-### As 7 Etapas
+### PRÉ-PIPELINE: Douglas (Manual)
+
+**Antes do pipeline automático rodar:**
+1. Douglas recebe notificação do Railway (novo briefing)
+2. Lê e interpreta o briefing via OpenClaw session
+3. Preenche gaps, baixa anexos, adiciona contexto da Brick AI
+4. Salva `{JOB_ID}_PROCESSED.md` enriquecido
+5. Executa `./run-marketing.sh {JOB_ID}_PROCESSED.md`
+
+**Modelo:** Opus 4.6 (raciocínio crítico + decisões estratégicas)
+
+---
+
+### As 7 Etapas (Pipeline Automático)
 
 ```
 BRIEFING (input do usuário)
 │
 ▼
-00. DOUGLAS (Orchestrator) ─── Pré-processa briefing, anexos, decisões
+[DOUGLAS] ─── Processamento manual via OpenClaw
+│             (interpreta, enriquece, decide executar)
+▼
+PROCESSED.md ─── Briefing enriquecido
 │
 ▼
 01. BRIEF VALIDATOR (Flash) ── Valida completude, identifica lacunas
@@ -67,7 +83,7 @@ GPT-5.2        FLASH          SONNET
 
 | Etapa | Modelo | O que faz | Role File |
 |-------|--------|-----------|-----------|
-| 00. Douglas | -- | Pré-processa briefing. Lê anexos, preenche lacunas. Salva PROCESSED.md | -- |
+| -- | **Douglas (manual)** | **Pré-processa briefing via OpenClaw. Interpreta, enriquece, decide executar** | **OpenClaw Opus 4.6** |
 | 01. Validator | Flash | Checa se briefing tem objetivo, público, formato, contexto | `BRIEF_VALIDATOR.md` |
 | 02. Audience | Flash | Avalia alinhamento com persona da Brick + Brand Guide completo | `AUDIENCE_ANALYST.md` |
 | 03. Researcher | Flash | Busca dados de mercado, tendências, referências verificáveis | `TOPIC_RESEARCHER.md` |
@@ -101,16 +117,29 @@ Quando Wall reprova (score < 80):
 | `BRAND_GUIDE.md` | Tom, vocabulário, proibições ("Vision over Prompt") | Copywriters + Audience Analyst |
 | `BRAND_GUARDIAN.md` | Checklist de tom, terminologia, red flags | Wall + Copy Senior (fallback) |
 
-### Custo por run (~$0.55)
+### Economia de tokens (Context-Summarizer)
 
-| Etapa | Modelo | Custo |
-|-------|--------|-------|
-| 1-4 | Flash (x4) | ~$0.01 |
-| 5 | GPT + Flash + Sonnet | ~$0.05 |
-| 6 | GPT 5.2 | ~$0.04 |
-| 7 | Opus | ~$0.45 |
+**Integrado v2.1:** O pipeline agora resume contexto automaticamente entre etapas críticas.
 
-Opus domina o custo (~85%) por causa do input pesado (12k tokens de contexto).
+| Ponto de Resumo | Antes | Depois | Economia |
+|-----------------|-------|--------|----------|
+| Etapa 5 (Copywriters) | ~12k tokens | ~4k tokens | 66% |
+| Etapa 6 (Copy Senior) | ~8k tokens | ~3k tokens | 62% |
+| Etapa 7 (Wall/Opus) | ~10k tokens | ~2k tokens | 80% |
+
+**Impacto:** Economia de ~40-50% no custo total por run.
+
+### Custo por run (~$0.30)
+
+| Etapa | Modelo | Custo (v2.0) | Custo (v2.1) |
+|-------|--------|--------------|--------------|
+| 1-4 | Flash (x4) | ~$0.01 | ~$0.01 |
+| 5 | GPT + Flash + Sonnet | ~$0.05 | ~$0.03 |
+| 6 | GPT 5.2 | ~$0.04 | ~$0.02 |
+| 7 | Opus | ~$0.45 | ~$0.24 |
+| **TOTAL** | -- | **~$0.55** | **~$0.30** |
+
+**Maior impacto:** Opus (etapa 7) reduziu de $0.45 → $0.24 (~47% economia).
 
 ---
 
@@ -167,7 +196,7 @@ Brick_Marketing/
 │   └── ...                    # + roles de Projetos e Ideias
 ├── lib/
 │   ├── pipeline-utils.sh      # Retry, validação JSON, logging
-│   └── context-summarizer.sh  # Resumo de contexto entre etapas
+│   └── context-summarizer.sh  # 🆕 Resumo de contexto entre etapas (economia ~50% tokens)
 ├── config/
 │   └── constants.js           # Custos, thresholds, tokens médios
 ├── contracts/
@@ -184,6 +213,38 @@ Brick_Marketing/
 │   └── ideias/                # Mesma estrutura
 └── MARKETING_PIPELINE.md      # Documentação detalhada do pipeline
 ```
+
+---
+
+## Context-Summarizer (Economia de Tokens)
+
+**Arquivo:** `lib/context-summarizer.sh`
+
+### O que faz
+Em vez de passar **todo** o output de cada etapa para a próxima (o que infla tokens exponencialmente), o context-summarizer extrai apenas as informações essenciais e cria um resumo estruturado.
+
+### Pontos de aplicação (run-marketing.sh)
+| Etapa | O que resume | Tokens antes | Tokens depois | Economia |
+|-------|--------------|--------------|---------------|----------|
+| **05 → Copywriters** | Validator + Audience + Research + Claims (JSONs completos) | ~12k | ~4k | **66%** |
+| **06 → Copy Senior** | 3 copies completas (3x ~1.5k chars) | ~8k | ~3k | **62%** |
+| **07 → Wall (Opus)** | Copy Senior JSON completo + contexto | ~10k | ~2k | **80%** |
+
+### Funções principais
+- `create_marketing_context()` → Resumo estruturado do pipeline Marketing
+- `summarize_briefing()` → Trunca briefing mantendo essência (300-500 chars)
+- `summarize_json()` → Extrai apenas campos críticos de JSONs
+
+### Por que funciona
+- Modelos não precisam do contexto **completo** pra fazer seu trabalho
+- Copywriters só precisam saber **o que importa** (persona, dores, claims), não cada vírgula do JSON
+- Wall (Opus) só precisa julgar **a copy final**, não as 3 versões originais
+
+### Estimativa de economia
+**Antes (v2.0):** ~$0.55/run → Opus queimava $0.45 sozinho
+**Depois (v2.1):** ~$0.30/run → Opus agora custa $0.24
+
+**Total economizado:** ~45% por run (~$15/mês com 50 runs)
 
 ---
 

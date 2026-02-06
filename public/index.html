@@ -463,7 +463,7 @@
 
         const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
-            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
+            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Pre-Pipeline (Manual)', model: 'OPUS 4.6', douglas: true },
             { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator', model: 'GEMINI FLASH' },
             { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'GEMINI FLASH' },
             { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'GEMINI FLASH' },
@@ -598,7 +598,7 @@
                 diagram.textContent = `RAW IDEA
 │
 ▼
-00. DOUGLAS (Orchestrator)
+[DOUGLAS] - Processamento MANUAL via OpenClaw
 │
 ▼
 01. PAIN CHECK (Flash) - Validação da dor
@@ -628,7 +628,7 @@
                 diagram.textContent = `BRIEFING
 │
 ▼
-00. DOUGLAS (Orchestrator) - Ingestion
+[DOUGLAS] - Processamento MANUAL via OpenClaw
 │
 ▼
 01. BRAND DIGEST (Flash) - Extrai DNA/tom/valores da marca
@@ -731,7 +731,10 @@ OUTPUT (Proposta completa)`;
                 diagram.textContent = `BRIEFING (input do usuário)
 │
 ▼
-00. DOUGLAS (Orchestrator) ─── Pré-processa briefing, anexos, decisões
+[DOUGLAS] ─── Processamento MANUAL via OpenClaw
+│             (interpreta, enriquece, decide executar)
+▼
+PROCESSED.md ─── Briefing enriquecido
 │
 ▼
 01. BRIEF VALIDATOR (Flash) ── Valida completude, identifica lacunas
@@ -774,9 +777,9 @@ OUTPUT (Proposta completa)`;
                 info.innerHTML = `
                     <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:16px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">O QUE CADA NODE FAZ</h3>
 
-                    <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">00. DOUGLAS (Orchestrator)</div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Pré-processa o briefing bruto. Lê PDFs, imagens e anexos. Se o briefing está incompleto, Douglas preenche as lacunas (documentado em PROCESSED.md, seção "Decisões do Douglas"). Nunca para o pipeline pra perguntar.</div>
+                    <div style="margin-bottom:16px;background:#1e293b;padding:10px;border-left:3px solid #f59e0b;">
+                        <div style="color:#f59e0b;font-weight:700;">00. DOUGLAS <span style="font-size:9px;background:#f59e0b;color:#000;padding:2px 4px;border-radius:3px;margin-left:4px;">MANUAL</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:4px;"><strong>Pré-Pipeline:</strong> Douglas processa briefing manualmente via OpenClaw session. Interpreta, enriquece com contexto da Brick AI, baixa anexos se necessário. Decide se vale executar pipeline. Salva <code>{JOB_ID}_PROCESSED.md</code> e executa <code>run-marketing.sh</code>.</div>
                     </div>
 
                     <div style="margin-bottom:16px;">

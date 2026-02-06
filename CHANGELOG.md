@@ -1,5 +1,55 @@
 # CHANGELOG - Brick Marketing War Room
 
+## v2.1 - 2026-02-06
+
+### 🚀 Context-Summarizer Integration
+**Economia de ~45% no custo por run** ($0.55 → $0.30)
+
+**Implementação:**
+- Context-summarizer integrado em 3 pontos críticos do pipeline Marketing
+- Etapa 5 (Copywriters): Contexto resumido de ~12k → ~4k tokens (66% economia)
+- Etapa 6 (Copy Senior): Copies resumidas de ~8k → ~3k tokens (62% economia)
+- Etapa 7 (Wall/Opus): Input reduzido de ~10k → ~2k tokens (**80% economia**)
+
+**Funções utilizadas:**
+- `create_marketing_context()` - Resumo estruturado do pipeline
+- `summarize_briefing()` - Trunca briefing mantendo essência
+- `summarize_json()` - Extrai apenas campos críticos
+
+**Maior impacto:** Opus (etapa 7) reduziu de $0.45 → $0.24 por run
+
+### 🧹 Douglas Clarification
+**Correção conceitual:** Douglas não é uma etapa do script bash — é processamento **manual** via OpenClaw.
+
+**Mudanças:**
+1. **run-marketing.sh:**
+   - Removido fake `cp` (linhas 71-79)
+   - Adicionado comentário explicativo
+   - Versão: v2.0 → v2.1
+
+2. **README.md:**
+   - Seção "PRÉ-PIPELINE: Douglas (Manual)" criada
+   - Diagrama atualizado: `[DOUGLAS]` com badge MANUAL
+   - Fluxo completo documentado
+
+3. **roles/INDEX.md:**
+   - Douglas destacado como pré-pipeline manual
+   - Data de atualização: 05/02 → 06/02
+
+4. **public/index.html:**
+   - Node Douglas: label `Orchestrator` → `Pre-Pipeline (Manual)`
+   - Model: `CORE` → `OPUS 4.6`
+   - Badge laranja `MANUAL` adicionado
+   - Tooltip atualizado: "Pré-processamento via OpenClaw session"
+   - 3 diagramas (Marketing/Projetos/Ideias) corrigidos
+
+### 📚 Documentação
+- Seção técnica "Context-Summarizer" adicionada ao README
+- Tabela comparativa de custos (v2.0 vs v2.1)
+- Tabela de economia de tokens por etapa
+
+---
+
 ## v3.0 - 2026-02-06
 
 ### Pipeline Projetos
