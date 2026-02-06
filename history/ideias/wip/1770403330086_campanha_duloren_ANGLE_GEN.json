@@ -1,0 +1,46 @@
+{
+  "idea_name": "campanha_duloren_estetica_sexy_zenital",
+  "options": [
+    {
+      "name": "Executar conceito 'The Aftermath' com erotismo artístico",
+      "action": "Produzir set espelhado com composição zenital e água em névoa/suor; reduzir ações explícitas (beijos múltiplos) e focar em tensão pós-festa + textura de renda/pele. Testar cortes para versões 30s/15s e stills.",
+      "bet": "A estética de luxo + erotismo implícito gera buzz sem bloqueio massivo de mídia.",
+      "risk": "Risco de censura em Meta/TikTok mesmo com implícito; custo alto do set espelhado e controle de reflexos; risco de interpretar como conteúdo adulto.",
+      "upside": "Campanha memorável, premium, com alto valor editorial e possibilidade de PR orgânico.",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Balanceia o desejo do cliente por erotismo com execução mais segura e elegante. Mantém o insight do briefing (zenital + grupo) sem depender de cenas explícitas.
+      "
+    },
+    {
+      "name": "Narciso em Grupo (espelhos + beijos) com veiculação restrita",
+      "action": "Assumir o conceito mais provocativo (beijos + caixa de espelhos + água) e planejar distribuição limitada: offline/OOH/TV fechada + age-gating e whitelist digital.",
+      "bet": "A ousadia gera impacto e diferenciação máxima na categoria.",
+      "risk": "Alto risco de veto em plataformas digitais; possível backlash moral; maior custo de produção; risco de desperdício se mídia não aprovar.",
+      "upside": "Campanha viral e icônica se aprovada, reforçando Duloren como marca provocativa.",
+      "reversible": false,
+      "strength_score": 62,
+      "rationale": "É o caminho mais fiel ao pedido ‘quase erótico’, mas exige estratégia de mídia restritiva e orçamento alto. Viável, porém com risco regulatório.
+      "
+    },
+    {
+      "name": "A Fluidez do Desejo (água como véu) + versões safe",
+      "action": "Criar o conceito no tanque raso com água e zenital, mas produzir duas versões: uma hot (mais ousada) e uma safe (menos contato físico, foco em textura/close), para garantir veiculação ampla.",
+      "bet": "Duas versões garantem distribuição e reduzem risco de perda total.",
+      "risk": "Custo de produção duplicado; risco de diluição criativa; execução técnica complexa com água e luz.",
+      "upside": "Flexibilidade de mídia, mantendo o apelo sensual sem travar a campanha inteira.",
+      "reversible": true,
+      "strength_score": 85,
+      "rationale": "Maximiza o alcance ao oferecer plano B sem abandonar o conceito central. É a opção mais pragmática para entrega e mídia.
+      "
+    }
+  ],
+  "recommended": {
+    "option_name": "A Fluidez do Desejo (água como véu) + versões safe",
+    "confidence": 82,
+    "reasoning": "Equilibra o pedido explícito do cliente por erotismo com a realidade de censura e distribuição. Ter versões hot e safe preserva a ambição criativa e evita bloqueios totais, mantendo viabilidade comercial."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-06T19:20:00Z"
+}
