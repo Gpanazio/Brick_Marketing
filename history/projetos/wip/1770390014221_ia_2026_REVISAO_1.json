@@ -1,0 +1,115 @@
+{
+  "agent": "EXECUTION_DESIGN",
+  "job_id": "1770390014221_ia_2026",
+  "concept_name": "O Ritmo da Reconstrução (Global Edition)",
+  "director_feedback_response": "Feedback do Humano INTEGRADO: 'Mais impacto para o público fora dos EUA'. 1. Substituímos a iconografia exclusiva da NFL por símbolos universais (Cidades Globais, Arte, Natureza). 2. A narrativa evoluiu de 'O estádio quebra' para 'O mundo se reconecta'. 3. Inclusão de elementos de design que ressoam em mercados asiáticos (Neo-Tokyo aesthetics) e europeus (Minimalismo Suíço). 4. A trilha sonora agora incorpora batidas de world-music sintética para conexão emocional transcultural.",
+  "visual_system": {
+    "color_palette": {
+      "primary": [
+        {"hex": "#000000", "name": "Global Void", "usage": "Fundo infinito. Representa o espaço entre as conexões."},
+        {"hex": "#FFFFFF", "name": "Pure Signal", "usage": "A luz da informação que reconstrói o visual."}
+      ],
+      "secondary": [
+        {"hex": "#4285F4", "name": "Google Blue", "usage": "Fluxos de dados conectando continentes."},
+        {"hex": "#EA4335", "name": "Rupture Red", "usage": "Glitches de instabilidade global."},
+        {"hex": "#FBBC04", "name": "Energy Gold", "usage": "Focos de atenção em monumentos mundiais."},
+        {"hex": "#34A853", "name": "Rebirth Green", "usage": "O mundo voltando à vida, mais orgânico."}
+      ],
+      "accent": [
+        {"hex": "#E0E0E0", "name": "Liquid Quartz", "usage": "Texturas de vidro e transparência (Universal Tech)."}
+      ]
+    },
+    "typography": {
+      "heading_font": {
+        "name": "Google Sans (Voxel/Glitch Variant)",
+        "weights": ["Bold", "Black"],
+        "usage": "Tipografia reconhecível mundialmente, mas que se desintegra em voxels 3D."
+      },
+      "body_font": {
+        "name": "Noto Sans (Universal Support)",
+        "weights": ["400", "700"],
+        "usage": "Garantia de leitura perfeita em múltiplos alfabetos (Latino, Cirílico, Ideogramas) durante os glitches."
+      },
+      "hierarchy": "Palavras-chave em inglês universal (RESET / SYNC) alternando rapidamente com traduções visuais instantâneas."
+    },
+    "grid_layout": {
+      "columns": 12,
+      "gutter": "0px",
+      "margins": "Layout adaptável para DOOH global (Londres, Tokyo, SP, NY).",
+      "breakpoints": ["TV 4K", "Vertical Mobile", "Billboard 32:9"]
+    },
+    "visual_style": {
+      "aesthetic": "Global Neo-Futurism / Organic Tech",
+      "shapes": "Fractais, Redes Neurais, Mapas Mundiais Dinâmicos.",
+      "imagery": "Montagem frenética de 'World Snapshots': Uma rua em Shibuya, um café em Paris, uma favela colorida no Rio, os Alpes. Tudo quebra e o Douglas/Google IA reconstrói em 8K.",
+      "photography_direction": "Zoom-out espacial (Earth-view) alternado com Macros de alta velocidade (olhos, circuitos, flores desabrochando em voxels)."
+    }
+  },
+  "copy_framework": {
+    "tagline": "A IA quebra. O mundo conserta. O ritmo é de todos.",
+    "key_messages": [
+      "Instabilidade é evolução.",
+      "Um cérebro, todas as línguas.",
+      "Google IA: Conectando o agora."
+    ],
+    "tone_guidelines": {
+      "style": "universal",
+      "attributes": ["Frenético", "Inclusivo", "Épico"],
+      "do": ["Usar símbolos visuais antes de texto", "Representar diversidade geográfica nas cenas de glitch", "Sincronizar sons étnicos modernos com o beat eletrônico"],
+      "dont": ["Usar referências de feriados americanos (Thanksgiving, etc)", "Piadas locais dos EUA", "Termos técnicos sem tradução visual"]
+    },
+    "vocabulary": {
+      "use": ["Global", "Connect", "Pulse", "Evolution", "One", "Now"],
+      "avoid": ["Touchdown", "Quarterback", "Local", "Standard"]
+    }
+  },
+  "ux_interactions": {
+    "navigation_structure": "Global Broadcast -> Localized QR Experiences -> AR World Filter",
+    "key_interactions": [
+      {
+        "element": "AR 'World Reconstructor' Filter",
+        "behavior": "Filtro de Instagram/TikTok que permite ao usuário apontar para qualquer paisagem e ver a IA 'quebrando e consertando' o ambiente ao seu redor com estética de voxel.",
+        "concept_expression": "A IA não está só no Super Bowl; ela está onde você está."
+      }
+    ],
+    "microinteractions": [
+      "Tradução em tempo real de logs de erro para o idioma local do dispositivo.",
+      "Sons de notificação familiares de apps globais integrados ao ritmo (satisfação auditiva)."
+    ]
+  },
+  "technical_specs": {
+    "delivery_formats": [
+      {
+        "platform": "TV Global (Multi-region)",
+        "dimensions": "3840x2160",
+        "format": "Masters localizados para 12 idiomas principais."
+      },
+      {
+        "platform": "OOH Anamorphic (Tokyo Cross / London Piccadilly)",
+        "dimensions": "Custom 3D Billboard",
+        "format": "Anamorphic 3D rendering (ilusão de profundidade saindo da tela)."
+      }
+    ],
+    "required_assets": [
+      {
+        "asset": "Biblioteca de Assets Globais (Cities/Nature)",
+        "type": "3D Models/Photogrammetry",
+        "specs": "Modelos 3D de monumentos icônicos de cada continente para a sequência de reconstrução."
+      },
+      {
+        "asset": "Hybrid Soundtrack (Glitch + World Beat)",
+        "type": "Audio",
+        "specs": "Trilha que mistura sintetizadores modulares com percussão orgânica (Taiko, Surdo, Tabla) para impacto global."
+      }
+    ],
+    "tools": ["Houdini", "Unreal Engine 5.4 (Real-time Global Environments)", "After Effects", "Dolby Atmos (Global Surround Mix)"]
+  },
+  "moodboard_references": [
+    "Baraka / Samsara (Filmes) - Pela escala épica de imagens globais.",
+    "Olympics Opening Ceremonies - Pelo sentimento de união e escala tecnológica.",
+    "Ghost in the Shell (1995) - Pela estética de fusão entre tecnologia e cultura urbana global."
+  ],
+  "production_notes": "ESTRATÉGICO: O comercial será o mesmo visualmente em todo o mundo, mas os monumentos que aparecem na 'reconstrução' serão rotacionados via geolocalização em plataformas digitais. O impacto global vem de ver o seu próprio mundo sendo 'aprimorado' pela IA.",
+  "status": "PASS",
+  "timestamp": "2026-02-06T16:00:00Z"
+}

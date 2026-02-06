@@ -1,5 +1,5 @@
 {
-  "runId": "1b042fb2-b562-4758-9246-c8c39e07e7e9",
+  "runId": "9be8421f-d5e8-4693-a9a7-a1cde0533428",
   "status": "ok",
   "summary": "completed",
   "result": {
@@ -10,9 +10,9 @@
       }
     ],
     "meta": {
-      "durationMs": 8379,
+      "durationMs": 9301,
       "agentMeta": {
-        "sessionId": "brick-ideias-tio_socio_v2-devil",
+        "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
         "provider": "openai-codex",
         "model": "gpt-5.2-codex",
         "usage": {
@@ -26,9 +26,9 @@
       "aborted": false,
       "systemPromptReport": {
         "source": "run",
-        "generatedAt": 1770388978117,
-        "sessionId": "brick-ideias-tio_socio_v2-devil",
-        "sessionKey": "agent:sonnet:main",
+        "generatedAt": 1770389630733,
+        "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
+        "sessionKey": "agent:gpt:main",
         "provider": "openai-codex",
         "model": "gpt-5.2-codex",
         "workspaceDir": "/Users/gabrielpanazio/projects/Brick_Marketing",
@@ -38,9 +38,9 @@
           "sandboxed": false
         },
         "systemPrompt": {
-          "chars": 32534,
+          "chars": 32530,
           "projectContextChars": 13368,
-          "nonProjectContextChars": 19166
+          "nonProjectContextChars": 19162
         },
         "injectedWorkspaceFiles": [
           {

@@ -1,0 +1,120 @@
+{
+  "agent": "EXECUTION_DESIGN",
+  "job_id": "1770390014221_ia_2026",
+  "concept_name": "O Ritmo da Reconstrução",
+  "director_feedback_response": "Feedback do Diretor (Turno Anterior) INTEGRADO: 1. Início alterado para 'Falso Erro de Transmissão' (Static/Black Screen) para quebrar o padrão. 2. Inserido o 'Drop' (Silêncio/Vácuo) no meio (15s-20s) com a cena do rosto se desfazendo. 3. Escala ampliada: Glitch afeta o estádio inteiro, não apenas objetos. 4. Tipografia alterada de 'Piscante/2D' para 'Estrutural/3D' (Voxels) para evitar o clichê 'Don't Blink'.",
+  "visual_system": {
+    "color_palette": {
+      "primary": [
+        {"hex": "#000000", "name": "Void Black", "usage": "Fundo absoluto. Contraste infinito (OLED friendly)."},
+        {"hex": "#FFFFFF", "name": "Strobe White", "usage": "Flashes estroboscópicos sincronizados com o beat (apenas highlights)."}
+      ],
+      "secondary": [
+        {"hex": "#2979FF", "name": "Neon Blue", "usage": "Partículas de dados (Estrutura)."},
+        {"hex": "#FF1744", "name": "Laser Red", "usage": "Elementos de ruptura/erro."},
+        {"hex": "#00E676", "name": "Matrix Green", "usage": "Elementos de reconstrução/êxito."},
+        {"hex": "#FFEA00", "name": "Volt Yellow", "usage": "Acentos de energia e atenção."}
+      ],
+      "accent": [
+        {"hex": "#8AB4F8", "name": "Holo Chrome", "usage": "Superfícies metálicas refletindo o caos neon."}
+      ]
+    },
+    "typography": {
+      "heading_font": {
+        "name": "Druk Wide (Custom Voxel Build)",
+        "weights": ["Super", "Heavy"],
+        "usage": "As letras não aparecem; elas se constroem a partir de detritos 3D. Texto é arquitetura."
+      },
+      "body_font": {
+        "name": "Space Mono",
+        "weights": ["400", "700"],
+        "usage": "Logs de sistema, códigos de erro que viram música, disclaimers."
+      },
+      "hierarchy": "Palavras-chave (QUEBRA / CONSERTA) ocupam 90% da tela. Texto secundário é textura de fundo."
+    },
+    "grid_layout": {
+      "columns": 12,
+      "gutter": "0px",
+      "margins": "Safe Area dinâmica (o grid se rompe visualmente nos momentos de 'quebra')",
+      "breakpoints": ["TV 4K (3840px)", "Vertical 9:16 (Mobile)"]
+    },
+    "visual_style": {
+      "aesthetic": "Cinematic Glitch / Photorealism Distorted",
+      "shapes": "Voxels (Cubos), Wireframes, Liquid Metal",
+      "imagery": "Hiper-realismo 3D. O 'glitch' não é um filtro 2D, é uma simulação de física onde a matéria se desfaz em cubos e se reagrupa.",
+      "photography_direction": "Câmera virtual 'Handheld' instável nos momentos de caos, 'Dolly Smooth' nos momentos de reconstrução."
+    }
+  },
+  "copy_framework": {
+    "tagline": "A IA quebra. A IA conserta. O ritmo é seu.",
+    "key_messages": [
+      "Erro 404: Evolução encontrada.",
+      "O loop perfeito existe.",
+      "Google IA: Auto-regeneração."
+    ],
+    "tone_guidelines": {
+      "style": "direto",
+      "attributes": ["Percussivo", "Cirúrgico", "Hipnótico"],
+      "do": ["Sincronizar leitura com áudio (1 palavra = 1 beat)", "Usar verbos de ação", "Manter frases < 3 palavras na tela"],
+      "dont": ["Frases longas explicativas", "Adjetivos vazios ('Incrível', 'Poderoso')", "Narrativa linear clássica"]
+    },
+    "vocabulary": {
+      "use": ["Loop", "Glitch", "Flow", "Sync", "Reset", "Agora"],
+      "avoid": ["Problema", "Manutenção", "Suporte", "Garantia"]
+    }
+  },
+  "ux_interactions": {
+    "navigation_structure": "Campanha Broadcast -> QR Code Glitch -> WebGL Experience",
+    "key_interactions": [
+      {
+        "element": "Mobile 'Shake to Fix'",
+        "behavior": "No site da campanha, a tela começa 'quebrada' (artefatos visuais). Ao chacoalhar o celular (acelerômetro), os pixels se alinham satisfatoriamente.",
+        "concept_expression": "Dá ao usuário o poder de consertar o caos (Dopamina)."
+      }
+    ],
+    "microinteractions": [
+      "Haptic Feedback (Vibração) sincronizado com os glitches visuais no mobile.",
+      "Loader que nunca termina, mas evolui de forma (morphing)."
+    ]
+  },
+  "technical_specs": {
+    "delivery_formats": [
+      {
+        "platform": "TV (Super Bowl)",
+        "dimensions": "3840x2160 (4K UHD)",
+        "format": "ProRes 4444 XQ (Master) / MXF (Broadcast)"
+      },
+      {
+        "platform": "Digital OOH (Times Square)",
+        "dimensions": "Variável (Anamorphic Illusion)",
+        "format": "HAP Codec / MP4"
+      }
+    ],
+    "required_assets": [
+      {
+        "asset": "Simulação Houdini (Estádio)",
+        "type": "3D/VFX",
+        "specs": "Cena wide do estádio se convertendo em wireframe/dados e voltando ao real. High Poly."
+      },
+      {
+        "asset": "Soundtrack 'Glitch-Hop' Custom",
+        "type": "Áudio",
+        "specs": "Composição original com 'Stems' separados (Bass, Glitch, Synth, Voice) para mixagem surround 5.1."
+      },
+      {
+        "asset": "Voxel Font Pack",
+        "type": "3D Assets",
+        "specs": "Alfabeto completo modelado em 3D com física de destruição pré-calculada."
+      }
+    ],
+    "tools": ["Houdini (VFX/Destruction)", "Cinema 4D + Redshift (Render)", "After Effects (Compositing)", "Nuke (Color Grading)"]
+  },
+  "moodboard_references": [
+    "Aphex Twin visualizers (Weirdcore) - Pela estética de erro digital orgânico.",
+    "Abertura 'Mindhunter' (Dir. David Fincher) - Pela precisão cirúrgica dos cortes (Referência do Diretor).",
+    "Love, Death & Robots ('The Witness') - Pelo estilo frenético e texturas realistas."
+  ],
+  "production_notes": "CRÍTICO: A trilha sonora deve ser finalizada ANTES da animação. O motion designer animará 'em cima' da waveform do áudio. O falso erro de transmissão inicial (0:00-0:02) precisa ser testado com a emissora para compliance (não pode parecer emergência real).",
+  "status": "PASS",
+  "timestamp": "2026-02-06T15:20:00Z"
+}

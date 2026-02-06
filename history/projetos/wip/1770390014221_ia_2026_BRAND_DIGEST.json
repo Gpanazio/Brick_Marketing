@@ -1,0 +1,48 @@
+{
+  "agent": "BRAND_DIGEST",
+  "job_id": "1770390014221_ia_2026",
+  "brand_name": "Google (Campanha IA 2026)",
+  "identity_core": {
+    "personality": "Provocativa, onipresente, frenética e hiper-tecnológica",
+    "tone_of_voice": {
+      "style": "mixed",
+      "attributes": ["Irreverente", "Veloz", "Meta-referencial"],
+      "example": "A IA quebra, a IA conserta! O loop é seu."
+    },
+    "values": [
+      "Auto-correção",
+      "Dopamina Digital",
+      "Hiper-eficiência"
+    ]
+  },
+  "positioning": {
+    "category": "Inteligência Artificial (Consumer Tech)",
+    "primary_audience": "Espectadores do Super Bowl, entusiastas de tecnologia e a geração 'looping de dopamina' (heavy users de redes sociais)",
+    "core_promise": "Resolução instantânea de falhas digitais através da IA auto-gerenciada",
+    "differentiation": "O ciclo infinito de auto-gestão da IA ('A IA quebra, a IA conserta') — transformando a falha em um espetáculo de satisfação"
+  },
+  "visual_sensorial": {
+    "primary_colors": ["não especificado"],
+    "aesthetic": "Frenética, glitch-art sofisticado, maximalista e de alta produção (Super Bowl style)",
+    "visual_references": [
+      "Vídeos de transição rápida (TikTok/Reels) - pelo ritmo",
+      "Estética cyberpunk/glitch - pela ideia de quebra e reconstrução"
+    ],
+    "mood": "Fascínio, urgência e satisfação tecnológica"
+  },
+  "constraints": {
+    "must_have": [
+      "Duração de 30 segundos",
+      "Assinatura Google",
+      "Tagline: 'A IA quebra, a IA conserta!'",
+      "Contexto Super Bowl"
+    ],
+    "must_not": [
+      "Ser lento ou monótono; precisa competir com a atenção do Super Bowl"
+    ],
+    "guidelines": "não especificado"
+  },
+  "creative_brief_summary": "Uma campanha explosiva para o Super Bowl que apresenta a IA do Google como um sistema auto-regenerativo viciante, onde a falha e o conserto formam um ciclo satisfatório de tecnologia infinita.",
+  "status": "PASS",
+  "timestamp": "2026-02-06T15:15:00Z"
+}
