@@ -8,6 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$SCRIPT_DIR"
 
 source "$PROJECT_ROOT/lib/pipeline-utils.sh"
+source "$PROJECT_ROOT/lib/context-summarizer.sh"
+# NOTA: Sumarização configurada com 800 chars (vs 500 em Marketing) - briefings de clientes têm detalhes críticos
 
 BRIEFING_FILE="$1"
 if [ -z "$BRIEFING_FILE" ]; then
@@ -38,6 +40,7 @@ echo "[$(date -Iseconds)] Pipeline iniciado: $JOB_ID" >> "$LOG_DIR/pipeline.log"
 BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
 
 # Carregar roles
+# NOTA: BRAND_GUIDE.md NÃO é carregado aqui - projetos seguem marca do CLIENTE, não da Brick
 BRAND_DIGEST_ROLE=$(cat "$ROLES_DIR/BRAND_DIGEST.md" 2>/dev/null || echo "N/A")
 CREATIVE_ROLE=$(cat "$ROLES_DIR/CREATIVE_IDEATION.md" 2>/dev/null || echo "N/A")
 CRITIC_ROLE=$(cat "$ROLES_DIR/CONCEPT_CRITIC.md" 2>/dev/null || echo "N/A")
@@ -54,7 +57,7 @@ STEP_START=$(start_timer)
 cp "$BRIEFING_FILE" "$WIP_DIR/${JOB_ID}_BRIEFING_INPUT.md"
 echo "✅ Briefing salvo"
 print_duration $(get_duration_ms $STEP_START) "Etapa 0"
-"$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/${JOB_ID}_BRIEFING_INPUT.md projetos >/dev/null 2>&1 &
+# Sync feito pelo run-orchestrate.sh ao final
 
 # ============================================
 # ETAPA 1: Brand Digest (Flash)
@@ -81,7 +84,7 @@ fi
 
 BRAND_CONTENT=$(cat "$BRAND_OUT" 2>/dev/null || echo "N/A")
 print_duration $(get_duration_ms $STEP_START) "Etapa 1"
-"$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/${JOB_ID}_BRAND_DIGEST.json projetos >/dev/null 2>&1 &
+# Sync feito pelo run-orchestrate.sh ao final
 
 # ============================================
 # ETAPA 2: Creative Ideation (Paralelo: GPT + Flash + Sonnet)
@@ -94,9 +97,12 @@ IDEATION_GPT_OUT="$WIP_DIR/${JOB_ID}_IDEATION_GPT.md"
 IDEATION_FLASH_OUT="$WIP_DIR/${JOB_ID}_IDEATION_FLASH.md"
 IDEATION_SONNET_OUT="$WIP_DIR/${JOB_ID}_IDEATION_SONNET.md"
 
-IDEATION_CONTEXT="BRIEFING: ${BRIEFING_CONTENT}
+# Resumir briefing de forma generosa (800 chars) - briefings de clientes têm detalhes críticos
+BRIEFING_SUMMARY=$(summarize_briefing "$BRIEFING_CONTENT" 800)
 
-BRAND: ${BRAND_CONTENT}"
+IDEATION_CONTEXT="BRIEFING DO CLIENTE (resumido): ${BRIEFING_SUMMARY}
+
+BRAND DIGEST (DNA da marca do cliente): ${BRAND_CONTENT}"
 
 # GPT
 openclaw agent --agent gpt \
@@ -144,17 +150,35 @@ INSTRUÇÕES: Salve Markdown em: ${IDEATION_SONNET_OUT}" \
 SONNET_PID=$!
 
 wait $GPT_PID
+GPT_STATUS=$?
 wait $FLASH_PID
+FLASH_STATUS=$?
 wait $SONNET_PID
+SONNET_STATUS=$?
 
-[ ! -s "$IDEATION_GPT_OUT" ] && create_md_placeholder "$IDEATION_GPT_OUT" "IDEATION_GPT" "$JOB_ID" "Failed"
-[ ! -s "$IDEATION_FLASH_OUT" ] && create_md_placeholder "$IDEATION_FLASH_OUT" "IDEATION_FLASH" "$JOB_ID" "Failed"
-[ ! -s "$IDEATION_SONNET_OUT" ] && create_md_placeholder "$IDEATION_SONNET_OUT" "IDEATION_SONNET" "$JOB_ID" "Failed"
+if [ -f "$IDEATION_GPT_OUT" ] && [ -s "$IDEATION_GPT_OUT" ]; then
+    echo "✅ Ideation A (GPT) concluído"
+else
+    [ $GPT_STATUS -ne 0 ] && echo "⚠️ GPT falhou com código $GPT_STATUS"
+    create_md_placeholder "$IDEATION_GPT_OUT" "IDEATION_GPT" "$JOB_ID" "Failed (exit $GPT_STATUS)"
+fi
+
+if [ -f "$IDEATION_FLASH_OUT" ] && [ -s "$IDEATION_FLASH_OUT" ]; then
+    echo "✅ Ideation B (Flash) concluído"
+else
+    [ $FLASH_STATUS -ne 0 ] && echo "⚠️ Flash falhou com código $FLASH_STATUS"
+    create_md_placeholder "$IDEATION_FLASH_OUT" "IDEATION_FLASH" "$JOB_ID" "Failed (exit $FLASH_STATUS)"
+fi
+
+if [ -f "$IDEATION_SONNET_OUT" ] && [ -s "$IDEATION_SONNET_OUT" ]; then
+    echo "✅ Ideation C (Sonnet) concluído"
+else
+    [ $SONNET_STATUS -ne 0 ] && echo "⚠️ Sonnet falhou com código $SONNET_STATUS"
+    create_md_placeholder "$IDEATION_SONNET_OUT" "IDEATION_SONNET" "$JOB_ID" "Failed (exit $SONNET_STATUS)"
+fi
 
 print_duration $(get_duration_ms $STEP_START) "Etapa 2"
-"$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/${JOB_ID}_IDEATION_GPT.md projetos >/dev/null 2>&1 &
-"$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/${JOB_ID}_IDEATION_FLASH.md projetos >/dev/null 2>&1 &
-"$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/${JOB_ID}_IDEATION_SONNET.md projetos >/dev/null 2>&1 &
+# Sync feito pelo run-orchestrate.sh ao final
 
 # ============================================
 # ETAPA 3: Concept Critic (Pro)
@@ -183,12 +207,29 @@ INSTRUÇÕES: Salve JSON em: ${CRITIC_OUT}" \
     "$CRITIC_OUT" "150" "$LOG_DIR"
 
 if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
-    create_json_placeholder "$CRITIC_OUT" "CONCEPT_CRITIC" "$JOB_ID" "Failed"
+    echo "⚠️ Pro falhou no Concept Critic. Tentando fallback Sonnet..."
+    run_agent "sonnet" "brick-proj-${JOB_ID}-critic-fallback" \
+        "${CRITIC_ROLE}
+        
+---
+GPT: ${IDEATION_GPT_CONTENT}
+
+FLASH: ${IDEATION_FLASH_CONTENT}
+
+SONNET: ${IDEATION_SONNET_CONTENT}
+---
+
+INSTRUÇÕES: Salve JSON em: ${CRITIC_OUT}" \
+        "$CRITIC_OUT" "150" "$LOG_DIR"
+    
+    if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
+        create_json_placeholder "$CRITIC_OUT" "CONCEPT_CRITIC" "$JOB_ID" "Pro and Sonnet fallback failed"
+    fi
 fi
 
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
 print_duration $(get_duration_ms $STEP_START) "Etapa 3"
-"$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/${JOB_ID}_CONCEPT_CRITIC.json projetos >/dev/null 2>&1 &
+# Sync feito pelo run-orchestrate.sh ao final
 
 # ============================================
 # ETAPAS 4-6: LOOP EXECUTION → PROPOSAL → DIRECTOR
@@ -210,11 +251,11 @@ while [ "$VEREDITO" != "APROVAR" ] && [ $LOOP_COUNT -le $MAX_LOOPS ]; do
     if [ $LOOP_COUNT -eq 1 ]; then
         EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.json"
         COPY_OUT="$WIP_DIR/${JOB_ID}_PROPOSAL.md"
-        DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.md"
+        DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.json"
     else
         EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN_v${LOOP_COUNT}.json"
         COPY_OUT="$WIP_DIR/${JOB_ID}_PROPOSAL_v${LOOP_COUNT}.md"
-        DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR_v${LOOP_COUNT}.md"
+        DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR_v${LOOP_COUNT}.json"
     fi
     
     # ============================================
@@ -222,6 +263,9 @@ while [ "$VEREDITO" != "APROVAR" ] && [ $LOOP_COUNT -le $MAX_LOOPS ]; do
     # ============================================
     echo "  ⏳ Execution Design"
     STEP_START=$(start_timer)
+    
+    # Criar contexto resumido (economia de tokens)
+    PROJETOS_CONTEXT=$(create_projetos_context "$JOB_ID" "$WIP_DIR")
     
     FEEDBACK_INJECTION=""
     if [ ! -z "$PREVIOUS_FEEDBACK" ]; then
@@ -237,9 +281,11 @@ ATENÇÃO: Corrija os pontos levantados acima. Documente explicitamente no campo
         "${EXECUTION_ROLE}
         
 ---
-BRIEFING: ${BRIEFING_CONTENT}
+CONTEXTO RESUMIDO (economia de tokens):
+${PROJETOS_CONTEXT}
 
-BRAND: ${BRAND_CONTENT}
+BRIEFING DO CLIENTE (se necessário):
+${BRIEFING_SUMMARY}
 
 CONCEITO VENCEDOR: ${CRITIC_CONTENT}
 ${FEEDBACK_INJECTION}
@@ -249,12 +295,32 @@ INSTRUÇÕES: Salve JSON em: ${EXEC_OUT}" \
         "$EXEC_OUT" "150" "$LOG_DIR"
     
     if [ ! -f "$EXEC_OUT" ] || ! validate_json "$EXEC_OUT"; then
-        create_json_placeholder "$EXEC_OUT" "EXECUTION_DESIGN" "$JOB_ID" "Failed"
+        echo "  ⚠️ Pro falhou no Execution. Tentando fallback Sonnet..."
+        run_agent "sonnet" "brick-proj-${JOB_ID}-exec-v${LOOP_COUNT}-fallback" \
+            "${EXECUTION_ROLE}
+            
+---
+CONTEXTO RESUMIDO (economia de tokens):
+${PROJETOS_CONTEXT}
+
+BRIEFING DO CLIENTE (se necessário):
+${BRIEFING_SUMMARY}
+
+CONCEITO VENCEDOR: ${CRITIC_CONTENT}
+${FEEDBACK_INJECTION}
+---
+
+INSTRUÇÕES: Salve JSON em: ${EXEC_OUT}" \
+            "$EXEC_OUT" "150" "$LOG_DIR"
+        
+        if [ ! -f "$EXEC_OUT" ] || ! validate_json "$EXEC_OUT"; then
+            create_json_placeholder "$EXEC_OUT" "EXECUTION_DESIGN" "$JOB_ID" "Pro and Sonnet fallback failed"
+        fi
     fi
     
     EXEC_CONTENT=$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
     print_duration $(get_duration_ms $STEP_START) "  Execution"
-    "$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/$(basename $EXEC_OUT) projetos >/dev/null 2>&1 &
+    # Sync feito pelo run-orchestrate.sh ao final
     
     # ============================================
     # SUB-ETAPA 5: Proposal Writer (GPT)
@@ -284,7 +350,7 @@ INSTRUÇÕES: Salve Markdown em: ${COPY_OUT}" \
     
     COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
     print_duration $(get_duration_ms $STEP_START) "  Proposal"
-    "$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/$(basename $COPY_OUT) projetos >/dev/null 2>&1 &
+    # Sync feito pelo run-orchestrate.sh ao final
     
     # ============================================
     # SUB-ETAPA 6: Director (Pro)
@@ -318,15 +384,37 @@ PROPOSAL: ${COPY_CONTENT}
 ${LOOP_CONTEXT}
 ---
 
-INSTRUÇÕES: Avalie tudo e salve Markdown em: ${DIRECTOR_OUT}" \
+INSTRUÇÕES: Avalie tudo e salve JSON em: ${DIRECTOR_OUT}" \
         "$DIRECTOR_OUT" "180" "$LOG_DIR"
     
-    if [ ! -f "$DIRECTOR_OUT" ] || [ ! -s "$DIRECTOR_OUT" ]; then
-        create_md_placeholder "$DIRECTOR_OUT" "DIRECTOR" "$JOB_ID" "Failed"
+    if [ ! -f "$DIRECTOR_OUT" ] || ! validate_json "$DIRECTOR_OUT"; then
+        echo "  ⚠️ Pro falhou no Director. Tentando fallback Sonnet..."
+        run_agent "sonnet" "brick-proj-${JOB_ID}-dir-v${LOOP_COUNT}-fallback" \
+            "${DIRECTOR_ROLE}
+            
+---
+BRIEFING: ${BRIEFING_CONTENT}
+
+BRAND: ${BRAND_CONTENT}
+
+CONCEITO: ${CRITIC_CONTENT}
+
+EXECUTION: ${EXEC_CONTENT}
+
+PROPOSAL: ${COPY_CONTENT}
+${LOOP_CONTEXT}
+---
+
+INSTRUÇÕES: Avalie tudo e salve JSON em: ${DIRECTOR_OUT}" \
+            "$DIRECTOR_OUT" "180" "$LOG_DIR"
+        
+        if [ ! -f "$DIRECTOR_OUT" ] || ! validate_json "$DIRECTOR_OUT"; then
+            create_json_placeholder "$DIRECTOR_OUT" "DIRECTOR" "$JOB_ID" "Pro and Sonnet fallback failed"
+        fi
     fi
     
     print_duration $(get_duration_ms $STEP_START) "  Director"
-    "$PROJECT_ROOT/sync-to-railway.sh" history/projetos/wip/$(basename $DIRECTOR_OUT) projetos >/dev/null 2>&1 &
+    # Sync feito pelo run-orchestrate.sh ao final
     
     # ============================================
     # Avaliar veredito

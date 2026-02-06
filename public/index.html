@@ -189,7 +189,7 @@
                 </div>
                 <div onclick="enterMode('projetos')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
                     <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
-                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos</h3>
+                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos — Clientes</h3>
                     <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
                 </div>
                 <div onclick="enterMode('ideias')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
@@ -341,7 +341,7 @@
                     <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">MODO</label>
                     <select id="briefing-mode" onchange="updateCostEstimate()" class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none">
                         <option value="marketing">Marketing (Conteúdo & Flow)</option>
-                        <option value="projetos">Projetos (Strategy & Craft)</option>
+                        <option value="projetos">Projetos — Clientes (Strategy & Craft)</option>
                         <option value="ideias">Ideias (Validation)</option>
                     </select>
                     <div id="cost-estimate" class="mt-2 text-[10px] font-mono text-[#666] flex items-center gap-2">
@@ -565,7 +565,8 @@
             document.getElementById('btn-back-lobby').classList.remove('hidden');
             document.getElementById('btn-scheme').classList.remove('hidden');
             document.getElementById('btn-delete-project').classList.add('hidden'); // Hide until viewing a project
-            document.getElementById('header-sector').textContent = mode.toUpperCase();
+            const modeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS' };
+            document.getElementById('header-sector').textContent = modeLabels[mode] || mode.toUpperCase();
             
             if (socket && socket.connected) {
                 socket.emit('subscribe', mode);
@@ -630,13 +631,13 @@
                     <div>• Score final de viabilidade pelo Opus (juiz imparcial)</div>
                 `;
             } else if (currentMode === 'projetos') {
-                diagram.textContent = `BRIEFING
+                diagram.textContent = `BRIEFING DO CLIENTE
 │
 ▼
 [DOUGLAS] - Processamento MANUAL via OpenClaw
 │
 ▼
-01. BRAND DIGEST (Flash) - Extrai DNA/tom/valores da marca
+01. BRAND DIGEST (Flash) - Extrai DNA/tom/valores da marca DO CLIENTE
 │
 ├────────────────┬────────────────┤
 ▼                ▼                ▼
@@ -670,14 +671,19 @@ HUMAN - Aprovação final (só se Director aprovou)
 OUTPUT (Proposta completa)`;
 
                 info.innerHTML = `
+                    <div style="margin-bottom:16px;padding:10px;background:#1e293b;border-left:3px solid #f59e0b;">
+                        <div style="color:#f59e0b;font-weight:700;">⚠️ PROJETOS DE CLIENTES</div>
+                        <div style="color:#888;font-size:10px;margin-top:4px;">Este pipeline processa projetos de clientes da Brick (produtora). Cada projeto usa a <strong>marca do cliente</strong>, não da Brick. O Brand Digest extrai o DNA da marca do briefing recebido.</div>
+                    </div>
+
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">00. DOUGLAS (Orchestrator)</div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Ingestion do briefing bruto. Role: <code>N/A</code></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Ingestion do briefing do cliente. Role: <code>N/A</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">01. BRAND DIGEST <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Extrai identidade visual, tom, valores e posicionamento da marca do briefing. Output: JSON. Role: <code>BRAND_DIGEST.md</code>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Extrai identidade visual, tom, valores e posicionamento da <strong>marca do cliente</strong> a partir do briefing. Output: JSON. Role: <code>BRAND_DIGEST.md</code>
                         <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
                     </div>
 
@@ -729,7 +735,7 @@ OUTPUT (Proposta completa)`;
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">HUMAN - Aprovação Final</div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Só recebe projetos aprovados pelo Director. Botões: Aprovar (move pra done/) ou Rejeitar. Output: <code>FINAL.md</code> (compilação de todos os outputs).</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Só recebe projetos de clientes aprovados pelo Director. Botões: Aprovar (move pra done/) ou Rejeitar. Output: <code>FINAL.md</code> (proposta completa para o cliente).</div>
                     </div>
 
                     <div style="color:#666;font-size:10px;margin-top:16px;padding-top:16px;border-top:1px solid #222;">
@@ -1052,7 +1058,8 @@ PROCESSED.md ─── Briefing enriquecido
             selectedJobId = id;
             currentJobId = id; // Track for delete
             document.getElementById('ng-title').textContent = title;
-            document.getElementById('ng-sector-title').textContent = currentMode.toUpperCase();
+            const ngModeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS' };
+            document.getElementById('ng-sector-title').textContent = ngModeLabels[currentMode] || currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
             document.getElementById('main-ui').style.display = 'none';
             document.getElementById('btn-reset-layout').classList.remove('hidden');

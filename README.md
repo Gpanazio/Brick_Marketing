@@ -1,6 +1,6 @@
 # Brick AI - War Room
 
-Sistema de pipelines multi-agente para criação de conteúdo (Marketing, Projetos, Ideias).
+Sistema de pipelines multi-agente para criação de conteúdo (Marketing, Projetos — Clientes, Ideias).
 
 ---
 
@@ -38,14 +38,14 @@ Brick_Marketing/
 │   │   ├── briefing/      # Briefings recebidos
 │   │   ├── wip/           # Arquivos em processamento
 │   │   └── done/          # Projetos concluídos
-│   ├── projetos/          # Idem (modo Projetos)
+│   ├── projetos/          # Projetos de clientes (marca do cliente, não da Brick)
 │   └── ideias/            # Idem (modo Ideias)
 ├── roles/                 # Prompts dos agentes (20 arquivos .md)
 ├── lib/
 │   ├── pipeline-utils.sh       # Funções de retry, validação, timers
 │   └── context-summarizer.sh   # Reduz contexto (economia de tokens)
 ├── run-marketing.sh       # Pipeline Marketing (8 etapas)
-├── run-projetos.sh        # Pipeline Projetos (6 etapas)
+├── run-projetos.sh        # Pipeline Projetos — Clientes (6 etapas)
 ├── run-ideias.sh          # Pipeline Ideias (5 etapas)
 └── sync-to-railway.sh     # Sincroniza arquivo local → Railway
 ```
@@ -127,7 +127,7 @@ CONTEXT_SUMMARY=$(create_marketing_context "$JOB_ID" "$WIP_DIR")
 - Reduz contexto de ~12k → ~4k tokens
 - **Marketing TEM** (desde v2.1)
 - **Ideias TEM** (desde 2026-02-06)
-- **Projetos FALTA** (TODO)
+- **Projetos — Clientes** (sendo implementado)
 
 #### Retry com Backoff
 ```bash
@@ -149,7 +149,7 @@ done
 #### Etapa 0 (Ingestion)
 - **Marketing:** Processa briefing com agente (adiciona contexto)
 - **Ideias:** Passthrough puro (`cp briefing → RAW_IDEA.md`)
-- **Projetos:** Digest de brand (transforma em contexto técnico)
+- **Projetos — Clientes:** Digest de brand do CLIENTE (transforma em contexto técnico da marca do cliente)
 
 ---
 

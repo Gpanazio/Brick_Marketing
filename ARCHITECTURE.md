@@ -3,7 +3,7 @@
 ## Visao Geral
 
 Sistema de pipelines de criacao com agentes de IA para a Brick (produtora de video).
-3 modos: Marketing (conteudo), Projetos (propostas criativas), Ideias (validacao rapida).
+3 modos: Marketing (conteudo interno da Brick), Projetos — Clientes (propostas criativas para clientes, usando a marca do CLIENTE), Ideias (validacao rapida).
 
 ## Fluxo
 
@@ -41,13 +41,14 @@ BRIEFING -> DOUGLAS -> VALIDATOR -> AUDIENCE -> RESEARCHER -> CLAIMS
 ```
 Modelos: Flash (etapas 1-4,6), GPT+Flash+Sonnet (etapa 5), GPT (etapa 7 - Copy Senior), Opus (etapa 8)
 
-### Projetos (run-projetos.sh)
+### Projetos — Clientes (run-projetos.sh)
+**Usa marca do CLIENTE (não da Brick). Brand Digest extrai DNA do briefing do cliente.**
 ```
-BRIEFING -> DOUGLAS -> BRAND_DIGEST -> IDEATION_GPT ──────┐
-                                       IDEATION_FLASH ────┤
-                                       IDEATION_SONNET ───┘
-                                                           |
-                       CONCEPT_CRITIC -> EXECUTION_DESIGN -> COPYWRITER -> DIRECTOR -> [HUMANO]
+BRIEFING DO CLIENTE -> DOUGLAS -> BRAND_DIGEST -> IDEATION_GPT ──────┐
+                                                   IDEATION_FLASH ────┤
+                                                   IDEATION_SONNET ───┘
+                                                                       |
+                       CONCEPT_CRITIC -> EXECUTION_DESIGN -> PROPOSAL -> DIRECTOR -> [HUMANO]
 ```
 Modelos: Flash (etapa 1), GPT+Flash+Sonnet (etapa 2), Pro (etapas 3-4,6), GPT (etapa 5)
 
@@ -108,7 +109,7 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 - {JOB_ID}_07_COPY_SENIOR.json
 - {JOB_ID}_08_WALL.json
 
-### Projetos
+### Projetos — Clientes
 - {JOB_ID}_BRIEFING_INPUT.md
 - {JOB_ID}_BRAND_DIGEST.json
 - {JOB_ID}_IDEATION_GPT.md
@@ -116,8 +117,8 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 - {JOB_ID}_IDEATION_SONNET.md
 - {JOB_ID}_CONCEPT_CRITIC.json
 - {JOB_ID}_EXECUTION_DESIGN.json
-- {JOB_ID}_COPYWRITER.md
-- {JOB_ID}_DIRECTOR.md
+- {JOB_ID}_PROPOSAL.md
+- {JOB_ID}_DIRECTOR.json
 
 ### Ideias
 - {JOB_ID}_RAW_IDEA.md
