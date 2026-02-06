@@ -1576,6 +1576,32 @@ PROCESSED.md ─── Briefing enriquecido
             
             const body = document.getElementById('panel-body');
             
+            // RAW_IDEA em Ideias: mostra briefing original (da pasta briefing), não o RAW_IDEA do WIP
+            if (n.title === 'RAW_IDEA') {
+                const briefingFile = files.find(f => f.path && f.path.startsWith('briefing/'));
+                if (briefingFile && briefingFile.content) {
+                    let c = briefingFile.content;
+                    const match = c.match(/^#\s*(?:BRIEFING:|RAW IDEA:).*\n([\s\S]*)$/m);
+                    body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${match ? match[1].trim() : c}</div>`;
+                    document.getElementById('panel-title').textContent = 'RAW IDEA // INPUT ORIGINAL';
+                    document.getElementById('agent-panel').classList.add('open');
+                    return;
+                }
+            }
+            
+            // DOUGLAS em Ideias: mostra PROCESSED.md, fallback para RAW_IDEA.md
+            if (n.title === 'DOUGLAS' && currentMode === 'ideias') {
+                const processedFile = files.find(f => f.name.toUpperCase().includes('PROCESSED'));
+                const rawFile = files.find(f => f.name.toUpperCase().includes('RAW_IDEA'));
+                const douglasFile = processedFile || rawFile;
+                if (douglasFile && douglasFile.content) {
+                    body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${douglasFile.content}</div>`;
+                    document.getElementById('panel-title').textContent = processedFile ? 'DOUGLAS // BRIEFING PROCESSADO' : 'DOUGLAS // RAW IDEA (sem processamento)';
+                    document.getElementById('agent-panel').classList.add('open');
+                    return;
+                }
+            }
+
             if (n.title === 'BRIEFING_INPUT') {
                 const rawContent = getBriefingContent(files);
                 if (rawContent) {
