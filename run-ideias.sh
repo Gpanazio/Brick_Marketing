@@ -159,7 +159,7 @@ ${PAIN_CONTENT}
 
 INSTRUÇÕES:
 Pesquise conforme seu role acima e salve o resultado Markdown no arquivo: ${MARKET_OUT}" \
-      --timeout 120 --json 2>&1 | tee "$MARKET_LOG"
+      --timeout 240 --json 2>&1 | tee "$MARKET_LOG"
     
     if [ -f "$MARKET_OUT" ] && [ -s "$MARKET_OUT" ]; then
         DURATION=$(get_duration_ms $STEP_START)
@@ -212,7 +212,7 @@ ${MARKET_CONTENT}
 
 INSTRUÇÕES:
 Advogue pela ideia conforme seu role acima e salve o resultado JSON no arquivo: ${ANGLE_OUT}" \
-  --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03A_ANGLE_GEN.log" &
+  --timeout 240 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03A_ANGLE_GEN.log" &
 ANGEL_PID=$!
 
 # DEVIL (destruição criativa) - com logging
