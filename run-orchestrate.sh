@@ -17,12 +17,11 @@
 #   ./run-orchestrate.sh ideias
 #
 # FLUXO:
-#   1. GET /api/pending → lista briefings pendentes
-#   2. Para cada briefing: baixa conteúdo via GET /api/file
-#   3. Salva local em history/{mode}/briefing/
-#   4. Roda run-{mode}.sh
-#   5. Sincroniza cada arquivo gerado pro Railway via sync-to-railway.sh
-#   6. Limpa briefing no Railway via POST /api/briefing/clear
+#   1. GET /api/pending → lista briefings pendentes (já com conteúdo)
+#   2. Para cada briefing: salva conteúdo local em history/{mode}/briefing/
+#   3. Roda run-{mode}.sh
+#   4. Sincroniza cada arquivo gerado pro Railway via sync-to-railway.sh
+#   5. Limpa briefing no Railway via POST /api/briefing/clear
 #
 # PRÉ-REQUISITOS:
 #   - Railway online
@@ -60,16 +59,18 @@ echo "✅ Railway online"
 echo ""
 echo "📋 Buscando briefings pendentes ($MODE)..."
 
-PENDING=$(curl -s \
+# Baixa lista completa (inclui conteúdo)
+PENDING_JSON=$(curl -s \
     -H "X-API-Key: ${API_KEY}" \
     "${RAILWAY_URL}/api/pending?mode=${MODE}" 2>/dev/null)
 
-if [ -z "$PENDING" ]; then
-    echo "❌ Falha ao buscar pendentes"
+if [ -z "$PENDING_JSON" ]; then
+    echo "❌ Falha ao buscar pendentes (resposta vazia)"
     exit 1
 fi
 
-BRIEFING_COUNT=$(echo "$PENDING" | jq '.briefings | length' 2>/dev/null)
+# Conta briefings
+BRIEFING_COUNT=$(echo "$PENDING_JSON" | python3 -c "import sys, json; print(len(json.load(sys.stdin).get('briefings', [])))" 2>/dev/null)
 
 if [ "$BRIEFING_COUNT" = "0" ] || [ -z "$BRIEFING_COUNT" ]; then
     echo "✅ Nenhum briefing pendente."
@@ -79,36 +80,27 @@ fi
 echo "📨 $BRIEFING_COUNT briefing(s) encontrado(s)"
 
 # ---- 3. PROCESSAR CADA BRIEFING ----
-echo "$PENDING" | jq -r '.briefings[].name' | while read -r FILENAME; do
+# Loop via índice para extrair nome e conteúdo com segurança
+for ((i=0; i<$BRIEFING_COUNT; i++)); do
+    FILENAME=$(echo "$PENDING_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin)['briefings'][$i]['name'])")
+    
     echo ""
     echo "============================================"
     echo "  PROCESSANDO: $FILENAME"
     echo "============================================"
     
-    # Baixar conteúdo
+    # Extrair conteúdo (usando Python pra lidar com multiline/encoding corretamente)
     LOCAL_DIR="$SCRIPT_DIR/history/$MODE/briefing"
     mkdir -p "$LOCAL_DIR"
     LOCAL_FILE="$LOCAL_DIR/$FILENAME"
     
-    echo "📥 Baixando briefing..."
-    CONTENT=$(curl -s \
-        -H "X-API-Key: ${API_KEY}" \
-        "${RAILWAY_URL}/api/file?mode=${MODE}&dir=briefing&name=${FILENAME}" 2>/dev/null)
+    echo "$PENDING_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin)['briefings'][$i]['content'])" > "$LOCAL_FILE"
     
-    if [ -z "$CONTENT" ]; then
-        echo "❌ Falha ao baixar $FILENAME -- pulando"
+    if [ ! -s "$LOCAL_FILE" ]; then
+        echo "❌ Conteúdo vazio para $FILENAME -- pulando"
         continue
     fi
     
-    # Extrair conteúdo (API retorna JSON com campo content)
-    FILE_CONTENT=$(echo "$CONTENT" | jq -r '.content // empty' 2>/dev/null)
-    
-    if [ -z "$FILE_CONTENT" ]; then
-        # Talvez retorne texto puro
-        FILE_CONTENT="$CONTENT"
-    fi
-    
-    echo "$FILE_CONTENT" > "$LOCAL_FILE"
     echo "✅ Salvo em: $LOCAL_FILE"
     
     # Determinar script do pipeline

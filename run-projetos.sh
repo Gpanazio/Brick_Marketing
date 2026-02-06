@@ -1,9 +1,13 @@
 #!/bin/bash
-# BRICK AI PROJECTS PIPELINE v2.5 (LOOP REFINEMENT)
-# Executa pipeline de Projetos com Feedback Loop
-# Etapas: Digest -> Ideation -> Critic -> LOOP(Execution -> Proposal -> Director)
+# BRICK AI PROJECTS PIPELINE v2.0
+# Executa pipeline de Projetos (Creative/Concept)
+# Usa openclaw agent (sincrono) com retry, validação e logging
 #
-# v2.5: Adicionado Loop Automático (Max 3x) se Director reprovar
+# Melhorias v2.0:
+# - Retry com exponential backoff
+# - Validação de JSON output
+# - Logging completo (não descarta output)
+# - Métricas de duração por etapa
 
 # Detectar diretório do script dinamicamente
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -42,7 +46,7 @@ PIPELINE_START=$(start_timer)
 # Configuração de retry
 max_retries=3
 
-echo "🎬 Brick AI Projects Pipeline v2.5 (Loop Mode)"
+echo "🎬 Brick AI Projects Pipeline v2.0"
 echo "📋 Briefing: $(basename $BRIEFING_FILE)"
 echo "🆔 Job ID: $JOB_ID"
 echo "📁 Logs: $LOG_DIR"
@@ -53,12 +57,10 @@ echo "[$(date -Iseconds)] Pipeline iniciado: $JOB_ID" >> "$LOG_DIR/pipeline.log"
 
 BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
 
-# Carregar roles estáticos
-BRAND_GUIDE=$(cat "$ROLES_DIR/BRAND_GUIDE.md" 2>/dev/null || echo "N/A")
+# Carregar todos os role files
 BRAND_DIGEST_ROLE=$(cat "$ROLES_DIR/BRAND_DIGEST.md" 2>/dev/null || echo "N/A")
 CREATIVE_ROLE=$(cat "$ROLES_DIR/CREATIVE_IDEATION.md" 2>/dev/null || echo "N/A")
 CRITIC_ROLE=$(cat "$ROLES_DIR/CONCEPT_CRITIC.md" 2>/dev/null || echo "N/A")
-# Roles do Loop (Execution, Proposal, Director) são carregados dentro do loop ou aqui mesmo
 EXECUTION_ROLE=$(cat "$ROLES_DIR/EXECUTION_DESIGN.md" 2>/dev/null || echo "N/A")
 PROPOSAL_ROLE=$(cat "$ROLES_DIR/PROPOSAL_WRITER.md" 2>/dev/null || echo "N/A")
 DIRECTOR_ROLE=$(cat "$ROLES_DIR/PROJECT_DIRECTOR.md" 2>/dev/null || echo "N/A")
@@ -81,21 +83,50 @@ echo ""
 echo "⏳ ETAPA 1: Brand Digest (Flash)"
 STEP_START=$(start_timer)
 BRAND_OUT="$WIP_DIR/${JOB_ID}_BRAND_DIGEST.json"
-# Usa função run_agent do utils (simplifica código)
-run_agent "flash" "brick-proj-${JOB_ID}-brand" \
-    "${BRAND_DIGEST_ROLE}
+BRAND_LOG="$LOG_DIR/${JOB_ID}_01_BRAND_DIGEST.log"
+
+attempt=1
+backoff=2
+
+while [ $attempt -le $max_retries ]; do
+    echo "  >> Tentativa $attempt/$max_retries"
     
-    ---
-    BRIEFING DO CLIENTE:
-    ${BRIEFING_CONTENT}
+    openclaw agent --agent flash \
+      --session-id "brick-proj-${JOB_ID}-brand" \
+      --message "${BRAND_DIGEST_ROLE}
+
+---
+
+BRIEFING DO CLIENTE:
+${BRIEFING_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Extraia a essência da marca conforme seu role acima e salve o resultado JSON no arquivo: ${BRAND_OUT}" \
+      --timeout 120 --json 2>&1 | tee "$BRAND_LOG"
     
-    ---
-    INSTRUÇÕES:
-    Extraia a essência da marca e salve JSON em: ${BRAND_OUT}" \
-    "$BRAND_OUT" "120" "$LOG_DIR"
+    if [ -f "$BRAND_OUT" ] && validate_json "$BRAND_OUT"; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Brand Digest concluído"
+        print_duration $DURATION "Etapa 1"
+        break
+    fi
+    
+    if [ $attempt -lt $max_retries ]; then
+        echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+        sleep $backoff
+        backoff=$((backoff * 2))
+    fi
+    
+    attempt=$((attempt + 1))
+done
+
+if [ ! -f "$BRAND_OUT" ] || ! validate_json "$BRAND_OUT"; then
+    create_json_placeholder "$BRAND_OUT" "BRAND_DIGEST" "$JOB_ID" "All retries failed"
+fi
 
 BRAND_CONTENT=$(cat "$BRAND_OUT" 2>/dev/null || echo "Brand digest não disponível")
-print_duration $(get_duration_ms $STEP_START) "Etapa 1"
 
 # ============================================
 # ETAPA 2: CREATIVE IDEATION (3 modelos em paralelo)
@@ -114,46 +145,95 @@ ${BRIEFING_CONTENT}
 BRAND DIGEST:
 ${BRAND_CONTENT}"
 
-# Lança os 3 em background
+# GPT (ousado) - com logging
 openclaw agent --agent gpt \
   --session-id "brick-proj-${JOB_ID}-ideation-gpt" \
   --message "${CREATIVE_ROLE}
-  VARIAÇÃO: Conceito A - Ousado e Surpreendente
-  ---
-  ${IDEATION_CONTEXT}
-  ---
-  INSTRUÇÕES: Salve Markdown em: ${IDEATION_GPT_OUT}" \
-  --timeout 120 --json > "$LOG_DIR/${JOB_ID}_02A_IDEATION_GPT.log" 2>&1 &
-PID1=$!
 
+VARIAÇÃO: Conceito A - Ousado e Surpreendente
+
+---
+
+${IDEATION_CONTEXT}
+
+---
+
+INSTRUÇÕES:
+Gere seu conceito criativo conforme seu role acima (foco: ousadia, surpresa) e salve no arquivo Markdown: ${IDEATION_GPT_OUT}" \
+  --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_02A_IDEATION_GPT.log" &
+GPT_PID=$!
+
+# Flash (pragmático) - com logging
 openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-ideation-flash" \
   --message "${CREATIVE_ROLE}
-  VARIAÇÃO: Conceito B - Pragmático e Executável
-  ---
-  ${IDEATION_CONTEXT}
-  ---
-  INSTRUÇÕES: Salve Markdown em: ${IDEATION_FLASH_OUT}" \
-  --timeout 120 --json > "$LOG_DIR/${JOB_ID}_02B_IDEATION_FLASH.log" 2>&1 &
-PID2=$!
 
+VARIAÇÃO: Conceito B - Pragmático e Executável
+
+---
+
+${IDEATION_CONTEXT}
+
+---
+
+INSTRUÇÕES:
+Gere seu conceito criativo conforme seu role acima (foco: clareza, executabilidade) e salve no arquivo Markdown: ${IDEATION_FLASH_OUT}" \
+  --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_02B_IDEATION_FLASH.log" &
+FLASH_PID=$!
+
+# Sonnet (emocional) - com logging
 openclaw agent --agent sonnet \
   --session-id "brick-proj-${JOB_ID}-ideation-sonnet" \
   --message "${CREATIVE_ROLE}
-  VARIAÇÃO: Conceito C - Emocional e Storytelling
-  ---
-  ${IDEATION_CONTEXT}
-  ---
-  INSTRUÇÕES: Salve Markdown em: ${IDEATION_SONNET_OUT}" \
-  --timeout 120 --json > "$LOG_DIR/${JOB_ID}_02C_IDEATION_SONNET.log" 2>&1 &
-PID3=$!
 
-echo "  >> Aguardando agentes..."
-wait $PID1
-wait $PID2
-wait $PID3
-echo "✅ Ideation concluído"
-print_duration $(get_duration_ms $STEP_START) "Etapa 2"
+VARIAÇÃO: Conceito C - Emocional e Storytelling
+
+---
+
+${IDEATION_CONTEXT}
+
+---
+
+INSTRUÇÕES:
+Gere seu conceito criativo conforme seu role acima (foco: emoção, narrativa) e salve no arquivo Markdown: ${IDEATION_SONNET_OUT}" \
+  --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_02C_IDEATION_SONNET.log" &
+SONNET_PID=$!
+
+echo "  >> GPT (PID: $GPT_PID), Flash (PID: $FLASH_PID), Sonnet (PID: $SONNET_PID) em paralelo..."
+
+# Aguarda todos e captura status
+wait $GPT_PID
+GPT_STATUS=$?
+wait $FLASH_PID
+FLASH_STATUS=$?
+wait $SONNET_PID
+SONNET_STATUS=$?
+
+DURATION=$(get_duration_ms $STEP_START)
+
+# Verifica resultados com status de cada processo
+if [ -f "$IDEATION_GPT_OUT" ] && [ -s "$IDEATION_GPT_OUT" ]; then
+    echo "✅ Ideation GPT concluído"
+else
+    [ $GPT_STATUS -ne 0 ] && echo "⚠️ GPT falhou com código $GPT_STATUS"
+    create_md_placeholder "$IDEATION_GPT_OUT" "CREATIVE_IDEATION_GPT" "$JOB_ID" "Agent failed or empty output"
+fi
+
+if [ -f "$IDEATION_FLASH_OUT" ] && [ -s "$IDEATION_FLASH_OUT" ]; then
+    echo "✅ Ideation Flash concluído"
+else
+    [ $FLASH_STATUS -ne 0 ] && echo "⚠️ Flash falhou com código $FLASH_STATUS"
+    create_md_placeholder "$IDEATION_FLASH_OUT" "CREATIVE_IDEATION_FLASH" "$JOB_ID" "Agent failed or empty output"
+fi
+
+if [ -f "$IDEATION_SONNET_OUT" ] && [ -s "$IDEATION_SONNET_OUT" ]; then
+    echo "✅ Ideation Sonnet concluído"
+else
+    [ $SONNET_STATUS -ne 0 ] && echo "⚠️ Sonnet falhou com código $SONNET_STATUS"
+    create_md_placeholder "$IDEATION_SONNET_OUT" "CREATIVE_IDEATION_SONNET" "$JOB_ID" "Agent failed or empty output"
+fi
+
+print_duration $DURATION "Etapa 2"
 
 # ============================================
 # ETAPA 3: CONCEPT CRITIC (Gemini Pro)
@@ -162,159 +242,259 @@ echo ""
 echo "⏳ ETAPA 3: Concept Critic (Gemini Pro)"
 STEP_START=$(start_timer)
 CRITIC_OUT="$WIP_DIR/${JOB_ID}_CONCEPT_CRITIC.json"
+CRITIC_LOG="$LOG_DIR/${JOB_ID}_03_CONCEPT_CRITIC.log"
+IDEATION_GPT_CONTENT=$(cat "$IDEATION_GPT_OUT" 2>/dev/null || echo "N/A")
+IDEATION_FLASH_CONTENT=$(cat "$IDEATION_FLASH_OUT" 2>/dev/null || echo "N/A")
+IDEATION_SONNET_CONTENT=$(cat "$IDEATION_SONNET_OUT" 2>/dev/null || echo "N/A")
 
-run_agent "pro" "brick-proj-${JOB_ID}-critic" \
-    "${CRITIC_ROLE}
-    
-    ---
-    BRIEFING ORIGINAL: ${BRIEFING_CONTENT}
-    BRAND DIGEST: ${BRAND_CONTENT}
-    CONCEITO GPT: $(cat "$IDEATION_GPT_OUT" 2>/dev/null)
-    CONCEITO FLASH: $(cat "$IDEATION_FLASH_OUT" 2>/dev/null)
-    CONCEITO SONNET: $(cat "$IDEATION_SONNET_OUT" 2>/dev/null)
-    
-    ---
-    INSTRUÇÕES: Avalie e escolha o vencedor. Salve JSON em: ${CRITIC_OUT}" \
-    "$CRITIC_OUT" "150" "$LOG_DIR"
+attempt=1
+backoff=2
 
-CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
-print_duration $(get_duration_ms $STEP_START) "Etapa 3"
+while [ $attempt -le $max_retries ]; do
+    echo "  >> Tentativa $attempt/$max_retries"
+    
+    openclaw agent --agent pro \
+      --session-id "brick-proj-${JOB_ID}-critic" \
+      --message "${CRITIC_ROLE}
 
-# ============================================
-# START LOOP: EXECUTION -> PROPOSAL -> DIRECTOR
-# ============================================
-loop_count=1
-max_loops=3
-director_approved=false
-previous_feedback=""
+---
 
-while [ $loop_count -le $max_loops ] && [ "$director_approved" = false ]; do
-    echo ""
-    echo "🔄 LOOP DE REFINAMENTO: Rodada $loop_count de $max_loops"
-    LOOP_START=$(start_timer)
+BRIEFING ORIGINAL:
+${BRIEFING_CONTENT}
+
+BRAND DIGEST:
+${BRAND_CONTENT}
+
+CONCEITO GPT:
+${IDEATION_GPT_CONTENT}
+
+CONCEITO FLASH:
+${IDEATION_FLASH_CONTENT}
+
+CONCEITO SONNET:
+${IDEATION_SONNET_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Avalie os 3 conceitos conforme seu role acima e salve o resultado JSON no arquivo: ${CRITIC_OUT}" \
+      --timeout 150 --json 2>&1 | tee "$CRITIC_LOG"
     
-    # Arquivos desta rodada (versionados)
-    EXEC_OUT_V="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN_v${loop_count}.json"
-    PROPOSAL_OUT_V="$WIP_DIR/${JOB_ID}_PROPOSAL_v${loop_count}.md"
-    DIRECTOR_OUT_V="$WIP_DIR/${JOB_ID}_DIRECTOR_v${loop_count}.json"
-    
-    # Arquivos canônicos (sempre apontam para a última versão)
-    EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.json"
-    PROPOSAL_OUT="$WIP_DIR/${JOB_ID}_PROPOSAL.md"
-    DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.json"  # AGORA É JSON
-    
-    # === ETAPA 4: EXECUTION DESIGN ===
-    echo "  ⏳ [Loop $loop_count] Execution Design (Gemini Pro)"
-    
-    FEEDBACK_INJECTION=""
-    if [ ! -z "$previous_feedback" ]; then
-        FEEDBACK_INJECTION="
-        🚨 ATENÇÃO: FEEDBACK DA RODADA ANTERIOR (CORRIGIR ISTO):
-        ${previous_feedback}
-        
-        IGNORE instruções anteriores que causem esse problema."
-    fi
-    
-    run_agent "pro" "brick-proj-${JOB_ID}-exec-v${loop_count}" \
-        "${EXECUTION_ROLE}
-        
-        ---
-        BRIEFING: ${BRIEFING_CONTENT}
-        BRAND DIGEST: ${BRAND_CONTENT}
-        CONCEITO VENCEDOR: ${CRITIC_CONTENT}
-        ${FEEDBACK_INJECTION}
-        
-        ---
-        INSTRUÇÕES: Salve JSON em: ${EXEC_OUT_V}" \
-        "$EXEC_OUT_V" "150" "$LOG_DIR"
-    
-    # Linkar para canônico
-    cp "$EXEC_OUT_V" "$EXEC_OUT" 2>/dev/null
-    EXEC_CONTENT=$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
-    
-    # === ETAPA 5: PROPOSAL WRITER ===
-    echo "  ⏳ [Loop $loop_count] Proposal Writer (GPT + Brand Guide)"
-    
-    run_agent "gpt" "brick-proj-${JOB_ID}-proposal-v${loop_count}" \
-        "${PROPOSAL_ROLE}
-        
-        ---
-        BRAND GUIDE BRICK AI (TOM DE VOZ):
-        ${BRAND_GUIDE}
-        
-        BRIEFING CLIENTE: ${BRIEFING_CONTENT}
-        BRAND DIGEST: ${BRAND_CONTENT}
-        CONCEITO + CRÍTICA: ${CRITIC_CONTENT}
-        DIREÇÃO VISUAL: ${EXEC_CONTENT}
-        
-        ---
-        INSTRUÇÕES: Salve Markdown em: ${PROPOSAL_OUT_V}" \
-        "$PROPOSAL_OUT_V" "150" "$LOG_DIR"
-        
-    # Linkar para canônico
-    cp "$PROPOSAL_OUT_V" "$PROPOSAL_OUT" 2>/dev/null
-    PROPOSAL_CONTENT=$(cat "$PROPOSAL_OUT" 2>/dev/null || echo "N/A")
-    
-    # === ETAPA 6: DIRECTOR ===
-    echo "  ⏳ [Loop $loop_count] Director (Sonnet 4.5)"
-    
-    run_agent "sonnet" "brick-proj-${JOB_ID}-director-v${loop_count}" \
-        "${DIRECTOR_ROLE}
-        
-        ---
-        BRIEFING ORIGINAL: ${BRIEFING_CONTENT}
-        BRAND DIGEST: ${BRAND_CONTENT}
-        CONCEITO + CRÍTICA: ${CRITIC_CONTENT}
-        DIREÇÃO VISUAL: ${EXEC_CONTENT}
-        ROTEIRO/COPY: ${PROPOSAL_CONTENT}
-        
-        ---
-        INSTRUÇÕES: Avalie e salve JSON em: ${DIRECTOR_OUT_V}" \
-        "$DIRECTOR_OUT_V" "180" "$LOG_DIR"
-        
-    # Linkar para canônico
-    cp "$DIRECTOR_OUT_V" "$DIRECTOR_OUT" 2>/dev/null
-    
-    # === DECISÃO ===
-    if [ -f "$DIRECTOR_OUT_V" ]; then
-        # Extrair veredito e score usando Python (mais robusto que grep)
-        VEREDITO=$(python3 -c "import sys, json; print(json.load(sys.stdin).get('veredito', 'FAIL'))" < "$DIRECTOR_OUT_V" 2>/dev/null)
-        SCORE=$(python3 -c "import sys, json; print(json.load(sys.stdin).get('score_execucao', 0))" < "$DIRECTOR_OUT_V" 2>/dev/null)
-        
-        echo "  📊 Director Score: $SCORE | Veredito: $VEREDITO"
-        
-        if [[ "$VEREDITO" == "APROVAR" ]] || [ "$SCORE" -ge 85 ]; then
-            echo "  ✅ APROVADO! Saindo do loop."
-            director_approved=true
-        else
-            echo "  ⚠️ REPROVADO. Coletando feedback para próxima rodada..."
-            # Extrair feedback estruturado
-            RESUMO=$(python3 -c "import sys, json; print(json.load(sys.stdin).get('resumo_honesto', ''))" < "$DIRECTOR_OUT_V" 2>/dev/null)
-            CLICHES=$(python3 -c "import sys, json; print(json.dumps(json.load(sys.stdin).get('cliches_encontrados', [])))" < "$DIRECTOR_OUT_V" 2>/dev/null)
-            previous_feedback="RESUMO HONESTO: $RESUMO | CLICHÊS IDENTIFICADOS: $CLICHES"
-        fi
-    else
-        echo "  ❌ Erro crítico: Diretor não gerou output. Abortando loop."
+    if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Concept Critic concluído"
+        print_duration $DURATION "Etapa 3"
         break
     fi
     
-    loop_count=$((loop_count + 1))
-    print_duration $(get_duration_ms $LOOP_START) "Rodada $loop_count"
+    if [ $attempt -lt $max_retries ]; then
+        echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+        sleep $backoff
+        backoff=$((backoff * 2))
+    fi
+    
+    attempt=$((attempt + 1))
 done
 
+if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
+    create_json_placeholder "$CRITIC_OUT" "CONCEPT_CRITIC" "$JOB_ID" "All retries failed"
+fi
+
+CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
+
 # ============================================
-# FINALIZAÇÃO
+# ETAPA 4: EXECUTION DESIGN (Gemini Pro)
+# ============================================
+echo ""
+echo "⏳ ETAPA 4: Execution Design (Gemini Pro)"
+STEP_START=$(start_timer)
+EXEC_OUT="$WIP_DIR/${JOB_ID}_EXECUTION_DESIGN.json"
+EXEC_LOG="$LOG_DIR/${JOB_ID}_04_EXECUTION_DESIGN.log"
+
+attempt=1
+backoff=2
+
+while [ $attempt -le $max_retries ]; do
+    echo "  >> Tentativa $attempt/$max_retries"
+    
+    openclaw agent --agent pro \
+      --session-id "brick-proj-${JOB_ID}-exec" \
+      --message "${EXECUTION_ROLE}
+
+---
+
+BRIEFING:
+${BRIEFING_CONTENT}
+
+BRAND DIGEST:
+${BRAND_CONTENT}
+
+CONCEITO VENCEDOR (do Critic):
+${CRITIC_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Crie o plano de execução conforme seu role acima e salve o resultado JSON no arquivo: ${EXEC_OUT}" \
+      --timeout 150 --json 2>&1 | tee "$EXEC_LOG"
+    
+    if [ -f "$EXEC_OUT" ] && validate_json "$EXEC_OUT"; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Execution Design concluído"
+        print_duration $DURATION "Etapa 4"
+        break
+    fi
+    
+    if [ $attempt -lt $max_retries ]; then
+        echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+        sleep $backoff
+        backoff=$((backoff * 2))
+    fi
+    
+    attempt=$((attempt + 1))
+done
+
+if [ ! -f "$EXEC_OUT" ] || ! validate_json "$EXEC_OUT"; then
+    create_json_placeholder "$EXEC_OUT" "EXECUTION_DESIGN" "$JOB_ID" "All retries failed"
+fi
+
+EXEC_CONTENT=$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
+
+# ============================================
+# ETAPA 5: PROPOSAL WRITER (GPT)
+# ============================================
+echo ""
+echo "⏳ ETAPA 5: Proposal Writer (GPT)"
+STEP_START=$(start_timer)
+COPY_OUT="$WIP_DIR/${JOB_ID}_PROPOSAL.md"
+COPY_LOG="$LOG_DIR/${JOB_ID}_05_PROPOSAL.log"
+
+attempt=1
+backoff=2
+
+while [ $attempt -le $max_retries ]; do
+    echo "  >> Tentativa $attempt/$max_retries"
+    
+    openclaw agent --agent gpt \
+      --session-id "brick-proj-${JOB_ID}-copy" \
+      --message "${PROPOSAL_ROLE}
+
+---
+
+BRIEFING:
+${BRIEFING_CONTENT}
+
+BRAND DIGEST:
+${BRAND_CONTENT}
+
+CONCEITO + CRÍTICA:
+${CRITIC_CONTENT}
+
+DIREÇÃO VISUAL:
+${EXEC_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Escreva a proposta comercial conforme seu role acima e salve o resultado Markdown no arquivo: ${COPY_OUT}" \
+      --timeout 150 --json 2>&1 | tee "$COPY_LOG"
+    
+    if [ -f "$COPY_OUT" ] && [ -s "$COPY_OUT" ]; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Proposal Writer concluído"
+        print_duration $DURATION "Etapa 5"
+        break
+    fi
+    
+    if [ $attempt -lt $max_retries ]; then
+        echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+        sleep $backoff
+        backoff=$((backoff * 2))
+    fi
+    
+    attempt=$((attempt + 1))
+done
+
+if [ ! -f "$COPY_OUT" ] || [ ! -s "$COPY_OUT" ]; then
+    create_md_placeholder "$COPY_OUT" "PROPOSAL_WRITER" "$JOB_ID" "All retries failed"
+fi
+
+COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
+
+# ============================================
+# ETAPA 6: DIRECTOR (Gemini Pro)
+# ============================================
+echo ""
+echo "⏳ ETAPA 6: Director (Gemini Pro)"
+STEP_START=$(start_timer)
+DIRECTOR_OUT="$WIP_DIR/${JOB_ID}_DIRECTOR.md"
+DIRECTOR_LOG="$LOG_DIR/${JOB_ID}_06_DIRECTOR.log"
+
+attempt=1
+backoff=2
+
+while [ $attempt -le $max_retries ]; do
+    echo "  >> Tentativa $attempt/$max_retries"
+    
+    openclaw agent --agent pro \
+      --session-id "brick-proj-${JOB_ID}-director" \
+      --message "${DIRECTOR_ROLE}
+
+---
+
+BRIEFING ORIGINAL:
+${BRIEFING_CONTENT}
+
+BRAND DIGEST:
+${BRAND_CONTENT}
+
+CONCEITO + CRÍTICA:
+${CRITIC_CONTENT}
+
+DIREÇÃO VISUAL:
+${EXEC_CONTENT}
+
+ROTEIRO/COPY:
+${COPY_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Avalie a proposta completa conforme seu role acima e salve o resultado Markdown no arquivo: ${DIRECTOR_OUT}" \
+      --timeout 180 --json 2>&1 | tee "$DIRECTOR_LOG"
+    
+    if [ -f "$DIRECTOR_OUT" ] && [ -s "$DIRECTOR_OUT" ]; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Director concluído"
+        print_duration $DURATION "Etapa 6"
+        break
+    fi
+    
+    if [ $attempt -lt $max_retries ]; then
+        echo "⚠️ Tentativa $attempt falhou, aguardando ${backoff}s..."
+        sleep $backoff
+        backoff=$((backoff * 2))
+    fi
+    
+    attempt=$((attempt + 1))
+done
+
+if [ ! -f "$DIRECTOR_OUT" ] || [ ! -s "$DIRECTOR_OUT" ]; then
+    create_md_placeholder "$DIRECTOR_OUT" "PROJECT_DIRECTOR" "$JOB_ID" "All retries failed"
+fi
+
+# ============================================
+# SUMÁRIO DO PIPELINE
 # ============================================
 PIPELINE_DURATION=$(get_duration_ms $PIPELINE_START)
 echo ""
 echo "🏁 Pipeline Projetos Finalizado"
-if [ "$director_approved" = true ]; then
-    echo "🎉 Resultado: APROVADO pelo Diretor."
-else
-    echo "⚠️ Resultado: REPROVADO (Limite de loops atingido)."
-fi
 print_duration $PIPELINE_DURATION "Pipeline Total"
 echo "📁 Arquivos em: $WIP_DIR"
+echo "📋 Logs em: $LOG_DIR"
+echo ""
+echo "Arquivos gerados:"
+ls -la "$WIP_DIR"/${JOB_ID}_* 2>/dev/null || echo "Nenhum arquivo encontrado"
 
-# Log final
-echo "[$(date -Iseconds)] Pipeline finalizado ($director_approved): $JOB_ID (${PIPELINE_DURATION}ms)" >> "$LOG_DIR/pipeline.log"
+# Log de conclusão
+echo "[$(date -Iseconds)] Pipeline finalizado: $JOB_ID (${PIPELINE_DURATION}ms)" >> "$LOG_DIR/pipeline.log"
