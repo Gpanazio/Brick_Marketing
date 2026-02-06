@@ -1,10 +1,26 @@
 #!/bin/bash
 # BRICK AI PIPELINE UTILITIES
 # Funções compartilhadas entre os scripts de pipeline
-# v1.0 - RESTORED
+# v1.1 - Timing functions added
 
 MAX_RETRIES=${MAX_RETRIES:-3}
 INITIAL_BACKOFF_SECONDS=${INITIAL_BACKOFF_SECONDS:-2}
+
+# Timing utilities
+start_timer() {
+    date +%s
+}
+
+get_duration_ms() {
+    local start=$1
+    echo $(( ($(date +%s) - start) * 1000 ))
+}
+
+print_duration() {
+    local duration_ms=$1
+    local label="$2"
+    echo "⏱️  ${label}: ${duration_ms}ms"
+}
 
 setup_logs() {
     local wip_dir="$1"
