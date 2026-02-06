@@ -489,7 +489,7 @@
             { id: 'p2c', x: 550, y: 750, title: 'IDEATION_SONNET', label: 'Concept_C', model: 'CLAUDE SONNET' },
             { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI PRO' },
             { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI PRO' },
-            { id: 'p5', x: 0, y: 1350, title: 'PROPOSAL', label: 'Script_Writer', model: 'GPT 5.2' },
+            { id: 'p5', x: 0, y: 1350, title: 'PROPOSAL', label: 'Script_Writer', model: 'GPT-5.1' },
             { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI PRO' },
             { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'p10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
@@ -1216,6 +1216,9 @@ PROCESSED.md ─── Briefing enriquecido
             const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
             activeRevisionLinks = [];
             
+            // ID do HUMAN node depende do modo atual
+            const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : 'n9';
+            
             revisionFiles.forEach((revFile, idx) => {
                 const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
                 const revId = `rev${revNum}`;
@@ -1232,8 +1235,8 @@ PROCESSED.md ─── Briefing enriquecido
                 el.id = revId;
                 el.style.position = 'absolute';
                 
-                // Posição: ao lado direito do HUMAN node (n9), perfeitamente alinhado
-                const humanNode = document.getElementById('n9');
+                // Posição: ao lado direito do HUMAN node, perfeitamente alinhado
+                const humanNode = document.getElementById(humanNodeId);
                 if (humanNode && !savedPositions[revId]) {
                     // Usar as coordenadas de estilo do HUMAN diretamente para garantir alinhamento perfeito
                     const humanLeft = parseInt(humanNode.style.left) || humanNode.offsetLeft;
@@ -1270,7 +1273,7 @@ PROCESSED.md ─── Briefing enriquecido
                 makeDraggable(el);
                 
                 // Adicionar link à lista global de revisões
-                activeRevisionLinks.push(['n9', revId]);
+                activeRevisionLinks.push([humanNodeId, revId]);
             });
 
             // Esperar o navegador renderizar os novos nós antes de desenhar as linhas
