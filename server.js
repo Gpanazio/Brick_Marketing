@@ -1284,3 +1284,31 @@ server = httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`🔌 WebSocket enabled`);
     console.log(`📁 Marketing folder: ${MARKETING_ROOT}`);
 });
+
+// API: Clean old briefings (keep only specified jobIds)
+app.post('/api/briefings/cleanup', (req, res) => {
+    const { mode, keepJobIds } = req.body;
+    const root = getModeRoot(mode || 'marketing');
+    const briefingDir = path.join(root, 'briefing');
+    
+    if (!fs.existsSync(briefingDir)) {
+        return res.status(404).json({ error: 'Briefing directory not found' });
+    }
+    
+    const keepSet = new Set(keepJobIds || []);
+    const files = fs.readdirSync(briefingDir).filter(f => f.endsWith('.md'));
+    let deleted = 0;
+    
+    files.forEach(file => {
+        const jobId = file.replace(/\.md$/, '').split('_')[0];
+        if (!keepSet.has(jobId)) {
+            const filePath = path.join(briefingDir, file);
+            fs.unlinkSync(filePath);
+            deleted++;
+            log('info', 'briefing_cleaned', { file, jobId, mode: mode || 'marketing' });
+        }
+    });
+    
+    emitStateUpdate(mode || 'marketing');
+    res.json({ success: true, deleted, kept: keepSet.size });
+});
