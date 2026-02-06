@@ -493,6 +493,59 @@ fi
 "$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_DIRECTOR.json" >/dev/null 2>&1 &
 
 # ============================================
+# DECISÃO FINAL (DIRECTOR → HUMAN)
+# ============================================
+DIRECTOR_CONTENT=$(cat "$DIRECTOR_OUT" 2>/dev/null || echo "{}")
+VEREDITO=$(echo "$DIRECTOR_CONTENT" | jq -r '.veredito // "N/A"' 2>/dev/null || echo "N/A")
+
+if [ "$VEREDITO" = "APROVAR" ]; then
+    echo ""
+    echo "✅ Director APROVOU (veredito: $VEREDITO)"
+    echo "📤 Movendo para aprovação humana..."
+    
+    # Criar FINAL.md com todos os outputs
+    FINAL_OUT="$WIP_DIR/${JOB_ID}_FINAL.md"
+    cat > "$FINAL_OUT" <<EOF
+# PROJETO APROVADO PELO DIRECTOR
+**Job ID:** ${JOB_ID}
+**Data:** $(date -Iseconds)
+**Veredito:** ${VEREDITO}
+
+---
+
+## BRAND DIGEST
+$(cat "$BRAND_OUT" 2>/dev/null || echo "N/A")
+
+---
+
+## CONCEITO VENCEDOR (Critic)
+$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
+
+---
+
+## EXECUTION DESIGN
+$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
+
+---
+
+## PROPOSAL
+$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
+
+---
+
+## DIRECTOR FEEDBACK
+$(cat "$DIRECTOR_OUT" 2>/dev/null || echo "N/A")
+EOF
+    
+    echo "✅ FINAL.md criado"
+    "$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_FINAL.md" >/dev/null 2>&1 &
+else
+    echo ""
+    echo "⚠️ Director NÃO aprovou (veredito: $VEREDITO)"
+    echo "Pipeline encerrado sem mover para HUMAN"
+fi
+
+# ============================================
 # SUMÁRIO DO PIPELINE
 # ============================================
 PIPELINE_DURATION=$(get_duration_ms $PIPELINE_START)
