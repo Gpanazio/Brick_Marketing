@@ -75,6 +75,7 @@ cp "$BRIEFING_FILE" "$WIP_DIR/${JOB_ID}_BRIEFING_INPUT.md"
 DURATION=$(get_duration_ms $STEP_START)
 echo "✅ Briefing salvo"
 print_duration $DURATION "Etapa 0"
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_BRIEFING_INPUT.md" >/dev/null 2>&1 &
 
 # ============================================
 # ETAPA 1: BRAND DIGEST (Flash)
@@ -125,6 +126,7 @@ done
 if [ ! -f "$BRAND_OUT" ] || ! validate_json "$BRAND_OUT"; then
     create_json_placeholder "$BRAND_OUT" "BRAND_DIGEST" "$JOB_ID" "All retries failed"
 fi
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_BRAND_DIGEST.json" >/dev/null 2>&1 &
 
 BRAND_CONTENT=$(cat "$BRAND_OUT" 2>/dev/null || echo "Brand digest não disponível")
 
@@ -234,6 +236,9 @@ else
 fi
 
 print_duration $DURATION "Etapa 2"
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_IDEATION_GPT.md" >/dev/null 2>&1 &
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_IDEATION_FLASH.md" >/dev/null 2>&1 &
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_IDEATION_SONNET.md" >/dev/null 2>&1 &
 
 # ============================================
 # ETAPA 3: CONCEPT CRITIC (Gemini Pro)
@@ -301,6 +306,7 @@ if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
 fi
 
 CRITIC_CONTENT=$(cat "$CRITIC_OUT" 2>/dev/null || echo "N/A")
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_CONCEPT_CRITIC.json" >/dev/null 2>&1 &
 
 # ============================================
 # ETAPA 4: EXECUTION DESIGN (Gemini Pro)
@@ -359,6 +365,7 @@ if [ ! -f "$EXEC_OUT" ] || ! validate_json "$EXEC_OUT"; then
 fi
 
 EXEC_CONTENT=$(cat "$EXEC_OUT" 2>/dev/null || echo "N/A")
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_EXECUTION_DESIGN.json" >/dev/null 2>&1 &
 
 # ============================================
 # ETAPA 5: PROPOSAL WRITER (GPT)
@@ -420,6 +427,7 @@ if [ ! -f "$COPY_OUT" ] || [ ! -s "$COPY_OUT" ]; then
 fi
 
 COPY_CONTENT=$(cat "$COPY_OUT" 2>/dev/null || echo "N/A")
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_PROPOSAL.md" >/dev/null 2>&1 &
 
 # ============================================
 # ETAPA 6: DIRECTOR (Gemini Pro)
@@ -482,6 +490,7 @@ done
 if [ ! -f "$DIRECTOR_OUT" ] || [ ! -s "$DIRECTOR_OUT" ]; then
     create_md_placeholder "$DIRECTOR_OUT" "PROJECT_DIRECTOR" "$JOB_ID" "All retries failed"
 fi
+"$PROJECT_ROOT/sync-to-railway.sh" --file "history/projetos/wip/${JOB_ID}_DIRECTOR.json" >/dev/null 2>&1 &
 
 # ============================================
 # SUMÁRIO DO PIPELINE
