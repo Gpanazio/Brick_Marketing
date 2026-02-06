@@ -1,0 +1,43 @@
+{
+  "idea_name": "campanha_duloren_estetica_sexy_zenital",
+  "options": [
+    {
+      "name": "Editorial de Luxo (The Aftermath) com erotismo implícito",
+      "action": "Executar o conceito zenital com espelho + ‘névoa’ de água, focando em composição artística e pós-festa sofisticado; evitar beijos explícitos e reduzir transparência. Produzir versões 30s/15s e stills de catálogo.",
+      "bet": "A estética editorial (Newton/Klein) gera buzz sem atravessar a linha da censura.",
+      "risk": "Risco de bloqueio em Meta/TikTok permanece; custo de set espelhado e rigging é alto; risco de parecer frio/elitista.",
+      "upside": "Campanha premium com valor de PR e reposicionamento de marca como erotismo chic.",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Equilibra ousadia com segurança visual. Mantém o DNA provocativo da Duloren sem depender de cenas explícitas."
+    },
+    {
+      "name": "Campanha Segmentada (Safe + Director’s Cut)",
+      "action": "Produzir duas versões: ‘safe for social’ (texturas, close de rendas, pouca interação física) e ‘director’s cut’ erótica (beijos, água, espelho) para canais restritos/landing + PR controlado.",
+      "bet": "A segmentação protege a mídia paga e permite manter o impacto criativo em canais próprios.",
+      "risk": "Custo de produção maior (duas versões), risco de vazamento da versão hot e backlash; maior complexidade de distribuição.",
+      "upside": "Maximiza alcance e reduz risco de bloqueio total, preservando a proposta sexy do cliente.",
+      "reversible": true,
+      "strength_score": 86,
+      "rationale": "É a opção mais pragmática: garante viabilidade de mídia e mantém a ambição criativa para PR e comunidade da marca."
+    },
+    {
+      "name": "Minimalismo Erótico (Textura & Glow)",
+      "action": "Pivotar para o conceito ‘A Fluidez do Desejo’ sem surubão explícito: close-ups de renda molhada, pele com glow, movimento de água e reflexos abstratos. Evitar beijos múltiplos.",
+      "bet": "O erotismo sugerido vende sem acionar algoritmos de moderação.",
+      "risk": "Pode frustrar o cliente que pediu ‘quase erótico’; risco de perder o impacto narrativo do briefing.",
+      "upside": "Maior segurança de veiculação e custo de produção menor (menos modelos/complexidade).",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "Reduz risco regulatório e técnico, mas entrega menos ‘choque’ do que o cliente pediu."
+    }
+  ],
+  "recommended": {
+    "option_name": "Campanha Segmentada (Safe + Director’s Cut)",
+    "confidence": 84,
+    "reasoning": "Melhor equilíbrio entre risco e upside: permite ousadia criativa em canais controlados, enquanto preserva a viabilidade de mídia paga com uma versão segura."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-06T20:00:00Z"
+}
