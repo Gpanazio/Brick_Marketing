@@ -222,6 +222,42 @@ RAILWAY_URL=https://brickmarketing-production.up.railway.app ./run-orchestrate.s
 
 ---
 
-*Atualizado: 05/02/2026*
-*Documentação completa do Marketing: `MARKETING_PIPELINE.md`*
+## Sistema de Revisão (v2.0)
+
+**Feedback Humano → Modelo Campeão:**
+
+Quando você clica em **REVISAR** no node HUMAN:
+1. Modal abre pedindo feedback
+2. Backend identifica qual modelo ganhou o round (via Concept Critic ou Copy Senior)
+3. Chama esse modelo com o feedback + contexto original
+4. Gera `REVISAO_1.md` (ou 2, 3...)
+5. Node laranja aparece ao lado do HUMAN com linha pontilhada
+6. Botões: **✓ APROVAR** (substitui arquivo original) ou **✗ REJEITAR** (arquiva)
+
+**Visual:**
+- Nó laranja com LED pulsante
+- Linha pontilhada conectando HUMAN → REVISÃO
+- Alinhamento perfeito (mesma altura)
+- Suporta múltiplas revisões (REVISAO_1, REVISAO_2...)
+
+---
+
+## Decisões de Design (UI)
+
+**O que aparece no gráfico:**
+- ✅ Pipeline principal (00-08 Marketing, 00-06 Projetos)
+- ✅ Nós de REVISÃO humana (REVISAO_N)
+- ❌ Nós de loop automático (Copy Senior v2/v3, Wall v2/v3) - **ESCONDIDOS**
+
+**Por quê esconder o loop?**
+- Deixa UI mais limpa (foco no resultado final)
+- Loop é detalhe técnico, não valor pro usuário
+- Backend continua rodando loop normalmente
+- Histórico preservado nos arquivos `_v2.json`, `_v3.json`
+
+---
+
+*Atualizado: 06/02/2026*
+*Changelog: `CHANGELOG.md`*
+*Documentação Marketing: `MARKETING_PIPELINE.md`*
 *Mapa de roles: `roles/INDEX.md`*

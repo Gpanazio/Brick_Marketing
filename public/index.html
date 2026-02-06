@@ -1176,73 +1176,9 @@ OUTPUT (Proposta completa)`;
                 makeDraggable(el);
             });
 
-            // DYNAMIC LOOP NODES - Detecta arquivos do loop Copy Senior ↔ Wall (_v2, _v3)
-            // Usa projectFiles.content (já carregado pelo /api/state), NÃO fetch separado
-            const loopWallFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('WALL'));
-            const loopCopyFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('COPY_SENIOR'));
-            
-            // Posição base: 400px à direita do centro do pipeline
-            const loopBaseX = centerX + 400;
-            
-            loopCopyFiles.forEach((copyFile, idx) => {
-                const vNum = copyFile.name.match(/_v(\d+)\.json/i)[1];
-                const loopId = `loop-copy-${vNum}`;
-                
-                const el = document.createElement('div');
-                el.className = 'node';
-                el.id = loopId;
-                el.style.position = 'absolute';
-                el.style.left = `${loopBaseX}px`;
-                el.style.top = `${1350 + (idx * 200)}px`; // 1350 = mesma altura do COPY SENIOR (n7)
-                el.style.transform = 'none';
-                el.style.borderLeft = '4px solid #f97316';
-                
-                el.innerHTML = `
-                    <div class="node-led" style="background: #f97316; box-shadow: 0 0 8px #f97316;"></div>
-                    <div class="node-id">LOOP // COPY_SENIOR_v${vNum}</div>
-                    <div class="node-title">COPY SENIOR v${vNum}</div>
-                    <div class="node-subtext" style="color: #f97316;">REVISÃO AUTO</div>
-                `;
-                
-                el.ondblclick = () => openPanel({ id: loopId, title: `COPY SENIOR v${vNum}` }, projectFiles);
-                container.appendChild(el);
-                makeDraggable(el);
-            });
-            
-            loopWallFiles.forEach((wallFile, idx) => {
-                const vNum = wallFile.name.match(/_v(\d+)\.json/i)[1];
-                const loopId = `loop-wall-${vNum}`;
-                
-                // Parsear content direto (já veio do /api/state, sem fetch)
-                let score = 0, status = 'PROCESSING';
-                try {
-                    const data = JSON.parse(wallFile.content);
-                    score = data.score_final || 0;
-                    status = data.status || 'PROCESSING';
-                } catch(e) { /* content inválido, usar defaults */ }
-                
-                const color = status === 'APPROVED' ? '#22c55e' : '#ef4444';
-                
-                const el = document.createElement('div');
-                el.className = 'node';
-                el.id = loopId;
-                el.style.position = 'absolute';
-                el.style.left = `${loopBaseX}px`;
-                el.style.top = `${1550 + (idx * 200)}px`; // 1550 = mesma altura do WALL (n8)
-                el.style.transform = 'none';
-                el.style.borderLeft = `4px solid ${color}`;
-                
-                el.innerHTML = `
-                    <div class="node-led" style="background: ${color}; box-shadow: 0 0 8px ${color};"></div>
-                    <div class="node-id">LOOP // WALL_v${vNum}</div>
-                    <div class="node-title">WALL v${vNum}</div>
-                    <div class="node-subtext" style="color: ${color}; font-weight: bold;">${score}/100 · ${status}</div>
-                `;
-                
-                el.ondblclick = () => openPanel({ id: loopId, title: `WALL v${vNum}` }, projectFiles);
-                container.appendChild(el);
-                makeDraggable(el);
-            });
+            // DYNAMIC LOOP NODES - DESABILITADO (Gabriel pediu pra esconder)
+            // const loopWallFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('WALL'));
+            // const loopCopyFiles = projectFiles.filter(f => /_v(\d+)\.json$/i.test(f.name) && f.name.includes('COPY_SENIOR'));
 
             // DYNAMIC REVISION NODES - Detecta arquivos REVISAO_1, REVISAO_2... e cria nós ao lado do HUMAN
             const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
@@ -1305,7 +1241,12 @@ OUTPUT (Proposta completa)`;
                 activeRevisionLinks.push(['n9', revId]);
             });
 
-            updateConnections(activeRevisionLinks);
+            // Esperar o navegador renderizar os novos nós antes de desenhar as linhas
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    updateConnections(activeRevisionLinks);
+                });
+            });
             updateTelemetry(projectFiles);
         }
 
@@ -1384,36 +1325,12 @@ OUTPUT (Proposta completa)`;
                 svg.appendChild(line);
             });
             
-            // Desenhar linhas do loop automático
-            // Fluxo: n8 (WALL) → loop-copy-2 → loop-wall-2 [→ loop-copy-3 → loop-wall-3]
-            const loopLinks = [];
-            // Primeiro loop: WALL original (n8) → COPY SENIOR v2
-            if (document.getElementById('loop-copy-2')) loopLinks.push(['n8', 'loop-copy-2']);
-            // COPY SENIOR v2 → WALL v2
-            if (document.getElementById('loop-copy-2') && document.getElementById('loop-wall-2')) loopLinks.push(['loop-copy-2', 'loop-wall-2']);
-            // Se teve v3: WALL v2 → COPY SENIOR v3 → WALL v3
-            if (document.getElementById('loop-copy-3')) loopLinks.push(['loop-wall-2', 'loop-copy-3']);
-            if (document.getElementById('loop-copy-3') && document.getElementById('loop-wall-3')) loopLinks.push(['loop-copy-3', 'loop-wall-3']);
-            
-            loopLinks.forEach(([fId, tId]) => {
-                const f = document.getElementById(fId), t = document.getElementById(tId);
-                if (!f || !t) return;
-                
-                const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
-                const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.bottom - cR.top;
-                const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top - cR.top;
-                
-                if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
-                
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
-                line.setAttribute("stroke", "#f97316");
-                line.setAttribute("stroke-width", "2");
-                line.setAttribute("stroke-dasharray", "8,4");
-                line.setAttribute("opacity", "0.7");
-                line.setAttribute("fill", "none");
-                svg.appendChild(line);
-            });
+            // Desenhar linhas do loop automático - DESABILITADO (Gabriel pediu pra esconder)
+            // const loopLinks = [];
+            // if (document.getElementById('loop-copy-2')) loopLinks.push(['n8', 'loop-copy-2']);
+            // if (document.getElementById('loop-copy-2') && document.getElementById('loop-wall-2')) loopLinks.push(['loop-copy-2', 'loop-wall-2']);
+            // if (document.getElementById('loop-copy-3')) loopLinks.push(['loop-wall-2', 'loop-copy-3']);
+            // if (document.getElementById('loop-copy-3') && document.getElementById('loop-wall-3')) loopLinks.push(['loop-copy-3', 'loop-wall-3']);
         }
 
         function makeDraggable(el) {
