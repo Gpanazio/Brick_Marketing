@@ -547,7 +547,7 @@
 
         async function fetchState() {
             try {
-                const res = await fetch(`${API_URL}/state${currentMode ? '?mode='+currentMode : ''}`);
+                const res = await fetch(`${API_URL}/api/state${currentMode ? '?mode='+currentMode : ''}`);
                 currentState = await res.json();
                 renderLobby();
                 if(selectedJobId) renderNodeGraphic();
