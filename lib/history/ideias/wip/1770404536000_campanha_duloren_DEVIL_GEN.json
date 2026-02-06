@@ -1,0 +1,62 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770404536000_campanha_duloren",
+  "failure_scenarios": [
+    {
+      "name": "Reprovação algorítmica e perda do principal canal de mídia",
+      "category": "market",
+      "description": "O conceito depende de erotismo explícito/implícito (surubão, beijos múltiplos, transparência com água). Isso aciona automaticamente filtros de moderação de Meta/TikTok/YouTube, bloqueando anúncios e derrubando alcance orgânico. Sem mídia digital, o ROI morre.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Meta Ads Policy proíbe ‘sexual content’ e ‘sexually suggestive content’. TikTok Ads Policy veda ‘sexually suggestive imagery’. Casos públicos de anúncios de lingerie rejeitados são recorrentes em fóruns oficiais de anunciantes (AdEspresso/Meta Business Help).",
+      "mitigation": "Produzir versão ‘safe’ (textura/close) e limitar a versão hot a canais próprios/age-gated. Mesmo assim, risco de bloqueio permanece alto."
+    },
+    {
+      "name": "Execução técnica cara e frágil",
+      "category": "execution",
+      "description": "Espelhos + água + múltiplos modelos + zenital exigem rigging complexo, segurança elétrica e pós para remover reflexos. Qualquer erro exige refilmagem. O custo real explode e a estética premium pode não aparecer na câmera.",
+      "probability": "medium",
+      "impact": "critical",
+      "evidence": "Produções com mirror room exigem limpeza de reflexos frame a frame (rotoscopia). Água no set aumenta seguros e logística. Em campanhas de moda similares, há acréscimos de 25–40% no orçamento por setup e pós.",
+      "mitigation": "Simplificar set (acrílico/falso espelho), reduzir água e elenco, ou recriar efeitos em pós — mas isso mata o ‘impacto real’ do conceito."
+    },
+    {
+      "name": "Backlash público + risco Conar",
+      "category": "timing",
+      "description": "Duloren já tem histórico com o Conar. Uma campanha com estética de surubão pode ser vista como vulgar/objetificadora e gerar denúncia, levando à retirada de mídia e dano reputacional.",
+      "probability": "medium",
+      "impact": "critical",
+      "evidence": "Histórico de campanhas Duloren retiradas (ex.: 2012). Dados de 2024 indicam penalização em 83% dos processos julgados no Conar. Campanhas com sexualização explícita costumam sofrer veto ou limitação.",
+      "mitigation": "Direção de arte editorial (Helmut Newton/Steven Klein) e copy de empoderamento feminino. Ainda assim, o risco regulatório permanece."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Dependência crítica de casting e química real",
+      "why_angel_missed": "Se o elenco não tiver carisma e sofisticação, o resultado cai para vulgaridade e vira munição para backlash."
+    },
+    {
+      "risk": "Direitos de imagem/consentimento ampliados",
+      "why_angel_missed": "Conteúdo quase erótico exige contratos mais rígidos; qualquer disputa de uso pode travar a veiculação."
+    },
+    {
+      "risk": "Canal varejista pode rejeitar campanha",
+      "why_angel_missed": "Marketplaces e parceiros podem recusar associar a marca a imagens muito explícitas, impactando distribuição e vendas."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "legal",
+      "description": "Se a campanha for interpretada como sexualmente explícita por plataformas ou Conar, a retirada é imediata. Sem mídia digital (principal canal de conversão), o ROI é negativo.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "high",
+    "fatal_flaws_count": 1,
+    "verdict": "FAIL",
+    "reasoning": "A ideia é potente esteticamente, mas depende de aceitação algorítmica e regulatória improvável para conteúdo quase erótico. O risco de bloqueio de mídia + estouro de orçamento torna a execução financeiramente frágil. Sem versões ‘safe’ e estratégia de canais restritos, é NO-GO."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-06T20:15:00Z"
+}
