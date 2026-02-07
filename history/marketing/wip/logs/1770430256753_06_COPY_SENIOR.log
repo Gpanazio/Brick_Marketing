@@ -1,0 +1,403 @@
+{
+  "runId": "70666b6d-3ab9-4bf9-82fb-2e762826dc6e",
+  "status": "ok",
+  "summary": "completed",
+  "result": {
+    "payloads": [
+      {
+        "text": "{\n  \"vencedor\": \"C\",\n  \"modelo_vencedor\": \"sonnet\",\n  \"pontos_fortes\": [\n    \"Hook forte e técnico: começa em Model Collapse e 74,2% de páginas híbridas, direto na dor do diretor que já está saturado de estética plastificada\",\n    \"Posiciona a Brick AI como âncora de linguagem cinematográfica num mar de IA degradada – exatamente o eixo Vision over Prompt / Anti-Slop\",\n    \"Traz dado validado (Nature 2024 + 74,2%) com contexto, não como penduricalho\",\n    \"Tom Cold Director consistente: seco, declarativo, sem firula motivacional\",\n    \"Construção clara de problema → causa → consequência → resposta da Brick (direção técnica, pipeline curado)\"\n  ],\n  \"pontos_fracos\": [\n    \"Versão original exagerava na explicação conceitual (quase aula de IA), precisava enxugar para caber em post sem virar palestra\",\n    \"Curto e Médio não deixavam claro o que a Brick FAZ na prática (serviço/produto) além de reclamar do colapso, faltava amarração em produção de vídeo real\",\n    \"CTA tendia ao genérico, sem especificar o tipo de projeto (key visual / filme) em que a Brick entra como Anti-Slop de verdade\"\n  ],\n  \"alteracoes_aplicadas\": [\n    \"Enxuguei o MÉDIO para focar em um arco: dado → explicação simples de Model Collapse → impacto direto no craft visual\",\n    \"Amarrei explicitamente a resposta da Brick ao pipeline curado (direção define linguagem, MASON executa sob filtro), não \\\"mais IA\\\"\",\n    \"Troquei generalidade abstrata por aplicações concretas: key visuals, filmes, 8K, feed de diretor de criação\",\n    \"Reescrevi o CTA para convidar direto a testar a Brick como Anti-Slop em um projeto real (key visual ou filme), não só \\\"saiba mais\\\"\"\n  ],\n  \"copy_revisada\": \"# COPY VERSION: C - Narrativa Técnica\\n\\n## CURTO\\n\\n**Model Collapse: Quando a IA Come a Própria Cauda**\\n\\nNature 2024 provou: IA treinada em conteúdo gerado por IA degrada exponencialmente. 74,2% das páginas web em 2025 já são híbridas — poluindo o dataset global.\\n\\nA resposta não é mais IA. É direção técnica ancorando geração sintética em linguagem cinematográfica real.\\n\\n**brick.ai**\\n\\n## MÉDIO\\n\\n**O Problema da Mediocridade Recursiva**\\n\\nVocê já reconhece a estética plastificada da IA genérica: saturação artificial, luz que não existe em nenhum set, pele sem grão, textura sem peso.\\n\\nO fenômeno tem nome: **Model Collapse**.\\n\\nNature 2024 mapeou o ciclo: IA gera conteúdo → esse conteúdo polui o dataset → a próxima geração treina em lixo → a qualidade colapsa na média. Em 2025, 74,2% das novas páginas web já são híbridas (IA + humano). O resultado é previsível: o sistema começa a repetir a si mesmo – sempre pior.\\n\\nPara um diretor de criação, isso não é teoria. É o dia em que três key visuals diferentes chegam com a mesma cara, a mesma luz genérica, o mesmo movimento \\\"de IA\\\".\\n\\nA Brick AI opera do outro lado desse colapso.\\n\\n## STORYTELLING\\n\\n[BRICK] Se você consegue adivinhar o próximo frame, a peça já morreu.\\n[MASON] LOG: input_source=mixed_web\\n[MASON] WARNING: pattern_density=high → slop_risk=elevated\\n\\nO mercado abraçou a IA como atalho. Alimentou modelo com o próprio output. Agora está preso num loop: mais ferramenta, menos linguagem. Mais velocidade, menos direção.\\n\\nA Brick AI trava o pipeline antes disso.\\n\\nNossa direção estabelece:\\n\\n- quais referências entram e quais ficam fora do treino;\\n- que tipo de luz, lente virtual e tempo de corte compõem a gramática visual da campanha;\\n- que nível de detalhe é aceitável para um frame que vai viver em 8K, DOOH e feed de diretor, não em blog genérico.\\n\\nSó depois MASON entra como motor de visão.\\n\\n[MASON] LOG: training_filter=curated\\n[MASON] LOG: slop_block=active\\n[MASON] LOG: style_lock=on\\n\\nO sistema não tem liberdade para colapsar em cima do lixo da internet. Ele executa em cima de uma decisão sólida de direção – a mesma lógica que o cinema aplicou ao CGI quando saiu do truque para virar linguagem.\\n\\nO resultado não é \\\"arte de IA\\\" que parece tudo. É imagem que aguenta close, layout, print em 8K e filme — sem denunciar o atalho.\\n\\n## CTA SUGERIDO\\n\\nQuer IA no pipeline sem matar o craft com model collapse?\\n\\nFale com a Brick AI e peça o breakdown Anti-Slop para o seu próximo key visual ou filme. A direção estabelece. O sistema executa.\\n\",\n  \"veredito\": \"APPROVED\"\n}",
+        "mediaUrl": null
+      }
+    ],
+    "meta": {
+      "durationMs": 13761,
+      "agentMeta": {
+        "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
+        "provider": "openai-codex",
+        "model": "gpt-5.1",
+        "usage": {
+          "input": 3570,
+          "output": 1248,
+          "cacheRead": 180736,
+          "cacheWrite": 0,
+          "total": 185554
+        }
+      },
+      "aborted": false,
+      "systemPromptReport": {
+        "source": "run",
+        "generatedAt": 1770471943826,
+        "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
+        "sessionKey": "agent:gpt:main",
+        "provider": "openai-codex",
+        "model": "gpt-5.1",
+        "workspaceDir": "/Users/gabrielpanazio/projects/Brick_Marketing",
+        "bootstrapMaxChars": 20000,
+        "sandbox": {
+          "mode": "off",
+          "sandboxed": false
+        },
+        "systemPrompt": {
+          "chars": 32525,
+          "projectContextChars": 13368,
+          "nonProjectContextChars": 19157
+        },
+        "injectedWorkspaceFiles": [
+          {
+            "name": "AGENTS.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/AGENTS.md",
+            "missing": false,
+            "rawChars": 7804,
+            "injectedChars": 7804,
+            "truncated": false
+          },
+          {
+            "name": "SOUL.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/SOUL.md",
+            "missing": false,
+            "rawChars": 1664,
+            "injectedChars": 1664,
+            "truncated": false
+          },
+          {
+            "name": "TOOLS.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/TOOLS.md",
+            "missing": false,
+            "rawChars": 850,
+            "injectedChars": 850,
+            "truncated": false
+          },
+          {
+            "name": "IDENTITY.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/IDENTITY.md",
+            "missing": false,
+            "rawChars": 632,
+            "injectedChars": 632,
+            "truncated": false
+          },
+          {
+            "name": "USER.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/USER.md",
+            "missing": false,
+            "rawChars": 478,
+            "injectedChars": 478,
+            "truncated": false
+          },
+          {
+            "name": "HEARTBEAT.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/HEARTBEAT.md",
+            "missing": false,
+            "rawChars": 167,
+            "injectedChars": 167,
+            "truncated": false
+          },
+          {
+            "name": "BOOTSTRAP.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/BOOTSTRAP.md",
+            "missing": false,
+            "rawChars": 1449,
+            "injectedChars": 1449,
+            "truncated": false
+          }
+        ],
+        "skills": {
+          "promptChars": 10576,
+          "entries": [
+            {
+              "name": "1password",
+              "blockChars": 348
+            },
+            {
+              "name": "apple-notes",
+              "blockChars": 375
+            },
+            {
+              "name": "apple-reminders",
+              "blockChars": 325
+            },
+            {
+              "name": "bear-notes",
+              "blockChars": 224
+            },
+            {
+              "name": "bird",
+              "blockChars": 232
+            },
+            {
+              "name": "blogwatcher",
+              "blockChars": 243
+            },
+            {
+              "name": "blucli",
+              "blockChars": 224
+            },
+            {
+              "name": "bluebubbles",
+              "blockChars": 295
+            },
+            {
+              "name": "camsnap",
+              "blockChars": 212
+            },
+            {
+              "name": "coding-agent",
+              "blockChars": 279
+            },
+            {
+              "name": "eightctl",
+              "blockChars": 232
+            },
+            {
+              "name": "gemini",
+              "blockChars": 221
+            },
+            {
+              "name": "gifgrep",
+              "blockChars": 243
+            },
+            {
+              "name": "github",
+              "blockChars": 298
+            },
+            {
+              "name": "gog",
+              "blockChars": 232
+            },
+            {
+              "name": "goplaces",
+              "blockChars": 334
+            },
+            {
+              "name": "himalaya",
+              "blockChars": 383
+            },
+            {
+              "name": "imsg",
+              "blockChars": 222
+            },
+            {
+              "name": "local-places",
+              "blockChars": 260
+            },
+            {
+              "name": "mcporter",
+              "blockChars": 330
+            },
+            {
+              "name": "model-usage",
+              "blockChars": 463
+            },
+            {
+              "name": "nano-banana-pro",
+              "blockChars": 245
+            },
+            {
+              "name": "nano-pdf",
+              "blockChars": 234
+            },
+            {
+              "name": "obsidian",
+              "blockChars": 245
+            },
+            {
+              "name": "openai-whisper",
+              "blockChars": 233
+            },
+            {
+              "name": "openhue",
+              "blockChars": 218
+            },
+            {
+              "name": "ordercli",
+              "blockChars": 248
+            },
+            {
+              "name": "peekaboo",
+              "blockChars": 218
+            },
+            {
+              "name": "session-logs",
+              "blockChars": 253
+            },
+            {
+              "name": "skill-creator",
+              "blockChars": 296
+            },
+            {
+              "name": "songsee",
+              "blockChars": 251
+            },
+            {
+              "name": "sonoscli",
+              "blockChars": 225
+            },
+            {
+              "name": "summarize",
+              "blockChars": 296
+            },
+            {
+              "name": "things-mac",
+              "blockChars": 436
+            },
+            {
+              "name": "video-frames",
+              "blockChars": 229
+            },
+            {
+              "name": "wacli",
+              "blockChars": 277
+            },
+            {
+              "name": "weather",
+              "blockChars": 220
+            }
+          ]
+        },
+        "tools": {
+          "listChars": 1984,
+          "schemaChars": 14810,
+          "entries": [
+            {
+              "name": "read",
+              "summaryChars": 298,
+              "schemaChars": 392,
+              "propertiesCount": 4
+            },
+            {
+              "name": "edit",
+              "summaryChars": 129,
+              "schemaChars": 591,
+              "propertiesCount": 6
+            },
+            {
+              "name": "write",
+              "summaryChars": 127,
+              "schemaChars": 313,
+              "propertiesCount": 3
+            },
+            {
+              "name": "exec",
+              "summaryChars": 181,
+              "schemaChars": 1037,
+              "propertiesCount": 12
+            },
+            {
+              "name": "process",
+              "summaryChars": 85,
+              "schemaChars": 844,
+              "propertiesCount": 11
+            },
+            {
+              "name": "browser",
+              "summaryChars": 1251,
+              "schemaChars": 1869,
+              "propertiesCount": 28
+            },
+            {
+              "name": "canvas",
+              "summaryChars": 106,
+              "schemaChars": 661,
+              "propertiesCount": 18
+            },
+            {
+              "name": "nodes",
+              "summaryChars": 101,
+              "schemaChars": 1479,
+              "propertiesCount": 33
+            },
+            {
+              "name": "cron",
+              "summaryChars": 2444,
+              "schemaChars": 530,
+              "propertiesCount": 12
+            },
+            {
+              "name": "message",
+              "summaryChars": 110,
+              "schemaChars": 3921,
+              "propertiesCount": 84
+            },
+            {
+              "name": "tts",
+              "summaryChars": 129,
+              "schemaChars": 223,
+              "propertiesCount": 2
+            },
+            {
+              "name": "gateway",
+              "summaryChars": 225,
+              "schemaChars": 465,
+              "propertiesCount": 11
+            },
+            {
+              "name": "agents_list",
+              "summaryChars": 72,
+              "schemaChars": 33,
+              "propertiesCount": 0
+            },
+            {
+              "name": "sessions_list",
+              "summaryChars": 54,
+              "schemaChars": 176,
+              "propertiesCount": 4
+            },
+            {
+              "name": "sessions_history",
+              "summaryChars": 36,
+              "schemaChars": 149,
+              "propertiesCount": 3
+            },
+            {
+              "name": "sessions_send",
+              "summaryChars": 84,
+              "schemaChars": 203,
+              "propertiesCount": 5
+            },
+            {
+              "name": "sessions_spawn",
+              "summaryChars": 107,
+              "schemaChars": 312,
+              "propertiesCount": 8
+            },
+            {
+              "name": "session_status",
+              "summaryChars": 207,
+              "schemaChars": 89,
+              "propertiesCount": 2
+            },
+            {
+              "name": "web_search",
+              "summaryChars": 175,
+              "schemaChars": 733,
+              "propertiesCount": 6
+            },
+            {
+              "name": "web_fetch",
+              "summaryChars": 129,
+              "schemaChars": 360,
+              "propertiesCount": 3
+            },
+            {
+              "name": "image",
+              "summaryChars": 184,
+              "schemaChars": 163,
+              "propertiesCount": 4
+            },
+            {
+              "name": "memory_search",
+              "summaryChars": 235,
+              "schemaChars": 139,
+              "propertiesCount": 3
+            },
+            {
+              "name": "memory_get",
+              "summaryChars": 151,
+              "schemaChars": 128,
+              "propertiesCount": 3
+            }
+          ]
+        }
+      }
+    }
+  }
+}
