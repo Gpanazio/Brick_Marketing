@@ -1206,11 +1206,40 @@ PROCESSED.md ─── Briefing enriquecido
                 );
                 if(!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
 
+                // Extrair score/status se for DECISION (Ideias)
+                let scoreHTML = '';
+                if (n.id === 'i5' && currentMode === 'ideias') {
+                    const viabilityFile = projectFiles.find(f => {
+                        const patterns = fileMapping['VIABILITY'] || [];
+                        return patterns.some(p => f.name.includes(p));
+                    });
+                    if (viabilityFile) {
+                        try {
+                            const json = JSON.parse(viabilityFile.content);
+                            const score = json.viability_assessment?.score_final || 'N/A';
+                            const status = json.viability_assessment?.status || 'PENDING';
+                            let scoreColor = '#666';
+                            if (typeof score === 'number') {
+                                if (score >= 70) scoreColor = '#22c55e';
+                                else if (score >= 40) scoreColor = '#f59e0b';
+                                else scoreColor = '#ef4444';
+                            }
+                            scoreHTML = `
+                                <div style="margin-top: 12px; padding: 12px; background: #0a0a0a; border-left: 3px solid ${scoreColor};">
+                                    <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 32px; color: ${scoreColor}; line-height: 1;">${score}</div>
+                                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #888; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">${status}</div>
+                                </div>
+                            `;
+                        } catch(e) {}
+                    }
+                }
+                
                 el.innerHTML = `
                     <div class="node-led"></div>
                     <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
                     <div class="node-title">${n.title}</div>
                     <div class="node-subtext">${n.model || 'PROCESSING'}</div>
+                    ${scoreHTML}
                     ${n.human ? `
                         <div class="flex gap-2 mt-4 pt-4 border-t border-[#111]">
                             <button onclick="aprovarCampanha(event)" class="flex-1 bg-white text-black font-brick text-[9px] py-2 hover:bg-[#DC2626] hover:text-white transition-colors">APROVAR</button>
