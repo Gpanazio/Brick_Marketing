@@ -348,3 +348,6 @@
 {"timestamp":"2026-02-07T16:20:34.592Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
 {"timestamp":"2026-02-07T16:20:56.618Z","level":"info","message":"✓ Conectado ao Railway"}
 {"timestamp":"2026-02-07T16:20:56.623Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-07T16:21:58.672Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-07T16:22:21.071Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-07T16:22:21.074Z","level":"info","message":"✓ Entrou na room runner"}

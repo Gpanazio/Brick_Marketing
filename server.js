@@ -54,6 +54,28 @@ const API_KEY = process.env.API_KEY || 'brick-squad-2026';
 // Trust Proxy (Railway/Load Balancer support)
 app.set('trust proxy', 1);
 
+// SECURITY: Path Traversal Protection
+function sanitizePath(userPath) {
+    if (!userPath) return null;
+    
+    // Bloqueia qualquer '..' no input original (antes de normalizar)
+    if (userPath.includes('..') || path.isAbsolute(userPath)) {
+        log('warn', 'path_traversal_attempt_blocked', { input: userPath });
+        return null;
+    }
+    
+    // Normaliza o path
+    const normalized = path.normalize(userPath).replace(/^(\.\.[\/\\])+/, '');
+    
+    // Double-check: bloqueia se normalização introduziu '..'
+    if (normalized.includes('..') || path.isAbsolute(normalized)) {
+        log('warn', 'path_traversal_post_normalize_blocked', { input: userPath, normalized });
+        return null;
+    }
+    
+    return normalized;
+}
+
 // Socket.IO: Emite estado atualizado para todos os clientes
 function emitStateUpdate(mode) {
     const state = {
@@ -603,9 +625,18 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
 // API: Submit result from agent (com validação de schema)
 app.post('/api/result', (req, res) => {
     const { filename, content, category, botName, durationMs, model, mode } = req.body;
+    
+    // SECURITY: Sanitize paths
+    const safeFilename = sanitizePath(filename);
+    const safeCategory = sanitizePath(category || 'wip');
+    
+    if (!safeFilename || !safeCategory) {
+        return res.status(400).json({ error: 'Invalid path detected' });
+    }
+    
     const root = getModeRoot(mode || 'marketing');
-    const targetCategory = category || 'wip';
-    const filePath = path.join(root, targetCategory, filename);
+    const targetCategory = safeCategory;
+    const filePath = path.join(root, targetCategory, safeFilename);
 
     // Ensure category dir exists
     const categoryDir = path.join(root, targetCategory);
@@ -646,10 +677,20 @@ app.post('/api/result', (req, res) => {
 // API: Move File (Approve/Reject)
 app.post('/api/move', (req, res) => {
     const { filename, from, to, mode } = req.body;
+    
+    // SECURITY: Sanitize paths
+    const safeFilename = sanitizePath(filename);
+    const safeFrom = sanitizePath(from);
+    const safeTo = sanitizePath(to);
+    
+    if (!safeFilename || !safeFrom || !safeTo) {
+        return res.status(400).json({ error: 'Invalid path detected' });
+    }
+    
     const root = getModeRoot(mode || 'marketing');
-    const src = path.join(root, from, filename);
-    const destDir = path.join(root, to);
-    const dest = path.join(destDir, filename);
+    const src = path.join(root, safeFrom, safeFilename);
+    const destDir = path.join(root, safeTo);
+    const dest = path.join(destDir, safeFilename);
 
     if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
 
@@ -666,8 +707,17 @@ app.post('/api/move', (req, res) => {
 // API: Delete File
 app.delete('/api/file', (req, res) => {
     const { category, filename, mode } = req.body;
+    
+    // SECURITY: Sanitize paths
+    const safeCategory = sanitizePath(category);
+    const safeFilename = sanitizePath(filename);
+    
+    if (!safeCategory || !safeFilename) {
+        return res.status(400).json({ error: 'Invalid path detected' });
+    }
+    
     const root = getModeRoot(mode || 'marketing');
-    const filePath = path.join(root, category, filename);
+    const filePath = path.join(root, safeCategory, safeFilename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
         log('info', 'file_deleted', { filename, category, mode: mode || 'marketing' });
@@ -699,8 +749,14 @@ app.post('/api/briefing/clear', (req, res) => {
             return res.json({ success: true, cleared: 0 });
         }
         
+        // SECURITY: Sanitize filename
+        const safeFilename = sanitizePath(filename);
+        if (!safeFilename) {
+            return res.status(400).json({ error: 'Invalid path detected' });
+        }
+        
         // Limpar arquivo específico
-        const filePath = path.join(root, 'briefing', filename);
+        const filePath = path.join(root, 'briefing', safeFilename);
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
             log('info', 'briefing_cleared', { filename, mode: mode || 'marketing' });

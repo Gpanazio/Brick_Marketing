@@ -8,6 +8,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text x='50' y='75' font-size='70' text-anchor='middle' fill='%23DC2626' font-family='monospace' font-weight='bold'>B</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -476,6 +477,13 @@
         let currentJobId = null;
         let refreshInterval = null;
         let activeRevisionLinks = [];
+        
+        // SECURITY: XSS Protection - Sanitize markdown output
+        function safeMarkdown(text) {
+            if (!text) return '';
+            const rawHtml = marked.parse(text);
+            return DOMPurify.sanitize(rawHtml);
+        }
 
         const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
@@ -1616,7 +1624,7 @@ PROCESSED.md ─── Briefing enriquecido
                         'REPENSAR': 'bg-red-900 text-red-400'
                     };
                     if (statusColors[val]) return `<span class="px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider ${statusColors[val]}">${val}</span>`;
-                    if (val.length > 200) return `<div class="text-[#ddd] leading-relaxed mt-3 mb-3 p-4 bg-[#0a0a0a] border-l-2 border-[#DC2626] prose-sm max-w-none">${marked.parse(val)}</div>`;
+                    if (val.length > 200) return `<div class="text-[#ddd] leading-relaxed mt-3 mb-3 p-4 bg-[#0a0a0a] border-l-2 border-[#DC2626] prose-sm max-w-none">${safeMarkdown(val)}</div>`;
                     return `<span class="text-[#ccc]">${val}</span>`;
                 }
                 return val;
@@ -1718,7 +1726,7 @@ PROCESSED.md ─── Briefing enriquecido
 
             if (file) {
                 let content = file.content;
-                try { const json = JSON.parse(content); content = formatJSON(json); } catch(e) { content = marked.parse(content); }
+                try { const json = JSON.parse(content); content = formatJSON(json); } catch(e) { content = safeMarkdown(content); }
                 body.innerHTML = content;
             } else {
                 body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Aguardando execução do agente...</div>';
@@ -1936,7 +1944,7 @@ PROCESSED.md ─── Briefing enriquecido
             const c = document.getElementById('revision-tab-content');
             const { original, revision } = currentRevisionData;
             if (tab === 'sidebyside') {
-                c.innerHTML = `<div class="flex gap-4 h-full"><div class="comparison-col bg-[#0a0a0a] border border-[#222]"><h4>Original</h4><div class="text-sm text-[#aaa]">${marked.parse(original?.content || '')}</div></div><div class="comparison-col bg-[#0a0a0a] border border-green-900"><h4>Revisão</h4><div class="text-sm text-[#ccc]">${marked.parse(revision?.content || '')}</div></div></div>`;
+                c.innerHTML = `<div class="flex gap-4 h-full"><div class="comparison-col bg-[#0a0a0a] border border-[#222]"><h4>Original</h4><div class="text-sm text-[#aaa]">${safeMarkdown(original?.content || '')}</div></div><div class="comparison-col bg-[#0a0a0a] border border-green-900"><h4>Revisão</h4><div class="text-sm text-[#ccc]">${safeMarkdown(revision?.content || '')}</div></div></div>`;
             }
         }
 
@@ -1955,7 +1963,12 @@ PROCESSED.md ─── Briefing enriquecido
         let socket = null;
         function initWebSocket() {
             try {
-                socket = io();
+                // SECURITY: Pass API key for WebSocket authentication
+                socket = io({
+                    auth: {
+                        apiKey: 'brick-squad-2026'
+                    }
+                });
                 socket.on('connect', () => { 
                     document.getElementById('connection-status').textContent = 'WebSocket_Active';
                     if (currentMode) socket.emit('subscribe', currentMode);
