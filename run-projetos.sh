@@ -290,13 +290,8 @@ ATENÇÃO: Corrija os pontos levantados acima. Documente explicitamente no campo
         "${EXECUTION_ROLE}
         
 ---
-CONTEXTO RESUMIDO (economia de tokens):
+CONTEXTO CONSOLIDADO (Brand + Conceito Vencedor + Etapas Anteriores):
 ${PROJETOS_CONTEXT}
-
-BRIEFING DO CLIENTE (se necessário):
-${BRIEFING_SUMMARY}
-
-CONCEITO VENCEDOR: ${CRITIC_CONTENT}
 ${FEEDBACK_INJECTION}
 ---
 
@@ -309,13 +304,8 @@ INSTRUÇÕES: Salve JSON em: ${EXEC_OUT}" \
             "${EXECUTION_ROLE}
             
 ---
-CONTEXTO RESUMIDO (economia de tokens):
+CONTEXTO CONSOLIDADO (Brand + Conceito Vencedor + Etapas Anteriores):
 ${PROJETOS_CONTEXT}
-
-BRIEFING DO CLIENTE (se necessário):
-${BRIEFING_SUMMARY}
-
-CONCEITO VENCEDOR: ${CRITIC_CONTENT}
 ${FEEDBACK_INJECTION}
 ---
 

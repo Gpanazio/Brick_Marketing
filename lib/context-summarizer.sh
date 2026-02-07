@@ -126,10 +126,16 @@ create_projetos_context() {
         context+="\"brand\":$brand_summary,"
     fi
     
-    # Concept Critic (vencedor + score)
+    # Concept Critic (vencedor com detalhes essenciais)
     local critic_file="$wip_dir/${job_id}_CONCEPT_CRITIC.json"
     if [ -f "$critic_file" ]; then
-        local critic_summary=$(summarize_json "$critic_file" "winner,winner_score,recommendation")
+        local critic_summary=$(jq -c '{
+            winner_name: .winner.concept_name,
+            winner_score: .winner_score,
+            core_idea: .winner.core_idea,
+            diferencial: .winner.diferencial,
+            recommendation: .recommendation
+        }' "$critic_file" 2>/dev/null || echo "{}")
         context+="\"critic\":$critic_summary,"
     fi
     
