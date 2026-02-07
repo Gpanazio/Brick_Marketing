@@ -616,34 +616,87 @@
             title.textContent = (currentMode || 'MARKETING').toUpperCase();
 
             if (currentMode === 'ideias') {
-                diagram.textContent = `RAW IDEA
+                diagram.textContent = `RAW IDEA (input do usuário)
 │
 ▼
-[DOUGLAS] - Processamento MANUAL via OpenClaw
+[DOUGLAS] ─── Processamento MANUAL via OpenClaw
+│             (interpreta, enriquece com contexto técnico)
+▼
+01. PAIN CHECK (Flash) ── Valida problema/dor real do mercado
 │
 ▼
-01. PAIN CHECK (Flash) - Validação da dor
-│
-▼
-02. MARKET SCAN (Flash) - Referências/Mercado
+02. MARKET SCAN (Flash) ─ Pesquisa concorrência, precedentes, viabilidade de mercado
 │
 ├──────────────┬──────────────┤
 ▼              ▼
-03a. ANGLE GEN    03b. DEVIL GEN
-(Sonnet/Angel)    (Sonnet/Devil)
-├──────────────┴──────────────┤
+┌────────────┐ ┌────────────┐
+│ ANGEL      │ │ DEVIL      │
+│ (Sonnet)   │ │ (Sonnet)   │
+│ Otimista   │ │ Crítico    │
+└────────────┘ └────────────┘
+├──────────────┴──────────────┘
 ▼
-04. VIABILITY (Opus) - Juiz de Viabilidade
+04. VIABILITY (Opus) ─── Score 0-100 (rubrica 4 critérios: problema, contexto, opções, execução)
 │
 ▼
-05. DECISION (Human) - Go / No-Go`;
+05. DECISION (Human) ─── Go / No-Go
+│
+├─► [APROVAR] → Projeto viável, executar
+│
+└─► [REJEITAR] → Arquivar ideia`;
 
                 info.innerHTML = `
-                    <div>• Validação ultra-rápida de conceitos</div>
-                    <div>• Problem Scoping para evitar ideias sem demanda</div>
-                    <div>• Análise de concorrência automática</div>
-                    <div>• Angel vs Devil: ângulos criativos em paralelo</div>
-                    <div>• Score final de viabilidade pelo Opus (juiz imparcial)</div>
+                    <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:16px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">O QUE CADA NODE FAZ</h3>
+
+                    <div style="margin-bottom:16px;background:#1e293b;padding:10px;border-left:3px solid #f59e0b;">
+                        <div style="color:#f59e0b;font-weight:700;">00. DOUGLAS <span style="font-size:9px;background:#f59e0b;color:#000;padding:2px 4px;border-radius:3px;margin-left:4px;">MANUAL</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:4px;"><strong>Pré-Pipeline:</strong> Douglas processa ideia bruta manualmente via OpenClaw session. Interpreta, expande contexto técnico, salva <code>{JOB_ID}_RAW_IDEA.md</code> e executa <code>run-ideias.sh</code>.</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">01. PAIN CHECK <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Valida se a ideia resolve um problema real e mensurável. Rejeita ideias sem dor clara ou sem público. Output: JSON com status VALID/INVALID. Role: <code>PAIN_CHECK.md</code>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">02. MARKET SCAN <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Pesquisa concorrentes, produtos similares, precedentes de mercado. Identifica barreiras técnicas, regulatórias e financeiras. Role: <code>MARKET_SCAN.md</code>
+                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">03. ANGEL + DEVIL <span style="color:#d97706;">(Claude Sonnet 4.5)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">2 perspectivas opostas em paralelo:
+                        <br>• <span style="color:#22c55e;">ANGEL</span>: Visão otimista, caminhos de execução, oportunidades
+                        <br>• <span style="color:#ef4444;">DEVIL</span>: Visão crítica, red flags, riscos, por que NÃO funciona
+                        <br>Output: 2 arquivos Markdown. Roles: <code>ANGEL_GEN.md</code>, <code>DEVIL_GEN.md</code>
+                        <br><strong>Modelo:</strong> Claude Sonnet 4.5 — <code>anthropic/claude-sonnet-4-5</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">04. VIABILITY <span style="color:#a855f7;">(Claude Opus 4-6)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Juiz imparcial. Avalia ideia com rubrica de 100 pontos (4 critérios: problema 30pts, contexto 25pts, opções 25pts, execução 20pts). Penalidades por riscos sistêmicos. Veredito: APROVAR (70+), REFINAR (40-69), REJEITAR (0-39). Role: <code>VIABILITY.md</code>
+                        <br><strong>Modelo:</strong> Claude Opus 4-6 — <code>anthropic/claude-opus-4-6</code></div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">05. DECISION <span style="color:#888;">(Human)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Decisão final humana. Card mostra score e status (APROVAR/REFINAR/REJEITAR). Botões: Aprovar (move pra done/) ou Rejeitar (arquiva). Output: <code>FINAL.md</code> (relatório completo de viabilidade).</div>
+                    </div>
+
+                    <div style="margin-top:24px;padding:12px;background:#0a0a0a;border-left:3px solid #DC2626;">
+                        <div style="color:#DC2626;font-weight:700;margin-bottom:8px;">💡 FILOSOFIA DO PIPELINE</div>
+                        <div style="color:#888;font-size:10px;line-height:1.6;">
+                            Validação ultra-rápida de conceitos (2-3 min). Problem Scoping pra evitar ideias sem demanda real. Angel vs Devil força exposição de trade-offs. Opus julga com critérios objetivos. Economiza semanas de trabalho em ideias inviáveis.
+                        </div>
+                    </div>
+
+                    <div style="margin-top:16px;padding:10px;background:#1a1a1a;border:1px solid #333;">
+                        📊 <strong>Custo estimado:</strong> ~$0.08/ideia (inclui input+output tokens)<br>
+                        ⏱️ <strong>Tempo médio:</strong> 2-3 minutos<br>
+                        🎯 <strong>Taxa de rejeição esperada:</strong> 60-70% (filtro agressivo é feature, não bug)
+                    </div>
                 `;
             } else if (currentMode === 'projetos') {
                 diagram.textContent = `BRIEFING DO CLIENTE
