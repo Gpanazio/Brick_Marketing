@@ -5,9 +5,9 @@
 # Em vez de passar todo o output de cada etapa para a próxima,
 # cria um resumo estruturado com apenas as informações essenciais.
 
-# Detectar diretório do script dinamicamente
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$SCRIPT_DIR"
+# Detectar diretório do script dinamicamente (comentado para evitar override)
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# PROJECT_ROOT="$SCRIPT_DIR"
 
 # ============================================
 # SUMMARIZAÇÃO DE CONTEXTO

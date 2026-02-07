@@ -11,11 +11,8 @@
 
 const io = require('socket.io-client');
 const fs = require('fs').promises;
-const { exec } = require('child_process');
-const { promisify } = require('util');
+const { spawn } = require('child_process');
 const path = require('path');
-
-const execAsync = promisify(exec);
 
 // ============================================================================
 // CONFIGURAÇÃO
@@ -152,40 +149,14 @@ async function processJob(payload) {
   try {
     await log('info', '▶ Processando job', { action, mode, jobId });
     
-    // Dispatch baseado em action + mode
-    let scriptPath;
-    let args = [];
-    
-    if (action === 'briefing' || action === 'rerun') {
-      // Salvar briefing local
-      if (content) {
-        await saveBriefing(mode, jobId, content);
-      }
-      
-      scriptPath = './run-pipeline.sh';
-      args = [
-        path.join(CONFIG.WORKSPACE, `history/${mode}/briefing/${jobId}.txt`),
-        `--mode=${mode}`,
-      ];
-    } else if (action === 'feedback') {
-      if (mode === 'marketing') {
-        scriptPath = './run-reloop.sh';
-        args = [jobId];
-      } else if (mode === 'projetos') {
-        scriptPath = './run-reloop-projetos.sh';
-        args = [jobId, target || 'PROPOSAL'];
-      } else {
-        // Ideias não tem feedback
-        await log('warn', 'Feedback ignorado para modo ideias', { jobId });
-        return;
-      }
-    } else {
-      await log('error', 'Action desconhecida', { action, jobId });
-      return;
+    // Salvar briefing local se necessário
+    if ((action === 'briefing' || action === 'rerun') && content) {
+      await saveBriefing(mode, jobId, content);
     }
     
-    // Executar script
-    const result = await executeScript(scriptPath, args);
+    // NOVO: Executar via sub-agent em vez de spawn direto
+    // Motivo: Evita SIGKILL do processo parent
+    const result = await executeViaSubAgent(action, mode, jobId, target);
     
     // Sincronizar resultados
     await syncResults(mode, jobId);
@@ -198,7 +169,6 @@ async function processJob(payload) {
     await log('info', '✓ Job concluído', { 
       jobId, 
       duration: `${(duration / 1000).toFixed(1)}s`,
-      exitCode: result.code,
     });
     
   } catch (err) {
@@ -230,23 +200,90 @@ async function saveBriefing(mode, jobId, content) {
   await log('info', 'Briefing salvo', { path: briefingPath });
 }
 
-async function executeScript(scriptPath, args = []) {
-  const fullPath = path.join(CONFIG.WORKSPACE, scriptPath);
-  const cmd = `bash ${fullPath} ${args.join(' ')}`;
+async function executeViaSubAgent(action, mode, jobId, target) {
+  await log('info', 'Delegando execução para sub-agent via exec direto', { action, mode, jobId });
   
-  await log('info', 'Executando script', { cmd });
+  // NOVA ABORDAGEM: exec simples sem await (fire & forget)
+  // Runner apenas dispara o script e polling verifica conclusão
   
-  const { stdout, stderr } = await execAsync(cmd, {
-    cwd: CONFIG.WORKSPACE,
-    maxBuffer: 10 * 1024 * 1024, // 10MB
-    timeout: 600000, // 10min
-  });
+  let scriptPath, args;
   
-  if (stderr) {
-    await log('warn', 'Script stderr', { stderr: stderr.substring(0, 500) });
+  if (action === 'briefing' || action === 'rerun') {
+    scriptPath = './run-pipeline.sh';
+    args = [
+      path.join(CONFIG.WORKSPACE, `history/${mode}/briefing/${jobId}.txt`),
+      `--mode=${mode}`,
+    ];
+  } else if (action === 'feedback') {
+    if (mode === 'marketing') {
+      scriptPath = './run-reloop.sh';
+      args = [jobId];
+    } else if (mode === 'projetos') {
+      scriptPath = './run-reloop-projetos.sh';
+      args = [jobId, target || 'PROPOSAL'];
+    } else {
+      throw new Error('Feedback não suportado para modo ideias');
+    }
+  } else {
+    throw new Error(`Action desconhecida: ${action}`);
   }
   
-  return { code: 0, stdout, stderr };
+  const fullPath = path.join(CONFIG.WORKSPACE, scriptPath);
+  const cmd = `cd ${CONFIG.WORKSPACE} && nohup bash ${fullPath} ${args.join(' ')} > /dev/null 2>&1 &`;
+  
+  // Fire & forget
+  const { exec } = require('child_process');
+  exec(cmd);
+  
+  await log('info', 'Script iniciado em background', { cmd });
+  
+  // Polling: checar se FINAL.md ou última etapa foi gerada
+  return await pollForCompletion(mode, jobId);
+}
+
+async function pollForCompletion(mode, jobId) {
+  const wipDir = path.join(CONFIG.WORKSPACE, `history/${mode}/wip`);
+  const maxPolls = 120; // 10min (5s * 120)
+  const pollIntervalMs = 5000; // 5s
+  
+  let polls = 0;
+  
+  while (polls < maxPolls) {
+    await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+    polls++;
+    
+    try {
+      const files = await fs.readdir(wipDir);
+      const jobFiles = files.filter(f => f.startsWith(jobId) || f.startsWith(`${jobId}_`));
+      
+      // Checar se FINAL.md existe (indicador de conclusão)
+      const hasFinal = jobFiles.some(f => f.includes('FINAL.md'));
+      
+      if (hasFinal) {
+        await log('info', 'Pipeline concluído (FINAL.md encontrado)', { 
+          jobId, 
+          polls, 
+          timeSeconds: polls * (pollIntervalMs / 1000) 
+        });
+        return { success: true, files: jobFiles.length };
+      }
+      
+      // Log progresso a cada 12 polls (1min)
+      if (polls % 12 === 0) {
+        await log('info', 'Pipeline em andamento...', { 
+          jobId, 
+          filesGenerated: jobFiles.length,
+          timeSeconds: polls * (pollIntervalMs / 1000)
+        });
+      }
+      
+    } catch (err) {
+      // Diretório ainda não existe, continuar polling
+    }
+  }
+  
+  // Timeout
+  throw new Error(`Pipeline timeout após ${maxPolls * (pollIntervalMs / 1000)}s`);
 }
 
 async function syncResults(mode, jobId) {
@@ -260,6 +297,16 @@ async function syncResults(mode, jobId) {
     await log('warn', 'Nenhum arquivo gerado para sync', { jobId, mode });
     return;
   }
+  
+  // Verificar integridade de cada arquivo antes de sync
+  const verification = await verifyPipelineResults(wipDir, jobId, mode);
+  await log('info', 'Verificação de pipeline concluída', { 
+    jobId, 
+    total: verification.total,
+    valid: verification.valid,
+    invalid: verification.invalid,
+    details: verification.files,
+  });
   
   // Enviar cada arquivo pro Railway
   for (const filename of jobFiles) {
@@ -293,6 +340,70 @@ async function syncResults(mode, jobId) {
       });
     }
   }
+}
+
+async function verifyPipelineResults(wipDir, jobId, mode) {
+  const files = await fs.readdir(wipDir);
+  const jobFiles = files.filter(f => 
+    (f.startsWith(jobId) || f.startsWith(`${jobId}_`)) && 
+    (f.endsWith('.json') || f.endsWith('.md'))
+  );
+  
+  const results = {
+    total: jobFiles.length,
+    valid: 0,
+    invalid: 0,
+    files: {},
+  };
+  
+  for (const filename of jobFiles) {
+    const filePath = path.join(wipDir, filename);
+    const fileCheck = {
+      exists: true,
+      size: 0,
+      valid: false,
+      error: null,
+    };
+    
+    try {
+      const stats = await fs.stat(filePath);
+      fileCheck.size = stats.size;
+      
+      // Verificar JSON files
+      if (filename.endsWith('.json')) {
+        const content = await fs.readFile(filePath, 'utf-8');
+        JSON.parse(content); // Throws se inválido
+        
+        // Verificar campos obrigatórios baseado no modo
+        const data = JSON.parse(content);
+        if (!data.job_id || !data.step_name) {
+          fileCheck.error = 'Missing required fields (job_id, step_name)';
+        } else {
+          fileCheck.valid = true;
+          results.valid++;
+        }
+      } else {
+        // MD files só checam se não estão vazios
+        if (fileCheck.size > 0) {
+          fileCheck.valid = true;
+          results.valid++;
+        } else {
+          fileCheck.error = 'Empty file';
+        }
+      }
+    } catch (err) {
+      fileCheck.error = err.message;
+      results.invalid++;
+    }
+    
+    if (!fileCheck.valid && !fileCheck.error) {
+      results.invalid++;
+    }
+    
+    results.files[filename] = fileCheck;
+  }
+  
+  return results;
 }
 
 async function processPendingJobs() {

@@ -1,9 +1,0 @@
-# BRIEFING: Anti Ia
-**Date:** 2026-02-05T12:06:41.226Z
-**Status:** PENDING
-**Mode:** marketing
-**Job ID:** 1770293201226_anti_ia
-
-## Descrição
-1 Post polemico de instagram provocando quem não gosta de IA.
-

@@ -26,8 +26,10 @@ if [ -z "$BRIEFING_FILE" ]; then
     exit 1
 fi
 
-# Extrair JOB_ID do nome do briefing
-BASENAME=$(basename "$BRIEFING_FILE" .md)
+# Extrair JOB_ID do nome do briefing (suporta .txt e .md)
+BASENAME=$(basename "$BRIEFING_FILE")
+BASENAME="${BASENAME%.txt}"
+BASENAME="${BASENAME%.md}"
 BASENAME=$(echo "$BASENAME" | sed -E 's/_(RAW_IDEA|PROCESSED|BRIEFING_INPUT)$//')
 JOB_ID="$BASENAME"
 
