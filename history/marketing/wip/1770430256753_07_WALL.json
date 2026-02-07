@@ -1,0 +1,80 @@
+{
+  "score_final": 82,
+  "status": "APPROVED",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 22,
+      "max": 25,
+      "feedback": "Oferta específica com comparação quantificada: produção premium 8K em 72h vs R$120k + 3 semanas de set tradicional. O prospect sabe o que recebe (key visual 8K com qualidade cinematográfica), quanto tempo leva (72h), e o que elimina (set físico, equipe grande, semanas de pré-produção). Os deliverables técnicos são concretos: controle de luz 8K, renderização de materiais, geometria de planos. Perdeu 3 pontos: (1) 'Latência' é termo tech — trocar por 'produção' ou 'entrega', (2) 'custo de produção: eliminado' no storytelling é impreciso — o custo de SET é eliminado, não de produção inteira, (3) sem indicação de pricing da Brick AI."
+    },
+    "dor_real": {
+      "pontos": 19,
+      "max": 20,
+      "feedback": "Dor dupla perfeitamente articulada: (1) BUDGET/PRAZO — 'R$120k + 3 semanas vs prazo de 5 dias' é a tensão clássica que todo diretor vive, (2) QUALIDADE IA — 'saturação artificial, física de luz impossível, materiais sem peso, geometria que não fecha' nomeia EXATAMENTE o que incomoda profissionais em outputs de IA. O framing 'ceticismo técnico, não ideológico' é brilhante — valida a preocupação do prospect antes de resolvê-la. 'Prompt genérico não sabe disso. Diretor de fotografia sabe.' posiciona Brick AI como a ponte. Perdeu 1 ponto porque o cenário de '5 dias' e o 'Caso Real' não são verificados como situações reais."
+    },
+    "credibilidade": {
+      "pontos": 16,
+      "max": 20,
+      "feedback": "Credibilidade técnica excepcional. Vocabulário de material science (BRDF, anisotrópico, refração, highlight especular direcional) não pode ser fabricado por prompt genérico — demonstra expertise genuína de DP/diretor técnico. Duas fontes externas citadas: DesignTec (8K como padrão OOH) e Meio & Mensagem (IA como cocriadora). Perdeu 4 pontos: (1) 'Caso Real' no storytelling — é realmente real? Se sim, excelente; se ficcional, mislabeling. (2) 'Cliente aprova sem revisões' é claim bold sem prova. (3) Citações de fontes sem link ou quote exata. (4) Sem '10 anos' ou número de projetos — credenciais de marca ausentes."
+    },
+    "on_brand": {
+      "pontos": 17,
+      "max": 20,
+      "feedback": "Voz de Diretor Técnico/DP sênior forte e autêntica. 'Chiaroscuro', 'bokeh cinematográfico controlado', 'cenografia técnica renderizada', 'hyperfocus', 'highlight especular direcional' — vocabulário que SÓ alguém com experiência de set usa corretamente. Valores perfeitamente refletidos: 'Prompt genérico não sabe disso. Diretor de fotografia sabe' = Direção > Geração. 'Não é mágica. É ferramenta sob direção técnica' = Craft > Tech, anti-hype. 'Sistemas de geração sintética sob direção humana' = terminologia oficial. Perdeu 3 pontos: (1) 'Latência' aparece 3x — é vocabulário de engenharia, não de cinema (voz Mason, não Brick), (2) 'Production Enhanced' e 'Vision over Prompt' ausentes, (3) 'Implementamos' no CTA é levemente corporativo."
+    },
+    "cta_especifico": {
+      "pontos": 8,
+      "max": 15,
+      "feedback": "'brick.ai' aparece em todas as versões — URL consistente. O CTA final tem descrição: 'Latência 72h. Resolução 8K. Direção técnica.' — specs do serviço. MAS: falta verbo de ação. Não há 'Agende', 'Veja', 'Acesse'. Não há próximo passo claro (booking? portfolio? case study?). Compare com CTA aprovado do lançamento Brick AI: 'Acesse brick.ai e marque uma conversa de 15 minutos com o time de direção' — tem ação, duração e com quem. Sugestão: 'Veja o case completo em brick.ai. Ou traga seu briefing e agende 15min com direção técnica.'"
+    }
+  },
+  "destaques_positivos": [
+    "'O ceticismo com IA generativa é técnico, não ideológico.' — Abertura que valida o prospect em vez de confrontá-lo. Perfeito para público cético.",
+    "'Prompt genérico não sabe disso. Diretor de fotografia sabe.' — A linha que vende o diferencial da Brick AI em duas frases.",
+    "Vocabulário de material science (BRDF, anisotrópico, refração) prova expertise que não se finge — é a credibilidade mais forte possível para público técnico.",
+    "'Não é mágica. É ferramenta sob direção técnica.' — Anti-hype perfeito, reflete valor Experiência > Hype.",
+    "Estrutura 'Problema 1/2/3 → Resultado' no storytelling é B2B textbook — mostra capacidade de resolver, não apenas prometer.",
+    "Comparação R$120k + 3 semanas vs 72h + zero set — valor tangível e verificável."
+  ],
+  "pontos_de_melhoria": [
+    "IMPORTANTE: Trocar 'Latência' por 'Produção' ou 'Entrega'. Aparece 3x. É voz Mason (sistema/engenharia), não voz Brick (estúdio/direção). 'Produção em 72h' ou 'Entrega: 72h' mantém o dado e corrige o tom.",
+    "IMPORTANTE: CTA precisa de verbo de ação. Sugestão: 'Veja o case completo: brick.ai' (curto/médio) e 'Traga seu briefing — agende 15min com nosso time de direção: brick.ai' (storytelling).",
+    "OPCIONAL: Verificar se 'Caso Real' no storytelling é genuíno. Se ficcional, trocar para 'Cenário de Produção' ou 'Demonstração de Capability'. Se real, manter e considerar adicionar nome do cliente (com autorização)."
+  ],
+  "brand_guardian_check": {
+    "status": "BRAND_OK",
+    "passes": [
+      "Tom de Diretor Técnico/DP sênior — vocabulário de cinema e material science genuíno",
+      "Bold & Unapologetic — 'A diferença entre ferramenta e resultado é a direção técnica'",
+      "Anti-hype explícito — 'Não é mágica. É ferramenta sob direção técnica'",
+      "Zero corporativês (exceto 'Implementamos' no CTA)",
+      "Zero termos proibidos (revolucionário, disruptivo, game-changer)",
+      "Valores refletidos: Craft > Tech, Direção > Geração, Resultado > Processo, Experiência > Hype",
+      "Diferencia de concorrentes: expertise técnica que ferramentas de IA sozinhas não entregam",
+      "Não parece ChatGPT — nível de conhecimento técnico impossível de gerar sem expertise real"
+    ],
+    "flags": [
+      {
+        "trecho": "Latência de produção: 72h",
+        "problema": "'Latência' é engenharia/DevOps, não cinema. É voz MASON vazando em BRICK.",
+        "sugestao": "'Produção: 72h' ou 'Entrega em 72h'"
+      },
+      {
+        "trecho": "Implementamos o padrão de produção pós-digital",
+        "problema": "'Implementamos' é levemente corporativo. Diretor não 'implementa', diretor 'opera' ou 'estabelece'.",
+        "sugestao": "'Operamos o padrão de produção pós-digital' ou 'O padrão de produção pós-digital. brick.ai'"
+      }
+    ]
+  },
+  "verdict": "APPROVED — Score 82/100. Copy B2B com profundidade técnica excepcional. A demonstração de expertise via vocabulário de material science e óptica é a credibilidade mais forte possível para público de diretores de criação. Melhorias sugeridas (trocar 'Latência', reforçar CTA) elevariam para 87+. Copy funciona melhor como conteúdo LinkedIn, deck de vendas ou página de portfolio do que como post Instagram genérico.",
+  "next_step": "HUMAN_APPROVAL",
+  "recommend_return_to": null,
+  "wall_notes": {
+    "quality_assessment": "Copy B2B com a maior profundidade técnica do pipeline. O storytelling version é um mini-case study que demonstra capacidade real. Público-alvo ideal: diretores de criação, heads de produção, CMOs de marcas premium. O vocabulário técnico é a prova de expertise — ninguém sem background de set consegue escrever 'reflexo anisotrópico de metal escovado' corretamente.",
+    "brand_check": "BRAND_OK — dois flags menores (Latência, Implementamos) que não comprometem o tom geral.",
+    "content_type": "Case study B2B / thought leadership. Ideal para: LinkedIn, deck, portfolio, email outbound. Adaptável para: Instagram carousel (com redesign visual). NÃO ideal para: TikTok, stories, ads de awareness.",
+    "loop_count": 1,
+    "max_loops": 3
+  },
+  "timestamp": "2026-02-07T13:42:00Z"
+}
