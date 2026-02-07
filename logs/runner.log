@@ -333,3 +333,6 @@
 {"timestamp":"2026-02-07T15:15:00.764Z","level":"info","message":"Arquivo sincronizado (live)","filename":"1770476957571_big_brother_de_ia_ANGLE_GEN.json"}
 {"timestamp":"2026-02-07T15:16:21.748Z","level":"info","message":"Arquivo sincronizado (live)","filename":"1770476957571_big_brother_de_ia_VIABILITY.json"}
 {"timestamp":"2026-02-07T15:16:30.337Z","level":"info","message":"✓ Job concluído","jobId":"1770476957571_big_brother_de_ia","duration":"432.3s"}
+{"timestamp":"2026-02-07T15:55:36.756Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-07T15:55:58.206Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-07T15:55:58.208Z","level":"info","message":"✓ Entrou na room runner"}
