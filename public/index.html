@@ -1302,10 +1302,7 @@ PROCESSED.md ─── Briefing enriquecido
                 `;
                 // DECISION (i5) usa função especial com score no topo
                 if (n.id === 'i5' && currentMode === 'ideias') {
-                    el.ondblclick = () => {
-                        document.getElementById('detail-panel').classList.add('active');
-                        viewFullViability(n.id);
-                    };
+                    el.ondblclick = () => viewFullViability(n.id);
                 } else {
                     el.ondblclick = () => openPanel(n, projectFiles);
                 }
@@ -1787,6 +1784,8 @@ PROCESSED.md ─── Briefing enriquecido
                 body.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-mono text-[#ccc]">${file.content}</pre>`;
                 document.getElementById('panel-title').textContent = 'VIABILITY (ANÁLISE COMPLETA)';
             }
+            // Abrir o painel
+            document.getElementById('agent-panel').classList.add('open');
         }
         
         function openNewBriefing() {
