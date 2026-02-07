@@ -1302,7 +1302,7 @@ PROCESSED.md ─── Briefing enriquecido
                 `;
                 // DECISION (i5) usa função especial com score no topo
                 if (n.id === 'i5' && currentMode === 'ideias') {
-                    el.ondblclick = () => viewFullViability(n.id);
+                    el.ondblclick = () => viewFullViability(n.id, projectFiles);
                 } else {
                     el.ondblclick = () => openPanel(n, projectFiles);
                 }
@@ -1748,11 +1748,11 @@ PROCESSED.md ─── Briefing enriquecido
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
         
-        function viewFullViability(nodeId) {
+        function viewFullViability(nodeId, projectFiles) {
             // Abre o painel com o JSON completo da VIABILITY (node i4)
             const nodeDef = currentMode === 'ideias' ? nodeDefIdeias.find(n => n.title === 'VIABILITY') : null;
             if (!nodeDef) return;
-            const files = allFilesCache.filter(f => {
+            const files = projectFiles.filter(f => {
                 const patterns = fileMapping['VIABILITY'] || [];
                 return patterns.some(p => f.name.includes(p));
             });
