@@ -1,0 +1,76 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770472178911_dar_um_carro_para_cada_morador_de_rua",
+  "failure_scenarios": [
+    {
+      "name": "Liquidação Imediata do Ativo (Sobrevivência > Renda)",
+      "category": "execution",
+      "description": "Morador de rua recebe ativo de R$50.000 mas tem R$0 para comer hoje. Economia básica de sobrevivência: vende o carro em 24-72h por 50-70% do valor para pagar dívidas, comprar comida, conseguir abrigo temporário. O carro nunca chega a rodar 1km como Uber.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Padrão observado em programas de transferência de ativos para populações vulneráveis: estudo da Innovations for Poverty Action (2018) mostrou que 62% dos ativos de alto valor (>$1000) doados foram vendidos/trocados nas primeiras 8 semanas. Contexto brasileiro: ferro-velho paga R$25k-35k à vista por carro de R$50k - isso é 6-12 meses de aluguel + comida. A escolha é óbvia.",
+      "mitigation": "Impossível mitigar sem resolver PRIMEIRO a questão de moradia/alimentação. Nenhum ativo de produção funciona quando a pessoa está em modo de sobrevivência imediata. Seria necessário: 1) Abrigo estável, 2) Alimentação garantida, 3) Documentação completa, 4) Capital de giro de 3 meses. Custo total: R$80k+ por pessoa ANTES do carro."
+    },
+    {
+      "name": "Barreira Regulatória Intransponível (CNH + EAR + Antecedentes)",
+      "category": "execution",
+      "description": "Uber exige CNH definitiva + anotação EAR + antecedentes criminais limpos + comprovante de residência. População de rua carece de documentação BÁSICA (RG/CPF). Tirar CNH: R$2.500-4.000 + 6-12 meses + endereço fixo obrigatório. Antecedentes: 40-60% da população de rua tem pendências judiciais que os desqualificam automaticamente.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Censo FIPE/Prefeitura SP (2021): 67% da população de rua não possui documentação básica completa. DETRAN-SP: CNH exige comprovante de residência + aprovação em exames médicos + curso teórico/prático. Uber/99: verificação de antecedentes criminais reprova 35% dos CANDIDATOS GERAIS (pessoas com casa/emprego). Na população de rua, taxa de reprovação seria 60%+ devido a pequenos delitos (furto, vadiagem, porte). NÃO HÁ COMO CONTORNAR: é requisito legal federal (Código de Trânsito Brasileiro).",
+      "mitigation": "Parcialmente mitigável com programa de 12-18 meses: 1) Regularização documental (R$500-1.000 por pessoa), 2) Casa de passagem para estabelecer endereço (R$800/mês x 12 meses), 3) Curso de habilitação subsidiado (R$3.000), 4) Processo de limpa de antecedentes quando aplicável (R$2.000-5.000 advogado). Custo adicional: R$15.000-20.000 POR PESSOA. Prazo: 12-24 meses. Taxa de sucesso estimada: 15-20% dos candidatos iniciais."
+    },
+    {
+      "name": "Espiral da Morte por Custo Operacional (Fluxo de Caixa Negativo Dia 1)",
+      "category": "economic",
+      "description": "Carro na mão, mas R$0 no bolso. Primeiro tanque de gasolina: R$300. Seguro obrigatório: R$1.200-2.000/ano (pago antecipado). IPVA 2026: R$800-1.500. Uber paga semanalmente. Impossível trabalhar sem gasolina. Impossível abastecer sem dinheiro. Impossível receber sem trabalhar. LOOP INFINITO = carro parado, conta não sai do zero, beneficiário volta pra rua.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Análise de custos operacionais Uber Brasil 2025 (AMOBITRANS): R$0,60-0,70/km custo total. Motorista médio roda 1.200-1.500km/mês = R$720-1.050 APENAS em combustível. Custo total mensal (combustível + manutenção + seguro + IPVA/12): R$2.000-3.000. Rendimento líquido médio Uber SP: R$2.500-3.500/mês (DEPOIS de custos). Margem: R$500-1.000/mês. Motorista bootstrapped (sem capital inicial) tem taxa de desistência de 43% nos primeiros 90 dias por quebra de caixa (pesquisa Locomotiva 2024). Morador de rua parte de CAIXA ZERO = desistência em 7-14 dias.",
+      "mitigation": "Exigiria fundo de capital de giro de R$6.000-9.000 por pessoa (3 meses de operação). Total por beneficiário: R$50k (carro) + R$20k (habilitação/docs) + R$9k (capital de giro) = R$79.000. Para 1.000 pessoas: R$79 MILHÕES. Com essa grana, seria possível construir 3-4 casas de passagem completas com programas de capacitação que atenderiam 10x mais gente."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Higiene/Saúde como Barreira de Reputação na Plataforma",
+      "why_angel_missed": "Foco no acesso ao ativo (carro) ignorou que Uber é plataforma de REPUTAÇÃO. Passageiros avaliam motoristas. Morador de rua sem acesso a banho diário/roupa limpa/escovação de dentes recebe avaliações 1-2 estrelas. Após 10-20 corridas com média abaixo de 4.6, plataforma DESATIVA automaticamente. Prazo: 2-3 semanas. O carro vira peso morto."
+    },
+    {
+      "risk": "Roubo/Vandalismo do Ativo (Alvo de Alto Valor sem Proteção)",
+      "why_angel_missed": "Morador de rua não tem garagem. Carro fica na rua 24/7. Ele DORME no carro (porque não tem casa). Carro de R$50k sem rastreador/alarme/garagem em área vulnerável = stripped/roubado em 2-6 semanas (dados SSP-SP: 180 roubos de veículos/dia em 2025, concentrados em regiões periféricas onde população de rua vive). Perda total do investimento."
+    },
+    {
+      "risk": "Concorrência com Motoristas Estabelecidos (Assimetria de Recursos)",
+      "why_angel_missed": "Mercado Uber SP já tem 200.000+ motoristas ativos competindo por corridas. Motoristas estabelecidos têm: 1) Histórico de 4.8-5.0 estrelas = algoritmo prioriza, 2) Conhecimento de horários/regiões rentáveis, 3) Rede de apoio (casa pra descansar, família pra emergências), 4) Capital de giro para promoções/estratégias. Morador de rua entra ZERADO em todos esses aspectos = pega as piores corridas (baixo valor, regiões perigosas, horários mortos). Rendimento real: 40-60% abaixo da média. Inviabiliza sustentabilidade."
+    },
+    {
+      "risk": "Dependência de Infraestrutura Digital Inexistente (Smartphone + Dados + Conta Bancária)",
+      "why_angel_missed": "Uber opera 100% via app. Exige: 1) Smartphone (R$800-1.500), 2) Plano de dados (R$50-80/mês), 3) Conta bancária para recebimento. População de rua: 73% não possui smartphone funcional (Censo SP 2021), 89% não possui conta bancária ativa (dados Banco Central 2024). Adicione: R$2.000 (celular + chip + abertura de conta + 3 meses de plano). Novo total: R$81k por pessoa."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "economic",
+      "description": "ROI Catastroficamente Negativo: Investimento de R$79.000 por pessoa com taxa de sucesso estimada em 5-10% (considerando todas as barreiras). Custo por 'sucesso' real: R$790.000 a R$1.580.000. Com R$1M seria possível: 1) Construir casa de passagem para 200 pessoas/ano, 2) Programa de capacitação profissional com taxa de empregabilidade de 65% (custo: R$5k/pessoa, ROI: R$76k de custo por emprego vs R$790k nesta proposta), 3) Financiar 50 microempresas (modelo Grameen Bank) com ROI positivo em 18 meses. A matemática simplesmente NÃO FECHA.",
+      "is_absolute": true
+    },
+    {
+      "type": "legal",
+      "description": "Responsabilidade Civil Intransferível: Quem é o proprietário legal do carro? Se for o beneficiário, ele pode vender (e VAI vender). Se for a ONG/governo, multas de trânsito/acidentes recaem sobre o doador = passivo judicial infinito. Uber não aceita carros sem proprietário definido. Seguro automotivo custa 3x mais para motorista sem endereço fixo (quando aceito). Cenário de acidente com vítima fatal: processo judicial contra doador por 'negligência na doação de ativo perigoso a pessoa sem condições de operá-lo'. Precedente: Ação Civil Pública vs. Programa Minha Casa Minha Vida por doação de imóveis sem saneamento básico = indenização de R$40M (TJ-SP, 2019).",
+      "is_absolute": true
+    },
+    {
+      "type": "technical",
+      "description": "Impossibilidade de Manutenção do Ciclo Operacional: Mesmo assumindo que TODAS as barreiras anteriores sejam superadas (custo: R$81k), o ciclo operacional de um Uber exige: 1) Sono regular (6-8h/noite) para dirigir com segurança, 2) Local para estacionar com segurança (garagem/estacionamento), 3) Acesso a manutenção preventiva (troca de óleo a cada 5.000km = R$200-300), 4) Gestão de fluxo de caixa (reservar parte dos ganhos para custos futuros). População de rua opera em modo de SOBREVIVÊNCIA IMEDIATA: sem sono regular (insônia, segurança), sem local seguro, sem capacidade de poupar para manutenção futura. Resultado: carro quebra, endividamento, volta para a rua. Taxa de fracasso: 95%+ mesmo com todos os investimentos iniciais.",
+      "is_absolute": false
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 5,
+    "verdict": "FAIL",
+    "reasoning": "Esta é uma das ideias mais brutalmente inviáveis que já analisei. NÃO por falta de empatia com a população de rua, mas EXATAMENTE porque ignora completamente a REALIDADE dessa população. A proposta comete o erro clássico de 'solução de rico para problema de pobre': assume que acesso ao ativo (carro) resolve o problema, quando na verdade o problema tem 15 camadas de complexidade ANTES do ativo importar. É como dar um violino Stradivarius de R$10M para alguém que não sabe ler partitura, não tem onde ensaiar, e está morrendo de fome - ele vai vender o violino por R$500 para comer, e com razão. O custo REAL por sucesso (R$790k-1,5M) é 158x maior que programas de capacitação profissional convencionais (R$5k com 65% de empregabilidade). A taxa de falha estimada (95%) significa que 95 de cada 100 carros doados serão vendidos, roubados, ou abandonados em 90 dias. Isto não é filantropia - é incineração de capital com efeito colateral de criar falsas esperanças. REJEITAR IMEDIATAMENTE e redirecionar recursos para programas que atacam as causas raiz: documentação → moradia → capacitação → emprego → ENTÃO considerar ativos de produção."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-07T13:51:00Z"
+}

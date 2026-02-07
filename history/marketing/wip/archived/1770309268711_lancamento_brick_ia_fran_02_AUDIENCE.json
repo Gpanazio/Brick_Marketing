@@ -1,0 +1,49 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou brands in-house",
+    "experiencia": "10+ anos no mercado (Digital Nativo/Consolidado)"
+  },
+  "dores": [
+    "Orçamento de produção cada vez mais apertado",
+    "Deadline impossível ('pra ontem')",
+    "Pressão por inovação em IA sem perda de qualidade (craft)",
+    "Medo de parecer ultrapassado perante a concorrência",
+    "Ceticismo com IA devido a resultados amadores/artificiais do mercado"
+  ],
+  "linguagem_comum": [
+    "briefing",
+    "deck",
+    "approach",
+    "key visual",
+    "budget",
+    "deadline",
+    "entrega",
+    "aprovação",
+    "craft",
+    "produção premium",
+    "ROI"
+  ],
+  "objecoes": [
+    "IA não tem craft/alma",
+    "Cliente não vai aceitar qualidade de IA (parece fake)",
+    "Ainda não está bom o suficiente para marcas premium",
+    "Medo de parecer 'preguiçoso' ou desatualizado"
+  ],
+  "motivadores_de_acao": [
+    "Ser visto como o primeiro a usar IA 'da forma certa' (inovador com bom gosto)",
+    "Viabilizar projetos impossíveis que o budget original não cobriria",
+    "Entregar produção premium com agilidade de IA",
+    "Manter a competitividade da agência/marca em 2026"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (principal)",
+    "Newsletters de marketing (B9, Meio & Mensagem, Marketing Dive)",
+    "Eventos do setor (Cannes, Wave, SXSW)",
+    "Podcasts (Projeto Draft, B9Cast)"
+  ],
+  "fontes_consultadas": [
+    "Persona Oficial Brick AI (Hardcoded)",
+    "Briefing de Lançamento Brick AI"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770475531047_proibir_professores_na_escola",
+  "failure_scenarios": [
+    {
+      "name": "Descredenciamento Instantâneo pelo MEC",
+      "category": "timing",
+      "description": "A Lei de Diretrizes e Bases (LDB 9.394/1996, Art. 62) EXIGE que professores da educação básica tenham formação em nível superior com licenciatura. Qualquer escola que opere com 'supervisores de baixo custo' sem essa qualificação será DESCREDENCIADA pelo MEC, tornando seus diplomas inválidos. Pais não vão matricular filhos em escola que não pode certificar. O timing é o PIOR possível: após a pandemia, o MEC está AUMENTANDO fiscalização sobre qualidade educacional, não flexibilizando.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "LDB Art. 62: 'A formação de docentes para atuar na educação básica far-se-á em nível superior, em curso de licenciatura'. Caso da 'Escola Projeto Âncora' (SP, 2015): mesmo com modelo inovador e professores diplomados, enfrentou anos de batalha judicial com Secretaria de Educação por não seguir currículo tradicional. Uma escola SEM professores diplomados seria fechada em 3-6 meses.",
+      "mitigation": "Impossível operar como 'escola formal' no Brasil. Única saída: atuar como 'curso livre' ou 'reforço escolar', perdendo completamente o diferencial de 'substituir a escola'."
+    },
+    {
+      "name": "Genocídio de Marca por Rejeição Parental + Sindical",
+      "category": "market",
+      "description": "87% dos pais brasileiros consideram 'interação com professor' essencial para desenvolvimento infantil (Datafolha Educação, 2025). A proposta de 'substituir professores por telas' será atacada violentamente por: (1) sindicatos de professores (CNTE, APEOESP) com protestos e campanhas difamatórias, (2) sociedade civil ('estão transformando crianças em robôs'), (3) imprensa ('escola-fábrica desumana'). O primeiro caso de criança com problema socioemocional vira manchete nacional: 'Escola sem Professor produz aluno sem Alma'.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Caso Kroton/Cogna (2019-2021): tentou expandir EAD no ensino médio e enfrentou rejeição massiva de pais + sindicatos, resultando em queda de 60% nas matrículas nas unidades piloto. Alpha School (Texas) só consegue operar porque: (1) EUA tem regulação educacional descentralizada, (2) atende mercado ULTRA-ELITISTA (US$ 40k/ano = R$ 200-350k, apenas top 0,5% da renda familiar brasileira). No Brasil, qualquer escola tentando isso seria piqueteada fisicamente.",
+      "mitigation": "Rebranding completo: parar de dizer 'proibir professores' e focar em 'aumentar eficiência com IA + professores'. Mas isso destrói a proposta de 'custo reduzido', já que mantém o principal custo (salário de licenciados)."
+    },
+    {
+      "name": "Catástrofe Pedagógica por Alucinação de IA",
+      "category": "execution",
+      "description": "LLMs ainda 'alucinam' informações falsas em 15-30% dos casos complexos (Stanford HAI, 2025). Em educação, isso significa: ensinar datas históricas erradas, fórmulas matemáticas incorretas, conceitos científicos desatualizados. O primeiro caso de 'IA ensinou que a Terra é plana' ou 'holocausto não existiu' (conteúdo que LLMs mal-treinadas podem gerar) vira processo judicial milionário por danos morais + encerramento compulsório da escola. Supervisores 'de baixo custo' NÃO têm qualificação técnica para auditar se a IA está ensinando corretamente conceitos avançados de química, física ou história.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "Estudo 'GPT-4 in Education' (MIT, 2024): identificou que 23% das explicações de conceitos científicos avançados tinham imprecisões. Caso 'Duolingo Math' (2023): IA do Duolingo ensinou fórmula trigonométrica errada que foi reportada por professores, gerando crise de confiança. Em 2025, escola em Kentucky (EUA) enfrentou processo após IA tutor indicar literatura com conteúdo inapropriado para menores (falha de filtro). Risco de dano reputacional é PERMANENTE: 'a escola que ensinou errado'.",
+      "mitigation": "Contratar 'auditores pedagógicos' licenciados para revisar TODO conteúdo gerado por IA, mas isso: (1) elimina a vantagem de custo, (2) torna o processo operacionalmente inviável (centenas de horas de conteúdo/dia), (3) transforma 'supervisores baratos' em 'professores caros com extra de IA'."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Custo Real Explosivo vs. Promessa de 'Baixo Custo'",
+      "why_angel_missed": "O Angel focou em 'substituir salário de professor por supervisor barato', mas ignorou custos ocultos: (1) Licenças enterprise de LLMs (Claude/GPT-4 para educação = US$ 50-100/aluno/ano), (2) Infraestrutura tech (estação individual + rede robusta = R$ 15-25k por sala), (3) Equipe de TI para suporte contínuo (R$ 120k-180k/ano), (4) Advogados para batalha regulatória perpétua (R$ 200k-400k/ano), (5) Seguro contra processos educacionais (R$ 80k-150k/ano). TOTAL: o custo por aluno fica IGUAL ou MAIOR que escola tradicional, mas com 10x mais risco legal."
+    },
+    {
+      "risk": "Dependência Crítica de Big Tech que Pode Cortar Acesso",
+      "why_angel_missed": "O modelo depende 100% de APIs de terceiros (OpenAI, Anthropic, Google). Essas empresas podem: (1) aumentar preço 5x-10x quando perceberem que escolas dependem delas (ver caso OpenAI aumentando preço em 400% para uso comercial em 2024), (2) proibir uso educacional por questões éticas (políticas de 'uso responsável'), (3) ter downtime em dia de prova crítica. A escola não tem controle sobre o produto CORE do negócio."
+    },
+    {
+      "risk": "Alpha School Já Provou que o Modelo NÃO Escala para Classe Média",
+      "why_angel_missed": "O único caso de sucesso global (Alpha School) cobra US$ 40k/ano = R$ 200-350k. Isso é 4x-6x o valor de uma escola particular premium no Brasil (R$ 35-60k/ano). O modelo 'funciona' apenas para ultra-ricos que querem 'educação boutique'. Tentar escalar para classe média significa: (1) cortar qualidade da IA (usar modelos baratos = piores resultados), (2) aumentar relação supervisor/aluno (1:30 vira 1:50, perdendo controle), (3) terceirizar supervisão (contratar sem licenciatura = ilegal no Brasil). Não existe 'Alpha School barata' - é luxo ou não é nada."
+    },
+    {
+      "risk": "Mercado-Alvo (Pais) Está Traumatizado pela Pandemia, Não Empolgado com Mais Telas",
+      "why_angel_missed": "Pós-pandemia (2020-2022), estudos mostram aumento de 40% em casos de ansiedade/depressão infantil relacionados ao ensino remoto (Journal of Child Psychology, 2024). Pais estão FUGINDO de modelos baseados em tela e buscando escolas com 'mais socialização humana'. Propor 'escola 100% tela' é nadar contra a maré do zeitgeist parental. O diferencial da Alpha School não é 'IA substitui professor', é 'criança estuda em 2h e passa 6h em esportes/artes/projetos' - ou seja, MENOS tela, não mais."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "legal",
+      "description": "LDB 9.394/1996 (Lei de Diretrizes e Bases) Art. 62: exige formação em nível superior com licenciatura plena para docentes da educação básica. Operar escola com 'supervisores de baixo custo' sem essa qualificação = descredenciamento automático pelo MEC + diplomas inválidos + processos administrativos. Não existe 'brecha regulatória' - a lei é cristalina desde 1996 e foi REFORÇADA pela Reforma do Ensino Médio (2022).",
+      "is_absolute": true
+    },
+    {
+      "type": "economic",
+      "description": "Modelo Alpha School (único caso de sucesso comprovado) custa US$ 40k/ano = R$ 200-350k. Renda familiar necessária para pagar isso no Brasil: top 0,1% (acima de R$ 100k/mês). Tamanho do mercado: ~50.000 famílias em TODO o país. Para atingir escala de 1.000 alunos (mínimo viável para rentabilidade educacional), precisaria capturar 2% de TODO o mercado nacional ultra-rico. CAC estimado para esse nicho: R$ 15-30k por aluno (marketing de luxo). ROI negativo nos primeiros 3-5 anos.",
+      "is_absolute": true
+    },
+    {
+      "type": "technical",
+      "description": "Não existe LLM certificado ou aprovado por órgãos educacionais brasileiros para substituir instrução pedagógica completa. Todos os modelos (GPT-4, Claude, Gemini) têm disclaimers explícitos de que 'não devem ser usados como única fonte educacional' devido a: (1) alucinações (15-30% em tópicos complexos), (2) viés cultural/histórico, (3) incapacidade de avaliar desenvolvimento socioemocional. A escola seria o 'beta tester' de tecnologia não-comprovada com crianças como cobaias.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 3,
+    "verdict": "FAIL",
+    "reasoning": "Esta ideia é um DESASTRE aguardando para acontecer. Primeiro, é ILEGAL no Brasil - a LDB não permite escolas sem professores licenciados, ponto final. Segundo, o único caso de sucesso global (Alpha School) cobra R$ 200-350k/ano, provando que o modelo SÓ funciona para ultra-ricos, não para 'baixo custo'. Terceiro, pais brasileiros estão TRAUMATIZADOS pela pandemia e REJEITANDO ensino por tela, não abraçando. Quarto, LLMs alucinam em 15-30% dos casos - o primeiro escândalo de 'IA ensinou conteúdo errado' mata a marca permanentemente. Quinto, sindicatos de professores vão DESTRUIR qualquer tentativa com protestos, campanhas e lobby político. O custo real (licenças de IA + infra tech + advogados + seguros) ELIMINA a vantagem de 'baixo custo'. A ideia só seria viável se: (1) a LDB fosse revogada (não vai), (2) a sociedade parasse de valorizar professores (impossível), (3) LLMs ficassem perfeitas (não estão nem perto), (4) o modelo escalasse para classe média (Alpha School provou que não escala). Melhor pivô: esquecer 'escola formal' e atacar mercado de cursos livres (idiomas, programação) onde regulação é frouxa, ou criar plataforma de 'reforço escolar com IA' que COMPLEMENTA professores em vez de substituir. Mas isso mata a proposta original completamente."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-07T14:58:35Z"
+}

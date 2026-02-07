@@ -22,7 +22,14 @@ BASENAME="${BASENAME%.txt}"
 BASENAME="${BASENAME%.md}"
 BASENAME=$(echo "$BASENAME" | sed -E 's/_(RAW_IDEA|PROCESSED|BRIEFING_INPUT)$//')
 JOB_ID="$BASENAME"
-[ -z "$JOB_ID" ] && JOB_ID=$(date +%s)
+
+# ID curto para evitar erro de cache (max 64 chars no total)
+SHORT_ID=$(echo "$JOB_ID" | tail -c 9)
+
+if [ -z "$JOB_ID" ]; then
+    JOB_ID=$(date +%s)
+    SHORT_ID=$(echo "$JOB_ID" | tail -c 9)
+fi
 
 WIP_DIR="$PROJECT_ROOT/history/projetos/wip"
 LOG_DIR="$WIP_DIR/logs"
@@ -106,8 +113,8 @@ IDEATION_CONTEXT="BRIEFING DO CLIENTE (resumido): ${BRIEFING_SUMMARY}
 
 BRAND DIGEST (DNA da marca do cliente): ${BRAND_CONTENT}"
 
-# GPT
-openclaw agent --agent gpt \
+# GPT (com logging e timeout de sistema robusto)
+safe_timeout 300s openclaw agent --agent gpt \
   --session-id "brick-proj-${JOB_ID}-ideation-gpt" \
   --message "${CREATIVE_ROLE}
 
@@ -121,8 +128,8 @@ INSTRUÇÕES: Salve Markdown em: ${IDEATION_GPT_OUT}" \
   --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_02A_GPT.log" &
 GPT_PID=$!
 
-# Flash
-openclaw agent --agent flash \
+# Flash (com logging e timeout de sistema robusto)
+safe_timeout 300s openclaw agent --agent flash \
   --session-id "brick-proj-${JOB_ID}-ideation-flash" \
   --message "${CREATIVE_ROLE}
 
@@ -136,8 +143,8 @@ INSTRUÇÕES: Salve Markdown em: ${IDEATION_FLASH_OUT}" \
   --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_02B_FLASH.log" &
 FLASH_PID=$!
 
-# Sonnet
-openclaw agent --agent sonnet \
+# Sonnet (com logging e timeout de sistema robusto)
+safe_timeout 300s openclaw agent --agent sonnet \
   --session-id "brick-proj-${JOB_ID}-ideation-sonnet" \
   --message "${CREATIVE_ROLE}
 

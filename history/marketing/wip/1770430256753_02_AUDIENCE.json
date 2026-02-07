@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou Brands in-house",
+    "experiencia": "10+ anos no mercado, já viu muitas modas passarem"
+  },
+  "dores": [
+    "Ceticismo agudo com a 'estética plastificada' da IA (o conteúdo gerado por IA está começando a colapsar sobre si mesmo, gerando mediocridade)",
+    "Dificuldade em 'ir além do básico' com ferramentas atuais que não conseguem inventar o novo",
+    "Pressão para reduzir custos sem perder o craft cinematográfico premium",
+    "Medo de desvalorização do trabalho criativo por ticket-baixo substituído por automações baratas"
+  ],
+  "linguagem_comum": [
+    "brief",
+    "deck",
+    "approach",
+    "key visual",
+    "budget",
+    "deadline",
+    "entrega",
+    "aprovação",
+    "craft",
+    "produção premium"
+  ],
+  "objecoes": [
+    "IA não tem craft/alma",
+    "Qualidade ainda não é boa o suficiente para clientes premium",
+    "Medo de que a ferramenta torne o trabalho 'fake' ou artificial"
+  ],
+  "motivadores_de_acao": [
+    "Ser visto como o diretor que dominou a técnica antes de todos (Status)",
+    "Manter a competitividade em um mercado que já usa automação",
+    "Liberar budget para o criativo ao otimizar a latência da produção"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (principal)",
+    "Newsletters: B9, Meio & Mensagem",
+    "Eventos: Cannes Lions, Rio2C (2026)",
+    "Subreddits técnicos e de audiovisual"
+  ],
+  "fontes_consultadas": [
+    "BRAND_GUARDIAN Brick AI (v8.0)",
+    "https://www.reddit.com/r/brdev/comments/1qgdhs9/sobre_colapso_de_modelos_de_ia/ (Ceticismo com IA sobre IA)",
+    "https://www.reddit.com/r/desabafos/comments/1qnvv4u/a_ia_matou_meu_trabalho_e_agora_me_sinto/ (Percepção de mercado em agências)",
+    "https://www.meioemensagem.com.br/midia/quais-sao-as-principais-tendencias-de-midia-para-2026 (Contexto de mercado)"
+  ],
+  "analise_alinhamento": {
+    "status": "PASS",
+    "score": 0.85,
+    "notas": "O briefing de teste é vago, mas o sistema Brick AI impõe o contexto: o 'post de tecnologia' não será sobre dicas genéricas, mas sobre como o Domínio da Linguagem resolve o colapso da mediocridade (AI slop) que preocupa a persona oficial."
+  }
+}

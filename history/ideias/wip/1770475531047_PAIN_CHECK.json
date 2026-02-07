@@ -1,0 +1,22 @@
+{
+  "idea_name": "substituir_professores_por_ia",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "A questão da eficiência educacional, escassez de professores qualificados e o custo crescente do ensino básico e superior é um problema real enfrentado por governos e instituições privadas globalmente. A proposta de substituir a instrução direta por IAs sob supervisão humana de baixo custo (modelo de tutoria) é uma tendência emergente em EdTech (ex: Khanmigo, Alpha School). A análise é acionável pois permite comparar custos de implementação, eficácia pedagógica de modelos existentes e barreiras regulatórias."
+  },
+  "evidence": [
+    "Relatórios da UNESCO indicam um déficit global de professores de milhões até 2030.",
+    "Escolas como a Alpha School (Texas) já utilizam softwares para ensino central enquanto humanos atuam apenas como guias/supervisores.",
+    "Crescimento acelerado do mercado de tutores de IA com modelos de linguagem de larga escala (LLMs)."
+  ],
+  "red_flags": [
+    "Resistência sindical e regulatória massiva (leis de educação no Brasil exigem professores diplomados).",
+    "Preocupações éticas sobre o desenvolvimento socioemocional de crianças sem interação humana pedagógica.",
+    "Risco de 'alucinação' de IA em contextos educacionais críticos."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-07T11:58:35Z"
+}

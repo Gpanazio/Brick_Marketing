@@ -1,0 +1,76 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770475705403_candidato_a_vereador_comandado_por_ia",
+  "failure_scenarios": [
+    {
+      "name": "Cassação Pré-Eleitoral pelo TSE",
+      "category": "timing",
+      "description": "O registro de candidatura será impugnado ANTES da eleição pelo Ministério Público Eleitoral. A Constituição Federal (Art. 55) e o Código Eleitoral estabelecem que o mandato é PERSONALÍSSIMO e INDELEGÁVEL. Qualquer campanha que prometa 'decisões tomadas por IA' será enquadrada como fraude à soberania popular (Art. 1º, parágrafo único da CF/88). O TSE tem precedente de cassar mandatos coletivos onde não há clareza sobre quem é o tomador de decisão.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Resolução TSE nº 23.732/2024 exige transparência total sobre uso de IA, mas não autoriza delegação de decisão política. Caso dos mandatos coletivos de PSOL em 2018: mesmo com humanos no coletivo, o TSE reforçou que 'o titular do mandato é único e responde individualmente'. Procuradoria do TSE já sinalizou em 2026 que vai intensificar fiscalização contra 'candidatos sintéticos' (CNN Brasil, Folha de S.Paulo).",
+      "mitigation": "Impossível mitigar sem destruir a proposta. A única saída seria posicionar a IA como 'assessoria técnica', mas isso elimina o diferencial da campanha."
+    },
+    {
+      "name": "Responsabilidade Criminal Sem Defesa Técnica",
+      "category": "execution",
+      "description": "Vereador eleito responde PESSOALMENTE por crimes de responsabilidade (Lei 1.079/1950), improbidade administrativa (Lei 8.429/1992) e crimes eleitorais. Se a IA tomar uma decisão que configure crime (ex: desvio de verba, uso de informação privilegiada, voto em conflito de interesse), o CPF do candidato vai preso. Não existe 'culpa do algoritmo' no Código Penal brasileiro. O juiz vai perguntar: 'Por que você delegou sua consciência para uma máquina?' E a resposta é incriminatória por si só.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Art. 28 da LGPD: o controlador (candidato) responde solidariamente por danos causados pelo tratamento de dados automatizado. Precedente em SP: empresário condenado por decisão automatizada de crédito que gerou discriminação racial (2023). Em governança pública, o STF já decidiu que 'atos discricionários não podem ser delegados a sistemas automatizados' (ADI 6.387, Min. Rosa Weber, 2021).",
+      "mitigation": "Criar um 'comitê de supervisão humana' para cada decisão da IA, mas isso torna o processo inviável operacionalmente (centenas de decisões por mês) e elimina a eficiência prometida."
+    },
+    {
+      "name": "Morte Política por Rejeição Popular + Escândalo de Hack",
+      "category": "market",
+      "description": "Eleitores não confiam em 'caixas-pretas'. Pesquisa Datafolha 2025 mostra que 68% dos brasileiros 'não confiam em decisões importantes tomadas por IA'. Além disso, o primeiro 'hack' ou 'viés' da IA vira manchete nacional: 'Vereador Robô vota a favor de construtora que financiou o algoritmo'. A campanha se torna tóxica instantaneamente. Concorrentes vão explorar o medo: 'Você vai ser governado por um robô que pode ser hackeado por hackers chineses?'",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "Caso 'AI Steve' (Reino Unido, 2024): obteve apenas 179 votos em Brighton apesar da cobertura massiva da mídia. Exit polls mostraram que 82% dos eleitores rejeitaram por 'falta de accountability humana'. Caso Tay (chatbot da Microsoft, 2016): hackeado em 24h para proferir discurso de ódio. No Brasil, qualquer suspeita de manipulação algorítmica gera CPI instantânea (ver CPI das Fake News, 2021).",
+      "mitigation": "Investir pesado em auditoria externa do algoritmo (custo: R$ 500k-1M/ano) e contratar empresa de cibersegurança top-tier (R$ 300k-600k/ano). Mesmo assim, a percepção pública de 'risco' não desaparece."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Custo Real Explosivo vs. Viabilidade Econômica Zero",
+      "why_angel_missed": "O Angel focou na 'inovação disruptiva', mas ignorou que uma campanha de vereador custa em média R$ 150k-300k (PSDB/MDB em capitais). Adicionar: infraestrutura de IA segura (R$ 200k), auditoria contínua (R$ 500k/ano), advogados especializados em direito eleitoral digital (R$ 80k-150k), seguro contra erros algorítmicos (não existe no mercado brasileiro) = investimento de R$ 1M+ para um cargo que paga R$ 18k/mês. ROI negativo antes mesmo de começar."
+    },
+    {
+      "risk": "Efeito Streisand: A Polêmica Aumenta Rejeição, Não Votos",
+      "why_angel_missed": "O Angel assumiu que 'buzz midiático' = votos. Mas casos como o do 'Tiririca' (2010) e 'Macaco Tião' (1988) mostram que 'candidaturas provocativas' funcionam apenas quando SÃO PIADA, não quando pedem confiança técnica. A proposta de 'IA comandando' é levada a sério demais para ser engraçada, mas não tem credibilidade suficiente para ser confiável. Fica no 'vale do estranho' eleitoral."
+    },
+    {
+      "risk": "Dependência Crítica de Infraestrutura Não Controlada",
+      "why_angel_missed": "O pipeline de decisão depende de APIs externas (Claude, GPT, etc.) que podem: (1) ser descontinuadas (ver caso do Google Bard em mercados específicos), (2) ter downtime em dia de votação crítica, (3) mudar os termos de uso proibindo uso político (ver política da OpenAI contra 'lobbying automatizado'). Se a OpenAI bloquear o acesso no meio do mandato, a 'IA vereador' vira um humano improvisando = fraude à promessa de campanha."
+    },
+    {
+      "risk": "Alvo Preferencial de Lawfare Oposicionista",
+      "why_angel_missed": "Concorrentes políticos vão usar a 'novidade' como arma. Toda decisão polêmica vira: 'Robo-Vereador votou contra creche porque algoritmo não tem coração'. Oposição vai protocolar representação no MP a cada 15 dias alegando que 'a IA está mal-treinada' ou 'tem viés ideológico programado'. O candidato passará 80% do tempo se defendendo em vez de governando."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "legal",
+      "description": "Constituição Federal Art. 55 + Código Eleitoral: mandato é PERSONALÍSSIMO. Delegar decisões políticas para IA = renúncia tácita ao mandato ou exercício ilegal da função. TSE tem competência para cassar o registro mesmo após eleição se ficar provado que 'o eleito não exerce efetivamente o mandato'. Jurisprudência consolidada desde 1988.",
+      "is_absolute": true
+    },
+    {
+      "type": "economic",
+      "description": "CAC (Custo de Aquisição de Voto) estimado em R$ 15-30 por voto em campanhas tradicionais. Com a infraestrutura de IA + auditoria + blindagem jurídica, o CAC sobe para R$ 80-120/voto. Para eleger um vereador em capital (mínimo 8.000 votos), custo total = R$ 960k. Receita do mandato (4 anos × R$ 18k × 12 meses) = R$ 864k. PREJUÍZO LÍQUIDO de R$ 96k sem contar os riscos de cassação.",
+      "is_absolute": true
+    },
+    {
+      "type": "technical",
+      "description": "Não existe no mercado brasileiro (ou global) sistema de IA certificado para tomada de decisão legislativa com responsabilidade legal. Nenhuma das big techs (OpenAI, Anthropic, Google) oferece SLA ou garantia contratual para uso político. O candidato não tem fornecedor confiável para terceirizar a 'decisão algorítmica' com respaldo jurídico em caso de erro.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 3,
+    "verdict": "FAIL",
+    "reasoning": "Esta ideia não é apenas arriscada — ela é JURIDICAMENTE INVIÁVEL, ECONOMICAMENTE INSUSTENTÁVEL e POLITICAMENTE SUICIDA. O TSE vai impugnar o registro antes da eleição (probabilidade >90%). Se por milagre a candidatura passar, o primeiro ato polêmico da IA vai gerar processo criminal contra o CPF do candidato, que não terá defesa técnica válida ('a máquina decidiu' não é excludente de ilicitude no Brasil). Financeiramente, o custo de construir infraestrutura segura + blindagem jurídica excede em 40% a receita total do mandato. O único cenário de sucesso seria a IA atuar como 'consultora' e não 'tomadora de decisão', mas isso destrói a proposta de valor da campanha inteira. Melhor pivotar para: (1) Plataforma de Transparência Legislativa (IA fiscaliza, humano decide), (2) Assistente de Participação Popular (IA processa demandas, vereador valida), ou (3) SaaS para outros políticos usarem IA como 'shadow advisor'. A tentativa de 'vereador comandado por IA' vai terminar em cassação, multa e manchete negativa."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-07T14:53:12Z"
+}

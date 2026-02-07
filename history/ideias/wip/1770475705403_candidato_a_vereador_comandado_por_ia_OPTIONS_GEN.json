@@ -1,0 +1,45 @@
+{
+  "agent": "OPTIONS_GEN",
+  "job_id": "1770475705403_candidato_a_vereador_comandado_por_ia",
+  "idea_name": "candidato_vereador_comandado_por_ia",
+  "options": [
+    {
+      "name": "Vereador Co-Piloto IA (Híbrido Legal)",
+      "action": "Candidatar-se como vereador humano que usa um pipeline de IA público e auditável para processar demandas populares, gerar pareceres técnicos e justificar cada voto. A IA é consultora transparente; o humano decide e assina. Campanha posicionada como 'Democracia Direta 2.0: Você fala, IA processa, Eu executo'.",
+      "bet": "Eleitores querem transparência + competência técnica + participação direta, mas aceitam que a responsabilidade final seja de um humano (exigência legal).",
+      "risk": "Oposição política pode alegar que 'quem manda é a máquina' e tentar impugnação. Risco de bugs no pipeline gerarem decisões embaraçosas. Custo de manter infraestrutura tech + time de auditoria durante mandato (~R$ 300k/4 anos).",
+      "upside": "Diferenciação brutal em campanha (único vereador 100% transparente + data-driven). Se funcionar, vira case nacional e plataforma exportável para outras cidades. Ganha votos de tech-savvy + cidadãos frustrados com opacidade política tradicional. Potencial de viralizar nacionalmente.",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "É a única opção que mantém o espírito inovador da ideia original sem colidir com a lei eleitoral. TSE permite IA como ferramenta de campanha/gestão desde que haja transparência. O mandato continua personalíssimo (humano assina e responde), mas a IA atua como 'cérebro técnico' público. Reversível: se o pipeline falhar, o vereador pode voltar a decidir 'manualmente' sem perder mandato. Risk gerenciável com equipe jurídica + auditoria de código open-source."
+    },
+    {
+      "name": "Marketing Radical 'IA Decide' (Zona Cinzenta)",
+      "action": "Campanha vendendo a narrativa de que 'a IA comanda', mas nos bastidores o candidato humano toma as decisões finais (conforme exigência legal). Usar o marketing provocativo para gerar buzz e diferenciar, mas manter conformidade técnica. Slogan: 'Primeira IA eleita do Brasil' (com disclaimer de que o humano é o titular).",
+      "bet": "Eleitor médio não lê letras miúdas da lei eleitoral. O marketing disruptivo gera cobertura de mídia massiva (Folha, Fantástico) e viraliza como 'candidatura do futuro', mesmo que na prática seja um humano usando IA como tool.",
+      "risk": "Altíssima probabilidade de impugnação pelo MP Eleitoral por 'fraude à soberania popular' ou propaganda enganosa. Se cassado durante campanha, perde investimento total (~R$ 100-200k) + dano reputacional. TSE está em modo vigilante pós-2024; qualquer ambiguidade é punida com rigor.",
+      "upside": "Se passar pela peneira do TSE, ganha cobertura gratuita de mídia nacional (earned media > R$ 1M). Torna-se símbolo de inovação política. Potencial de vencer eleição apenas pelo buzz, mesmo em cidade média (20-50 mil votos).",
+      "reversible": false,
+      "strength_score": 38,
+      "rationale": "É a opção mais próxima da ideia original ('IA comanda'), mas opera em zona cinzenta legal perigosa. O risco de cassação é real (~70% de chance se o MP investigar). Não reversível: uma vez impugnado, o dano reputacional impede reeleição ou novas candidaturas. Só faz sentido se o objetivo for 'chamar atenção nacional' mesmo que não se eleja, ou se houver advogados de elite dispostos a brigar com TSE (custo adicional R$ 500k+)."
+    },
+    {
+      "name": "Plataforma de Fiscalização IA (Pivot para SaaS)",
+      "action": "Abandonar a candidatura e criar uma startup de GovTech: plataforma que usa IA para monitorar gastos públicos, licitações e votações de vereadores em tempo real, gerando alertas automáticos de irregularidades. Vender como SaaS para ONGs, jornalistas e cidadãos. Usar dados públicos (Portal da Transparência) + NLP para detectar padrões suspeitos.",
+      "bet": "Fiscalização algorítmica é menos polêmica que 'decisão algorítmica'. Há demanda crescente por transparência (Lava-Jato deixou mercado sensibilizado). Modelo B2B2C: ONGs pagam pela ferramenta, cidadãos usam de graça.",
+      "risk": "Mercado pequeno no Brasil (poucos municípios têm orçamento para pagar SaaS de fiscalização). Dependência de qualidade dos dados públicos (muitos municípios têm portais ruins). Risco de retaliação política se a ferramenta expor esquemas poderosos (ameaças, processos judiciais vexatórios).",
+      "upside": "Modelo de negócio real com receita recorrente (MRR). Menos risco legal que candidatura. Escalável para 5570 municípios brasileiros. Se viralizar um caso grande (ex: 'IA descobre superfaturamento de R$ 10M'), ganha mídia orgânica massiva e tração comercial. Potencial de investimento VC (GovTech é hot topic 2026).",
+      "reversible": true,
+      "strength_score": 65,
+      "rationale": "Pivota completamente da ideia original (não é mais candidatura), mas captura o espírito de 'IA melhorando política' sem risco de cassação. É um produto viável que já tem precedentes (Operação Serenata de Amor, Transparência Brasil). Reversível: se não tracionar em 12 meses, pode pausar e tentar candidatura tradicional depois. Risk moderado (dependência de dados públicos + retaliação), mas upside sólido se bem executado. Mais 'startup' que 'movimento político'."
+    }
+  ],
+  "recommended": {
+    "option_name": "Vereador Co-Piloto IA (Híbrido Legal)",
+    "confidence": 72,
+    "reasoning": "É a única opção que equilibra inovação radical + conformidade legal + upside significativo. Mantém a essência da ideia original ('usar IA para decisões políticas'), mas enquadra dentro do que o TSE permite (IA como ferramenta, não como titular do mandato). O risco de impugnação existe mas é gerenciável com transparência total e assessoria jurídica competente. A reversibilidade é crítica: se o pipeline falhar ou gerar controvérsia, o vereador pode voltar a operar 'manualmente' sem perder mandato. O upside é real: diferenciação brutal em campanha (nenhum político brasileiro fez isso ainda em 2026), potencial de viralizar nacionalmente e criar precedente que pode ser exportado para outras cidades. Custo de execução (~R$ 300k/4 anos para tech stack + auditoria) é financiável por crowdfunding ou parcerias com universidades/ONGs de transparência. A Opção 2 ('Marketing Radical') tem upside similar mas risco de cassação inaceitável (70%+). A Opção 3 ('Pivot SaaS') é mais segura mas abandona completamente a ideia original de 'ser o primeiro político comandado por IA'. A Opção 1 é o sweet spot: inovadora o suficiente para gerar buzz, legal o suficiente para sobreviver ao escrutínio do TSE, e reversível o suficiente para não ser uma aposta all-in suicida."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-07T14:55:00Z"
+}

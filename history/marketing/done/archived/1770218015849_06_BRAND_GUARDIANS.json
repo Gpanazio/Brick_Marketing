@@ -1,0 +1,49 @@
+{
+  "agente": "BRAND_GUARDIANS",
+  "modelo": "gemini-3-flash",
+  "input_de": ["05A_COPY_GPT.md", "05B_COPY_FLASH.md", "05C_COPY_SONNET.md"],
+  
+  "validacao_style": {
+    "versao_a": {
+      "on_brand": true,
+      "tom": "Confiante, provocativo. Alinhado com 'Artistas com Armas Nucleares'",
+      "issues": ["'O Set Impossível' pode soar pretensioso se não executado perfeitamente"],
+      "score_tom": 85
+    },
+    "versao_b": {
+      "on_brand": true,
+      "tom": "Direto, sem floreios. Alinhado com posicionamento técnico + humano",
+      "issues": [],
+      "score_tom": 90
+    },
+    "versao_c": {
+      "on_brand": true,
+      "tom": "Profissional, transparente. 'Production Enhanced' é perfeito",
+      "issues": ["Pode ser menos memorável que as outras"],
+      "score_tom": 88
+    }
+  },
+  
+  "validacao_positioning": {
+    "versao_a": {
+      "diferenciacao_clara": true,
+      "evita_comparacao_direta": true,
+      "foca_em_valor": true,
+      "score_posicionamento": 87
+    },
+    "versao_b": {
+      "diferenciacao_clara": true,
+      "evita_comparacao_direta": true,
+      "foca_em_valor": true,
+      "score_posicionamento": 92
+    },
+    "versao_c": {
+      "diferenciacao_clara": true,
+      "evita_comparacao_direta": true,
+      "foca_em_valor": true,
+      "score_posicionamento": 90
+    }
+  },
+  
+  "recomendacao": "Versão B é a mais equilibrada: tom correto, posicionamento claro, executável dentro do budget."
+}

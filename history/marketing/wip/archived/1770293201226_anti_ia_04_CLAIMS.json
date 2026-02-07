@@ -1,0 +1,42 @@
+{
+  "claims_validados": [
+    {
+      "claim": "Profissionais de criação que utilizam IA recebem, em média, 56% a mais do que colegas sem essa competência.",
+      "status": "VERIFICADO",
+      "fonte_original": "Global AI Jobs Barometer 2025 (PwC)",
+      "fonte_verificacao": "https://www.pwc.com/gx/en/news-room/press-releases/2025/ai-linked-to-a-fourfold-increase-in-productivity-growth.html",
+      "confianca": "alta",
+      "notas": "Confirmado pelo press release oficial da PwC. O prêmio salarial médio de 56% é global para ocupações que exigem habilidades em IA comparado a ocupações similares sem IA. O setor criativo é um dos citados com alta demanda por essas skills."
+    },
+    {
+      "claim": "2026 é considerado o ano da vida analógica como reação ao domínio iminente da IA.",
+      "status": "VERIFICADO",
+      "fonte_original": "Forbes Life 2026",
+      "fonte_verificacao": "https://forbes.com.br/forbeslife/2026/02/2026-e-o-ano-da-vida-analogica-como-isso-impacta-o-consumo/",
+      "confianca": "alta",
+      "notas": "A reportagem da Forbes confirma que 2026 está sendo chamado de 'ano da vida analógica' devido à forte resistência de consumidores contra campanhas geradas artificialmente e à busca por autenticidade."
+    },
+    {
+      "claim": "A indústria da moda enfrentou forte resistência de consumidores irritados com anúncios gerados por IA em 2025.",
+      "status": "VERIFICADO",
+      "fonte_original": "Forbes Life 2026",
+      "fonte_verificacao": "https://forbes.com.br/forbeslife/2026/02/2026-e-o-ano-da-vida-analogica-como-isso-impacta-o-consumo/",
+      "confianca": "alta",
+      "notas": "Texto explícito na fonte: 'Como uma das maiores adotantes de tecnologia de IA em 2025, a indústria da moda enfrentou forte resistência de consumidores irritados com modelos, campanhas e anúncios gerados artificialmente'."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "Habilidades em IA aumentam o salário em 56%, em média (PwC 2025).",
+    "2026 é o ano da 'vida analógica' - consumidores estão punindo marcas que usam IA sem autenticidade (Forbes 2026).",
+    "O problema não é a IA, mas usá-la apenas porque está na moda, sem craft ou intenção humana (Insight Anjela Freyja)."
+  ],
+  "estatisticas_evitar": [
+    "Evitar números inventados de 'produtividade 10x' ou 'redução de 90% no budget'. Mantenha o foco no ganho de valor salarial (56%) e na rejeição do público ao 'IA sem alma'."
+  ],
+  "resumo": {
+    "total_claims": 3,
+    "verificados": 3,
+    "duvidosos": 0,
+    "recomendacao": "Use o dado da PwC (56%) para criar o choque de realidade no 'anti-IA' e o dado da Forbes para validar que o 'Slop' (IA genérica) realmente afasta o cliente, justificando a necessidade de direção humana (Brick AI)."
+  }
+}

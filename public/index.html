@@ -69,22 +69,19 @@
         .node[data-provider="revision"] .node-title { color: #f97316; }
         @keyframes pulse-revision { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
-        /* Loop nodes (Copy Senior ↔ Wall auto-revision) */
-        .node[data-provider="loop-wall"] { background: rgba(5, 5, 5, 0.95); border: 1px solid #333; }
-        .node[data-provider="loop-copy"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; }
-        /* Loop nodes Projetos (Execution ↔ Director) */
-        .node[data-provider="loop-exec"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; border: 1px solid #f97316; }
-        .node[data-provider="loop-exec"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
-        .node[data-provider="loop-exec"] .node-subtext { color: #f97316; }
-        .node[data-provider="loop-exec"] .node-title { color: #f97316; }
-        .node[data-provider="loop-dir"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; border: 1px solid #f97316; }
-        .node[data-provider="loop-dir"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
-        .node[data-provider="loop-dir"] .node-subtext { color: #f97316; }
-        .node[data-provider="loop-dir"] .node-title { color: #f97316; }
-        .node[data-provider="loop-prop"] { background: rgba(5, 5, 5, 0.95); border-left: 2px solid #f97316; border: 1px solid #f97316; }
-        .node[data-provider="loop-prop"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
-        .node[data-provider="loop-prop"] .node-subtext { color: #f97316; }
-        .node[data-provider="loop-prop"] .node-title { color: #f97316; }
+        /* Rerun & Loop nodes (Dynamic nodes styling) */
+        .node[data-provider="rerun"] { border: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.05); }
+        .node[data-provider="rerun"] .node-led { background: #3b82f6; box-shadow: 0 0 12px #3b82f6; }
+        .node[data-provider="rerun"] .node-subtext { color: #3b82f6; }
+        .node[data-provider="rerun"] .node-title { color: #3b82f6; }
+
+        .node[data-provider="loop-wall"], .node[data-provider="loop-copy"], .node[data-provider="loop-exec"], .node[data-provider="loop-dir"], .node[data-provider="loop-prop"] { 
+            border: 1px solid #f97316; 
+            background: rgba(249, 115, 22, 0.02);
+        }
+        .node[data-provider*="loop"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; }
+        .node[data-provider*="loop"] .node-subtext { color: #f97316; }
+        .node[data-provider*="loop"] .node-title { color: #f97316; }
         .disabled[data-provider] { border-left-color: #222 !important; }
         .disabled[data-provider] .node-subtext { color: #333 !important; }
 
@@ -372,6 +369,7 @@
                     <input 
                         type="text"
                         id="briefing-title"
+                        oninput="saveBriefingDraft()"
                         class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none"
                         placeholder="Ex: Lançamento Brick AI 2026"
                     >
@@ -381,13 +379,14 @@
                     <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">DESCRIÇÃO *</label>
                     <textarea
                         id="briefing-content"
+                        oninput="saveBriefingDraft()"
                         class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-40 focus:border-[#DC2626] outline-none resize-none"
                         placeholder="Descreva o projeto, objetivo, público-alvo, restrições..."></textarea>
                 </div>
             </div>
 
             <div class="p-6 border-t border-[#222] flex justify-end gap-4">
-                <button onclick="closeBriefingModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
+                <button onclick="clearBriefingDraft(); closeBriefingModal()" class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">LIMPAR & CANCELAR</button>
                 <button onclick="submitBriefing()" class="btn-brick px-6 py-3">CRIAR BRIEFING</button>
             </div>
         </div>
@@ -559,7 +558,8 @@
             'ANGEL_GEN': ['ANGEL_GEN', 'ANGLE'],
             'DEVIL_GEN': ['DEVIL_GEN', 'DEVIL'],
             'VIABILITY': ['VIABILITY', 'SCORE'],
-            'DECISION': ['VIABILITY']
+            'DECISION': ['VIABILITY'],
+            'RE-RUN': ['RERUN', 'RE_RUN']
         };
 
         async function fetchState() {
@@ -1790,10 +1790,31 @@ PROCESSED.md ─── Briefing enriquecido
         
         function openNewBriefing() {
             document.getElementById('briefing-modal').classList.remove('hidden');
-            document.getElementById('briefing-title').value = '';
-            document.getElementById('briefing-content').value = '';
-            document.getElementById('briefing-mode').value = currentMode || 'marketing';
+            const draft = JSON.parse(localStorage.getItem('briefing_draft') || '{}');
+            if (draft.title || draft.content) {
+                document.getElementById('briefing-title').value = draft.title || '';
+                document.getElementById('briefing-content').value = draft.content || '';
+                document.getElementById('briefing-mode').value = draft.mode || currentMode || 'marketing';
+                showNotification('📝 Rascunho recuperado do LocalStorage');
+            } else {
+                document.getElementById('briefing-title').value = '';
+                document.getElementById('briefing-content').value = '';
+                document.getElementById('briefing-mode').value = currentMode || 'marketing';
+            }
             updateCostEstimate();
+        }
+
+        function saveBriefingDraft() {
+            const draft = {
+                title: document.getElementById('briefing-title').value,
+                content: document.getElementById('briefing-content').value,
+                mode: document.getElementById('briefing-mode').value
+            };
+            localStorage.setItem('briefing_draft', JSON.stringify(draft));
+        }
+
+        function clearBriefingDraft() {
+            localStorage.removeItem('briefing_draft');
         }
         
         async function updateCostEstimate() {
@@ -1819,7 +1840,12 @@ PROCESSED.md ─── Briefing enriquecido
                     headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ title, content, mode })
                 });
-                if (res.ok) { closeBriefingModal(); showNotification(`✅ Briefing "${title}" criado!`); setTimeout(fetchState, 1000); }
+                if (res.ok) { 
+                    clearBriefingDraft();
+                    closeBriefingModal(); 
+                    showNotification(`✅ Briefing "${title}" criado!`); 
+                    setTimeout(fetchState, 1000); 
+                }
             } catch(e) {}
         }
 

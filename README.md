@@ -330,6 +330,18 @@ Depois do push:
 # 9. Funciona no Railway? ✓
 ```
 
+## 🏗️ Infraestrutura & Resiliência (Blindagem 07/02/26)
+
+### Blindagem contra Timeouts e Travamentos
+Para garantir que o pipeline seja **100% automático** e nunca fique preso em "limbo", implementamos:
+- **`safe_timeout` (Shell-Level):** Todos os processos paralelos (Angel/Devil, Copywriters, Ideation) agora rodam com um timeout de sistema de 300s. Se o agente travar ou o Gateway der timeout, o SO mata o processo, liberando o script pai para o fallback automático.
+- **Short ID Protocol:** Uso de `${SHORT_ID}` (últimos 8 dígitos do Job ID) para compor o `session-id`. Isso evita o erro `Invalid prompt_cache_key: string too long` (limite de 64 caracteres da API).
+- **Auto-Trimming:** Função `run_agent` no `pipeline-utils.sh` corta automaticamente IDs que excedam o limite de segurança.
+
+### Disciplina de Output (Roles)
+- **Instruções Militares:** Todas as roles de agentes técnicos agora possuem um bloco de instruções críticas no topo.
+- **Naming Lock:** Proibição explícita de inventar nomes de arquivos (ex: Sonnet tentando renomear `ANGLE_GEN` para `OPTIONS_GEN`). O agente agora salva **EXATAMENTE** o que o Douglas solicita no prompt.
+
 ---
 
 ## 🚧 TO-DO (Prioridade)

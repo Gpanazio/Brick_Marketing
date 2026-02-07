@@ -1,0 +1,72 @@
+{
+  "idea_name": "candidato_a_vereador_comandado_por_ia",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "Crise de representatividade política é real e profunda — desconfiança em políticos, decisões sem base técnica, baixa participação do eleitor. A ideia de usar IA para melhorar governança tem mérito conceitual. MAS 'comandado por IA' é uma formulação que confunde o problema (decisões políticas ruins) com uma solução ilegal (delegar mandato para algoritmo). Score reflete: problema real, mecanismo proposto inconstitucional."
+      },
+      "contexto": {
+        "pontos": 24,
+        "max": 25,
+        "feedback": "Mapeamento jurídico excepcional. Market Scan trouxe: Resolução TSE 23.732, CF/88 Art. 1º parágrafo único (soberania popular), caráter personalíssimo do mandato, precedentes de mandatos coletivos. Devil complementou com: Art. 55 CF, Lei 1.079/1950, Lei 8.429/1992 (improbidade), LGPD Art. 28, STF ADI 6.387 (Min. Rosa Weber), caso AI Steve (179 votos no Reino Unido), política da OpenAI contra uso político. Perdeu 1 ponto apenas por falta de análise do cenário municipal específico (câmaras de vereadores têm regulamentos internos que adicionariam mais barreiras)."
+      },
+      "opcoes": {
+        "pontos": 5,
+        "max": 25,
+        "feedback": "Angel ERROU — sem opções geradas. Market Scan sugeriu 3 alternativas (mandato aberto com IA, shadow advisor, SaaS de fiscalização), e Devil adicionou mais 2 pivots (plataforma de transparência legislativa, assistente de participação popular). TODAS são ideias fundamentalmente diferentes de 'candidato comandado por IA'. A ideia original não tem nenhuma configuração legal no Brasil. Score 5 porque as alternativas existem e algumas são genuinamente boas (SaaS de transparência legislativa tem mercado real)."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Tríplice impossibilidade de execução: (1) TSE impugna registro antes da eleição — probabilidade >90% segundo análise do Devil, confirmada pela postura da Procuradoria em 2026 (Folha). (2) Nenhum provider de IA (OpenAI, Anthropic, Google) oferece SLA ou cobertura legal para decisões legislativas — a OpenAI explicitamente proíbe uso político em seus termos. (3) Economicamente inviável: custo estimado R$960k para eleger + R$500k+/ano auditoria vs receita do mandato R$864k em 4 anos = prejuízo líquido ANTES de considerar riscos de cassação."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Máximo desconto. 3 dealbreakers ABSOLUTOS identificados pelo Devil: (1) CONSTITUCIONAL — mandato é personalíssimo e indelegável (CF/88, Código Eleitoral, jurisprudência consolidada desde 1988), (2) ECONÔMICO — custo excede receita do mandato em 40%, ROI negativo antes de começar, (3) TÉCNICO — não existe no mercado global sistema de IA certificado para tomada de decisão legislativa com responsabilidade legal. Adicionalmente: 3 failure scenarios de alta probabilidade (cassação pré-eleitoral, responsabilidade criminal pessoal, rejeição popular), 4 riscos ocultos (custo explosivo, efeito Streisand, dependência de APIs não controladas, lawfare oposicionista)."
+      }
+    },
+    "score_before_risk": 49,
+    "score_final": 19,
+    "status": "NO-GO",
+    "confidence": "very_high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "CF/88 + Código Eleitoral: mandato é personalíssimo e indelegável — cassação pré ou pós-eleitoral",
+      "Responsabilidade criminal recai sobre o CPF do candidato — 'culpa do algoritmo' não existe no Código Penal",
+      "Custo total R$960k+ vs receita do mandato R$864k = prejuízo líquido antes dos riscos",
+      "Nenhum provider de IA oferece SLA para decisões políticas — OpenAI proíbe uso político nos termos",
+      "AI Steve obteve 179 votos no Reino Unido — rejeição eleitoral de 99.9%",
+      "68% dos brasileiros não confiam em decisões de IA (Datafolha 2025)"
+    ],
+    "viability_response": [
+      "ACEITO: Mandato personalíssimo é cláusula pétrea — não há emenda constitucional que resolva, nem brecha judicial.",
+      "ACEITO: Responsabilidade criminal pessoal é inescapável. 'A IA decidiu' é AGRAVANTE, não atenuante — demonstra negligência deliberada.",
+      "ACEITO: Matemática financeira é devastadora. Mesmo sem cassação, o projeto é economicamente irracional.",
+      "ACEITO: Dependência de APIs sem SLA político é risco operacional sem mitigação possível.",
+      "ACEITO: Precedente AI Steve prova que a ideia não converte buzz em votos.",
+      "ACEITO: Pesquisa Datafolha confirma rejeição massiva — não é 'educação do eleitor', é medo racional de opacidade algorítmica."
+    ],
+    "remaining_risks": [
+      "TODOS os riscos permanecem — dealbreakers são constitucionais, não contornáveis"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Rejeitar a ideia como proposta. Se o interesse em GovTech é genuíno, pivotar para ferramentas que AUXILIAM o político humano.",
+    "reasoning": "A ideia colide com a Constituição Federal (cláusula pétrea de soberania popular), é economicamente deficitária (custo > receita do mandato), e não tem precedente de sucesso em NENHUMA jurisdição democrática. AI Steve no Reino Unido (jurisdição mais permissiva que o Brasil) obteve 179 votos — rejeição total. O Devil identificou 3 dealbreakers absolutos e todos foram aceitos sem rebuttal possível. A análise mais generosa possível (score antes do risco: 49) já coloca a ideia em REVISIT. Com o ajuste de risco, cai para 19 = NO-GO com confiança muito alta. A pergunta certa não é 'como substituir o vereador por IA' — é 'como dar ao vereador ferramentas de IA para decidir melhor'. Essa segunda pergunta TEM mercado.",
+    "next_steps": [
+      "ARQUIVAR a ideia 'candidato comandado por IA'",
+      "SE interesse em GovTech é genuíno, explorar 3 pivots viáveis:",
+      "  1. SaaS de Transparência Legislativa — IA fiscaliza orçamento/votações e gera alertas para cidadãos (modelo B2C/B2G)",
+      "  2. Shadow Advisor — IA prepara pareceres técnicos para vereadores assinarem (modelo B2G, mercado de 57k vereadores no Brasil)",
+      "  3. Plataforma de Participação Popular — IA processa demandas da população e apresenta análise técnica ao vereador (modelo B2G2C)"
+    ],
+    "risks_to_monitor": [],
+    "pivot_triggers": []
+  },
+  "timestamp": "2026-02-07T14:56:00Z"
+}

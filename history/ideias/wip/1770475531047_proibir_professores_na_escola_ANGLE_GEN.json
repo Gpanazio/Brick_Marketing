@@ -1,0 +1,45 @@
+{
+  "agent": "ANGLE_GEN",
+  "job_id": "1770475531047_proibir_professores_na_escola",
+  "idea_name": "Substituir professores por IA com supervisores humanos de baixo custo",
+  "options": [
+    {
+      "name": "Modelo Elite Premium (Alpha School 2.0)",
+      "action": "Escola física caríssima (R$120-180k/ano) com IA como professor principal + 'coaches' humanos leves para supervisão",
+      "bet": "Pais de alta renda pagarão premium por inovação educacional radical se empacotada como 'futuro da educação'",
+      "risk": "Reputação queimada se resultados não forem superiores; pais não aceitam 'experimento' com filhos a esse preço; rejeição social por substituir humanos",
+      "upside": "Margem brutalmente alta (60-70%); case global se funcionar; mídia internacional; potencial de licenciamento para outras escolas",
+      "reversible": false,
+      "strength_score": 65,
+      "rationale": "Alto risco/alto reward. Funciona SE executado com excelência + marketing impecável. Irreversível porque queima reputação se falhar."
+    },
+    {
+      "name": "Híbrido Curricular (SaaS para Escolas)",
+      "action": "IA como copiloto dos professores (não substituto). Plataforma que personaliza aprendizado mas professor humano comanda a sala. Vender SaaS B2B para redes de escolas (R$50-150/aluno/mês)",
+      "bet": "Escolas querem inovação mas não querem demitir professores. IA como 'assistente' evita resistência sindical e parental",
+      "risk": "Adoção lenta (escolas são conservadoras); necessidade de treinar professores; competição com Google Classroom/Canvas",
+      "upside": "Mercado validado (Khan Academy, Duolingo provaram demanda); escalável via SaaS; margem saudável (40-50%); reversível (pivô fácil se não funcionar)",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Melhor balanceamento risco/retorno. Evita muro regulatório e social. Alinha incentivos (escola, professor, pais todos ganham)."
+    },
+    {
+      "name": "Reforço Escolar Popular (Duolingo para Currículo)",
+      "action": "Plataforma 100% digital para classe C/D/E (R$29-49/mês) sem supervisores humanos. IA ensina currículo escolar brasileiro via app/web",
+      "bet": "Famílias pobres aceitam IA porque é mais barato que professor particular e melhor que nada",
+      "risk": "CAC alto (público sem cartão de crédito); churn brutal se não houver engajamento; competição com YouTube grátis",
+      "upside": "Volume massivo (60M alunos no Brasil); baixo custo operacional; modelo provado (Duolingo faz $500M/ano); defensável via dados",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "Mercado grande, risco médio. Mais seguro que Elite, menos upside que Híbrido. Reversível."
+    }
+  ],
+  "recommended": {
+    "option_name": "Híbrido Curricular (SaaS para Escolas)",
+    "confidence": 78,
+    "reasoning": "Opção 2 é o sweet spot: (1) Evita muro regulatório (não demite professores), (2) Mercado validado (EdTech B2B é real), (3) Alinha incentivos (todos ganham), (4) Reversível (pivô fácil se não funcionar). Opções 1 e 3 têm upside maior mas risco desproporcional."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-07T11:47:00-03:00"
+}

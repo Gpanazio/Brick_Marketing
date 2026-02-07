@@ -31,8 +31,12 @@ BASENAME="${BASENAME%.md}"
 BASENAME=$(echo "$BASENAME" | sed -E 's/_(RAW_IDEA|PROCESSED|BRIEFING_INPUT)$//')
 JOB_ID="$BASENAME"
 
+# ID curto para evitar erro de cache (max 64 chars no total)
+SHORT_ID=$(echo "$JOB_ID" | tail -c 9)
+
 if [ -z "$JOB_ID" ]; then
     JOB_ID=$(date +%s%3N)
+    SHORT_ID=$(echo "$JOB_ID" | tail -c 9)
 fi
 
 WIP_DIR="$PROJECT_ROOT/history/ideias/wip"
@@ -94,8 +98,8 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent flash \
-      --session-id "brick-ideias-${JOB_ID}-pain" \
+    safe_timeout 180s openclaw agent --agent flash \
+      --session-id "bi-${SHORT_ID}-pain" \
       --message "${PAIN_ROLE}
 
 ---
@@ -104,6 +108,12 @@ IDEIA BRUTA:
 ${BRIEFING_CONTENT}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 INSTRUÇÕES:
 Avalie a ideia conforme seu role acima e salve o resultado JSON no arquivo: ${PAIN_OUT}" \
@@ -150,8 +160,8 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent flash \
-      --session-id "brick-ideias-${JOB_ID}-market" \
+    safe_timeout 300s openclaw agent --agent flash \
+      --session-id "bi-${SHORT_ID}-market" \
       --message "${MARKET_ROLE}
 
 ---
@@ -163,6 +173,10 @@ PAIN CHECK:
 ${PAIN_CONTENT}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado Markdown EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
 
 INSTRUÇÕES:
 Pesquise conforme seu role acima e salve o resultado Markdown no arquivo: ${MARKET_OUT}" \
@@ -190,7 +204,6 @@ fi
 
 MARKET_CONTENT=$(cat "$MARKET_OUT" 2>/dev/null || echo "Market scan não disponível")
 
-# ============================================
 # ETAPA 3: ANGLE GEN + DEVIL GEN (Paralelo - Sonnet)
 # ============================================
 echo ""
@@ -199,12 +212,18 @@ STEP_START=$(start_timer)
 ANGLE_OUT="$WIP_DIR/${JOB_ID}_ANGLE_GEN.json"
 DEVIL_OUT="$WIP_DIR/${JOB_ID}_DEVIL_GEN.json"
 
-# ANGEL (ângulos criativos a favor) - com logging
-openclaw agent --agent sonnet \
-  --session-id "brick-ideias-${JOB_ID}-angle" \
+# ANGEL (ângulos criativos a favor) - com logging e timeout de sistema robusto
+safe_timeout 300s openclaw agent --agent sonnet \
+  --session-id "bi-${SHORT_ID}-angle" \
   --message "${ANGLE_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 IDEIA ORIGINAL:
 ${BRIEFING_CONTENT}
@@ -222,12 +241,18 @@ Advogue pela ideia conforme seu role acima e salve o resultado JSON no arquivo: 
   --timeout 240 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03A_ANGLE_GEN.log" &
 ANGEL_PID=$!
 
-# DEVIL (destruição criativa) - com logging
-openclaw agent --agent sonnet \
-  --session-id "brick-ideias-${JOB_ID}-devil" \
+# DEVIL (destruição criativa) - com logging e timeout de sistema robusto
+safe_timeout 300s openclaw agent --agent sonnet \
+  --session-id "bi-${SHORT_ID}-devil" \
   --message "${DEVIL_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 IDEIA ORIGINAL:
 ${BRIEFING_CONTENT}
@@ -290,11 +315,17 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent opus \
-      --session-id "brick-ideias-${JOB_ID}-viability" \
+    safe_timeout 240s openclaw agent --agent opus \
+      --session-id "bi-${SHORT_ID}-viability" \
       --message "${VIABILITY_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 IDEIA ORIGINAL:
 ${BRIEFING_CONTENT}

@@ -66,6 +66,13 @@ run_agent() {
     local timeout="${5:-120}"
     local log_dir="${6:-/tmp}"
     
+        # Encurtar session_id se necessário (max 64 chars)
+        if [ ${#session_id} -gt 50 ]; then
+            local prefix=$(echo "$session_id" | cut -d'-' -f1-2)
+            local suffix=$(echo "$session_id" | tail -c 9)
+            session_id="${prefix}-${suffix}"
+        fi
+
     local job_id=$(basename "$output_file" | cut -d'_' -f1-2)
     local step_name=$(basename "$output_file" .json | sed 's/.*_//')
     local log_file="${log_dir}/${job_id}_${step_name}.log"
@@ -74,8 +81,8 @@ run_agent() {
     while [ $attempt -le 3 ]; do
         echo "  >> Tentativa $attempt/3 ($agent)"
         
-        # EXECUÇÃO ROBUSTA: Captura output no log e extrai content
-        openclaw agent --agent "$agent" \
+        # EXECUÇÃO ROBUSTA: Captura output no log e extrai content com safe_timeout (blindagem OS-level)
+        safe_timeout "$((timeout + 60))s" openclaw agent --agent "$agent" \
             --session-id "$session_id" \
             --message "$message" \
             --timeout "$timeout" \
@@ -102,6 +109,27 @@ except: pass" > "$output_file" 2>/dev/null
     
     echo "❌ Falha após 3 tentativas"
     return 1
+}
+
+# Shell-level timeout robusto (cross-platform: timeout -> gtimeout -> fallback)
+safe_timeout() {
+    local t=$1
+    shift
+    if command -v timeout >/dev/null 2>&1; then
+        timeout "$t" "$@"
+    elif command -v gtimeout >/dev/null 2>&1; then
+        gtimeout "$t" "$@"
+    else
+        # Fallback manual simplificado se não houver timeout/gtimeout
+        "$@" &
+        local pid=$!
+        ( sleep "$t"; kill "$pid" 2>/dev/null ) &
+        local killer_pid=$!
+        wait "$pid"
+        local res=$?
+        kill "$killer_pid" 2>/dev/null
+        return $res
+    fi
 }
 
 create_md_placeholder() {

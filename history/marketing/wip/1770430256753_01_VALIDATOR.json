@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "faltando": [
+    "OBJETIVO - O que exatamente o post deve alcançar (awareness, engajamento, conversão)?",
+    "PÚBLICO - Para quem exatamente é o post? (Ex: Diretores de Criação, Profissionais de Tech, Público Geral?)",
+    "CONTEXTO - Por que postar isso agora? Existe algum evento ou lançamento atrelado?"
+  ],
+  "perguntas_para_humano": [
+    "Qual o objetivo principal deste post (ex: gerar autoridade, educar o público)?",
+    "Quem é o público-alvo específico para este conteúdo de tecnologia?",
+    "Existe algum contexto ou data específica para a publicação?"
+  ],
+  "proximo_passo": "Aguardar input humano"
+}

@@ -1,0 +1,46 @@
+{
+  "agent": "OPTIONS_GEN",
+  "job_id": "1770475531047_proibir_professores_na_escola",
+  "idea_name": "substituir_professores_por_ia_na_escola",
+  "decision_type": "strategic_positioning",
+  "options": [
+    {
+      "name": "Opção 1: Modelo Elite Premium (Alpha School Brasil)",
+      "action": "Criar escola privada de altíssimo custo (R$120k-180k/ano) com IA como core pedagógico e 'learning coaches' humanos. Público-alvo: famílias HNW que valorizam personalização extrema e resultados mensuráveis. Posicionamento: 'educação do futuro, hoje'.",
+      "bet": "Apostando que existe um mercado de 5.000-10.000 famílias no Brasil dispostas a pagar 3-4x mais que escolas top tradicionais por personalização via IA + supervisão humana leve. Bet secundário: resultados acadêmicos superiores em 2-3 anos geram mídia positiva e validam o modelo.",
+      "risk": "Risco reputacional catastrófico se outcomes socioemocionais forem negativos (crianças 'esquisitas', baixa empatia, dificuldades de socialização). Risco regulatório: MEC pode criar barreiras para certificação. Risco de mercado: pais podem rejeitar por medo de 'experimento' com seus filhos. Custo de erro: R$5-15M em setup + danos à marca.",
+      "upside": "Se funcionar: criar blueprint escalável para ensino médio/superior, licenciar tecnologia para outras escolas (R$50-200k/escola/ano), posicionar-se como líder global em Ed+AI (potencial exit de US$50-200M em 5-7 anos). Ganho secundário: dados proprietários de aprendizagem podem virar produto SaaS para B2B.",
+      "reversible": false,
+      "strength_score": 65,
+      "rationale": "Modelo viável em nicho ultra-premium onde regulação é mais flexível e pais aceitam experimentação. Risk/reward balanceado: alto custo de entrada mas upside de 10-20x se provar eficácia. Inspirado no caso real Alpha School (Texas, US$40k/ano). Irreversível porque reputação com crianças não se apaga - se der errado, marca morre."
+    },
+    {
+      "name": "Opção 2: Híbrido Curricular (IA para Reforço, Humanos para Core)",
+      "action": "Não substituir professores, mas criar camada de 'tutoria inteligente' via IA para reforço, lição de casa e nivelamento. Professores humanos mantêm aulas presenciais (3-4h/dia) focadas em socialização, debates, projetos colaborativos. IA opera em casa via app/web. Vender como SaaS para escolas existentes (R$50-150/aluno/mês).",
+      "bet": "Apostando que escolas tradicionais querem MELHORAR outcomes sem demitir professores (sindicatos + pais = barreira intransponível). Bet: IA como 'copiloto' aumenta notas em 15-25% sem causar resistência institucional. Mercado: 50 milhões de alunos no Brasil, se capturar 1% = 500k alunos x R$100/mês = R$50M ARR.",
+      "risk": "Risco de commoditização: Khan Academy, Duolingo, Geekie já fazem isso de graça ou barato. Diferenciação fraca = CAC alto + churn alto. Risco de adoção: escolas públicas não têm verba, escolas privadas podem construir in-house. Risco técnico: IA precisa ser MUITO melhor que alternativas gratuitas para justificar preço.",
+      "upside": "Modelo escalável globalmente (traduzir para espanhol/inglês). Baixo risco regulatório (não mexe com emprego de professor). Reversível (se não funcionar, pivotar para outro vertical EdTech). Potencial de crescimento viral via escolas públicas se conseguir parceria com Ministério da Educação (case: BNDES financiando EdTech). Exit potencial: aquisição por Pearson, Positivo, Arco (US$20-50M em 4-6 anos).",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Opção mais pragmática e de menor risco. Ataca o problema real (qualidade educacional) sem tocar no terceiro trilho (emprego de professores). Reversível porque não exige compromisso de capital massivo. Score alto porque alinha incentivos: escolas querem resultados, professores querem ferramentas, pais querem filhos bem educados. Maior chance de PMF rápido."
+    },
+    {
+      "name": "Opção 3: Reforço Escolar 100% Digital para Base da Pirâmide",
+      "action": "Lançar plataforma de reforço escolar totalmente automatizada por IA, com preço popular (R$29-49/mês), sem supervisores humanos. Público: famílias classe C/D que não podem pagar aulas particulares (R$80-150/h). Marketing via TikTok/Instagram mostrando resultados ENEM/vestibular. Modelo: self-service completo, escala via CAC baixo (<R$50) e LTV de 12-24 meses.",
+      "bet": "Apostando que existe demanda reprimida massiva por reforço acessível. Bet: pais da base da pirâmide aceitam 'professor robô' porque alternativa é NADA (não têm R$600-1.200/mês para professor particular). Bet secundário: IA em 2026 é boa o suficiente para ensinar matemática/português de fundamental/médio sem supervisão humana constante.",
+      "risk": "Risco de eficácia: se IA não entregar resultados, churn de 80%+ nos primeiros 3 meses. Risco de posicionamento: ser visto como 'educação pobre para pobres' = estigma social. Risco competitivo: YouTube/Khan Academy são gratuitos e bons o suficiente. Risco de CAC: classe C/D tem LTV baixo (R$350-600) então CAC precisa ser <R$30 = muito difícil de conseguir sem viralização orgânica.",
+      "upside": "Se conseguir PMF: mercado de 30-40 milhões de estudantes classe C/D/E no Brasil. Capturando 0,5% = 150k-200k alunos x R$39/mês = R$5,8M-7,8M MRR = R$70-94M ARR. Modelo 100% tech = margens de 70-80% = lucro real. Potencial de expansão LATAM (México, Colômbia, Argentina). Exit: aquisição estratégica por player de massa tipo Descomplica, Me Salva (US$30-80M).",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "Opção de alto risco mas alto reward. Ataca mercado negligenciado (base da pirâmide sem acesso a tutoria). Score 72 porque: (1) tecnicamente viável com IA atual, (2) preço acessível cria barreira vs concorrentes premium, (3) reversível porque investimento inicial pode ser <R$500k (MVP + 6 meses marketing). Risco principal: provar eficácia pedagógica rápido o suficiente para evitar churn death spiral."
+    }
+  ],
+  "recommended": {
+    "option_name": "Opção 2: Híbrido Curricular (IA para Reforço, Humanos para Core)",
+    "confidence": 78,
+    "reasoning": "Esta é a opção mais inteligente por 4 razões críticas: (1) EVITA o muro regulatório - não substitui professores, apenas os potencializa, logo sindicatos e MEC não bloqueiam; (2) ALINHA incentivos - escolas querem melhores resultados SEM demitir, professores querem ferramentas que facilitem seu trabalho, pais querem filhos aprendendo mais; (3) REVERSIBILIDADE - se não funcionar, pivô é simples (mudar vertical, focar B2C, etc.) sem ter queimado pontes ou reputação; (4) MERCADO VALIDADO - Khan Academy (200M+ usuários), Duolingo (500M+), Geekie (4M+ no Brasil) já provaram que IA educacional FUNCIONA quando posicionada como complemento, não substituição. O caminho é claro: começar com 10-20 escolas piloto (convencionais de médio porte), rodar experimento controlado de 6-12 meses medindo delta de notas/aprovação, usar case studies para vender B2B em escala. CAC relativamente baixo (vendas enterprise, ciclo de 3-6 meses), LTV alto (contratos anuais de R$50-150/aluno), churn baixo se entregar resultados (escolas trocam de fornecedor devagar). Única ressalva: precisa ser 2-3x melhor que alternativas gratuitas para justificar preço - isso exige investimento pesado em modelo de IA proprietário treinado em currículo brasileiro (BNCC) + UX excepcional."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-07T14:48:00Z"
+}

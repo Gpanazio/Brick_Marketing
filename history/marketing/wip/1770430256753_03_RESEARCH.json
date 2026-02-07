@@ -1,0 +1,62 @@
+{
+  "tema": "Model Collapse e a Morte do Prompt: Por que a Direção Técnica é a Única Salvação em 2026",
+  
+  "keywords_principais": [
+    "model collapse AI",
+    "synthetic data degradation",
+    "direção técnica audiovisual",
+    "craft over slop",
+    "padrão de produção pós-digital"
+  ],
+  
+  "dados_credibilidade": [
+    {
+      "dado": "Até abril de 2025, 74,2% das novas páginas da web já continham algum texto gerado por IA, acelerando o risco de colapso de dados.",
+      "fonte": "WINS Solutions 2025",
+      "url": "https://www.winssolutions.org/ai-model-collapse-2025-recursive-training/"
+    },
+    {
+      "dado": "O treinamento recursivo em dados sintéticos causa uma diminuição consistente na diversidade lexical, sintática e semântica, degradando a criatividade dos outputs.",
+      "fonte": "Nature / Oxford / Cambridge Research (via Wikipedia/IBM)",
+      "url": "https://en.wikipedia.org/wiki/Model_collapse"
+    }
+  ],
+  
+  "tendencias_atuais": [
+    "AI Slop: Saturação de conteúdo medíocre gerado por operadores de prompt sem visão técnica.",
+    "Colapso de Modelos: Modelos de IA perdendo contato com a diversidade do mundo real ao serem treinados em seus próprios outputs.",
+    "Busca pelo 'Humano-Govenado': Valorização de conteúdos onde a IA é o motor, mas a direção é estritamente humana e técnica."
+  ],
+  
+  "angulos_concorrentes": [
+    {
+      "concorrente": "Geradores Automáticos de Conteúdo",
+      "posicionamento": "Velocidade absoluta e baixo custo.",
+      "fraqueza": "Contribuem diretamente para o 'AI Slop' e sofrem com a degradação de qualidade do model collapse."
+    },
+    {
+      "concorrente": "Produtoras 'IA-First' Genéricas",
+      "posicionamento": "Especialistas em prompts.",
+      "fraqueza": "Reféns da alucinação dos modelos; não possuem o domínio da linguagem cinematográfica para corrigir a 'estética plastificada'."
+    }
+  ],
+  
+  "oportunidades_diferenciacao": [
+    "Posicionar a Brick AI como o 'Antídoto ao Slop': Direção técnica que impõe intenção sobre o caos probabilístico.",
+    "Narrativa de '10 Anos de Set': O repertório humano real é o que impede a degradação da imagem no motor de visão.",
+    "Foco em 'Intencionalidade': Enquanto outros esperam o que o prompt traz, nós determinamos o que o sistema renderiza."
+  ],
+  
+  "brand_guidelines_relevantes": {
+    "tom": "The Cold Director (Seco, Técnico, Autoritário)",
+    "terminologia": ["Domínio da Linguagem", "Direção Técnica", "Motor de Visão", "Geração Sintética", "Latência Zero"],
+    "proibido": ["Prompt", "IA Generativa", "Revolucionário", "Sinergia"]
+  },
+  
+  "fontes_consultadas": [
+    "https://www.winssolutions.org/ai-model-collapse-2025-recursive-training/",
+    "https://www.ibm.com/think/topics/model-collapse",
+    "https://en.wikipedia.org/wiki/Model_collapse",
+    "https://www.vktr.com/ai-technology/model-collapse-how-generative-ai-is-eating-its-own-data/"
+  ]
+}

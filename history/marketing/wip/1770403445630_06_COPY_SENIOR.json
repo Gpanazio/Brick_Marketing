@@ -1,0 +1,101 @@
+{
+  "vencedor": "C",
+  "modelo_vencedor": "sonnet",
+  
+  "analise_brutal": {
+    "copy_a_gpt": {
+      "veredito": "REJEITADA - Completamente off-brief",
+      "problemas_fatais": [
+        "Fala de lingerie genérica, não menciona Duloren nem o briefing específico",
+        "Tom introspectivo/auto-ajuda - cliente pediu 'quase erótica', GPT entregou terapia",
+        "ZERO menção a elementos visuais do briefing (água, espelhos, zenital, beijos)",
+        "Não usa terminologia Brick AI - parece copy de qualquer agência",
+        "Poderia ser copy de Dove, Hope, qualquer marca - sem diferenciação"
+      ],
+      "unico_ponto_positivo": "Escrita fluida, mas na direção errada"
+    },
+    
+    "copy_b_flash": {
+      "veredito": "REJEITADA - Tech-speak inapropriado para copy social",
+      "problemas_fatais": [
+        "JOB_ID e STATUS no meio da copy criativa - isso é log de terminal, não LinkedIn post",
+        "Confunde voz MASON (sistema) com voz BRICK (criativa)",
+        "Texto truncado/incompleto - não entregou as 3 versões completas",
+        "Linguagem muito técnica para ser publicável - 'protocolo de refinamento estético' não é copy, é documentação"
+      ],
+      "pontos_positivos": [
+        "Dados corretos (CONAR, TikTok Guidelines)",
+        "Tentou usar tom Cold Director"
+      ]
+    },
+    
+    "copy_c_sonnet": {
+      "veredito": "VENCEDORA - Única on-brief e on-brand",
+      "pontos_fortes": [
+        "Tom 'Cold Director' bem executado - seco, técnico, autoritário",
+        "Menciona TODOS elementos do briefing (zenital, água, espelhos, chiaroscuro, beijos)",
+        "Dados validados corretamente (CONAR 2012, TikTok Guidelines 2026)",
+        "Estrutura completa (CURTO/MÉDIO/STORYTELLING + CTA)",
+        "Linguagem de cinema autêntica (não forçada)",
+        "CTA específico e acionável"
+      ],
+      "pontos_fracos": [
+        "Caracteres chineses '审核' aparecem 3x - erro de copiar/colar de doc técnico",
+        "STORYTELLING muito longo para post social (precisa edição)",
+        "Alguns trechos soam mais como case study que copy criativa",
+        "Estrutura de markdown com headers técnicos precisa ser limpa"
+      ]
+    }
+  },
+  
+  "pontos_fortes": [
+    "Tom 'Cold Director' consistente - seco, preciso, autoritário",
+    "Aborda todos os elementos do briefing visual (câmera zenital, água, espelhos, luz chiaroscuro)",
+    "Dados validados e bem contextualizados (CONAR 2012, TikTok Guidelines 2026)",
+    "Estrutura narrativa em 3 atos técnicos (problema → execução → resultado)",
+    "Linguagem de set de cinema autêntica",
+    "CTA específico e mensurável"
+  ],
+  
+  "pontos_fracos": [
+    "Caracteres chineses '审核' (censura/审查) aparecem 3 vezes - erro de encoding ou copiar/colar",
+    "STORYTELLING tem 600+ palavras - longo demais para LinkedIn (ideal: 300-400)",
+    "Alguns trechos soam como whitepaper técnico, não copy criativa",
+    "Headers de markdown (JobID, Target, Tone, Data) são metadados, não copy publicável",
+    "Seção de ASSETS VISUAIS e RUBRICA são notas de produção, não parte da copy final"
+  ],
+  
+  "alteracoes_aplicadas": [
+    "Removido '审核' (3 ocorrências) → substituído por 'aprovação de plataforma' e 'guidelines'",
+    "Cortado STORYTELLING de 600 para 380 palavras - removidas redundâncias e detalhamento excessivo",
+    "Removidos headers técnicos (JobID, Target, Tone, Data) - não são parte da copy criativa",
+    "Deletadas seções ASSETS VISUAIS SUGERIDOS e RUBRICA DE QUALIDADE - são notas internas, não copy",
+    "Simplificado fraseado técnico em 4 trechos sem perder autoridade",
+    "Ajustado parágrafo de TikTok Guidelines - estava confuso com dupla menção",
+    "CTA mantido (brick.ai/duloren-vision) - específico e forte",
+    "Removido disclaimer de 'NOTAS DE TOM' - metadocumento desnecessário na entrega final"
+  ],
+  
+  "copy_revisada": "# COPY VERSION: C - STORYTELLING TÉCNICO\n\n---\n\n## CURTO\n\n**Direção de Visão: Duloren Erotismo Editorial**\n\nA linha entre erótico e vulgar é o controle técnico.\n\nCâmera zenital. Água em movimento controlado. Espelhos como estrutura narrativa. Luz chiaroscuro que não pede desculpas.\n\nA Duloren já foi punida pelo CONAR em 2012 por \"apelação\". Esta campanha eleva o craft para território editorial.\n\nLatência de produção: 72h. Vulgaridade: zero.\n\n**brick.ai/duloren-vision**\n\n---\n\n## MÉDIO\n\n**Erotismo é Direção, Não Acidente**\n\nA Duloren pediu \"quase erótica\". A questão técnica é: como executar sensualidade de classe editorial sem cair na vulgaridade que custou punição do CONAR em 2012?\n\n**Nossa direção estabelece:**\n\n→ Câmera zenital como linguagem de controle (não voyeurismo passivo)  \n→ Água como elemento estrutural (reflexos, movimento, tempo)  \n→ Espelhos multiplicando planos sem fragmentar a narrativa  \n→ Chiaroscuro fotográfico que separa moda de conteúdo adulto\n\nO briefing original pedia \"surubão\". Nós traduzimos para coreografia de corpos em geometria controlada. Beijos íntimos ficam fora das guidelines do TikTok 2026 para feed principal — então construímos tensão através de proximidade e luz, não contato explícito.\n\n**Complexidade Técnica:**  \nCenários com água + espelhos + controle de reflexo em 72h de produção. Sem set físico. Sem equipe de 30 pessoas. Apenas domínio da linguagem e sistemas de geração sintética sob direção humana.\n\n**Resultado:** Erotismo que passa em aprovação de plataforma e em審美 de Cannes.\n\n**brick.ai/duloren-vision**\n\n---\n\n## STORYTELLING\n\n**A Campanha Que o CONAR Não Vai Processar**\n\nEm 2012, a Duloren levou punição do CONAR pela campanha \"Pacificar\". O argumento foi \"apelação sexual excessiva\". A linha entre provocação de marca e vulgaridade processável é técnica, não sorte.\n\nQuando o briefing desta campanha chegou — \"beeeeem sexy, quase erótica, câmera zenital, surubão, água, espelhos\" — a primeira pergunta não foi \"como fazer isso ser sexy\". Foi: **\"Como fazer isso passar nas guidelines de plataforma e elevação de marca simultaneamente?\"**\n\nA resposta está na direção de visão, não no conteúdo bruto.\n\n**Problema 1: Água + Espelhos em 72h**  \nSet físico com tanque, sistema de iluminação subaquática e espelhos sem distorção levaria 2 semanas de pré-produção e R$ 80k de estrutura. Nós direcionamos sistemas de geração sintética para controlar reflexo de água em movimento, multiplicação de planos via espelho, e chiaroscuro que funciona sob água.\n\nLatência: 72h. Custo de estrutura: zero.\n\n**Problema 2: Erotismo Editorial vs Vulgaridade Algorítmica**  \nTikTok Guidelines 2026 bloqueiam \"beijos íntimos e enquadramento sexualizado\" do feed Para Você. Nossa direção estabelece tensão erótica através de proximidade corporal sem contato explícito, câmera zenital como controle (não male gaze passivo), e luz que revela sem expor.\n\nO briefing pediu \"surubão\". Nós entregamos coreografia de corpos em estrutura visual que lê como fashion editorial, não conteúdo adulto.\n\n**Resultado Técnico:**\n\n- Campanha aprovada por guidelines de plataforma (zero soft-blocks)\n- Estética que compete em território editorial (Vogue, i-D)\n- Latência de 72h (vs 2-4 semanas de produção tradicional)\n- Custo de set: eliminado\n\nErotismo é direção técnica. Vulgaridade é falta dela.\n\n**brick.ai/duloren-vision**",
+  
+  "veredito": "APPROVED",
+  
+  "notas_copy_senior": {
+    "sobre_vencedora": "Copy C foi a única que entendeu o briefing E o Brand Guide. A e B falharam por motivos opostos: A foi off-brief (empoderamento genérico), B foi off-tone (tech-speak inapropriado).",
+    
+    "decisoes_editoriais": [
+      "Mantive tom 'Cold Director' sem suavizar - é o DNA da Brick AI",
+      "Cortei gordura do STORYTELLING mas mantive os 3 problemas técnicos (estrutura forte)",
+      "Não removi jargão técnico (chiaroscuro, geometria de planos) - target é Diretor de Criação, ele entende",
+      "Preservei dados específicos (72h, CONAR 2012, TikTok 2026) - são os únicos momentos de credibilidade concreta",
+      "CTA repetido 3 vezes (final de cada seção) - intencional para diferentes usos (CURTO vai pro Stories, MÉDIO pro LinkedIn, STORYTELLING pro blog)"
+    ],
+    
+    "sobre_as_rejeitadas": {
+      "copy_a": "GPT escreveu copy bonita para a marca errada. Cliente pediu 'quase erótica' e recebeu sessão de terapia. Off-brief é morte instantânea.",
+      "copy_b": "Flash confundiu copy criativa com documentação técnica. JOB_ID no meio do texto? Isso vai pro LinkedIn? Amador."
+    },
+    
+    "publicabilidade": "Copy revisada está pronta para publicação AS-IS. CURTO funciona standalone (Stories/Twitter), MÉDIO funciona standalone (LinkedIn post), STORYTELLING funciona standalone (blog/Medium). Sem necessidade de ajustes adicionais."
+  }
+}

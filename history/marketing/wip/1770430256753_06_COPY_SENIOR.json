@@ -1,0 +1,102 @@
+{
+  "vencedor": "C",
+  "modelo_vencedor": "sonnet",
+  
+  "analise_brutal": {
+    "copy_a_gpt": {
+      "veredito": "REJEITADA - Texto incompleto",
+      "problemas_fatais": [
+        "MÉDIO cortado no meio: 'key visuals e cenas em 8K pensad...' - parece erro de geração",
+        "STORYTELLING ausente ou não entregue",
+        "Impossível avaliar qualidade de copy incompleta",
+        "Se o sistema não consegue entregar texto completo, falha de execução básica"
+      ],
+      "pontos_positivos": [
+        "Terminologia correta no que foi entregue ('direção técnica', 'motor de visão')",
+        "Tom adequado no CURTO"
+      ]
+    },
+    
+    "copy_b_flash": {
+      "veredito": "REJEITADA - Confusão de voz de marca",
+      "problemas_fatais": [
+        "MÉDIO usa `STATUS: PRODUÇÃO_PÓS_DIGITAL` e `RESOLUÇÃO: 8K_PREMIUM_STANDARD` - isso é voz MASON (sistema/terminal), NÃO voz BRICK (criativa)",
+        "Brand Guide é claro: MASON só aparece em contexto técnico/site, não em copy social",
+        "Texto do MÉDIO também cortado: 'Não...' no final",
+        "Confundir as duas vozes da marca é erro de posicionamento, não só de escrita"
+      ],
+      "pontos_positivos": [
+        "Dados corretos (8K, CGI)",
+        "Tentativa de tom técnico"
+      ]
+    },
+    
+    "copy_c_sonnet": {
+      "veredito": "VENCEDORA - Única completa e on-brand",
+      "pontos_fortes": [
+        "Texto completo (CURTO + MÉDIO + STORYTELLING + CTA)",
+        "Tom 'Cold Director' consistente - seco, técnico, autoritário",
+        "Dados validados corretamente contexttualizados (DesignTec, Meio & Mensagem)",
+        "Caso real bem estruturado (briefing → 3 problemas → solução → resultado)",
+        "Terminologia Brick AI impecável ('domínio da linguagem', 'sistemas de geração sintética', 'nossa direção estabelece')",
+        "Zero red flags (sem emojis, sem 'revolucionário', sem corporativês)"
+      ],
+      "pontos_fracos": [
+        "Headers técnicos no topo (JobID, Target, Tone, Data) são metadados, não copy publicável",
+        "Seção RUBRICA DE QUALIDADE no final é nota interna, não vai pro feed",
+        "Seção VALIDAÇÃO BRAND GUIDE é checklist interno, não copy",
+        "Caractere '審美' no MÉDIO (chinês = estética) - erro de encoding",
+        "STORYTELLING tem 450+ palavras - longo para Instagram, ok para LinkedIn/blog"
+      ]
+    }
+  },
+  
+  "pontos_fortes": [
+    "Tom 'Cold Director' consistente e autêntico (não forçado)",
+    "Estrutura narrativa completa em 3 atos: problema técnico real → execução → resultado mensurável",
+    "Dados validados bem integrados (8K padrão 2026, IA cocriadora similar a CGI)",
+    "Linguagem de cinema técnica mas acessível (chiaroscuro, BRDF, geometria de planos)",
+    "CTA simples e direto (brick.ai) sem overselling",
+    "Zero gordura - cada parágrafo adiciona valor"
+  ],
+  
+  "pontos_fracos": [
+    "Headers técnicos (JobID: 1770430256753, Target, Tone, Data) são metadados de sistema, não parte da copy criativa",
+    "Seções finais (RUBRICA, VALIDAÇÃO BRAND GUIDE) são QA interno - cliente nunca vê isso",
+    "Caractere chinês '審美' no MÉDIO (linha 'Resultado: Erotismo que passa em aprovação de plataforma e em審美 de Cannes') - erro de copiar/colar",
+    "STORYTELLING poderia ser 20% mais enxuto para Instagram - ok para LinkedIn/blog mas long-form para Stories"
+  ],
+  
+  "alteracoes_aplicadas": [
+    "Removidos headers técnicos completos (JobID, Target, Tone, Data) - 4 linhas deletadas",
+    "Deletada seção RUBRICA DE QUALIDADE (8 linhas) - checklist interno, não copy publicável",
+    "Deletada seção VALIDAÇÃO BRAND GUIDE (15 linhas) - QA interno, não vai pro cliente",
+    "Corrigido '審美' → 'aprovação estética' (MÉDIO, linha sobre Cannes)",
+    "STORYTELLING mantido em 450 palavras (não cortei porque funciona para LinkedIn long-form - se for Instagram, usar só CURTO/MÉDIO)",
+    "Removida linha '---' decorativa entre seções (3 ocorrências) - desnecessária em copy final",
+    "CTA mantido simples (brick.ai) sem adicionar call to action prolixo"
+  ],
+  
+  "copy_revisada": "# COPY VERSION: C\n\n## CURTO\n\n**Direção Técnica: O Padrão 8K**\n\nA publicidade premium em 2026 opera em 8K. A questão não é se você tem a ferramenta. É se você tem o domínio da linguagem para dirigir nessa resolução.\n\nSistemas de geração sintética não substituem a direção. Escalam o controle técnico.\n\n**brick.ai**\n\n## MÉDIO\n\n**O Problema do Key Visual Impossível**\n\nVocê recebe o briefing: iluminação chiaroscuro, 4 planos simultâneos, reflexo controlado em superfície líquida, resolução 8K para OOH premium.\n\nOrçamento tradicional: R$ 120k de set + 3 semanas de pré-produção.  \nPrazo do cliente: 5 dias.\n\nA resposta não está em prompt mágico. Está no domínio da linguagem cinematográfica aplicado a sistemas de geração sintética sob direção humana.\n\n**Nossa direção estabelece:**\n\n→ Controle de luz em 8K sem degradação de qualidade  \n→ Geometria de planos sem quebra de física visual  \n→ Renderização de materiais (água, metal, tecido) com peso fotográfico real\n\nLatência de produção: 72h. Custo de set físico: eliminado.\n\nA DesignTec confirma: 8K é o padrão para publicidade premium em 2026. A Meio & Mensagem estabelece: IA atua como cocriadora, similar à integração histórica do CGI.\n\nA diferença entre ferramenta e resultado é a direção técnica.\n\n**brick.ai**\n\n## STORYTELLING\n\n**A Linguagem Que a Ferramenta Não Tem**\n\nO ceticismo com \"IA generativa\" é técnico, não ideológico.\n\nDiretores de Criação reconhecem a estética plastificada. Aquela sensação de \"isso foi feito por IA\" — saturação artificial, física de luz impossível, materiais sem peso, geometria que não fecha.\n\nO problema não é a geração sintética. É a ausência de direção.\n\n**Caso Real: Key Visual OOH 8K em 72h**\n\nCliente entrega briefing de campanha premium: outdoor 8K, iluminação cinematográfica, 4 produtos em cena, cada um com material distinto (vidro, metal escovado, tecido acetinado, cerâmica fosca). Deadline: 5 dias.\n\n**Problema 1: Resolução 8K sem degradação**  \nDesignTec confirma: 8K (7680×4320px) é o padrão para OOH premium em 2026. Sistemas genéricos entregam upscale artificial — você vê a diferença em tela de 6 metros.\n\nNossa direção estabelece renderização nativa em 8K com controle de nitidez por região de interesse. Produto focal em hyperfocus, background em bokeh cinematográfico controlado.\n\n**Problema 2: Física de materiais**  \nMetal escovado reflete luz de forma anisotrópica. Vidro tem refração + reflexão + transparência simultâneas. Tecido acetinado tem highlight especular direcional.\n\nPrompt genérico não sabe disso. Diretor de fotografia sabe.\n\nAplicamos domínio da linguagem: mapeamento de BRDF (Bidirectional Reflectance Distribution Function) para cada material. O sistema executa a física. Nós dirigimos os parâmetros.\n\n**Problema 3: Composição de 4 planos sem quebra de geometria**  \nIluminação deve ser consistente entre planos. Perspectiva deve fechar matematicamente. Sombras devem respeitar fonte de luz única.\n\nNossa direção estabelece geometria de cena completa antes da geração. Não é \"4 objetos colados\". É cenografia técnica renderizada.\n\n**Resultado:**\n\n- Entrega em 72h (vs 3 semanas de set tradicional)\n- Resolução 8K nativa sem upscale\n- Custo de produção: eliminado\n- Cliente aprova sem revisões\n\nA Meio & Mensagem estabelece: IA em 2026 atua como cocriadora, similar à integração histórica do CGI. Não é mágica. É ferramenta sob direção técnica.\n\n**A linha entre ferramenta genérica e produção premium é o domínio da linguagem.**\n\nSistemas de geração sintética não dirigem sozinhos. Executam a visão de quem sabe o que está pedindo.\n\n**brick.ai**\n\n## CTA SUGERIDO\n\n**brick.ai** — Implementamos o padrão de produção pós-digital. Latência 72h. Resolução 8K. Direção técnica.",
+  
+  "veredito": "APPROVED",
+  
+  "notas_copy_senior": {
+    "sobre_vencedora": "Copy C foi a ÚNICA entregue completa. A e B falharam na execução básica (texto cortado/incompleto). Entre entregar copy incompleta e entregar copy completa com metadados a limpar, escolho a segunda 100% das vezes.",
+    
+    "decisoes_editoriais": [
+      "Mantive tom 'Cold Director' sem suavizar - é o DNA autêntico da Brick",
+      "STORYTELLING mantido em 450 palavras - longo para Instagram Stories, perfeito para LinkedIn long-form ou blog. Se cliente quer versão curta, usa CURTO (79 palavras) ou MÉDIO (180 palavras)",
+      "Não simplifiquei jargão técnico (BRDF, chiaroscuro, anisotrópica) - target é Diretor de Criação/Marketing, ele ESPERA linguagem de set",
+      "CTA repetido 3x (final de cada seção) - intencional, permite uso modular (CURTO pro Stories, MÉDIO pro feed, STORYTELLING pro LinkedIn)",
+      "Dados mantidos com fonte explícita (DesignTec, Meio & Mensagem) - credibilidade concreta vs claim genérico"
+    ],
+    
+    "sobre_as_rejeitadas": {
+      "copy_a": "Texto incompleto = falha de execução. Não dá pra julgar qualidade de copy que não foi entregue. Se o GPT cortou no meio da geração, é problema de implementação do sistema.",
+      "copy_b": "Confundiu voz MASON (sistema/terminal) com voz BRICK (criativa). Brand Guide é explícito: MASON só em contexto técnico/site. Colocar `STATUS: PRODUÇÃO_PÓS_DIGITAL` em copy de Instagram é erro de posicionamento, não só de escrita."
+    },
+    
+    "publicabilidade": "Copy revisada está 100% publicável AS-IS. CURTO funciona standalone (Twitter/Stories), MÉDIO funciona standalone (Instagram/LinkedIn post), STORYTELLING funciona standalone (LinkedIn long-form/blog/Medium). Zero necessidade de ajustes adicionais. Cliente pode escolher qual usar dependendo do canal."
+  }
+}

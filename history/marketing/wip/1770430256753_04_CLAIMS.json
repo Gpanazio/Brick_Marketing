@@ -1,0 +1,43 @@
+{
+  "claims_validados": [
+    {
+      "claim": "Até abril de 2025, 74,2% das novas páginas da web já continham algum texto gerado por IA, acelerando o risco de colapso de dados.",
+      "status": "VERIFICADO",
+      "fonte_original": "WINS Solutions 2025 / Ahrefs Study",
+      "fonte_verificacao": "https://www.winssolutions.org/ai-model-collapse-2025-recursive-training/",
+      "confianca": "alta",
+      "notas": "Confirmado por auditoria de conteúdo da WINS Solutions citando dados da Ahrefs de Abril de 2025. O dado refere-se a páginas que contêm *algum* texto de IA (71.7% mix humano+IA e 2.5% pure-AI)."
+    },
+    {
+      "claim": "O treinamento recursivo em dados sintéticos causa uma diminuição consistente na diversidade lexical, sintática e semântica, degradando a criatividade dos outputs.",
+      "status": "VERIFICADO",
+      "fonte_original": "Ilia Shumailov et al., Nature 2024",
+      "fonte_verificacao": "https://www.nature.com/articles/s41586-024-07566-y",
+      "confianca": "alta",
+      "notas": "Estudo seminal revisado por pares na Nature comprovando o fenômeno de 'Model Collapse' em LLMs, VAEs e GMMs. Termo e mecanismo validados cientificamente."
+    },
+    {
+      "claim": "Modelos de IA perdem o contato com a diversidade do mundo real e as 'caudas longas' (rare events) desaparecem primeiro no colapso.",
+      "status": "VERIFICADO",
+      "fonte_original": "Nature Research / IBM Think",
+      "fonte_verificacao": "https://www.ibm.com/think/topics/model-collapse",
+      "confianca": "alta",
+      "notas": "Mecanismo técnico confirmado: a perda de variância estatística faz com que o modelo convirja para médias genéricas, eliminando casos raros e criativos."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "74,2% das novas páginas web em 2025 já são híbridas (IA + Humano), poluindo o dataset global.",
+    "O fenômeno 'Model Collapse' (Nature 2024) prova que a IA sem âncora humana degrada a criatividade original.",
+    "A 'morte da cauda longa': o treinamento recursivo elimina os detalhes raros que definem o craft premium."
+  ],
+  "estatisticas_evitar": [
+    "Evitar dizer que 'toda a web é IA' - a estatística de 74.2% é específica para *novas* páginas (fluxo), não o estoque total da web.",
+    "Evitar números redondos sem citar a natureza recursiva do problema."
+  ],
+  "resumo": {
+    "total_claims": 3,
+    "verificados": 3,
+    "duvidosos": 0,
+    "recomendacao": "Dados extremamente sólidos para sustentar a narrativa 'Vision Over Prompt'. O Copywriter pode focar no fato de que enquanto a internet 'colapsa' em mediocridade sintética (74% das novas páginas), a Brick AI usa 10 anos de repertório humano real para ancorar a qualidade e evitar o 'AI Slop'."
+  }
+}

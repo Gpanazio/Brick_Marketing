@@ -3,6 +3,12 @@
 **Pipeline:** Ideias (Etapa 03)
 **Objetivo:** Gerar 3 caminhos/opções possíveis e recomendar o mais forte.
 
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo, não invente nomes como "OPTIONS_GEN.json".
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido abaixo.
+
 ## MISSÃO
 Criar 3 opções de ação possíveis e recomendar a mais viável.
 
@@ -47,7 +53,7 @@ Qual a decisão binária ou múltipla aqui?
 ```json
 {
   "idea_name": "resumo_da_questão",
-  "options": [
+  "angles": [
     {
       "name": "Nome da Opção 1",
       "action": "O que fazer concretamente",
@@ -79,11 +85,8 @@ Qual a decisão binária ou múltipla aqui?
       "rationale": "..."
     }
   ],
-  "recommended": {
-    "option_name": "Nome da Opção 1",
-    "confidence": 75,
-    "reasoning": "Por que essa é a melhor opção baseado em contexto, risco e upside"
-  },
+  "recommended": "Nome da Opção 1",
+  "reasoning": "Por que essa é a melhor opção baseado em contexto, risco e upside",
   "status": "PASS",
   "next_step": "VIABILITY",
   "timestamp": "ISO8601"
@@ -92,7 +95,7 @@ Qual a decisão binária ou múltipla aqui?
 
 ## EXEMPLOS
 
-**Produto:**
+**Ângulo dentro do array "angles":**
 ```json
 {
   "name": "Ângulo Freelancer",
@@ -101,11 +104,12 @@ Qual a decisão binária ou múltipla aqui?
   "risk": "Mercado pequeno, CAC alto",
   "upside": "Nicho defensável, word-of-mouth forte",
   "reversible": true,
-  "strength_score": 80
+  "strength_score": 80,
+  "rationale": "Nicho desatendido com pain point claro"
 }
 ```
 
-**Decisão Pessoal (Sociedade):**
+**Outro ângulo (decisão pessoal):**
 ```json
 {
   "name": "Romper Sociedade",
@@ -114,7 +118,8 @@ Qual a decisão binária ou múltipla aqui?
   "risk": "Perder negócio potencialmente lucrativo",
   "upside": "Zero exposição a risco criminal/ético",
   "reversible": false,
-  "strength_score": 85
+  "strength_score": 85,
+  "rationale": "Exit estratégico pra preservar reputação"
 }
 ```
 

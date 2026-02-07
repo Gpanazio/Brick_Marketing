@@ -33,8 +33,12 @@ BASENAME="${BASENAME%.md}"
 BASENAME=$(echo "$BASENAME" | sed -E 's/_(RAW_IDEA|PROCESSED|BRIEFING_INPUT)$//')
 JOB_ID="$BASENAME"
 
+# ID curto para evitar erro de cache (max 64 chars no total)
+SHORT_ID=$(echo "$JOB_ID" | tail -c 9)
+
 if [ -z "$JOB_ID" ]; then
     JOB_ID=$(date +%s%3N)
+    SHORT_ID=$(echo "$JOB_ID" | tail -c 9)
 fi
 
 WIP_DIR="$PROJECT_ROOT/history/marketing/wip"
@@ -85,7 +89,7 @@ STEP_START=$(start_timer)
 VALIDATOR_OUT="$WIP_DIR/${JOB_ID}_01_VALIDATOR.json"
 VALIDATOR_LOG="$LOG_DIR/${JOB_ID}_01_VALIDATOR.log"
 
-# Executa com retry e logging
+# Executa com safe_timeout, retry e logging
 attempt=1
 max_retries=3
 backoff=2
@@ -93,8 +97,8 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent flash \
-      --session-id "brick-mkt-${JOB_ID}-validator" \
+    safe_timeout 150s openclaw agent --agent flash \
+      --session-id "bm-${SHORT_ID}-validator" \
       --message "${VALIDATOR_ROLE}
 
 ---
@@ -103,6 +107,12 @@ BRIEFING:
 ${BRIEFING_CONTENT}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 INSTRUÇÕES:
 Avalie o briefing conforme seu role acima e salve o resultado JSON no arquivo: ${VALIDATOR_OUT}" \
@@ -145,8 +155,8 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent flash \
-      --session-id "brick-mkt-${JOB_ID}-audience" \
+    safe_timeout 180s openclaw agent --agent flash \
+      --session-id "bm-${SHORT_ID}-audience" \
       --message "# ⚠️ CONTEXTO DE MARCA OBRIGATÓRIO (RESPEITAR RIGOROSAMENTE)
 
 ${BRAND_GUIDE}
@@ -156,6 +166,12 @@ ${BRAND_GUIDE}
 ${AUDIENCE_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 BRIEFING PROPOSTO:
 ${BRIEFING_CONTENT}
@@ -202,11 +218,17 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent flash \
-      --session-id "brick-mkt-${JOB_ID}-research" \
+    safe_timeout 180s openclaw agent --agent flash \
+      --session-id "bm-${SHORT_ID}-research" \
       --message "${RESEARCHER_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 BRIEFING:
 ${BRIEFING_CONTENT}
@@ -256,11 +278,17 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent flash \
-      --session-id "brick-mkt-${JOB_ID}-claims" \
+    safe_timeout 150s openclaw agent --agent flash \
+      --session-id "bm-${SHORT_ID}-claims" \
       --message "${CLAIMS_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 BRIEFING:
 ${BRIEFING_CONTENT}
@@ -326,9 +354,9 @@ ${CONTEXT_SUMMARY}
 
 NOTA: Contexto foi resumido para economia de tokens. Se precisar de detalhes completos de alguma etapa, solicite."
 
-# GPT (com logging)
-openclaw agent --agent gpt \
-  --session-id "brick-mkt-${JOB_ID}-copy-gpt" \
+# GPT (com logging e timeout de sistema robusto)
+safe_timeout 210s openclaw agent --agent gpt \
+  --session-id "bm-${SHORT_ID}-copy-gpt" \
   --message "${COPYWRITER_ROLE}
 
 VARIAÇÃO: Copywriter A - Estilo direto e persuasivo
@@ -339,14 +367,18 @@ ${COPY_CONTEXT}
 
 ---
 
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado Markdown EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+
 INSTRUÇÕES:
 Escreva a copy conforme o role COPYWRITER acima e RESPEITANDO RIGOROSAMENTE o BRAND GUIDE (tom, terminologia, red flags). Salve no arquivo: ${COPY_GPT_OUT}" \
   --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_05A_COPY_GPT.log" &
 GPT_PID=$!
 
-# Flash (com logging)
-openclaw agent --agent flash \
-  --session-id "brick-mkt-${JOB_ID}-copy-flash" \
+# Flash (com logging e timeout de sistema robusto)
+safe_timeout 210s openclaw agent --agent flash \
+  --session-id "bm-${SHORT_ID}-copy-flash" \
   --message "${COPYWRITER_ROLE}
 
 VARIAÇÃO: Copywriter B - Estilo eficiente e data-driven
@@ -357,14 +389,18 @@ ${COPY_CONTEXT}
 
 ---
 
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado Markdown EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+
 INSTRUÇÕES:
 Escreva a copy conforme o role COPYWRITER acima e RESPEITANDO RIGOROSAMENTE o BRAND GUIDE (tom, terminologia, red flags). Salve no arquivo: ${COPY_FLASH_OUT}" \
   --timeout 150 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_05B_COPY_FLASH.log" &
 FLASH_PID=$!
 
-# Sonnet (com logging)
-openclaw agent --agent sonnet \
-  --session-id "brick-mkt-${JOB_ID}-copy-sonnet" \
+# Sonnet (com logging e timeout de sistema robusto)
+safe_timeout 210s openclaw agent --agent sonnet \
+  --session-id "bm-${SHORT_ID}-copy-sonnet" \
   --message "${COPYWRITER_ROLE}
 
 VARIAÇÃO: Copywriter C - Estilo narrativo e emocional
@@ -374,6 +410,10 @@ VARIAÇÃO: Copywriter C - Estilo narrativo e emocional
 ${COPY_CONTEXT}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado Markdown EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
 
 INSTRUÇÕES:
 Escreva a copy conforme o role COPYWRITER acima e RESPEITANDO RIGOROSAMENTE o BRAND GUIDE (tom, terminologia, red flags). Salve no arquivo: ${COPY_SONNET_OUT}" \
@@ -445,11 +485,17 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent gpt \
-      --session-id "brick-mkt-${JOB_ID}-copy-senior" \
+    safe_timeout 240s openclaw agent --agent gpt \
+      --session-id "bm-${SHORT_ID}-copy-senior" \
       --message "${CRITIC_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 BRIEFING RESUMIDO:
 ${BRIEFING_SUMMARY}
@@ -493,8 +539,8 @@ done
 if [ ! -f "$CRITIC_OUT" ] || ! validate_json "$CRITIC_OUT"; then
     echo "⚠️ GPT falhou após $max_retries tentativas. Tentando fallback Sonnet..."
     
-    openclaw agent --agent sonnet \
-      --session-id "brick-mkt-${JOB_ID}-copy-senior-fallback-$(date +%s)" \
+    safe_timeout 300s openclaw agent --agent sonnet \
+      --session-id "bm-${SHORT_ID}-senior-fb-${LOOP_COUNT}" \
       --message "${CRITIC_ROLE}
 
 ---
@@ -558,11 +604,17 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    openclaw agent --agent opus \
-      --session-id "brick-mkt-${JOB_ID}-wall" \
+    safe_timeout 210s openclaw agent --agent opus \
+      --session-id "bm-${SHORT_ID}-wall" \
       --message "${WALL_ROLE}
 
 ---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
 
 # BRAND GUARDIAN (REFERÊNCIA OBRIGATÓRIA PARA AVALIAÇÃO ON-BRAND)
 
@@ -648,8 +700,8 @@ while [ "$WALL_SCORE" -lt 80 ] && [ $LOOP_COUNT -lt $MAX_LOOPS ]; do
     while [ $attempt -le $max_retries ]; do
         echo "  >> Copy Senior v$LOOP_COUNT - Tentativa $attempt/$max_retries"
         
-        openclaw agent --agent "$WINNING_MODEL" \
-          --session-id "brick-mkt-${JOB_ID}-copy-senior-loop-${LOOP_COUNT}-$(date +%s)" \
+        safe_timeout 300s openclaw agent --agent "$WINNING_MODEL" \
+          --session-id "bm-${SHORT_ID}-snr-lp-${LOOP_COUNT}" \
           --message "${CRITIC_ROLE}
 
 ---
@@ -716,8 +768,8 @@ INSTRUÇÕES:
     while [ $attempt -le $max_retries ]; do
         echo "  >> Tentativa $attempt/$max_retries"
         
-        openclaw agent --agent opus \
-          --session-id "brick-mkt-${JOB_ID}-wall-loop-${LOOP_COUNT}" \
+        safe_timeout 300s openclaw agent --agent opus \
+          --session-id "bm-${SHORT_ID}-wall-lp-${LOOP_COUNT}" \
           --message "${WALL_ROLE}
 
 ---

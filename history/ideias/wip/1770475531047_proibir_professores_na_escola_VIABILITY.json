@@ -1,0 +1,69 @@
+{
+  "idea_name": "proibir_professores_na_escola",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "A questão subjacente (IA pode melhorar entrega educacional e reduzir custos?) é legítima e globalmente debatida — escassez de professores qualificados é real (UNESCO), custo do ensino cresce acima da inflação, e plataformas como Khan Academy já provam que IA ensina certas matérias efetivamente. MAS o briefing framing é 'proibir professores' — provocação que não é um problema de negócio, é uma tese ideológica. Score reflete: problema real com framing extremo."
+      },
+      "contexto": {
+        "pontos": 23,
+        "max": 25,
+        "feedback": "Market Scan excelente: encontrou Alpha School (único precedente real), mapeou barreira legal brasileira (projeto de lei aprovado na Comissão de Educação proibindo substituição), quantificou riscos sociemocionais (ProFuturo 2025), e identificou o paradoxo econômico (Alpha cobra US$40k/ano, OPOSTO de 'custo reduzido'). Devil complementou com poder sindical CNTE (3M filiados), gap de infraestrutura (30% escolas sem internet), e risco reputacional de alucinação de IA com crianças. Perdeu 2 pontos por falta de dados comparativos internacionais (como Singapura e Finlândia integram IA mantendo professores)."
+      },
+      "opcoes": {
+        "pontos": 3,
+        "max": 25,
+        "feedback": "Angel ERROU — não gerou opções. Market Scan sugeriu 3 alternativas (co-piloto docente, escolas híbridas, flipped classroom), mas TODAS são ideias fundamentalmente diferentes de 'proibir professores'. A ideia original não tem nenhuma configuração viável no Brasil devido à barreira legal absoluta. Score de 3 (não zero) porque as alternativas do Market Scan existem e têm mérito — apenas não são a ideia proposta."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Impossível executar algo explicitamente proibido por lei federal em tramitação avançada. Mesmo ignorando a lei: mercado endereçável de ~10-15 mil famílias (renda >R$2M/ano), CAC de R$50k+ por família, capital inicial de ~R$50M para 3 anos até break-even, e o único precedente (Alpha School) prova que o modelo custa MAIS, não menos. Zero viabilidade de execução."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Máximo desconto. 1 dealbreaker ABSOLUTO: lei federal brasileira proíbe substituição de professores por IA na educação básica formal — operar = ilegalidade, perda de credenciamento MEC, diplomas inválidos. Adicionalmente: 2 failure scenarios de alta probabilidade + impacto fatal/crítico (modelo econômico invertido, dano socioemocional comprovado). 4 riscos ocultos (Alpha School como contraevidência, lobby sindical CNTE, alucinação de IA com crianças = PR terminal, infraestrutura inexistente). O Devil foi cirúrgico: a ideia é morta na chegada."
+      }
+    },
+    "score_before_risk": 46,
+    "score_final": 16,
+    "status": "NO-GO",
+    "confidence": "very_high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Lei federal brasileira proíbe substituição de professores por IA na educação básica — dealbreaker absoluto",
+      "Único precedente (Alpha School) cobra US$40k/ano — CONTRADIZ a tese de 'custo reduzido'",
+      "Dano socioemocional já documentado (ProFuturo 2025) — pais não pagam R$200k para 'experimento'",
+      "CNTE (3M filiados) + lobby ativo = shutdown político garantido",
+      "Alucinação de IA ensinando conteúdo errado a crianças = crise reputacional terminal"
+    ],
+    "viability_response": [
+      "ACEITO: Lei é dealbreaker absoluto. Não há brecha legal na educação básica formal brasileira.",
+      "ACEITO: Alpha School é contraevidência, não validação. Modelo custa 3x mais que escolas premium, não menos.",
+      "ACEITO: Risco socioemocional comprovado elimina mercado parental. Pais são compradores — e são zero-tolerance para risco ao desenvolvimento infantil.",
+      "ACEITO: Poder sindical é variável política fatal que a análise inicial subestimou.",
+      "ACEITO: Alucinação de IA em contexto educativo infantil é risco assimétrico — uma falha viral destrói a marca permanentemente."
+    ],
+    "remaining_risks": [
+      "TODOS os riscos permanecem — nenhum é mitigável dentro da proposta 'proibir professores'"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Rejeitar a ideia como proposta. Se o interesse em EdTech é genuíno, pivotar para modelos de apoio docente.",
+    "reasoning": "Tríplice impossibilidade: (1) LEGAL — lei federal proíbe, (2) ECONÔMICO — único precedente prova que custa mais, não menos, (3) SOCIAL — dano ao desenvolvimento infantil já documentado. A tese central ('supervisores de custo reduzido substituem professores') é contradita por TODAS as evidências disponíveis. Alpha School é a prova viva: funciona como produto de ultra-elite (US$40k/ano) com 'guias' de alto calibre, exatamente o oposto de 'custo reduzido'. O framing 'proibir professores' é a pior forma de apresentar uma questão legítima (como IA pode melhorar educação). A resposta do mercado, da ciência e da lei é unânime: IA APOIA o professor, não o substitui.",
+    "next_steps": [
+      "ARQUIVAR a ideia como proposta",
+      "SE interesse em EdTech é genuíno: pesquisar modelo co-piloto docente (IA faz correção/planejamento, professor ensina)",
+      "SE quer testar IA educacional: cursos livres/extracurriculares (fora da regulação da educação básica)",
+      "SE quer modelo sem professor: homeschooling com IA para famílias que JÁ optaram por educação domiciliar (nicho legal, ~100k famílias no Brasil)"
+    ],
+    "risks_to_monitor": [],
+    "pivot_triggers": []
+  },
+  "timestamp": "2026-02-07T14:50:00Z"
+}

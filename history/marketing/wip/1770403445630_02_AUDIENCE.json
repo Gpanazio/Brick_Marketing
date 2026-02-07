@@ -1,0 +1,46 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Head of Content",
+    "empresa_tipica": "Duloren (In-house) ou Agência de Publicidade Mid-market",
+    "experiencia": "10+ anos no mercado (familiarizado com o DNA provocativo da marca)"
+  },
+  "dores": [
+    "Necessidade de elevar o 'craft' visual para evitar a vulgaridade em temas eróticos",
+    "Pressão para inovar na estética tradicional da marca (humor espertinho -> erotismo de moda)",
+    "Complexidade técnica de viabilizar cenários com água e espelhos em prazos curtos"
+  ],
+  "linguagem_comum": [
+    "zenital",
+    "chiaroscuro",
+    "direção de arte",
+    "setup",
+    "roteiro",
+    "approach",
+    "craft",
+    "key visual"
+  ],
+  "objecoes": [
+    "O erótico pode virar 'trash' ou vulgar se a luz não for perfeita",
+    "Segurança física no set (vidro + água)",
+    "Risco de a influenciadora perder o 'poder' na cena e parecer apenas objetificada"
+  ],
+  "motivadores_de_acao": [
+    "Estabelecer um novo padrão estético de 'liberdade' para a marca",
+    "Dominar a complexidade técnica do cenário para gerar impacto visual absoluto",
+    "Ser visto como o responsável pela modernização da imagem da Duloren"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (networking B2B)",
+    "Newsletters: Meio & Mensagem",
+    "Instagram (referências visuais de moda/fotografia)",
+    "Vogue/ELLE (benchmarks de editorial)"
+  ],
+  "brand_alignment": {
+    "status": "PASS",
+    "analysis": "O briefing exige 'técnica visual impecável' e foca no 'controle do caos', o que ressoa com o manifesto Brick de Domínio da Linguagem e Craft. A abordagem de 'viabilizar o impossível' (espelhos + água + zenital) é o núcleo da Brick. O tom do briefing já demonstra autoridade técnica, pedindo por iluminação chiaroscuro e soluções de engenharia (acrílico espelhado) em vez de misticismo criativo."
+  },
+  "fontes_consultadas": [
+    "Contexto hardcoded Brick AI AUDIENCE ANALYST",
+    "BRIEFING: campanha duloren (JobID: 1770403445630_campanha_duloren)"
+  ]
+}

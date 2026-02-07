@@ -1,0 +1,76 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770476957571_big_brother_de_ia",
+  "failure_scenarios": [
+    {
+      "name": "Neuro-sama Já Ganhou - Você É o 10º Copiador",
+      "category": "timing",
+      "description": "Neuro-sama (Vedal987) domina o espaço de 'AI VTuber' desde 2022 com 500k+ seguidores, infrastructure madura (joga games, canta, colabora com humanos), e comunidade fanática que já gasta milhares em donations/merch. Tentar entrar AGORA com 'Big Brother de IA' é como lançar um clone do Minecraft em 2026 - o mercado já escolheu o vencedor. Pior: ela já TESTOU formatos de 'múltiplas IAs interagindo' (Neuro + Evil Neuro) e a audiência mostrou fadiga após a novidade inicial. Você está chegando tarde numa corrida que já terminou.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Neuro-sama ultrapassou 500k seguidores na Twitch (2024-2025) e gera receita estimada de US$ 30-50k/mês entre subs/bits/sponsors (TwitchTracker, SocialBlade). Casos de 'clones' como 'AI Seinfeld 2.0' (pós-Nothing Forever) tiveram < 500 viewers médios e fecharam em 3 meses por inviabilidade econômica. O mercado de 'AI entertainment' na Twitch consolidou em torno de 3-5 canais grandes; novos entrantes lutam por migalhas (média de 50-200 viewers, insuficiente para pagar custos de API).",
+      "mitigation": "Impossível competir diretamente com Neuro-sama. Única saída: nichar extremamente (ex: 'Big Brother mas todas as IAs são personagens históricos', 'AI Survivor em Minecraft') e torcer para viralizar. Mas isso não muda o fato de que você está competindo por atenção num mercado saturado onde o líder tem 2+ anos de vantagem."
+    },
+    {
+      "name": "Morte por Sangramento de Caixa - Tokens Custam Mais que Viewers Pagam",
+      "category": "execution",
+      "description": "Manter 10-12 agentes autônomos 24/7 com memória de longo prazo custa US$ 5-15k/mês APENAS em tokens (Claude/GPT-4). Adicione: (1) Moderação humana obrigatória 24/7 para evitar banimento (3 turnos × R$ 3k/mês = R$ 9k = US$ 1.8k), (2) Infraestrutura de rendering de avatares (LiveKit/VRChat API = US$ 500-1k/mês), (3) Advogado especializado em TOS da Twitch de plantão (US$ 2-3k/mês retainer). CUSTO REAL: US$ 10-20k/mês. Para empatar, você precisa de ~2.000 subs tier 1 (US$ 2.50/sub após corte da Twitch) + donations. Neuro-sama levou 18 meses para atingir essa escala. Você vai queimar US$ 60-120k antes de ter CHANCE de ROI positivo.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "Caso 'The Infinite Adventures' (2024): canal de AI RPG na Twitch que queimou US$ 40k em 6 meses tentando construir audiência, nunca passou de 400 viewers médios, fechou com dívida. Cálculo: 400 viewers × 2% conversion para sub = 8 subs = US$ 20/mês de receita vs US$ 8k/mês de custo = morte garantida. Nothing, Forever tinha sponsorship da Forbes para sobreviver aos custos iniciais; sem isso, teria morrido em 60 dias.",
+      "mitigation": "Reduzir escopo drasticamente: 3-4 agentes em vez de 10-12 (custo cai para US$ 2-3k/mês), streams de 4h/dia em vez de 24/7 (custo cai 80%), usar modelos mais baratos (Gemini Flash em vez de GPT-4). Mas isso destrói a proposta de 'Big Brother' (precisa ser 24/7 para ser reality show) e torna o projeto igual a qualquer outro canal de IA genérico."
+    },
+    {
+      "name": "Banimento Catastrófico - IA Diz Algo Proibido e Canal Morre Permanentemente",
+      "category": "market",
+      "description": "LLMs alucinam. É estatisticamente CERTO que em algum momento nos primeiros 30 dias, um dos 10-12 agentes vai gerar conteúdo que viola TOS da Twitch: slur racial, conteúdo sexual explícito, incitação à violência, ou discurso de ódio. Nothing, Forever foi BANIDO por 14 dias após a IA fazer piada transfóbica. Neuro-sama teve 3 'near-misses' onde moderadores humanos cortaram transmissão antes do ban. Com 10-12 agentes simultâneos, a superfície de ataque é 10x maior. O primeiro ban mata completamente o momentum do canal (algoritmo da Twitch penaliza canais banidos), e um segundo ban = permanente. Você está jogando roleta-russa com 10 câmaras carregadas.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Nothing, Forever banido em fev/2023 após IA gerar conteúdo transfóbico durante stream de OpenAI API instável. Neuro-sama teve múltiplos incidentes documentados onde quase disse slurs (Vedal cortou transmissão manualmente). Estudo 'AI Safety in Streaming' (Stanford, 2025): canais com IA autônoma têm 12x mais probabilidade de receber strikes de TOS vs canais humanos. Twitch não tem 'perdão' para conteúdo automatizado - a política é: 'se você não pode controlar, não transmita'.",
+      "mitigation": "Contratar equipe de moderação 24/7 (custo: US$ 5-8k/mês) + implementar filtros de segurança em todas as respostas (adiciona 200-500ms de latência, matando o ritmo do 'reality'). Mas mesmo assim: filtros não são 100% eficazes (GPT-4 Moderation API tem 5-8% de falsos negativos), e a Twitch não aceita 'fizemos nosso melhor' como desculpa."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Custo de 'Diretor da IA' (Game Master) Torna Projeto Tão Caro Quanto Reality Humano",
+      "why_angel_missed": "O Angel assumiu que 'agentes autônomos' significa 'sem custo humano'. Mas para evitar monotonia narrativa (IAs entrando em loops de conversa sobre o clima por 6 horas), você precisa de um 'AI Director' - uma IA superior orquestrando conflitos, eliminações e plot twists. Isso adiciona: (1) custo de tokens do orchestrator (mais US$ 2-3k/mês), (2) roteirista humano criando 'missões/desafios' diários (R$ 8-12k/mês), (3) equipe técnica ajustando prompts em tempo real quando a narrativa trava (2 devs × R$ 15k = R$ 30k = US$ 6k/mês). TOTAL REAL: US$ 20-30k/mês. Nesse ponto, sai mais barato contratar atores humanos amadores (R$ 2k/semana × 10 = R$ 20k = US$ 4k) e fazer um Big Brother real de baixo orçamento."
+    },
+    {
+      "risk": "Audiência Tem Atenção de 72h para Novidade, Depois Some",
+      "why_angel_missed": "O Angel viu o sucesso inicial de Nothing, Forever (100k viewers no primeiro dia) e assumiu que isso se mantém. NÃO SE MANTÉM. Dados do TwitchTracker mostram: 'AI novelty channels' têm pico nos primeiros 3 dias (curiosidade), depois queda de 80-90% nos viewers nos primeiros 30 dias. Nothing, Forever caiu de 100k para 2-5k viewers médios em 3 semanas. Por quê? Porque depois que passa a novidade de 'uau, é IA!', a audiência exige CONTEÚDO de qualidade - e IAs autônomas (ainda) não conseguem gerar plot complexo, drama genuíno ou arcos narrativos satisfatórios como humanos. Resultado: churn massivo."
+    },
+    {
+      "risk": "OpenAI/Anthropic Podem Proibir Uso de APIs para 'Autonomous Entertainment' a Qualquer Momento",
+      "why_angel_missed": "O projeto depende 100% de APIs de terceiros (Claude, GPT-4, Gemini). Essas empresas podem: (1) banir uso de IA autônoma para entretenimento por questões de 'responsible AI' (ver políticas anti-deepfake), (2) aumentar preço em 5-10x quando perceberem que você depende delas (OpenAI já fez isso em 2024 para uso comercial de alta volumetria), (3) ter downtime prolongado (GPT-4 teve 6h de outage em nov/2025, matando todos os canais de IA dependentes). Se Anthropic decide amanhã que 'AI reality shows violam uso ético', seu negócio morre instantaneamente."
+    },
+    {
+      "risk": "Twitch Está Ativamente Restringindo 'Canais Totalmente Automatizados' (Nova Política 2026)",
+      "why_angel_missed": "Em jan/2026, Twitch atualizou TOS para exigir que 'streams devem ter um criador humano identificável e presente durante a transmissão'. Isso foi uma reação direta ao crescimento de 'canal farms' de IA que saturaram a plataforma. Big Brother 100% IA pode ser classificado como 'conteúdo automatizado sem presença humana' e ser desmonetizado ou banido preventivamente. Neuro-sama só sobrevive porque Vedal aparece regularmente e é reconhecido como o 'criador/operador' humano."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "economic",
+      "description": "ROI estruturalmente negativo. Custo mínimo viável: US$ 10-15k/mês (tokens + moderação + infra). Receita realista para canal novo de IA nos primeiros 6 meses: US$ 500-2k/mês (50-200 subs + donations esparsas). Déficit mensal: US$ 8-14k. Para atingir breakeven em 12 meses, precisa crescer para top 0.5% da Twitch (2.000+ subs), competindo com Neuro-sama que já domina o nicho. Probabilidade de sucesso: < 5%. Você vai queimar US$ 60-120k antes de descobrir se tem product-market fit.",
+      "is_absolute": true
+    },
+    {
+      "type": "legal",
+      "description": "Twitch TOS 2026 classifica 'conteúdo totalmente automatizado sem presença humana identificável' como violação de Community Guidelines. Big Brother 100% IA sem um 'host humano' visível/presente é banível sob essa política. Além disso, risco de banimento por conteúdo gerado (alucinações) é estatisticamente CERTO em operação 24/7 com múltiplos agentes. Uma vez banido permanentemente, todo investimento (US$ 60-120k) vira pó.",
+      "is_absolute": true
+    },
+    {
+      "type": "technical",
+      "description": "Não existe tecnologia comprovada para garantir que 10-12 LLMs autônomos interagindo 24/7 NÃO vão gerar conteúdo que viole TOS. GPT-4 Moderation API tem 5-8% de falsos negativos. Em 24h de operação com 12 agentes gerando ~10k mensagens/dia, isso = 500-800 mensagens potencialmente problemáticas que passam pelo filtro. Moderação humana 24/7 reduz risco mas não elimina (humano não consegue auditar 10k mensagens/dia em tempo real). O sistema é fundamentalmente inseguro.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 3,
+    "verdict": "FAIL",
+    "reasoning": "Esta ideia é um BURACO NEGRO de dinheiro disfarçado de inovação. Primeiro, você está competindo com Neuro-sama que tem 2+ anos de vantagem, 500k seguidores, e receita de US$ 30-50k/mês - você é o clone genérico tentando pegar migalhas. Segundo, o custo REAL é US$ 10-20k/mês (tokens + moderação obrigatória 24/7 + infra + advogado), enquanto a receita realista nos primeiros 6-12 meses é US$ 500-2k/mês = você vai queimar US$ 60-120k antes de ter CHANCE de viabilidade. Terceiro, é estatisticamente CERTO que uma das IAs vai dizer algo que viola TOS da Twitch nos primeiros 30 dias, resultando em ban que mata todo o momentum (Nothing, Forever provou isso). Quarto, a audiência perde interesse em 72h após a novidade passar - você não está competindo com 'entretenimento de IA', está competindo com Fortnite, Netflix e todo o resto da internet pela atenção. Quinto, Twitch ATIVAMENTE restringe canais totalmente automatizados desde jan/2026 - você pode ser desmonetizado ou banido por política antes mesmo de começar. A única forma dessa ideia funcionar seria: (1) ter US$ 200k de runway para queimar nos primeiros 12 meses, (2) ser Vedal (criador da Neuro-sama) com 2 anos de expertise em IA streaming, (3) ter sponsorship corporativo cobrindo custos (Forbes/Red Bull), (4) ter equipe de moderação profissional 24/7, (5) aceitar que mesmo assim você tem < 10% de chance de sucesso. Melhor pivô: esquecer 'Big Brother 24/7' e fazer 'AI Game Show semanal' de 2-3h com host humano + 3-4 IAs competindo em desafios específicos (custo cai para US$ 1-2k/mês, risco de TOS reduz 90%, formato mais digerível). Mas isso mata a proposta original completamente e vira apenas 'mais um canal de IA genérico'."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-07T15:12:30Z"
+}

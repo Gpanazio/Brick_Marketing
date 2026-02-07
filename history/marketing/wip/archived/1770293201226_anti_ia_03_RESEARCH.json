@@ -1,0 +1,62 @@
+{
+  "tema": "A Controvérsia da IA na Publicidade: 'Slop' vs. Craft Criativo (2026)",
+  
+  "keywords_principais": [
+    "marketing anti-IA",
+    "slop de IA",
+    "mesmice visual IA",
+    "valorização do craft humano",
+    "IA na publicidade 2026"
+  ],
+  
+  "dados_credibilidade": [
+    {
+      "dado": "Profissionais de criação que utilizam IA recebem, em média, 56% a mais do que colegas sem essa competência.",
+      "fonte": "Global AI Jobs Barometer 2025 (PwC)",
+      "url": "https://consumidormoderno.com.br/ia-imagens-mesmice-visual/"
+    },
+    {
+      "dado": "Marcas enfrentam forte resistência de consumidores em 2025/2026 contra anúncios claramente artificiais (especialmente em moda e luxo).",
+      "fonte": "Forbes Life 2026",
+      "url": "https://forbes.com.br/forbeslife/2026/02/2026-e-o-ano-da-vida-analogica-como-isso-impacta-o-consumo/"
+    }
+  ],
+  
+  "tendencias_atuais": [
+    "Movimento 'Anti-IA': 2026 está sendo apontado como o ano em que marcas usam a ausência de IA como selo de qualidade (analog-first).",
+    "Crítica ao 'Slop': Rejeição a conteúdos de baixa qualidade gerados por IA que inundam as redes sociais.",
+    "Crise de Confiança: Consumidores cada vez mais irritados com a falta de autenticidade em campanhas geradas artificialmente.",
+    "Aumento da 'Mesmice Visual': Ferramentas de IA aceleram a produção, mas criam uma estética genérica que as marcas premium tentam evitar."
+  ],
+  
+  "angulos_concorrentes": [
+    {
+      "concorrente": "Agências Tradicionais (Pure Human)",
+      "posicionamento": "100% feito por humanos / Sem IA",
+      "fraqueza": "Incapacidade de escala e custos elevados para projetos complexos."
+    },
+    {
+      "concorrente": "Geradores de Conteúdo de Volume (IA-Slop)",
+      "posicionamento": "Extremamente barato e rápido",
+      "fraqueza": "Falta de craft, alma e direção de arte real; gera rejeição no público premium."
+    }
+  ],
+  
+  "oportunidades_diferenciacao": [
+    "A Terceira Via: Atacar o ceticismo admitindo que o 'Slop' é real, mas posicionando a Brick AI como a solução que usa IA para elevar o craft, não para barateá-lo.",
+    "Provocação Financeira: Usar o dado da PwC (56% de ganho salarial) para mostrar que ser 'anti-IA' é uma pose que custa caro.",
+    "Foco em Autenticidade: Demonstrar que a IA da Brick serve à visão do diretor, combatendo a 'mesmice visual' do mercado."
+  ],
+  
+  "brand_guidelines_relevantes": {
+    "tom": "Bold & Unapologetic",
+    "terminologia": ["Premium Craft", "Vision over Prompt", "Anti-Slop"],
+    "proibido": ["Revolucionário", "Fácil", "Barato"]
+  },
+  
+  "fontes_consultadas": [
+    "https://www.cnnbrasil.com.br/tecnologia/por-que-2026-pode-ser-o-ano-do-marketing-anti-ia/",
+    "https://consumidormoderno.com.br/ia-imagens-mesmice-visual/",
+    "https://forbes.com.br/forbeslife/2026/02/2026-e-o-ano-da-vida-analogica-como-isso-impacta-o-consumo/"
+  ]
+}

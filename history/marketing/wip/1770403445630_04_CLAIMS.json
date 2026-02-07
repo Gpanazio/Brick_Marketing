@@ -1,0 +1,41 @@
+{
+  "claims_validados": [
+    {
+      "claim": "Historicamente, o CONAR já retirou campanhas da Duloren de circulação por 'racismo, machismo e apelação' (Caso 2012)",
+      "status": "VERIFICADO",
+      "fonte_original": "UOL Notícias / CONAR",
+      "fonte_verificacao": "https://noticias.uol.com.br/cotidiano/ultimas-noticias/2012/10/03/campanha-polemica-da-duloren-e-retirada-de-circulacao-pelo-conar.htm",
+      "confianca": "alta",
+      "notas": "Fato histórico confirmado. A campanha 'Pacificar foi fácil, quero ver dominar' foi punida pelo CONAR em 2012."
+    },
+    {
+      "claim": "Em 2026, algoritmos de redes sociais (TikTok/Meta) exigem distinção clara entre conteúdo comercial autêntico e 'comportamento sexualmente sugestivo', que pode sofrer restrições de idade ou exclusão do feed 'Para Você'.",
+      "status": "VERIFICADO",
+      "fonte_original": "TikTok Community Guidelines 2025/2026",
+      "fonte_verificacao": "https://www.tiktok.com/community-guidelines/pt/sensitive-mature-themes",
+      "confianca": "alta",
+      "notas": "Diretrizes vigentes (setembro 2025) confirmam que 'beijos íntimos' e 'atos sexualmente sugestivos' tornam o conteúdo inelegível para o feed Para Você (FYF)."
+    },
+    {
+      "claim": "Uso de 'Liquid Aesthetics' (água/espelhos) como ferramenta de 'censura artística' para contornar moderadores de IA.",
+      "status": "PARCIAL",
+      "fonte_original": "TOPIC_RESEARCHER",
+      "fonte_verificacao": "Cross-check técnico de moderação visual",
+      "confianca": "média",
+      "notas": "Estrategicamente faz sentido, mas não há garantia algorítmica. O desfoque e a distorção da água reduzem a precisão de IAs de reconhecimento de atos, mas 'nudez implícita' ainda é um gatilho de risco."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "Campanha 'Pacificar' punida por 'apelação' (CONAR 2012)",
+    "Beijos íntimos e enquadramento sexualizado são inelegíveis para o feed Para Você (TikTok Guidelines 2025/2026)"
+  ],
+  "estatisticas_evitar": [
+    "Qualquer claim que garanta 100% de sucesso em burlar a moderação via Liquid Aesthetics (é um mitigador, não uma solução definitiva)"
+  ],
+  "resumo": {
+    "total_claims": 3,
+    "verificados": 2,
+    "parcial": 1,
+    "recomendacao": "Apoiar a defesa criativa no histórico de risco (CONAR) e nas regras de plataforma (TikTok) para justificar o investimento em craft técnico. O Copywriter deve vender o 'Liquid Aesthetics' como mitigação estratégica, não como truque de mágica."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "idea_name": "dar_um_carro_para_cada_morador_de_rua",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 15,
+        "max": 30,
+        "feedback": "O problema subjacente (população de rua sem renda) é real e crítico — relevância social altíssima. Mas o briefing confunde PROBLEMA com SOLUÇÃO. A questão não é 'como dar carros para moradores de rua' — é 'como gerar renda para população em situação de rua'. Dar carro é uma resposta que ignora 15 camadas de complexidade anterior ao ativo. Score reflete: problema real, mecanismo proposto irrelevante."
+      },
+      "contexto": {
+        "pontos": 22,
+        "max": 25,
+        "feedback": "Market Scan e Devil mapearam o cenário de forma exaustiva: requisitos Uber (CNH/EAR/antecedentes), custos operacionais (R$0,60-0,70/km), barreiras documentais (67% sem documentação básica), infraestrutura digital inexistente (73% sem smartphone). Perdeu 3 pontos porque faltou benchmark de programas existentes que FUNCIONAM (Grameen Bank, GiveDirectly, PRONASCI) para contextualizar alternativas reais."
+      },
+      "opcoes": {
+        "pontos": 5,
+        "max": 25,
+        "feedback": "A ideia original (dar carro) não tem versão viável. A melhor opção do Angel (subsídio de aluguel, score 78) é uma IDEIA COMPLETAMENTE DIFERENTE — não é 'dar um carro', é 'subsidiar aluguel de carro para quem já tem CNH'. A Opção 3 do Angel (programa completo, a mais próxima do briefing original) scorou 48/100 com custo de R$80k/pessoa e taxa de sucesso de 15-25%. Nenhuma configuração da ideia original sobrevive à análise."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Completamente inexequível. Custo real por pessoa: R$79-81k (carro + documentação + capital de giro + smartphone + moradia temporária). Taxa de sucesso: 5-10%. Custo por 'sucesso' real: R$790k-1,58M. Prazo até primeira corrida: 12-24 meses. Para 1.000 pessoas: R$79 MILHÕES. O Devil demonstrou que com essa verba seria possível construir 3-4 casas de passagem + programa de capacitação atendendo 10x mais pessoas com 65% de empregabilidade."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Máximo desconto aplicado. 2 dealbreakers ABSOLUTOS: (1) ROI catastrófico — custo por sucesso 158x maior que programas convencionais de capacitação, e (2) responsabilidade civil intransferível — doador assume passivo judicial por acidentes/multas em cenário sem seguro adequado. Adicionalmente: 3 cenários fatais com probabilidade alta (liquidação imediata do ativo, barreira regulatória intransponível, espiral de caixa negativo). Devil identificou 4 riscos ocultos que o Angel não cobriu (higiene/reputação na plataforma, roubo do ativo, concorrência assimétrica, exclusão digital)."
+      }
+    },
+    "score_before_risk": 42,
+    "score_final": 12,
+    "status": "NO-GO",
+    "confidence": "very_high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Liquidação imediata do ativo: 62% de ativos de alto valor doados são vendidos em 8 semanas (IPA 2018)",
+      "Barreira regulatória intransponível: 67% sem documentação básica, CNH leva 6-12 meses + endereço fixo",
+      "Espiral de caixa negativo: R$0 para primeiro tanque → carro parado → desistência em 7-14 dias",
+      "Responsabilidade civil: doador assume passivo judicial por acidentes com veículo doado",
+      "ROI catastrófico: R$790k-1,58M por sucesso vs R$5k por emprego em programas convencionais"
+    ],
+    "viability_response": [
+      "ACEITO: Liquidação do ativo é inevitável sem resolver moradia/alimentação ANTES — isso é sobrevivência racional, não falha moral",
+      "ACEITO: Barreira regulatória é federal (CTB) e não pode ser contornada — é lei, não burocracia",
+      "ACEITO: Espiral de caixa é matemática: R$0 entrada + custos fixos imediatos = impossível. Nenhuma mitigação resolve sem capital de giro de R$6-9k",
+      "ACEITO: Responsabilidade civil é dealbreaker legal absoluto — precedente TJ-SP 2019 confirma",
+      "ACEITO: A comparação de custo-efetividade é devastadora e irrefutável"
+    ],
+    "remaining_risks": [
+      "TODOS os riscos permanecem — nenhum foi mitigável dentro da proposta original"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Rejeitar a ideia como proposta. Se o interesse genuíno é ajudar população de rua, redirecionar para abordagens com evidência de eficácia.",
+    "reasoning": "A analogia do Devil é perfeita: é dar um Stradivarius de R$10M para quem não lê partitura, não tem onde ensaiar e está morrendo de fome — ele vai vender por R$500 para comer, e com RAZÃO. O problema não é falta de carro. É falta de documentação, moradia, saúde mental, capital de giro, infraestrutura digital, e estabilidade. O carro é a ÚLTIMA peça de uma cadeia de 15 peças. Dar a última peça sem as 14 anteriores = incineração de capital. Custo-efetividade: R$790k por sucesso (esta ideia) vs R$5k por emprego (programas convencionais). Fator 158x. Não há cenário em que isso faz sentido.",
+    "next_steps": [
+      "ARQUIVAR a ideia como proposta",
+      "SE interesse social é genuíno: pesquisar programas com evidência (Housing First, GiveDirectly, capacitação profissional municipal)",
+      "SE objetivo é gerar renda via mobilidade: considerar micro-logística com bicicleta elétrica (Angel Opção 2 — custo R$5-7k, sem CNH, 40-50% sucesso)",
+      "SE objetivo é Uber especificamente: subsidiar aluguel para quem JÁ TEM CNH (Angel Opção 1 — R$4-6k, 30% sucesso)"
+    ],
+    "risks_to_monitor": [],
+    "pivot_triggers": []
+  },
+  "timestamp": "2026-02-07T13:52:00Z"
+}

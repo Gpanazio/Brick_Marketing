@@ -1,0 +1,76 @@
+{
+  "agent": "DEVIL_GEN",
+  "job_id": "1770475531047_proibir_professores_na_escola",
+  "failure_scenarios": [
+    {
+      "name": "Ilegalidade Explícita no Mercado-Alvo",
+      "category": "timing",
+      "description": "A Comissão de Educação do Brasil aprovou em 2026 um projeto de lei que PROÍBE expressamente a substituição de professores por IA na educação básica. Não é uma barreira regulatória futura - é um muro legal JÁ CONSTRUÍDO. Qualquer escola que implementar isso opera na ilegalidade, perde credenciamento do MEC e não pode emitir diplomas válidos.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Câmara dos Deputados aprovou projeto barring IA como substituto docente (fonte: Market Scan, 2026). LDB exige formação mínima habilitada para validade do ensino. Alpha School (Texas) opera sob jurisdição texana que permite experimentos educacionais privados - realidade inexistente no Brasil onde educação básica é altamente regulada pelo MEC.",
+      "mitigation": "Pivotar para mercado B2B de ferramentas de apoio docente (co-piloto), não substituição. Ou operar apenas em cursos livres/extracurriculares fora do sistema formal de educação básica."
+    },
+    {
+      "name": "Modelo Econômico Invertido: Elite, Não Massa",
+      "category": "execution",
+      "description": "O único caso de sucesso citado (Alpha School) cobra US$ 40 mil/ano (R$ 200k+) - 10x o valor de escolas privadas premium brasileiras. A promessa da ideia era 'supervisores de custo reduzido' para massificar, mas a REALIDADE é que o modelo só funciona como produto ultra-premium para 0.1% da população. O CAC de aquisição de alunos nesse nicho é proibitivo (estimado >R$ 50k por família em marketing + vendas consultivas), e o LTV depende de renovação anual em um mercado de ~10 mil famílias no Brasil inteiro.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "Alpha School mensalidades de US$ 40k/ano (Exame, 2025). No Brasil, escolas premium (tipo Avenues São Paulo) cobram ~R$ 120k/ano com professores de elite. Para justificar IA + supervisores, precisaria cobrar MAIS (R$ 200k+) para cobrir tech stack + curadoria. Mercado endereçável: famílias com renda >R$ 2M/ano = ~15 mil no Brasil. Não é escalável como proposto.",
+      "mitigation": "Impossível mitigar mantendo a tese central. Alternativa: reposicionar como 'Homeschooling Premium com IA' para famílias de altíssima renda que já rejeitam o sistema tradicional (nicho de ~2 mil famílias, não é negócio de escala)."
+    },
+    {
+      "name": "Dano Socioemocional Comprovado = Rejeição Parental",
+      "category": "market",
+      "description": "Pesquisa ProFuturo (2025) já documentou déficits em habilidades sociais e emocionais em crianças expostas a modelos de ensino sem interação humana pedagógica contínua. Pais (os tomadores de decisão de compra) não vão pagar R$ 200k/ano para colocar filhos em um 'experimento' que cientistas já apontam como prejudicial ao desenvolvimento. O posicionamento 'supervisores humanos de baixo custo' agrava: implica babás sem formação pedagógica cuidando de desenvolvimento infantil - um red flag gigante para qualquer pai minimamente informado.",
+      "probability": "medium",
+      "impact": "critical",
+      "evidence": "ProFuturo (2025) aponta prejuízos socioemocionais. Reino Unido pausou experimentos de turmas sem professores após protestos de pais em 2024-2025 (CPP, 2025). Modelo 'supervisor de baixo custo' = salário <R$ 5k/mês = perfil sem formação pedagógica ou psicológica. Pais pagando R$ 200k/ano esperam PhDs, não estagiários.",
+      "mitigation": "Contratar psicólogos e pedagogos como supervisores (custo alto, destrói tese de 'redução de custo'). Ou limitar uso de IA a matérias técnicas (matemática, programação) e manter humanos em humanidades/socioemocionais - mas aí não é mais 'proibir professores', é híbrido."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Alpha School é o OPOSTO da tese proposta: cobra MAIS, não menos. É contraevidência, não validação.",
+      "why_angel_missed": "Market Scan citou Alpha como precedente sem analisar que seu modelo econômico contradiz a premissa central de 'custo reduzido'. Confundiu viabilidade técnica (IA pode ensinar) com viabilidade econômica de massa (não pode competir em preço)."
+    },
+    {
+      "risk": "Resistência sindical não foi mencionada mas é fatal: CNTE (maior sindicato de professores do Brasil) tem 3 milhões de filiados e poder de lobby massivo. Projeto de lei proibindo IA foi aprovado COM APOIO SINDICAL ativo.",
+      "why_angel_missed": "Análise focou em tech feasibility e ignorou power dynamics políticos. Sindicatos mataram Uber em várias cidades - vão obliterar qualquer tentativa de 'demitir professores em massa'."
+    },
+    {
+      "risk": "Viés e alucinação de IA em conteúdo educativo infantil: um único caso de racismo algorítmico ou 'fact' errado viral mata a marca instantaneamente.",
+      "why_angel_missed": "Market Scan classificou como 'raro' mas o impacto reputacional de IA ensinando crianças errado é TERMINAL. Pais zero-tolerance para erro educativo. Mídia amplificaria qualquer falha."
+    },
+    {
+      "risk": "Dependência de infraestrutura tech em escala (banda larga, devices, energia) em um país onde 30% das escolas públicas não têm internet confiável (TIC Educação 2024).",
+      "why_angel_missed": "Assumiu que tech stack é resolvível. Na prática, deploy nacional exige parceria com operadoras, fabricantes de hardware, e infraestrutura que não existe na base da pirâmide."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "legal",
+      "description": "Lei federal brasileira (em tramitação avançada em 2026) proíbe substituição de professores por IA na educação básica formal. Operar significa ilegalidade, perda de credenciamento MEC, diplomas inválidos. Não há brecha legal - é dealbreaker absoluto para o modelo proposto no mercado-alvo.",
+      "is_absolute": true
+    },
+    {
+      "type": "economic",
+      "description": "Modelo só viável em faixa de preço >R$ 200k/ano (0.1% da população). CAC estimado de R$ 50k+ por família, LTV dependente de renovação em mercado de ~10-15 mil famílias no Brasil. Não atinge escala para retorno de VC. Bootstrap exige capital inicial de ~R$ 50M (tech + marketing + operação por 3 anos até break-even). ROI negativo em 90% dos cenários de adoção.",
+      "is_absolute": false
+    },
+    {
+      "type": "legal",
+      "description": "Responsabilidade civil educacional: se um aluno desenvolver déficit socioemocional comprovado (já documentado por ProFuturo 2025), a escola é legalmente responsável por danos ao desenvolvimento. Seguradoras educacionais não cobrem 'experimentos de IA sem respaldo pedagógico consolidado'. Risco de ações judiciais milionárias de pais.",
+      "is_absolute": false
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 2,
+    "verdict": "FAIL",
+    "reasoning": "Essa ideia tem UM dealbreaker absoluto (ilegalidade federal no Brasil) e DOIS failure scenarios de alta probabilidade + impacto fatal/crítico. Não é uma questão de 'execução difícil' - é estruturalmente inviável no mercado proposto. O único case citado (Alpha School) funciona sob jurisdição permissiva (Texas) e modelo econômico OPOSTO (ultra-premium, não massa). Tentar lançar isso no Brasil em 2026 resulta em: (1) shutdown regulatório imediato, (2) burn de capital sem tração (CAC insustentável), e (3) PR crisis em caso de qualquer falha de IA com crianças. A tese central ('redução de custo via supervisores baratos') é contradita pela ÚNICA evidência de mercado disponível (Alpha cobra 3x mais que escolas tradicionais premium). VEREDICTO: Ideia morta no arrival. Pivotar para ferramentas de apoio docente (co-piloto) ou homeschooling premium para nicho de 0.01% pode ter viabilidade marginal, mas 'proibir professores' é suicídio comercial e legal."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-07T11:50:00Z"
+}

@@ -1,0 +1,22 @@
+{
+  "idea_name": "candidato_vereador_comandado_por_ia",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "A ideia de 'governança algorítmica' ou candidatos que terceirizam decisões para sistemas de IA é um fenômeno real e emergente (ex: Candidato Vic na Inglaterra, IA na prefeitura de Cheyenne). O problema da 'crise de representatividade' e a busca por decisões 'puramente técnicas/racionais' em vez de políticas é uma dor latente na sociedade. A questão é acionável pois envolve análise de legalidade eleitoral, viabilidade técnica de um pipeline de decisão e aceitação de mercado (votos)."
+  },
+  "evidence": [
+    "Candidatura de 'AI Steve' no Reino Unido (2024) para o Parlamento.",
+    "Discussões no TSE sobre o uso de IA em campanhas e o limite da 'personalidade' do candidato.",
+    "Aumento do ceticismo com políticos tradicionais, gerando espaço para 'soluções disruptivas' em cidades inteligentes."
+  ],
+  "red_flags": [
+    "Violação da soberania popular: A lei brasileira exige que o mandato seja exercido pelo indivíduo eleito (caráter personalíssimo).",
+    "Responsabilidade civil/criminal: Quem responde por uma decisão da IA que cause dano público?",
+    "Opacidade algorítmica: Como o eleitor audita os 'pesos' das decisões tomadas pelo pipeline?"
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-07T11:53:00Z"
+}

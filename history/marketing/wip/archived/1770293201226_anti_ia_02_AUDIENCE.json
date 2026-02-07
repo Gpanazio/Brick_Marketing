@@ -1,0 +1,41 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou brands in-house",
+    "experiencia": "10+ anos no mercado"
+  },
+  "dores": [
+    "Ceticismo com a qualidade da IA (craft/alma)",
+    "Medo de parecer ultrapassado perante a concorrência que já adota IA",
+    "Pressão por inovar mantendo produções premium com budgets menores"
+  ],
+  "linguagem_comum": [
+    "craft",
+    "key visual",
+    "premium",
+    "delivery",
+    "brief",
+    "deck",
+    "quality issues"
+  ],
+  "objecoes": [
+    "IA não tem craft/alma",
+    "Ainda não está bom o suficiente para produções reais",
+    "Parece fake/artificial e o cliente vai perceber"
+  ],
+  "motivadores_de_acao": [
+    "Status de inovador no mercado",
+    "Eficiência operacional para bater deadlines impossíveis",
+    "Manutenção da competitividade sem perder a qualidade do craft"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (Principal)",
+    "Newsletters: B9, Meio & Mensagem",
+    "Eventos: Cannes Lions, SXSW"
+  ],
+  "fontes_consultadas": [
+    "Persona Oficial Brick AI (Hardcoded)",
+    "Briefing 'Anti Ia' - Job ID 1770293201226_anti_ia"
+  ],
+  "analise_alinhamento": "O briefing de 'post polêmico provocando quem não gosta de IA' alinha-se diretamente com a dor de 'Ceticismo com IA' e a objeção de que 'IA não tem alma'. A provocação deve focar na perda de competitividade e eficiência (deadlines/budget) daqueles que se recusam a evoluir o 'craft' com novas ferramentas."
+}

@@ -3,6 +3,12 @@
 **Pipeline:** Ideias (Etapa 01)
 **Objetivo:** Validar se o problema/questão/dilema apresentado é REAL, relevante e merece análise.
 
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido abaixo.
+
 ## MISSÃO
 Verificar se a questão/ideia é:
 1. **Real** - Existe de verdade, não é hipotética ou inventada

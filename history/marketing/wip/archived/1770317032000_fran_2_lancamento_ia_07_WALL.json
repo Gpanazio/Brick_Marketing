@@ -1,0 +1,58 @@
+{
+  "score_final": 73,
+  "status": "REJECTED",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 17,
+      "max": 25,
+      "feedback": "O posicionamento é claro: produtora com 10 anos que dirige IA em vez de só gerar. 'Production Enhanced' e 'Vision over Prompt' comunicam a filosofia. Mas a OFERTA TANGÍVEL está ausente. Um diretor de marketing lendo isso entende O QUE a Brick AI É, mas não o que ele RECEBE. Falta o deliverable: 'Produção de vídeo com IA dirigida por quem tem 10 anos de set' — algo que transforme posicionamento em serviço contratável. Na versão curta, a sequência 'Production Enhanced. 10 anos de set. Vision over Prompt' é manifesto, não oferta."
+    },
+    "dor_real": {
+      "pontos": 15,
+      "max": 20,
+      "feedback": "A dor geral está bem mapeada: 'feed saturado de geração sem direção', 'voz metálica, anatomia inconsistente' são sintomas reais e visíveis. O dado Serasa Experian ancora a relevância. Mas a dor é descrita como fenômeno de mercado, não como problema DO CLIENTE. Um diretor de marketing não sofre com 'ruído sintético' — ele sofre com 'preciso entregar 12 vídeos por trimestre e a produtora cobra R$ 80k por peça' ou 'meu CEO quer IA mas não aceita resultado de meme'. Conectar a dor ao bolso e ao deadline do público-alvo elevaria de 15 para 20."
+    },
+    "credibilidade": {
+      "pontos": 13,
+      "max": 20,
+      "feedback": "Dois pilares sólidos: '10 anos de set' (verificável) e dado Serasa Experian (fonte citada). Mas falta prova social — nenhum cliente, nenhum case, nenhum número de projetos. '10 anos' é forte mas abstrato sem evidência tangível. A versão storytelling diz 'padrão de cinema' e 'estúdio de elite' — claims de auto-declaração sem suporte. Adicionar '150+ projetos entregues', nome de um cliente, ou um frame do vídeo de lançamento como prova visual resolveria."
+    },
+    "on_brand": {
+      "pontos": 18,
+      "max": 20,
+      "feedback": "Ponto mais forte da copy. Tom de Diretor de Cinema Sênior consistente do curto ao storytelling. 'Luz, lente e ritmo', 'cada frame é dirigido', 'enquadramento sem intenção' — vocabulário de set, não de startup. Terminologia oficial perfeita: Production Enhanced, Vision over Prompt, craft, direção. Sem nenhum termo proibido (revolucionário, disruptivo, game-changer). Não soa como ChatGPT. Diferencia claramente de concorrentes ('não vende ferramenta'). Único ponto: o tom é mais 'manifesto frio' que 'energia de set' — falta um pouco do suor, do café, do deadline. Funciona para lançamento, mas poderia ter mais garra."
+    },
+    "cta_especifico": {
+      "pontos": 10,
+      "max": 15,
+      "feedback": "'Entre no set da Brick AI' é excelente como frase — on-brand, evocativo, convida. 'Acesse brick.ai' é claro. Mas o que acontece depois do clique? O visitante vai ver o quê? Portfolio? Formulário? O vídeo de lançamento? Para um lançamento, o CTA deveria direcionar para a ação mais valiosa: 'Assista ao filme de lançamento: brick.ai' ou 'Veja o que direção muda: brick.ai/lancamento'. Falta especificidade sobre o que o prospect encontra do outro lado."
+    }
+  },
+  "destaques_positivos": [
+    "Tom de voz impecável — Cold Director do início ao fim, sem escorregar para tech bro ou corporativês",
+    "Terminologia oficial 100% correta (Production Enhanced, Vision over Prompt, craft)",
+    "Diferenciação forte e clara: 'não vende ferramenta, entrega direção técnica' é uma linha que mata",
+    "Dado Serasa Experian bem integrado — ancora sem parecer forçado",
+    "Storytelling alinhado ao filme de lançamento — continuidade narrativa coerente"
+  ],
+  "pontos_de_melhoria": [
+    "CRÍTICO: Transformar posicionamento em oferta tangível. Adicionar uma linha que diga o que o cliente RECEBE (ex: 'Produção de vídeo com IA sob direção de cinema. Do briefing ao filme final.')",
+    "CRÍTICO: Adicionar pelo menos um elemento de prova social. '10 anos de set' precisa de evidência: número de projetos, nome de cliente, ou link para portfolio.",
+    "IMPORTANTE: CTA precisa dizer o que o prospect encontra no destino. 'Assista ao filme' ou 'Veja o primeiro projeto' > 'Acesse brick.ai'"
+  ],
+  "rejection_reasons": [
+    "Clareza da oferta insuficiente (17/25) — copy comunica quem somos mas não o que vendemos como serviço contratável",
+    "Credibilidade sem prova social (13/20) — claims de experiência sem evidência tangível (cases, clientes, portfolio)",
+    "CTA genérico (10/15) — falta especificar o que acontece após o clique"
+  ],
+  "feedback_for_douglas": "A copy é BEM ESCRITA e ON-BRAND — o tom está perfeito, a terminologia correta, a diferenciação clara. Não é um problema de qualidade de escrita, é um problema de estrutura de oferta. Três ajustes levam de 73 para 80+:\n\n1. OFERTA TANGÍVEL: Adicionar uma linha em cada versão que transforme posicionamento em serviço. Sugestão para o CURTO: 'Brick AI: direção de cinema aplicada a vídeo com IA. Do briefing ao filme final.' — isso diz o que o cliente COMPRA.\n\n2. PROVA SOCIAL: O '10 anos' precisa de carne. Adicionar '150+ projetos' ou citar um cliente/segmento. Sugestão: '10 anos de set. 150+ filmes entregues. Agora com IA sob a mesma direção.'\n\n3. CTA DIRECIONADO: O filme de lançamento É o melhor CTA para uma campanha de lançamento. Usar: 'Assista ao filme que começa a nova era: brick.ai/lancamento' ou 'Veja o que direção muda: brick.ai'. O prospect precisa saber o que encontra.",
+  "next_step": "RESTART_PIPELINE_WITH_FEEDBACK",
+  "recommend_return_to": "COPYWRITER",
+  "wall_notes": {
+    "quality_assessment": "Copy de alta qualidade em tom e diferenciação. Está a 7 pontos da aprovação. Os ajustes são cirúrgicos, não estruturais — um round deve resolver.",
+    "brand_check": "BRAND_OK — zero violações de brand guidelines. Tom, terminologia e valores 100% alinhados.",
+    "loop_count": 1,
+    "max_loops": 3
+  },
+  "timestamp": "2026-02-05T18:47:00Z"
+}

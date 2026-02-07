@@ -1,0 +1,23 @@
+{
+  "idea_name": "dar_carro_morador_rua_uber",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": false,
+    "analysis": "A questão da população de rua e geração de renda é um problema real e de alta relevância socioeconômica. No entanto, a proposta específica de 'dar um carro para virar Uber' falha no critério de acionabilidade imediata por ignorar barreiras sistêmicas instransponíveis em uma análise racional simples (CNH, manutenção, documentação, antecedentes e as próprias políticas das plataformas de ride-sharing)."
+  },
+  "evidence": [
+    "População de rua no Brasil cresceu significativamente (dados do IPEA/CadÚnico).",
+    "Barreiras de entrada em plataformas como Uber exigem CNH definitiva, veículo com ano específico e seguro.",
+    "Moradores de rua frequentemente carecem de documentação básica, endereço fixo e estabilidade financeira para manutenção de ativos (combustível/seguro)."
+  ],
+  "red_flags": [
+    "Inviabilidade operacional: Como um morador de rua manteria os custos de combustível e manutenção antes do primeiro repasse da plataforma?",
+    "Questão legal: Grande parte da população de rua não possui CNH ou tem pendências administrativas.",
+    "Segurança e Higiene: As plataformas possuem critérios de avaliação dos usuários que seriam barreiras imediatas.",
+    "Risco de perda de capital: O carro, como ativo valioso, seria alvo de roubo ou venda por necessidade imediata (subsistência)."
+  ],
+  "status": "FAIL",
+  "next_step": "REJECT",
+  "timestamp": "2026-02-07T10:51:00Z"
+}

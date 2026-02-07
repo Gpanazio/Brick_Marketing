@@ -1,0 +1,22 @@
+{
+  "idea_name": "substituir_professores_por_ia_na_escola",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "A questão da eficiência educacional, custo do ensino e integração de IA no sistema escolar é um debate real e de alta relevância global. A substituição total de professores por IAs (educação baseada em modelos) sob supervisão de tutores de baixo custo é um dilema de negócio e política pública que já possui experimentos iniciais e pilotos de EdTech, tornando-a uma questão acionável para análise de viabilidade e mercado."
+  },
+  "evidence": [
+    "Escassez global de professores qualificados (relatórios da UNESCO).",
+    "Crescimento de plataformas de ensino adaptativo (Khan Academy/Khanmigo, Duolingo) que já desempenham papéis instrucionais.",
+    "Adoção de modelos de 'flipped classroom' onde o conteúdo é entregue digitalmente e o humano atua como facilitador."
+  ],
+  "red_flags": [
+    "Resistência sindical e regulatória massiva (leis de diretrizes e bases da educação).",
+    "Questões de desenvolvimento socioemocional em crianças sem figuras de autoridade pedagógica humana.",
+    "Dependência tecnológica e risco de viés/alucinação em modelos de IA em contextos educativos sensíveis."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-07T11:47:00Z"
+}

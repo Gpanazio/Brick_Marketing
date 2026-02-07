@@ -1,0 +1,22 @@
+{
+  "idea_name": "big_brother_de_ia_twitch",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "medium",
+    "is_actionable": true,
+    "analysis": "A ideia de entretenimento autônomo via IA (AI Livestreaming) é um fenômeno real e em explosão na Twitch. O problema/oportunidade reside na saturação de transmissões estáticas e na busca por formatos de reality show onde agentes de IA interagem de forma complexa e imprevisível. É relevante pelo potencial de monetização (ads/donations) e acionável pois existem stacks tecnológicas (LLMs + TTS + Avatares) capazes de executar o projeto."
+  },
+  "evidence": [
+    "Sucesso de 'Neuro-sama' e 'Nothing, Forever' (Seinfeld IA) na Twitch.",
+    "Crescimento de 'AI vtuber' como categoria estável na plataforma.",
+    "Disponibilidade de APIs de agentes autônomos que podem manter memória e contexto."
+  ],
+  "red_flags": [
+    "Custo operacional de tokens (LLM) para manter múltiplos agentes ativos 24/7.",
+    "Risco de banimento na Twitch por alucinações de IA que violem os termos de serviço (discurso de ódio/conteúdo sexual).",
+    "Dificuldade técnica em manter a narrativa interessante por longos períodos sem intervenção humana."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-07T12:11:00Z"
+}

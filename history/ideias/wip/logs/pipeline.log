@@ -108,3 +108,62 @@
   "risks_to_monitor": [],
   "pivot_triggers": []
 } | Score: 0 | Duration: 250000ms
+[2026-02-07T11:45:31-03:00] Pipeline iniciado: 1770475531047_proibir_professores_na_escola
+[2026-02-07T11:51:37-03:00] Pipeline iniciado: 1770475705403_candidato_a_vereador_comandado_por_ia
+[2026-02-07T11:57:30-03:00] Pipeline finalizado: 1770475705403_candidato_a_vereador_comandado_por_ia | Decision: {
+  "decision": "NO-GO",
+  "action": "Rejeitar a ideia como proposta. Se o interesse em GovTech é genuíno, pivotar para ferramentas que AUXILIAM o político humano.",
+  "reasoning": "A ideia colide com a Constituição Federal (cláusula pétrea de soberania popular), é economicamente deficitária (custo > receita do mandato), e não tem precedente de sucesso em NENHUMA jurisdição democrática. AI Steve no Reino Unido (jurisdição mais permissiva que o Brasil) obteve 179 votos — rejeição total. O Devil identificou 3 dealbreakers absolutos e todos foram aceitos sem rebuttal possível. A análise mais generosa possível (score antes do risco: 49) já coloca a ideia em REVISIT. Com o ajuste de risco, cai para 19 = NO-GO com confiança muito alta. A pergunta certa não é 'como substituir o vereador por IA' — é 'como dar ao vereador ferramentas de IA para decidir melhor'. Essa segunda pergunta TEM mercado.",
+  "next_steps": [
+    "ARQUIVAR a ideia 'candidato comandado por IA'",
+    "SE interesse em GovTech é genuíno, explorar 3 pivots viáveis:",
+    "  1. SaaS de Transparência Legislativa — IA fiscaliza orçamento/votações e gera alertas para cidadãos (modelo B2C/B2G)",
+    "  2. Shadow Advisor — IA prepara pareceres técnicos para vereadores assinarem (modelo B2G, mercado de 57k vereadores no Brasil)",
+    "  3. Plataforma de Participação Popular — IA processa demandas da população e apresenta análise técnica ao vereador (modelo B2G2C)"
+  ],
+  "risks_to_monitor": [],
+  "pivot_triggers": []
+} | Score: 0 | Duration: 353000ms
+[2026-02-07T11:57:30-03:00] Pipeline iniciado: 1770475531047
+[2026-02-07T12:04:02-03:00] Pipeline finalizado: 1770475531047 | Decision: {
+  "decision": "NO-GO",
+  "action": "Rejeitar. Se interesse em EdTech é genuíno, pivotar para mercados sem regulação de licenciatura.",
+  "reasoning": "A ideia é ilegal (LDB), anti-econômica (modelo Alpha School prova que custa mais), socialmente rejeitada (pais + sindicatos), e tecnicamente imatura (LLMs alucinam demais para uso pedagógico exclusivo). O Devil apresentou 3 dealbreakers absolutos e TODOS foram aceitos sem rebuttal. A matemática de Alpha School é definitiva: o único modelo que funciona cobra R$200-350k/ano para mercado de 50k famílias — não é 'baixo custo', é ultra-luxo. As alternativas viáveis (cursos livres, reforço escolar, homeschooling) são bons negócios, mas são ideias DIFERENTES da proposta original.",
+  "next_steps": [
+    "ARQUIVAR a ideia 'proibir professores na escola formal'",
+    "SE interesse em EdTech é genuíno, explorar 3 pivots:",
+    "  1. Rede de reforço escolar com IA — contraturno, sem exigência de licenciatura, custo baixo (R$200-500/mês), mercado massivo",
+    "  2. Franquia de cursos livres (programação, inglês, design) — supervisores + IA, regulação frouxa, modelo Alpha School adaptado para classe média",
+    "  3. Plataforma de homeschooling assistido — mercado crescente (~100k famílias), IA como currículo + encontros presenciais para socialização"
+  ],
+  "risks_to_monitor": [],
+  "pivot_triggers": []
+} | Score: 0 | Duration: 392000ms
+[2026-02-07T12:09:18-03:00] Pipeline iniciado: 1770476957571_big_brother_de_ia
+[2026-02-07T12:16:30-03:00] Pipeline finalizado: 1770476957571_big_brother_de_ia | Decision: {
+  "decision": "REVISIT",
+  "action": "Coletar mais informação antes de decidir. Especificamente: validar se o formato 'Big Brother com IAs' tem apelo DIFERENTE de 'AI VTuber' existente.",
+  "reasoning": "A ideia NÃO é morta — diferente das anteriores (carros para moradores de rua, proibir professores, vereador IA), esta opera em mercado real com precedentes de monetização. O problema é que a versão ORIGINAL (24/7, 10-12 agentes, sem host) é inviável por custo, TOS e risco técnico. MAS uma versão REDUZIDA (temporada de 7 dias, 3-4 agentes, 4h/dia, host humano, chat influencia ações) tem potencial testável a custo baixo (US$1-2k/mês). A questão não resolvida: o formato 'múltiplas IAs competindo em Big Brother' gera audiência SUSTENTÁVEL ou é apenas novelty de 72h? Isso precisa de teste antes de investimento real.",
+  "next_steps": [
+    "ANTES DE INVESTIR: Fazer teste de conceito de 48h (hackathon)",
+    "  1. Montar 3 agentes com personalidades distintas usando APIs baratas (Claude Haiku / GPT-4o-mini)",
+    "  2. Criar 'sala' simples (Discord ou OBS com avatares 2D) — custo: R$0",
+    "  3. Transmitir 2 dias na Twitch com host humano presente",
+    "  4. Medir: peak viewers, retenção média, chat engagement, donations",
+    "  5. Se >500 viewers médios após 48h: pivotar para temporada de 7 dias (CONDITIONAL GO)",
+    "  6. Se <100 viewers médios após 48h: arquivar (NO-GO confirmado)",
+    "ORÇAMENTO DO TESTE: US$50-100 em tokens + 48h de tempo humano. Risco: ZERO.",
+    "SE TESTE POSITIVO: Investir em formato de temporadas semanais com eliminações, Game Master, e monetização via 'bits decidem quem sai'"
+  ],
+  "risks_to_monitor": [
+    "Evolução da TOS da Twitch sobre conteúdo automatizado (monitorar mudanças trimestrais)",
+    "Pricing de APIs (se Claude/GPT aumentarem 5x, modelo morre)",
+    "Movimentos de Neuro-sama/Vedal — se ele fizer Big Brother antes, acabou"
+  ],
+  "pivot_triggers": [
+    "Teste 48h com >500 viewers médios = CONDITIONAL GO para temporada de 7 dias",
+    "Teste 48h com <100 viewers = NO-GO definitivo",
+    "Twitch banir conteúdo automatizado completamente = NO-GO independente de teste",
+    "Neuro-sama lançar formato similar = reavaliar diferenciação ou NO-GO"
+  ]
+} | Score: 0 | Duration: 432000ms

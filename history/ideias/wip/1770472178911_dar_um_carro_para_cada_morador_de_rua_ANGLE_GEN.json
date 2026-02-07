@@ -1,0 +1,43 @@
+{
+  "idea_name": "geração_renda_mobilidade_população_rua",
+  "options": [
+    {
+      "name": "Subsídio de Aluguel + Capacitação",
+      "action": "Parceria com locadoras de carros (Kovi/Zarp/Uber Rental) para subsidiar 100% do aluguel semanal nos primeiros 3 meses, depois reduzir gradualmente. Pré-requisito: beneficiário já possui CNH/EAR ou está em processo final de obtenção. Inclui mentor-motorista nos primeiros 15 dias.",
+      "bet": "Existe um subgrupo da população de rua (ex-trabalhadores formais, recém-desempregados) que possui CNH válida ou pode tirá-la rapidamente. Subsidiar o aluguel em vez de doar o ativo reduz risco de liquidação e cria incentivo de manutenção.",
+      "risk": "Beneficiário abandona o programa após subsídio acabar por não conseguir gerar renda suficiente para pagar aluguel + despesas. Locadoras podem não aceitar população de rua por falta de comprovação de residência.",
+      "upside": "Custo por beneficiário cai de R$ 50k (compra do carro) para R$ 4-6k (3 meses de subsídio). Locadora assume manutenção/seguro. Se 30% dos participantes se tornam autossuficientes, ROI social é alto. Reversível: basta parar subsídio.",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Reduz dramaticamente o risco de capital e foca nos indivíduos com maior probabilidade de sucesso (já possuem habilitação). A locadora resolve o problema de manutenção/seguro, e o subsídio decrescente cria transição realista para autossuficiência."
+    },
+    {
+      "name": "Micro-Logística: Bicicletas/Motos Elétricas",
+      "action": "Fornecer bicicletas elétricas ou motos 50cc (não exigem CNH categoria A) + mochila térmica + smartphone básico. Foco em deliveries (iFood/Rappi/Loggi). Incluir treinamento de 3 dias sobre segurança no trânsito e uso de apps. Fornecer auxílio-moradia temporário (R$ 600/mês) para estabilização inicial.",
+      "bet": "Barreira de entrada em delivery é infinitamente menor que Uber: não exige CNH (para bicicleta), custo operacional é ínfimo (recarga elétrica ~R$ 30/mês), e a demanda por entregadores é alta em grandes centros urbanos.",
+      "risk": "Roubo/perda do equipamento (bicicleta elétrica vale R$ 3-5k). Beneficiário pode não conseguir ritmo de trabalho necessário (8-10h/dia pedalando). Rendimento médio de entregador (R$ 1.500-2.500/mês) pode não ser suficiente para sair da situação de rua.",
+      "upside": "Custo por beneficiário: R$ 5-7k (equipamento + 3 meses de auxílio-moradia). Taxa de sucesso esperada é maior (40-50%) porque não depende de CNH ou capital de giro alto. Escalável: é possível começar piloto com 10-20 pessoas.",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "Resolve o problema da barreira de entrada (CNH/documentação) e reduz custos operacionais a quase zero. O risco principal é roubo do equipamento, mas o custo de reposição é gerenciável. Permite testar viabilidade com investimento muito menor."
+    },
+    {
+      "name": "Programa Completo: Carro + Suporte Integral",
+      "action": "Doar carro popular (Fiat Mobi/Renault Kwid seminovo 2020-2022) + custear obtenção de CNH/EAR + fornecer moradia temporária (república/casa de passagem por 6 meses) + capital de giro inicial (R$ 2k para combustível/emergências) + acompanhamento psicossocial mensal. Exigência: beneficiário passa por triagem rigorosa (motivação, ausência de vícios graves, antecedentes limpos).",
+      "bet": "Com TODAS as barreiras removidas (moradia, documentação, capital, veículo), um indivíduo motivado consegue se estabilizar como motorista de app e sair definitivamente da situação de rua em 6-12 meses.",
+      "risk": "Custo altíssimo por beneficiário (R$ 60-80k total). Risco de beneficiário vender o carro para subsistência imediata ou por pressão externa. Risco de acidente sem seguro adequado gerando passivos legais. Taxa de sucesso esperada ainda é baixa (15-25%) porque dependência química e saúde mental são barreiras invisíveis.",
+      "upside": "Para os 15-25% que conseguem, a transformação é completa e permanente: renda formal, dignidade, saída da rua. Gera estudos de caso poderosos para captação de recursos futuros. Pode criar efeito cascata (beneficiários ajudam outros).",
+      "reversible": false,
+      "strength_score": 48,
+      "rationale": "É a proposta original reformulada com todas as lacunas preenchidas. Ainda assim, o custo-benefício é ruim comparado às outras opções: investimento 10-15x maior para taxa de sucesso apenas 2-3x melhor. Irreversível: uma vez doado o carro, não há como recuperar o ativo."
+    }
+  ],
+  "recommended": {
+    "option_name": "Subsídio de Aluguel + Capacitação",
+    "confidence": 78,
+    "reasoning": "É a opção que melhor equilibra viabilidade operacional, custo-benefício e impacto social. Ao focar no subgrupo da população de rua que JÁ possui CNH ou está próximo de obtê-la, elimina a principal barreira identificada no PAIN CHECK e MARKET SCAN. O modelo de aluguel subsidiado resolve simultaneamente 3 problemas críticos: (1) elimina risco de liquidação do ativo, (2) transfere custos de manutenção/seguro para a locadora, (3) cria incentivo contínuo de desempenho (se não trabalhar, perde o carro no fim da semana). Custo 10x menor que a Opção 3 com probabilidade de sucesso apenas 30-40% menor. Reversível e escalável: permite começar com 5-10 pessoas e expandir conforme resultados."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-07T10:55:23Z"
+}

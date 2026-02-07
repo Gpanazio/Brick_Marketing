@@ -5,10 +5,6 @@
 # Em vez de passar todo o output de cada etapa para a próxima,
 # cria um resumo estruturado com apenas as informações essenciais.
 
-# Detectar diretório do script dinamicamente (comentado para evitar override)
-# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# PROJECT_ROOT="$SCRIPT_DIR"
-
 # ============================================
 # SUMMARIZAÇÃO DE CONTEXTO
 # ============================================
@@ -64,12 +60,8 @@ create_marketing_context() {
     
     local context="{"
     
-    # Briefing (resumo de 300 chars)
-    local briefing_file="$wip_dir/${job_id}_PROCESSED.md"
-    if [ -f "$briefing_file" ]; then
-        local briefing_summary=$(head -c 300 "$briefing_file" | tr '\n' ' ' | tr '"' "'")
-        context+="\"briefing_summary\":\"$briefing_summary\","
-    fi
+    # Briefing é injetado separadamente no prompt (não duplicar aqui)
+    # Bug fix 07/02/26: Remover briefing_summary daqui para evitar duplicação
     
     # Validator (status + campos faltantes)
     local validator_file="$wip_dir/${job_id}_01_VALIDATOR.json"
@@ -163,6 +155,9 @@ create_ideias_context() {
     
     local context="{"
     
+    # Briefing é injetado separadamente no prompt (não duplicar aqui)
+    # Bug fix 07/02/26: Remover briefing_summary para evitar duplicação
+    
     # Pain Check (resumo)
     local pain_file="$wip_dir/${job_id}_PAIN_CHECK.json"
     if [ -f "$pain_file" ]; then
@@ -225,46 +220,6 @@ estimate_token_savings() {
     echo "{\"original_tokens\":$original_tokens,\"summarized_tokens\":$summarized_tokens,\"savings\":$savings,\"percentage\":$percentage}"
 }
 
-# ============================================
-# EXPORTS (para uso como biblioteca)
-# ============================================
-export -f summarize_json summarize_briefing
-export -f create_marketing_context create_projetos_context create_ideias_context
-export -f estimate_token_savings
-
-# ============================================
-# IDEIAS - Context Summarizer
-# ============================================
-
-create_ideias_context() {
-    local job_id="$1"
-    local wip_dir="$2"
-    
-    local context="{"
-    
-    # Briefing processado (primeiros 500 chars)
-    local processed_file="$wip_dir/${job_id}_PROCESSED.md"
-    if [ -f "$processed_file" ]; then
-        local briefing_summary=$(head -c 500 "$processed_file" | tr '\n' ' ' | tr '"' "'")
-        context+="\"briefing_summary\":\"$briefing_summary...\","
-    fi
-    
-    # Pain Check (dor validada + score)
-    local pain_file="$wip_dir/${job_id}_PAIN_CHECK.json"
-    if [ -f "$pain_file" ]; then
-        local pain_summary=$(jq -c '{
-            dor_validada: .dor_validada,
-            score: .pain_score,
-            status: .status
-        }' "$pain_file" 2>/dev/null || echo "{}")
-        context+="\"pain_check\":$pain_summary,"
-    fi
-    
-    context+="\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}"
-    
-    echo "$context"
-}
-
 summarize_ideias_briefing() {
     local full_briefing="$1"
     local max_chars="${2:-400}"
@@ -272,3 +227,11 @@ summarize_ideias_briefing() {
     # Extrai título + primeiros parágrafos
     echo "$full_briefing" | head -c $max_chars | tr '\n' ' '
 }
+
+# ============================================
+# EXPORTS (para uso como biblioteca)
+# ============================================
+export -f summarize_json summarize_briefing
+export -f create_marketing_context create_projetos_context create_ideias_context
+export -f estimate_token_savings
+export -f summarize_ideias_briefing

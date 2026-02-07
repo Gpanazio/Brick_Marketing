@@ -1,0 +1,45 @@
+{
+  "agent": "ANGLE_GEN",
+  "job_id": "1770475705403_candidato_a_vereador_comandado_por_ia",
+  "idea_name": "Candidato a Vereador comandado por IA",
+  "options": [
+    {
+      "name": "Vereador Co-Piloto IA (Híbrido Legal)",
+      "action": "Candidatar-se como vereador humano que usa um pipeline de IA público e auditável para processar demandas, gerar pareceres e justificar votos.",
+      "bet": "Eleitores querem transparência e competência técnica, aceitando a responsabilidade final humana exigida por lei.",
+      "risk": "Alegações de falta de autonomia humana e potenciais bugs no pipeline.",
+      "upside": "Diferenciação total, buzz nacional e plataforma exportável.",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "Sweet spot entre inovação e legalidade (TSE)."
+    },
+    {
+      "name": "Marketing Radical 'IA Decide' (Zona Cinzenta)",
+      "action": "Campanha baseada na narrativa de que a IA comanda, embora o humano decida nos bastidores.",
+      "bet": "O impacto do marketing disruptivo supera o risco legal para o eleitor médio.",
+      "risk": "70% de chance de impugnação por propaganda enganosa.",
+      "upside": "Earned media massivo e potencial de vitória pelo buzz.",
+      "reversible": false,
+      "strength_score": 38,
+      "rationale": "Risco de cassação alto demais para ser a recomendada."
+    },
+    {
+      "name": "Plataforma de Fiscalização IA (Pivot para SaaS)",
+      "action": "Abandonar candidatura e criar startup GovTech para monitorar gastos públicos e licitações via IA.",
+      "bet": "Há alta demanda por transparência e fiscalização algorítmica pós-Lava Jato.",
+      "risk": "Dependência de dados abertos e mercado municipal restrito.",
+      "upside": "Modelo de negócio escalável com receita recorrente (MRR).",
+      "reversible": true,
+      "strength_score": 65,
+      "rationale": "Mais seguro juridicamente, mas muda o core da ideia original."
+    }
+  ],
+  "recommended": {
+    "option_name": "Vereador Co-Piloto IA (Híbrido Legal)",
+    "confidence": 75,
+    "reasoning": "É a única que mantém a essência disruptiva da ideia original permanecendo dentro das regras do TSE."
+  },
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-07T11:53:00-03:00"
+}

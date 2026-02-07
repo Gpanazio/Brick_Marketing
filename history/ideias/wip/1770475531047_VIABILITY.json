@@ -1,0 +1,73 @@
+{
+  "idea_name": "proibir_professores_na_escola",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "Problema subjacente (eficiência educacional, escassez de professores, custo do ensino) é real e globalmente documentado — UNESCO estima déficit de milhões de professores até 2030. Alpha School prova que demanda por 'ensino eficiente' existe. MAS o framing 'proibir professores' confunde otimização com eliminação. O problema real é 'como ensinar melhor com menos recursos', não 'como eliminar a figura docente'."
+      },
+      "contexto": {
+        "pontos": 23,
+        "max": 25,
+        "feedback": "Market Scan trouxe dados fortes: Alpha School (US$40k/ano, modelo de guias), Khanmigo, LDB Art. 62, mercado de US$15-92bi em EdTech IA, trauma pós-pandemia com ensino remoto. Devil complementou com: caso Escola Projeto Âncora (batalha judicial mesmo com professores), queda de 60% em matrículas Kroton/Cogna por rejeição a EAD, aumento de 40% em ansiedade infantil pós-pandemia (Journal of Child Psychology 2024), alucinação de 15-30% em conceitos avançados (Stanford HAI 2025, MIT 2024). Perdeu 2 pontos porque faltou benchmarking de modelos que FUNCIONAM com IA + professores (Singapura, Coreia do Sul)."
+      },
+      "opcoes": {
+        "pontos": 5,
+        "max": 25,
+        "feedback": "Angel ERROU — sem opções. Market Scan sugeriu 3 alternativas viáveis (escola de reforço 100% IA, franquia de cursos livres, plataforma de homeschooling), mas TODAS abandonam a premissa central de 'proibir professores na escola formal'. A ideia original não sobrevive à LDB. Score 5 porque as alternativas do Market Scan têm mérito real — especialmente 'cursos livres com IA' (mercado sem regulação de licenciatura)."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Impossível executar na educação formal brasileira. LDB Art. 62 exige licenciatura plena — lei cristalina desde 1996, reforçada em 2022. Custo real por aluno (licenças IA + infra + advogados + seguros) IGUALA ou SUPERA escola tradicional, eliminando vantagem de 'baixo custo'. Mercado endereçável no modelo Alpha School: ~50.000 famílias no Brasil inteiro (top 0,1%). Sindicatos (CNTE, APEOESP) + pais pós-pandemia = rejeição social massiva."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Máximo desconto. 3 dealbreakers ABSOLUTOS: (1) LDB Art. 62 — descredenciamento pelo MEC, diplomas inválidos, fechamento em 3-6 meses. (2) Modelo só viável a R$200-350k/ano (mercado de 50k famílias, não escala). (3) Nenhum LLM certificado para substituir instrução pedagógica — 15-30% de alucinação em conceitos complexos, crianças como cobaias. Riscos adicionais: rejeição parental pós-pandemia (40% aumento ansiedade infantil), lobby sindical destruidor, dependência de APIs de terceiros sem controle."
+      }
+    },
+    "score_before_risk": 48,
+    "score_final": 18,
+    "status": "NO-GO",
+    "confidence": "very_high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "LDB Art. 62: exige licenciatura plena — descredenciamento MEC + diplomas inválidos",
+      "Alpha School cobra US$40k/ano — CONTRADIZ premissa de 'custo reduzido'",
+      "LLMs alucinam 15-30% em conceitos complexos — crianças como beta testers",
+      "87% dos pais consideram interação com professor essencial (Datafolha 2025)",
+      "Pais pós-pandemia REJEITAM mais telas — aumento de 40% em ansiedade infantil",
+      "Sindicatos (CNTE, APEOESP) destruirão qualquer tentativa com protestos e lobby"
+    ],
+    "viability_response": [
+      "ACEITO: LDB é lei federal vigente e reforçada — não há brecha, não há emenda em tramitação, não há exceção.",
+      "ACEITO: Alpha School é contraevidência, não validação. Prova que modelo custa MAIS, não menos. O diferencial real é 'estudar 2h + 6h de esportes', não 'IA substitui professor'.",
+      "ACEITO: Taxa de alucinação de 15-30% é inaceitável em educação infantil. Um único caso de conteúdo errado ou inadequado = processo + encerramento.",
+      "ACEITO: Rejeição parental é sentimento real pós-pandemia — não é 'falta de educação tecnológica', é trauma coletivo.",
+      "ACEITO: Poder sindical é variável política que sozinha já inviabiliza a proposta.",
+      "ACEITO: Custo real (IA + infra + advogados + seguros) elimina a única vantagem proposta (custo reduzido)."
+    ],
+    "remaining_risks": [
+      "TODOS os riscos permanecem — dealbreakers são legais, não contornáveis"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Rejeitar. Se interesse em EdTech é genuíno, pivotar para mercados sem regulação de licenciatura.",
+    "reasoning": "A ideia é ilegal (LDB), anti-econômica (modelo Alpha School prova que custa mais), socialmente rejeitada (pais + sindicatos), e tecnicamente imatura (LLMs alucinam demais para uso pedagógico exclusivo). O Devil apresentou 3 dealbreakers absolutos e TODOS foram aceitos sem rebuttal. A matemática de Alpha School é definitiva: o único modelo que funciona cobra R$200-350k/ano para mercado de 50k famílias — não é 'baixo custo', é ultra-luxo. As alternativas viáveis (cursos livres, reforço escolar, homeschooling) são bons negócios, mas são ideias DIFERENTES da proposta original.",
+    "next_steps": [
+      "ARQUIVAR a ideia 'proibir professores na escola formal'",
+      "SE interesse em EdTech é genuíno, explorar 3 pivots:",
+      "  1. Rede de reforço escolar com IA — contraturno, sem exigência de licenciatura, custo baixo (R$200-500/mês), mercado massivo",
+      "  2. Franquia de cursos livres (programação, inglês, design) — supervisores + IA, regulação frouxa, modelo Alpha School adaptado para classe média",
+      "  3. Plataforma de homeschooling assistido — mercado crescente (~100k famílias), IA como currículo + encontros presenciais para socialização"
+    ],
+    "risks_to_monitor": [],
+    "pivot_triggers": []
+  },
+  "note": "Avaliação duplicada — mesma ideia (job 1770475531047) já avaliada anteriormente com resultado NO-GO 16/100. Este run tem inputs do pipeline ligeiramente diferentes mas conclusão idêntica.",
+  "timestamp": "2026-02-07T15:03:00Z"
+}

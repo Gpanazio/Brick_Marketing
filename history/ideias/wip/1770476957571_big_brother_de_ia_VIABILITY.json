@@ -1,0 +1,88 @@
+{
+  "idea_name": "big_brother_de_ia_twitch",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "Mercado real e documentado. Neuro-sama (500k+ seguidores, US$30-50k/mês) prova que AI entertainment na Twitch tem demanda. O formato 'Big Brother' adiciona estrutura narrativa (eliminações, conflitos, alianças) que IAs solo não têm. A dor do público (fadiga de conteúdo repetitivo, busca por formatos novos) é legítima. Score 20 porque é entretenimento/média prioridade, não problema crítico de negócio."
+      },
+      "contexto": {
+        "pontos": 22,
+        "max": 25,
+        "feedback": "Mapeamento forte. Market Scan trouxe: Neuro-sama, Nothing Forever (100k→2-5k viewers em 3 semanas), The Series, custos de tokens (US$5-15k/mês), infraestrutura (LiveKit/VRChat). Devil complementou com dados decisivos: Twitch TOS jan/2026 (exige criador humano identificável), GPT-4 Moderation API 5-8% falsos negativos, queda de 80-90% de viewers após 72h de novidade, caso Infinite Adventures (US$40k queimados em 6 meses). Perdeu 3 pontos por falta de análise de monetização alternativa (sponsors, branded content, merchandise) e de outras plataformas (YouTube, Kick)."
+      },
+      "opcoes": {
+        "pontos": 12,
+        "max": 25,
+        "feedback": "Angel ERROU — sem opções geradas. Market Scan sugeriu 3 alternativas (modelo híbrido com diretor humano, temporadas de 7 dias, chat paga para influenciar). Devil sugeriu pivot para 'AI Game Show semanal de 2-3h com host humano + 3-4 IAs'. ESSA é a opção mais viável: custo de US$1-2k/mês, TOS compliance (host humano presente), risco de alucinação reduzido 95% (menos agentes × menos tempo × moderação focada). O problema: a versão ORIGINAL (24/7, 10-12 agentes) é inviável; só uma versão drasticamente reduzida tem chance."
+      },
+      "execucao": {
+        "pontos": 8,
+        "max": 20,
+        "feedback": "Original (24/7, 10-12 agentes): impossível — US$10-20k/mês, moderação 24/7 obrigatória, Twitch TOS violation, certeza estatística de ban em 30 dias. MVP reduzido (temporada de 7 dias, 3-4 agentes, 4h/dia, host humano): EXECUTÁVEL por US$2-3k/mês com risco gerenciável. Mas mesmo o MVP enfrenta: (1) competição com Neuro-sama (2+ anos de vantagem), (2) churn de audiência após novidade (72h), (3) necessidade de roteirista/game master para manter narrativa. Score 8 reflete: possível em formato reduzido, mas difícil e com risco médio-alto."
+      },
+      "ajuste_risco": {
+        "pontos": -20,
+        "max": -30,
+        "feedback": "Devil encontrou 3 dealbreakers marcados como absolutos. Avaliando cada um: (1) ECONÔMICO — ROI negativo é REAL para formato 24/7 (US$10-20k/mês vs US$500-2k receita). Mas para MVP semanal a US$1-2k/mês, é testável com risco limitado. REBATIDO PARCIALMENTE. (2) TWITCH TOS — canais totalmente automatizados são banidos. Mas com host humano presente, é compliant. REBATIDO. (3) TÉCNICO — 5-8% falsos negativos com 10k msg/dia. Mas com 3-4 agentes × 4h/dia = ~500 msgs/dia, risco cai 95%. REBATIDO PARCIALMENTE. O risco REAL remanescente: Neuro-sama domina o nicho com 2+ anos de vantagem, audiência tem churn de 80-90% após 72h, e o custo de Game Master (roteirista + dev) torna o projeto tão caro quanto show humano. Ajuste de -20 (risco crítico sem mitigação clara = competição com incumbent dominante)."
+      }
+    },
+    "score_before_risk": 62,
+    "score_final": 42,
+    "status": "REVISIT",
+    "confidence": "medium"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Neuro-sama domina nicho com 500k seguidores e 2+ anos de vantagem",
+      "Custo de US$10-20k/mês para formato 24/7 vs receita de US$500-2k/mês = ROI catastrófico",
+      "Certeza estatística de ban por TOS em 30 dias com 10-12 agentes 24/7",
+      "Audiência perde interesse em 72h — Nothing Forever caiu de 100k para 2-5k viewers",
+      "Twitch TOS 2026 exige criador humano identificável — 100% IA é banível",
+      "APIs podem ser cortadas/repriced a qualquer momento (dependência de terceiros)"
+    ],
+    "viability_response": [
+      "ACEITO: Neuro-sama é incumbent dominante. Competir diretamente no formato 'AI VTuber 24/7' é suicídio. MAS o formato 'Big Brother' (múltiplos agentes com narrativa estruturada) é DIFERENTE de VTuber solo — pode nichar fora do território dela.",
+      "REBATIDO PARCIALMENTE: US$10-20k/mês é real para 24/7. Mas MVP semanal (3-4 agentes, 4h/dia, 7 dias) custa US$1-2k/mês — testável sem queimar US$60-120k.",
+      "REBATIDO PARCIALMENTE: 10-12 agentes 24/7 = certeza de ban. Mas 3-4 agentes × 4h com moderação humana em tempo real + filtros = risco gerenciável.",
+      "ACEITO: Churn de 80-90% após novidade é padrão documentado. Counter: temporadas curtas (7 dias) com cliffhangers e 'final de temporada' podem reter melhor que stream infinita.",
+      "REBATIDO: Host humano presente resolve a TOS. Vedal faz isso com Neuro-sama.",
+      "ACEITO: Dependência de API é risco real sem mitigação. Multi-provider (Claude + GPT + Gemini) reduz mas não elimina."
+    ],
+    "remaining_risks": [
+      "Neuro-sama como incumbent dominante — diferenciação por formato é aposta não comprovada",
+      "Churn de audiência após novidade — temporadas curtas mitigam mas não resolvem",
+      "Custo de Game Master/roteirista torna o projeto comparável a show humano de baixo orçamento",
+      "Dependência de APIs de terceiros sem SLA para entretenimento"
+    ]
+  },
+  "recommendation": {
+    "decision": "REVISIT",
+    "action": "Coletar mais informação antes de decidir. Especificamente: validar se o formato 'Big Brother com IAs' tem apelo DIFERENTE de 'AI VTuber' existente.",
+    "reasoning": "A ideia NÃO é morta — diferente das anteriores (carros para moradores de rua, proibir professores, vereador IA), esta opera em mercado real com precedentes de monetização. O problema é que a versão ORIGINAL (24/7, 10-12 agentes, sem host) é inviável por custo, TOS e risco técnico. MAS uma versão REDUZIDA (temporada de 7 dias, 3-4 agentes, 4h/dia, host humano, chat influencia ações) tem potencial testável a custo baixo (US$1-2k/mês). A questão não resolvida: o formato 'múltiplas IAs competindo em Big Brother' gera audiência SUSTENTÁVEL ou é apenas novelty de 72h? Isso precisa de teste antes de investimento real.",
+    "next_steps": [
+      "ANTES DE INVESTIR: Fazer teste de conceito de 48h (hackathon)",
+      "  1. Montar 3 agentes com personalidades distintas usando APIs baratas (Claude Haiku / GPT-4o-mini)",
+      "  2. Criar 'sala' simples (Discord ou OBS com avatares 2D) — custo: R$0",
+      "  3. Transmitir 2 dias na Twitch com host humano presente",
+      "  4. Medir: peak viewers, retenção média, chat engagement, donations",
+      "  5. Se >500 viewers médios após 48h: pivotar para temporada de 7 dias (CONDITIONAL GO)",
+      "  6. Se <100 viewers médios após 48h: arquivar (NO-GO confirmado)",
+      "ORÇAMENTO DO TESTE: US$50-100 em tokens + 48h de tempo humano. Risco: ZERO.",
+      "SE TESTE POSITIVO: Investir em formato de temporadas semanais com eliminações, Game Master, e monetização via 'bits decidem quem sai'"
+    ],
+    "risks_to_monitor": [
+      "Evolução da TOS da Twitch sobre conteúdo automatizado (monitorar mudanças trimestrais)",
+      "Pricing de APIs (se Claude/GPT aumentarem 5x, modelo morre)",
+      "Movimentos de Neuro-sama/Vedal — se ele fizer Big Brother antes, acabou"
+    ],
+    "pivot_triggers": [
+      "Teste 48h com >500 viewers médios = CONDITIONAL GO para temporada de 7 dias",
+      "Teste 48h com <100 viewers = NO-GO definitivo",
+      "Twitch banir conteúdo automatizado completamente = NO-GO independente de teste",
+      "Neuro-sama lançar formato similar = reavaliar diferenciação ou NO-GO"
+    ]
+  },
+  "timestamp": "2026-02-07T15:15:00Z"
+}
