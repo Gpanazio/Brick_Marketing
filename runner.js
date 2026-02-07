@@ -190,7 +190,7 @@ async function processJob(payload) {
 async function saveBriefing(mode, jobId, content) {
   const briefingPath = path.join(
     CONFIG.WORKSPACE,
-    `history/${mode}/briefing/${jobId}.txt`
+    `history/${mode}/briefing/${jobId}.md`
   );
   
   const dir = path.dirname(briefingPath);
@@ -198,20 +198,21 @@ async function saveBriefing(mode, jobId, content) {
   await fs.writeFile(briefingPath, content, 'utf-8');
   
   await log('info', 'Briefing salvo', { path: briefingPath });
+  return briefingPath;
 }
 
 async function executeViaSubAgent(action, mode, jobId, target) {
-  await log('info', 'Delegando execução para sub-agent via exec direto', { action, mode, jobId });
-  
-  // NOVA ABORDAGEM: exec simples sem await (fire & forget)
-  // Runner apenas dispara o script e polling verifica conclusão
+  await log('info', 'Iniciando execução via spawn (processo filho)', { action, mode, jobId });
   
   let scriptPath, args;
   
+  // Caminho do briefing (agora .md)
+  const briefingPath = path.join(CONFIG.WORKSPACE, `history/${mode}/briefing/${jobId}.md`);
+
   if (action === 'briefing' || action === 'rerun') {
     scriptPath = './run-pipeline.sh';
     args = [
-      path.join(CONFIG.WORKSPACE, `history/${mode}/briefing/${jobId}.txt`),
+      briefingPath,
       `--mode=${mode}`,
     ];
   } else if (action === 'feedback') {
@@ -229,62 +230,41 @@ async function executeViaSubAgent(action, mode, jobId, target) {
   }
   
   const fullPath = path.join(CONFIG.WORKSPACE, scriptPath);
-  const cmd = `cd ${CONFIG.WORKSPACE} && nohup bash ${fullPath} ${args.join(' ')} > /dev/null 2>&1 &`;
   
-  // Fire & forget
-  const { exec } = require('child_process');
-  exec(cmd);
-  
-  await log('info', 'Script iniciado em background', { cmd });
-  
-  // Polling: checar se FINAL.md ou última etapa foi gerada
-  return await pollForCompletion(mode, jobId);
+  // Execução robusta via spawn
+  return new Promise((resolve, reject) => {
+    const child = spawn('bash', [fullPath, ...args], {
+      cwd: CONFIG.WORKSPACE,
+      env: { ...process.env, FORCE_COLOR: '1' } // Manter cores nos logs
+    });
+
+    // Logging básico do stdout/stderr para debug do runner
+    child.stdout.on('data', (data) => {
+      // Opcional: logar output em tempo real ou apenas salvar em arquivo de log do job
+      // Por enquanto, silenciamos para não poluir o log do runner,
+      // pois os scripts já geram seus próprios logs em history/wip/logs/
+    });
+
+    child.stderr.on('data', (data) => {
+      // Capturar erros críticos de bash se necessário
+    });
+
+    child.on('error', (err) => {
+      reject(new Error(`Falha ao iniciar processo: ${err.message}`));
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve({ success: true, exitCode: code });
+      } else {
+        reject(new Error(`Pipeline falhou com exit code ${code}`));
+      }
+    });
+  });
 }
 
-async function pollForCompletion(mode, jobId) {
-  const wipDir = path.join(CONFIG.WORKSPACE, `history/${mode}/wip`);
-  const maxPolls = 120; // 10min (5s * 120)
-  const pollIntervalMs = 5000; // 5s
-  
-  let polls = 0;
-  
-  while (polls < maxPolls) {
-    await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
-    polls++;
-    
-    try {
-      const files = await fs.readdir(wipDir);
-      const jobFiles = files.filter(f => f.startsWith(jobId) || f.startsWith(`${jobId}_`));
-      
-      // Checar se FINAL.md existe (indicador de conclusão)
-      const hasFinal = jobFiles.some(f => f.includes('FINAL.md'));
-      
-      if (hasFinal) {
-        await log('info', 'Pipeline concluído (FINAL.md encontrado)', { 
-          jobId, 
-          polls, 
-          timeSeconds: polls * (pollIntervalMs / 1000) 
-        });
-        return { success: true, files: jobFiles.length };
-      }
-      
-      // Log progresso a cada 12 polls (1min)
-      if (polls % 12 === 0) {
-        await log('info', 'Pipeline em andamento...', { 
-          jobId, 
-          filesGenerated: jobFiles.length,
-          timeSeconds: polls * (pollIntervalMs / 1000)
-        });
-      }
-      
-    } catch (err) {
-      // Diretório ainda não existe, continuar polling
-    }
-  }
-  
-  // Timeout
-  throw new Error(`Pipeline timeout após ${maxPolls * (pollIntervalMs / 1000)}s`);
-}
+// Função polling removida (deprecada em favor do spawn)
+
 
 async function syncResults(mode, jobId) {
   const wipDir = path.join(CONFIG.WORKSPACE, `history/${mode}/wip`);
