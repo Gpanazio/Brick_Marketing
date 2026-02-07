@@ -473,6 +473,44 @@
     </div>
 
     <script>
+        /*
+         * ============================================================================
+         * BRICK AI WAR ROOM - DESIGN PHILOSOPHY
+         * ============================================================================
+         * 
+         * PIPELINE AUTONOMY BY DESIGN (NOT A BUG):
+         * Each pipeline (Marketing, Projetos, Ideias) has DELIBERATE DUPLICATION of:
+         *   - nodeDef (graph structure)
+         *   - links (connections)
+         *   - fileMapping (backend output patterns)
+         *   - openScheme modal text (human-readable docs)
+         * 
+         * WHY? Because each domain has:
+         *   - Different models (GPT vs Flash vs Sonnet vs Opus)
+         *   - Different loop behavior (Copy↔Wall vs Execution↔Director)
+         *   - Different validation rules (score thresholds, retry logic)
+         *   - Different human interactions (approve vs revise vs go/no-go)
+         * 
+         * UNIFYING WOULD BE WORSE:
+         *   - if (mode === 'marketing') hell throughout codebase
+         *   - Loss of clarity when reading/debugging specific pipelines
+         *   - False coupling between domains that should evolve independently
+         * 
+         * CONSISTENCY CHECKLIST (when changing a pipeline node/step):
+         *   1. Update nodeDef + links arrays (this file)
+         *   2. Update config/file-mapping.json (backend file patterns)
+         *   3. Update openScheme modal text (user-facing explanation)
+         *   4. Update README.md (if adding/removing major steps)
+         * 
+         * RULES:
+         *   - Changes to one pipeline do NOT require mirroring to others
+         *   - Each pipeline has its own autonomous evolution path
+         *   - Loops/revisions are per-pipeline features (not global)
+         *   - Hardcoded limits (v2/v3) are product decisions, not bugs
+         * 
+         * ============================================================================
+         */
+
         const API_URL = '/api';
         const API_KEY = 'brick-squad-2026'; // TODO: Move to env var for production
         let currentState = null;
@@ -498,7 +536,27 @@
             }
             return fetch(url, options);
         }
+        
+        // FILE MATCHING: Robust pattern matcher (replaces naive includes())
+        // Handles versioned files (_v2, _v3) and exact pattern matching
+        function matchFile(patterns, filename) {
+            if (!Array.isArray(patterns)) patterns = [patterns];
+            return patterns.some(pattern => {
+                // Escape special regex chars in pattern
+                const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                // Match pattern with optional version suffix (_v2, _v3) and extension
+                const regex = new RegExp(`${escaped}(?:_v\\d+)?\\.(json|md)$`, 'i');
+                return regex.test(filename);
+            });
+        }
 
+        // ============================================================================
+        // MARKETING PIPELINE - Content & Flow (Internal Brand Voice)
+        // ============================================================================
+        // DELIBERATE DUPLICATION: This nodeDef is autonomous from Projetos/Ideias
+        // Models: Flash (cheap validation), GPT (senior copy), Opus (final wall)
+        // Loop: Copy Senior ↔ Wall (max 3 iterations, score < 80 triggers)
+        // Human: Approve/Revise (revision creates dynamic REVISAO_N nodes)
         const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
             { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Pre-Pipeline (Manual)', model: 'OPUS 4.6', douglas: true },
@@ -514,8 +572,18 @@
             { id: 'n9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'n10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
+        // Marketing connections: Validator splits to Audience+Research, converges at Claims,
+        // then 3-way parallel copy gen, judged by Copy Senior, filtered by Wall, approved by Human
         const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n7'],['n5b','n7'],['n5c','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
 
+        // ============================================================================
+        // PROJETOS PIPELINE - Client Projects (External Brand Voice)
+        // ============================================================================
+        // DELIBERATE DUPLICATION: This nodeDef is autonomous from Marketing/Ideias
+        // Models: Flash (brand digest), 3x parallel ideation (GPT+Flash+Sonnet), Pro (critic/execution/director)
+        // Loop: Execution ↔ Director (max 3 iterations, score < 85 triggers)
+        // Human: Approve/Revise (creates REVISAO_N nodes for PROPOSAL)
+        // CRITICAL: Uses CLIENT brand voice (extracted via BRAND_DIGEST), NOT Brick's internal brand
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
             { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
@@ -530,8 +598,19 @@
             { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'p10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
+        // Projetos connections: Brand Digest feeds 3-way ideation (parallel concepts),
+        // Critic judges best, Execution designs visuals, Proposal writes commercial doc,
+        // Director validates execution feasibility, Human approves/revises
         const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2a'],['p1','p2b'],['p1','p2c'],['p2a','p3'],['p2b','p3'],['p2c','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
 
+        // ============================================================================
+        // IDEIAS PIPELINE - Concept Validation (Go/No-Go Decision)
+        // ============================================================================
+        // DELIBERATE DUPLICATION: This nodeDef is autonomous from Marketing/Projetos
+        // Models: Flash (pain/market scan), Sonnet (angel+devil debate), Opus (final viability judge)
+        // NO LOOPS: One-shot validation with 0-100 score (4 criteria rubric)
+        // Human: Go/No-Go decision (approve to execute, reject to archive)
+        // Philosophy: Fast kill bad ideas early, avoid wasting squad cycles on non-viable concepts
         const nodeDefIdeias = [
             { id: 'i0', x: 0, y: 150, title: 'RAW_IDEA', label: 'Ingestion', model: 'INPUT' },
             { id: 'id', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
@@ -542,8 +621,16 @@
             { id: 'i4', x: 0, y: 1150, title: 'VIABILITY', label: 'Supreme_Judge', model: 'CLAUDE OPUS' },
             { id: 'i5', x: 0, y: 1350, title: 'DECISION', label: 'User_Control', model: 'APPROVAL', human: true }
         ];
+        // Ideias connections: Pain Check validates problem, Market Scan researches,
+        // Angel+Devil parallel debate (optimist vs pessimist), Viability judges with rubric,
+        // Human makes final Go/No-Go decision
         const linksIdeias = [['i0','id'],['id','i1'],['i1','i2'],['i2','i3a'],['i2','i3b'],['i3a','i4'],['i3b','i4'],['i4','i5']];
 
+        // ============================================================================
+        // FILE MAPPING - Backend Output Pattern Recognition
+        // ============================================================================
+        // DELIBERATE DUPLICATION: Each pipeline has its own patterns in file-mapping.json
+        // Loaded dynamically to avoid hardcoding backend file names in frontend
         // File mapping loaded dynamically from config/file-mapping.json
         let fileMapping = {};
         
@@ -1258,7 +1345,7 @@ PROCESSED.md ─── Briefing enriquecido
                 // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall
                 const hasFile = projectFiles.some(f => 
                     !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
-                    searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()))
+                    matchFile(searchTerms, f.name) // Robust pattern matching (not substring)
                 );
                 if(!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
 
@@ -1267,7 +1354,7 @@ PROCESSED.md ─── Briefing enriquecido
                 if (n.id === 'i5' && currentMode === 'ideias') {
                     const viabilityFile = projectFiles.find(f => {
                         const patterns = fileMapping['VIABILITY'] || [];
-                        return patterns.some(p => f.name.includes(p));
+                        return matchFile(patterns, f.name); // Robust pattern matching
                     });
                     if (viabilityFile) {
                         try {
@@ -1662,7 +1749,7 @@ PROCESSED.md ─── Briefing enriquecido
             const isLoopNode = /v\d+/.test(n.title);
             const file = files.find(f => {
                 if (!isLoopNode && /_v\d+\.(json|md)$/i.test(f.name)) return false;
-                return searchTerms.some(term => f.name.toUpperCase().includes(term.toUpperCase()));
+                return matchFile(searchTerms, f.name); // Robust pattern matching
             });
             
             const body = document.getElementById('panel-body');
@@ -1757,7 +1844,7 @@ PROCESSED.md ─── Briefing enriquecido
             if (!nodeDef) return;
             const files = projectFiles.filter(f => {
                 const patterns = fileMapping['VIABILITY'] || [];
-                return patterns.some(p => f.name.includes(p));
+                return matchFile(patterns, f.name); // Robust pattern matching
             });
             const file = files.length ? files[0] : null;
             if (!file) return;
