@@ -195,7 +195,29 @@ const log = (level, event, data = {}) => {
     }));
 };
 
-app.use(cors());
+// SECURITY: Restrict CORS to known origins only
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://brickmarketing-production.up.railway.app',
+    'https://war.brick.mov'
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            log('warn', 'cors_blocked', { origin });
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+
 app.use(bodyParser.json({ limit: '10mb' }));
 
 // Disable cache for index.html to ensure updates are seen immediately
@@ -255,16 +277,9 @@ const authMiddleware = (req, res, next) => {
         return next();
     }
 
-    // Allow human actions from UI (approve/feedback/revisions) without API key
-    const publicWritePaths = ['/approve', '/feedback'];
-    if (req.method === 'POST' && (
-        publicWritePaths.includes(req.path) ||
-        /^\/revisions\/[^/]+\/(approve|reject)$/.test(req.path)
-    )) {
-        return next();
-    }
-
-    // For other Write operations (POST/DELETE), require API Key
+    // SECURITY: All write operations now require API Key (no exceptions)
+    // Previously allowed /approve, /feedback, /revisions without key (CSRF risk)
+    // Frontend now must send X-API-Key header for all mutations
     const key = req.headers['x-api-key'] || req.query.key;
     if (key === API_KEY) {
         return next();

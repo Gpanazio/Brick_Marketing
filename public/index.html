@@ -474,6 +474,7 @@
 
     <script>
         const API_URL = '/api';
+        const API_KEY = 'brick-squad-2026'; // TODO: Move to env var for production
         let currentState = null;
         let currentMode = null;
         let selectedJobId = null;
@@ -486,6 +487,16 @@
             if (!text) return '';
             const rawHtml = marked.parse(text);
             return DOMPurify.sanitize(rawHtml);
+        }
+        
+        // SECURITY: Helper for authenticated fetch (all POST/DELETE require API key)
+        function authFetch(url, options = {}) {
+            if (!options.headers) options.headers = {};
+            options.headers['X-API-Key'] = API_KEY;
+            if (!options.headers['Content-Type']) {
+                options.headers['Content-Type'] = 'application/json';
+            }
+            return fetch(url, options);
         }
 
         const nodeDefMarketing = [
@@ -1827,9 +1838,8 @@ PROCESSED.md ─── Briefing enriquecido
             const mode = document.getElementById('briefing-mode').value;
             if (!title || !content) { showNotification('⚠️ Preencha todos os campos.', 'error'); return; }
             try {
-                const res = await fetch(`${API_URL}/briefing`, {
+                const res = await authFetch(`${API_URL}/briefing`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ title, content, mode })
                 });
                 if (res.ok) { 
@@ -1847,9 +1857,8 @@ PROCESSED.md ─── Briefing enriquecido
             const feedback = document.getElementById('feedback-text').value.trim();
             if (!feedback) return;
             try {
-                const res = await fetch(`${API_URL}/feedback`, {
+                const res = await authFetch(`${API_URL}/feedback`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ jobId: selectedJobId, mode: currentMode, feedback: feedback })
                 });
                 if (res.ok) { closeFeedbackModal(); showNotification('✅ FEEDBACK ENVIADO!'); }
@@ -1864,9 +1873,8 @@ PROCESSED.md ─── Briefing enriquecido
         function closeApprovalModal() { document.getElementById('approval-modal').classList.add('hidden'); }
         async function confirmApproval() {
             try {
-                const res = await fetch(`${API_URL}/approve`, {
+                const res = await authFetch(`${API_URL}/approve`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
                 });
                 if (res.ok) { closeApprovalModal(); closeNodeGraphic(); showNotification('🎉 CAMPANHA APROVADA!'); setTimeout(fetchState, 1000); }
@@ -1876,9 +1884,8 @@ PROCESSED.md ─── Briefing enriquecido
         async function rerunJob() {
             if (!confirm('⚠️ Reiniciar pipeline do zero?')) return;
             try {
-                const res = await fetch(`${API_URL}/rerun`, {
+                const res = await authFetch(`${API_URL}/rerun`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
                 });
                 if (res.ok) showNotification('🔄 Job reiniciado!');
@@ -1895,9 +1902,8 @@ PROCESSED.md ─── Briefing enriquecido
             e.stopPropagation();
             if (!confirm(`Aprovar REVISÃO ${revNum}? Isso substituirá o conteúdo original.`)) return;
             try {
-                const res = await fetch(`${API_URL}/revisions/${jobId}/approve`, {
+                const res = await authFetch(`${API_URL}/revisions/${jobId}/approve`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
                 });
                 if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
@@ -1908,9 +1914,8 @@ PROCESSED.md ─── Briefing enriquecido
             e.stopPropagation();
             if (!confirm(`Rejeitar REVISÃO ${revNum}? O arquivo será movido para histórico.`)) return;
             try {
-                const res = await fetch(`${API_URL}/revisions/${jobId}/reject`, {
+                const res = await authFetch(`${API_URL}/revisions/${jobId}/reject`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'brick-squad-2026' },
                     body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
                 });
                 if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
@@ -1954,9 +1959,8 @@ PROCESSED.md ─── Briefing enriquecido
         async function revisionAction(action) {
             const jobId = currentRevisionData.jobId;
             try {
-                const res = await fetch(`${API_URL}/revisions/${jobId}/${action === 'approve' ? 'approve' : 'reject'}`, {
+                const res = await authFetch(`${API_URL}/revisions/${jobId}/${action === 'approve' ? 'approve' : 'reject'}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ mode: currentMode })
                 });
                 if (res.ok) { closeRevisionModal(); fetchState(); }
@@ -2012,9 +2016,8 @@ PROCESSED.md ─── Briefing enriquecido
             if (!currentJobId || !currentMode) return;
             
             try {
-                const res = await fetch(`${API_URL}/project/${currentJobId}?mode=${currentMode}`, {
-                    method: 'DELETE',
-                    headers: { 'X-API-Key': 'brick-squad-2026' }
+                const res = await authFetch(`${API_URL}/project/${currentJobId}?mode=${currentMode}`, {
+                    method: 'DELETE'
                 });
                 const data = await res.json();
                 
