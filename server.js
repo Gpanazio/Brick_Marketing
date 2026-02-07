@@ -682,6 +682,23 @@ app.delete('/api/file', (req, res) => {
 app.post('/api/briefing/clear', (req, res) => {
     const { filename, mode } = req.body;
     const root = getModeRoot(mode || 'marketing');
+    
+    // Se não passar filename, limpa TUDO
+    if (!filename) {
+        const briefingDir = path.join(root, 'briefing');
+        if (fs.existsSync(briefingDir)) {
+            const files = fs.readdirSync(briefingDir);
+            files.forEach(f => {
+                fs.unlinkSync(path.join(briefingDir, f));
+            });
+            log('info', 'all_briefings_cleared', { count: files.length, mode: mode || 'marketing' });
+            emitStateUpdate(mode || 'marketing');
+            return res.json({ success: true, cleared: files.length });
+        }
+        return res.json({ success: true, cleared: 0 });
+    }
+    
+    // Limpar arquivo específico
     const filePath = path.join(root, 'briefing', filename);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
