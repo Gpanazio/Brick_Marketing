@@ -79,8 +79,25 @@ function getFilesForSocket(dir, mode) {
     }));
 }
 
+// Socket.IO middleware: Auth
+io.use((socket, next) => {
+    const apiKey = socket.handshake.auth.apiKey;
+    
+    if (apiKey === API_KEY) {
+        return next();
+    }
+    
+    log('warn', 'websocket_auth_failed', { id: socket.id, ip: socket.handshake.address });
+    next(new Error('Authentication failed'));
+});
+
 io.on('connection', (socket) => {
     log('info', 'websocket_client_connected', { id: socket.id });
+
+    socket.on('join', (room) => {
+        socket.join(room);
+        log('info', 'websocket_joined_room', { id: socket.id, room });
+    });
 
     socket.on('subscribe', (mode) => {
         socket.join(mode);
@@ -546,6 +563,14 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
 
         // WebSocket: notificar clientes
         emitStateUpdate(mode || 'marketing');
+        
+        // Socket.IO: notificar runner
+        io.to('runner').emit('pipeline:run', {
+            action: 'briefing',
+            mode: mode || 'marketing',
+            jobId,
+            content: fileContent,
+        });
 
         res.json({ success: true, filename, mode: mode || 'marketing', filesCount: uploadedFiles.length });
     } catch (err) {
@@ -773,6 +798,15 @@ app.post('/api/rerun', (req, res) => {
 
     log('info', 'job_rerun_triggered', { jobId, mode, briefingFile });
     emitStateUpdate(mode || 'marketing');
+    
+    // Socket.IO: notificar runner
+    io.to('runner').emit('pipeline:run', {
+        action: 'rerun',
+        mode: mode || 'marketing',
+        jobId,
+        content: fs.readFileSync(briefingPath, 'utf-8'),
+    });
+    
     res.json({ success: true, message: 'Job reiniciado', briefingFile });
 });
 
@@ -941,6 +975,16 @@ app.post('/api/feedback', async (req, res) => {
 
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     emitStateUpdate(mode || 'marketing');
+    
+    // Socket.IO: notificar runner
+    io.to('runner').emit('pipeline:run', {
+        action: 'feedback',
+        mode: mode || 'marketing',
+        jobId: jobId || file,
+        target: routedTo || 'PROPOSAL', // Marketing: n/a; Projetos: PROPOSAL/EXECUTION
+        content: text || feedback,
+    });
+    
     res.json({ success: true, saved: feedbackFile, archived: true });
 });
 

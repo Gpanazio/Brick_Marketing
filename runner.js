@@ -1,0 +1,394 @@
+#!/usr/bin/env node
+/**
+ * War Room Runner - Event-Driven Pipeline Orchestrator
+ * 
+ * Substitui Douglas (LLM) por execução determinística.
+ * Escuta eventos Socket.IO do Railway e executa scripts bash exatos.
+ * 
+ * Autor: Douglas (ironicamente)
+ * Data: 2026-02-06
+ */
+
+const io = require('socket.io-client');
+const fs = require('fs').promises;
+const { exec } = require('child_process');
+const { promisify } = require('util');
+const path = require('path');
+
+const execAsync = promisify(exec);
+
+// ============================================================================
+// CONFIGURAÇÃO
+// ============================================================================
+
+const CONFIG = {
+  RAILWAY_URL: 'https://brickmarketing-production.up.railway.app',
+  API_KEY: 'brick-squad-2026',
+  WORKSPACE: '/Users/gabrielpanazio/projects/Brick_Marketing',
+  LOG_FILE: '/Users/gabrielpanazio/projects/Brick_Marketing/logs/runner.log',
+  RECONNECT_BACKOFF: [2000, 4000, 8000, 16000, 32000], // ms
+  MAX_CONCURRENT: 1, // Não rodar 2 pipelines ao mesmo tempo
+};
+
+// ============================================================================
+// ESTADO GLOBAL
+// ============================================================================
+
+let socket = null;
+let isProcessing = false;
+let jobQueue = [];
+let stats = {
+  jobsProcessed: 0,
+  jobsSucceeded: 0,
+  jobsFailed: 0,
+  startTime: Date.now(),
+};
+
+// ============================================================================
+// LOGGING
+// ============================================================================
+
+async function log(level, message, meta = {}) {
+  const entry = {
+    timestamp: new Date().toISOString(),
+    level,
+    message,
+    ...meta,
+  };
+  
+  console.log(JSON.stringify(entry));
+  
+  // Append to log file
+  try {
+    const logDir = path.dirname(CONFIG.LOG_FILE);
+    await fs.mkdir(logDir, { recursive: true });
+    await fs.appendFile(CONFIG.LOG_FILE, JSON.stringify(entry) + '\n');
+  } catch (err) {
+    console.error('Failed to write log:', err);
+  }
+}
+
+// ============================================================================
+// CONEXÃO SOCKET.IO
+// ============================================================================
+
+function connectSocket() {
+  log('info', 'Conectando ao Railway...', { url: CONFIG.RAILWAY_URL });
+  
+  socket = io(CONFIG.RAILWAY_URL, {
+    auth: {
+      apiKey: CONFIG.API_KEY,
+    },
+    reconnection: true,
+    reconnectionDelay: CONFIG.RECONNECT_BACKOFF[0],
+    reconnectionDelayMax: CONFIG.RECONNECT_BACKOFF[CONFIG.RECONNECT_BACKOFF.length - 1],
+    reconnectionAttempts: Infinity,
+  });
+  
+  socket.on('connect', handleConnect);
+  socket.on('disconnect', handleDisconnect);
+  socket.on('pipeline:run', handlePipelineRun);
+  socket.on('error', handleError);
+}
+
+async function handleConnect() {
+  await log('info', '✓ Conectado ao Railway');
+  
+  // Entrar na room 'runner'
+  socket.emit('join', 'runner');
+  await log('info', '✓ Entrou na room runner');
+  
+  // Catch-up: processar jobs pendentes
+  await processPendingJobs();
+}
+
+async function handleDisconnect(reason) {
+  await log('warn', 'Desconectado do Railway', { reason });
+}
+
+async function handleError(error) {
+  await log('error', 'Socket.IO error', { error: error.message });
+}
+
+// ============================================================================
+// PIPELINE HANDLER
+// ============================================================================
+
+async function handlePipelineRun(payload) {
+  const { action, mode, jobId, content, target } = payload;
+  
+  await log('info', 'Evento pipeline:run recebido', { action, mode, jobId, target });
+  
+  // Enfileirar job
+  jobQueue.push(payload);
+  
+  // Se já tá processando, espera a vez
+  if (isProcessing) {
+    await log('info', 'Job enfileirado (processando outro)', { jobId, queueSize: jobQueue.length });
+    return;
+  }
+  
+  // Processar fila
+  await processQueue();
+}
+
+async function processQueue() {
+  if (isProcessing || jobQueue.length === 0) return;
+  
+  isProcessing = true;
+  
+  while (jobQueue.length > 0) {
+    const job = jobQueue.shift();
+    await processJob(job);
+  }
+  
+  isProcessing = false;
+}
+
+async function processJob(payload) {
+  const { action, mode, jobId, content, target } = payload;
+  const startTime = Date.now();
+  
+  try {
+    await log('info', '▶ Processando job', { action, mode, jobId });
+    
+    // Dispatch baseado em action + mode
+    let scriptPath;
+    let args = [];
+    
+    if (action === 'briefing' || action === 'rerun') {
+      // Salvar briefing local
+      if (content) {
+        await saveBriefing(mode, jobId, content);
+      }
+      
+      scriptPath = './run-pipeline.sh';
+      args = [
+        path.join(CONFIG.WORKSPACE, `history/${mode}/briefing/${jobId}.txt`),
+        `--mode=${mode}`,
+      ];
+    } else if (action === 'feedback') {
+      if (mode === 'marketing') {
+        scriptPath = './run-reloop.sh';
+        args = [jobId];
+      } else if (mode === 'projetos') {
+        scriptPath = './run-reloop-projetos.sh';
+        args = [jobId, target || 'PROPOSAL'];
+      } else {
+        // Ideias não tem feedback
+        await log('warn', 'Feedback ignorado para modo ideias', { jobId });
+        return;
+      }
+    } else {
+      await log('error', 'Action desconhecida', { action, jobId });
+      return;
+    }
+    
+    // Executar script
+    const result = await executeScript(scriptPath, args);
+    
+    // Sincronizar resultados
+    await syncResults(mode, jobId);
+    
+    // Stats
+    stats.jobsProcessed++;
+    stats.jobsSucceeded++;
+    
+    const duration = Date.now() - startTime;
+    await log('info', '✓ Job concluído', { 
+      jobId, 
+      duration: `${(duration / 1000).toFixed(1)}s`,
+      exitCode: result.code,
+    });
+    
+  } catch (err) {
+    stats.jobsProcessed++;
+    stats.jobsFailed++;
+    
+    await log('error', '✗ Job falhou', {
+      jobId,
+      error: err.message,
+      stack: err.stack,
+    });
+  }
+}
+
+// ============================================================================
+// UTILIDADES
+// ============================================================================
+
+async function saveBriefing(mode, jobId, content) {
+  const briefingPath = path.join(
+    CONFIG.WORKSPACE,
+    `history/${mode}/briefing/${jobId}.txt`
+  );
+  
+  const dir = path.dirname(briefingPath);
+  await fs.mkdir(dir, { recursive: true });
+  await fs.writeFile(briefingPath, content, 'utf-8');
+  
+  await log('info', 'Briefing salvo', { path: briefingPath });
+}
+
+async function executeScript(scriptPath, args = []) {
+  const fullPath = path.join(CONFIG.WORKSPACE, scriptPath);
+  const cmd = `bash ${fullPath} ${args.join(' ')}`;
+  
+  await log('info', 'Executando script', { cmd });
+  
+  const { stdout, stderr } = await execAsync(cmd, {
+    cwd: CONFIG.WORKSPACE,
+    maxBuffer: 10 * 1024 * 1024, // 10MB
+    timeout: 600000, // 10min
+  });
+  
+  if (stderr) {
+    await log('warn', 'Script stderr', { stderr: stderr.substring(0, 500) });
+  }
+  
+  return { code: 0, stdout, stderr };
+}
+
+async function syncResults(mode, jobId) {
+  const wipDir = path.join(CONFIG.WORKSPACE, `history/${mode}/wip`);
+  
+  // Listar todos os arquivos do job
+  const files = await fs.readdir(wipDir);
+  const jobFiles = files.filter(f => f.startsWith(jobId) || f.startsWith(`${jobId}_`));
+  
+  if (jobFiles.length === 0) {
+    await log('warn', 'Nenhum arquivo gerado para sync', { jobId, mode });
+    return;
+  }
+  
+  // Enviar cada arquivo pro Railway
+  for (const filename of jobFiles) {
+    const filePath = path.join(wipDir, filename);
+    const content = await fs.readFile(filePath, 'utf-8');
+    
+    try {
+      const response = await fetch(`${CONFIG.RAILWAY_URL}/api/result`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': CONFIG.API_KEY,
+        },
+        body: JSON.stringify({
+          mode,
+          jobId,
+          filename,
+          content,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      await log('info', 'Arquivo sincronizado', { filename });
+    } catch (err) {
+      await log('error', 'Falha ao sincronizar arquivo', { 
+        filename, 
+        error: err.message 
+      });
+    }
+  }
+}
+
+async function processPendingJobs() {
+  try {
+    const response = await fetch(`${CONFIG.RAILWAY_URL}/api/pending`, {
+      method: 'GET',
+      headers: {
+        'x-api-key': CONFIG.API_KEY,
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
+    const pending = await response.json();
+    
+    // Transformar briefings em jobs padronizados
+    const allJobs = [];
+    
+    if (pending.briefings) {
+      for (const briefing of pending.briefings) {
+        // Extrair jobId do filename (pattern: {jobId}_{nome}.md)
+        const match = briefing.name.match(/^(\d+)_/);
+        if (!match) continue;
+        
+        const jobId = match[1];
+        
+        allJobs.push({
+          action: 'briefing',
+          mode: 'marketing', // Todos os briefings pendentes são marketing
+          jobId,
+          content: briefing.content,
+        });
+      }
+    }
+    
+    if (allJobs.length === 0) {
+      await log('info', 'Nenhum job pendente');
+      return;
+    }
+    
+    await log('info', 'Jobs pendentes encontrados', { count: allJobs.length });
+    
+    // Enfileirar todos
+    for (const job of allJobs) {
+      jobQueue.push(job);
+    }
+    
+    // Processar
+    await processQueue();
+    
+  } catch (err) {
+    await log('error', 'Falha ao buscar jobs pendentes', { error: err.message });
+  }
+}
+
+// ============================================================================
+// INICIALIZAÇÃO
+// ============================================================================
+
+async function main() {
+  await log('info', '🚀 War Room Runner iniciando...', {
+    workspace: CONFIG.WORKSPACE,
+    railwayUrl: CONFIG.RAILWAY_URL,
+  });
+  
+  connectSocket();
+  
+  // Graceful shutdown
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
+}
+
+async function shutdown() {
+  await log('info', 'Desligando runner...', {
+    stats,
+    uptime: Date.now() - stats.startTime,
+  });
+  
+  if (socket) {
+    socket.disconnect();
+  }
+  
+  process.exit(0);
+}
+
+// ============================================================================
+// START
+// ============================================================================
+
+if (require.main === module) {
+  main().catch(async (err) => {
+    await log('error', 'Fatal error', { error: err.message, stack: err.stack });
+    process.exit(1);
+  });
+}
+
+module.exports = { log };
