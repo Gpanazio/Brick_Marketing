@@ -1,0 +1,13 @@
+{
+  "idea_name": "N/A_empty_input",
+  "options": [],
+  "recommended": {
+    "option_name": "N/A",
+    "confidence": 0,
+    "reasoning": "Não há ideia fornecida. Não é possível gerar opções de ação para input vazio."
+  },
+  "status": "FAIL",
+  "next_step": "REJECT",
+  "timestamp": "2026-02-07T01:01:00Z",
+  "error": "Pipeline recebeu input vazio. ANGLE_GEN requer uma ideia, problema ou questão de negócio para gerar opções de ação. Reinicie o processo com descrição válida."
+}
