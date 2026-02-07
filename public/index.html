@@ -1674,7 +1674,24 @@ PROCESSED.md ─── Briefing enriquecido
             const body = document.getElementById('panel-body');
             try {
                 const json = JSON.parse(file.content);
-                body.innerHTML = formatJSON(json);
+                const score = json.viability_assessment?.score_final || 'N/A';
+                const status = json.viability_assessment?.status || 'UNKNOWN';
+                
+                // Determinar cor baseada no score
+                let scoreColor = '#666';
+                if (typeof score === 'number') {
+                    if (score >= 70) scoreColor = '#22c55e'; // Verde
+                    else if (score >= 40) scoreColor = '#f59e0b'; // Laranja
+                    else scoreColor = '#ef4444'; // Vermelho
+                }
+                
+                body.innerHTML = `
+                    <div style="background: #0a0a0a; border: 2px solid ${scoreColor}; padding: 20px; margin-bottom: 24px; text-align: center;">
+                        <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 48px; color: ${scoreColor}; line-height: 1;">${score}</div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888; margin-top: 8px; text-transform: uppercase; letter-spacing: 2px;">${status}</div>
+                    </div>
+                    ${formatJSON(json)}
+                `;
                 document.getElementById('panel-title').textContent = 'VIABILITY (ANÁLISE COMPLETA)';
             } catch(e) {
                 body.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-mono text-[#ccc]">${file.content}</pre>`;
