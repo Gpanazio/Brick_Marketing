@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Block all crawlers from War Room
+# This is an internal tool, not for public indexing
