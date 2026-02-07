@@ -412,7 +412,28 @@ app.get('/api/state', (req, res) => {
 // API: Get pending briefings (for watcher)
 app.get('/api/pending', (req, res) => {
     const mode = req.query.mode || 'marketing';
-    res.json({ briefings: getFiles('briefing', mode) });
+    const allBriefings = getFiles('briefing', mode);
+    const root = getModeRoot(mode);
+    const wipDir = path.join(root, 'wip');
+    
+    // Filtrar apenas briefings que NÃO têm arquivos processados no wip/
+    const pending = allBriefings.filter(briefing => {
+        // Extrair jobId do filename (pattern: {jobId}_{nome}.md ou {jobId}.md)
+        const match = briefing.name.match(/^(\d+)/);
+        if (!match) return false;
+        
+        const jobId = match[1];
+        
+        // Verificar se existe QUALQUER arquivo do job no wip/
+        if (!fs.existsSync(wipDir)) return true; // Se wip não existe, tá pendente
+        
+        const wipFiles = fs.readdirSync(wipDir);
+        const hasWipFiles = wipFiles.some(f => f.startsWith(jobId));
+        
+        return !hasWipFiles; // Só retorna se NÃO tem arquivo no wip
+    });
+    
+    res.json({ briefings: pending });
 });
 
 // Telegram notification (legacy - keep for direct messages)
