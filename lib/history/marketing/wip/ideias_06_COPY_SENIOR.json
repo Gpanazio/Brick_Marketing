@@ -1,0 +1,17 @@
+{
+  "vencedor": "B",
+  "modelo_vencedor": "flash",
+  "pontos_fortes": [
+    "Diagnostica corretamente a falha de pipeline (briefing e brand guide ausentes)",
+    "Deixa explícito que não há matéria-prima para copy séria"
+  ],
+  "pontos_fracos": [
+    "Não é copy, é apenas mensagem de erro",
+    "Inutilizável como peça de comunicação externa"
+  ],
+  "alteracoes_aplicadas": [
+    "Nenhuma alteração aplicada, pois não existe copy criativa para revisar"
+  ],
+  "copy_revisada": "",
+  "veredito": "REJECTED"
+}
