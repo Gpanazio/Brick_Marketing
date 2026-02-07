@@ -2,6 +2,16 @@
 
 Sistema de pipelines multi-agente para criação de conteúdo (Marketing, Projetos — Clientes, Ideias).
 
+**Última atualização:** 2026-02-07
+
+---
+
+## 🌐 URLs de Acesso
+
+- **Produção:** https://war.brick.mov (oficial)
+- **Railway:** https://brickmarketing-production.up.railway.app (infra)
+- **Repositório:** https://github.com/Gpanazio/Brick_Marketing
+
 ---
 
 ## 🚨 LEIA ISSO ANTES DE MEXER EM QUALQUER COISA
@@ -41,12 +51,18 @@ Brick_Marketing/
 │   ├── projetos/          # Projetos de clientes (marca do cliente, não da Brick)
 │   └── ideias/            # Idem (modo Ideias)
 ├── roles/                 # Prompts dos agentes (20 arquivos .md)
+│   ├── BRAND_GUIDE.md     # Brand Guide v8.0 (tom/vocabulário Brick AI)
+│   ├── ANGEL_GEN.md       # Ideias: perspectiva otimista
+│   ├── DEVIL_GEN.md       # Ideias: perspectiva crítica
+│   └── ...
 ├── lib/
 │   ├── pipeline-utils.sh       # Funções de retry, validação, timers
 │   └── context-summarizer.sh   # Reduz contexto (economia de tokens)
-├── run-marketing.sh       # Pipeline Marketing (8 etapas)
+├── run-marketing.sh       # Pipeline Marketing (7 etapas + FINAL)
 ├── run-projetos.sh        # Pipeline Projetos — Clientes (6 etapas)
 ├── run-ideias.sh          # Pipeline Ideias (5 etapas)
+├── run-reloop.sh          # Loop Marketing: HUMAN → COPY_SENIOR (feedback)
+├── run-reloop-projetos.sh # Loop Projetos: HUMAN → PROPOSAL (feedback)
 └── sync-to-railway.sh     # Sincroniza arquivo local → Railway
 ```
 
@@ -55,7 +71,7 @@ Brick_Marketing/
 ## 🔄 Como Funciona (Criança de 5 Anos)
 
 ### 1. Usuário cria briefing no site
-- Clica "Novo Briefing"
+- Clica "+ New_Briefing"
 - Escreve o que quer
 - Escolhe modo (Marketing/Projetos/Ideias)
 - Submete
@@ -71,23 +87,139 @@ Brick_Marketing/
 - Exemplos:
   - `1234_01_VALIDATOR.json`
   - `1234_05A_COPY_GPT.md`
-  - `1234_08_WALL.json`
+  - `1234_07_WALL.json`
 
 ### 4. Site atualiza em tempo real
-- Backend sincroniza arquivos novos
-- Frontend detecta via Socket.IO
+- Backend sincroniza arquivos novos (Socket.IO)
+- Frontend detecta mudanças
 - Nodes acendem quando etapa completa
 - Clica duplo no node = abre painel com resultado
 
 ### 5. Humano aprova OU pede revisão
 - Clica "Aprovar" → move pra `done/`
-- Clica "Revisar" → feedback → agente refaz
+- Clica "Revisar" → feedback → modelo campeão refaz
+
+---
+
+## 🧬 Pipelines (Estado Atual - 2026-02-07)
+
+### Marketing (7 etapas + FINAL)
+**Objetivo:** Criar copy de conteúdo interno da Brick AI (Instagram, LinkedIn, Twitter)
+
+**Brand Guide v8.0:** Injetado DIRETO nos copywriters (etapa 5). Tom: "The Cold Director". Vocabulário técnico. Proibido: emojis, "prompt", "revolucionário", corporativês.
+
+```
+00. DOUGLAS (manual) → interpreta briefing, enriquece, salva PROCESSED.md
+01. VALIDATOR (Flash) → valida completude
+02. AUDIENCE (Flash) → analisa persona + Brand Guide completo
+03. RESEARCHER (Flash) → dados de mercado
+04. CLAIMS (Flash) → filtro anti-hype
+05. COPYWRITERS x3 (GPT+Flash+Sonnet) → recebem Brand Guide, criam copies já alinhadas
+06. COPY_SENIOR (GPT 5.2) → escolhe melhor, revisa, entrega copy_revisada
+07. WALL (Opus + Brand Guardian) → score 0-100 (5 critérios)
+    ├─► score < 80 → LOOP: volta pro COPY_SENIOR (max 3x)
+    └─► score ≥ 80 → segue
+08. HUMAN → [APROVAR] ou [REVISAR]
+    ├─► APROVAR → FINAL.md (copy_revisada + alterações + WALL JSON)
+    └─► REVISAR → REVISAO_N.md (modelo campeão + feedback humano)
+```
+
+**Custo:** ~$0.12/projeto | **Tempo:** 2-4 min (sem loop), 5-7 min (com loop)
+
+**Inovações recentes:**
+- Brand Guide integrado (etapa 6 "Brand Guardian" eliminada)
+- Loop automático Copy Senior ↔ Wall (arquivos `_v2.json`, `_v3.json` ESCONDIDOS na UI)
+- Sistema de revisão visual (nodes dinâmicos REVISAO_1, REVISAO_2...)
+
+### Projetos — Clientes (6 etapas)
+**Objetivo:** Criar conceito criativo + proposta comercial para CLIENTES da Brick (produtora)
+
+**IMPORTANTE:** Marca/tom é DO CLIENTE, NÃO da Brick AI.
+
+```
+00. DOUGLAS (manual) → interpreta briefing do cliente
+01. BRAND_DIGEST (Flash) → extrai DNA da marca DO CLIENTE
+02. IDEATION x3 (GPT+Flash+Sonnet) → 3 conceitos paralelos
+03. CONCEPT_CRITIC (Pro) → escolhe vencedor
+04. EXECUTION_DESIGN (Pro) → plano executável (visual system, copy, specs)
+05. PROPOSAL (GPT) → proposta comercial
+06. DIRECTOR (Pro) → score 0-100 (olhar de diretor de fotografia)
+    ├─► APROVAR (85-100) → segue pro HUMAN
+    ├─► REFINAR (60-84) → loop volta pro step 04 (max 3x)
+    └─► REPENSAR (0-59) → volta pro IDEATION
+07. HUMAN → [APROVAR] ou [REJEITAR]
+```
+
+**Custo:** ~$0.16/projeto | **Tempo:** 2-3 min (sem loop), 4-6 min (com loop)
+
+**Loop Execution ↔ Director:** Arquivos `_v2`, `_v3` (ESCONDIDOS na UI desde 06/02/26)
+
+### Ideias (5 etapas)
+**Objetivo:** Validação ultra-rápida de conceitos (filtro agressivo)
+
+```
+00. DOUGLAS (manual) → salva RAW_IDEA.md (passthrough)
+01. PAIN_CHECK (Flash) → valida problema real
+02. MARKET_SCAN (Flash) → concorrência, precedentes
+03. ANGEL + DEVIL (Sonnet paralelo) → otimista vs crítico
+04. VIABILITY (Opus) → score 0-100 (4 critérios: problema 30pts, contexto 25pts, opções 25pts, execução 20pts)
+05. DECISION (Human) → Go / No-Go
+    ├─► APROVAR (70+) → ideia viável
+    ├─► REFINAR (40-69) → precisa ajustes
+    └─► REJEITAR (0-39) → arquivar
+```
+
+**Custo:** ~$0.08/ideia | **Tempo:** 2-3 min | **Taxa de rejeição:** 60-70% (feature, não bug)
+
+**Score no card (novo):** Node DECISION mostra score + status direto no card visual (além do painel full info)
+
+---
+
+## 🎨 UI/UX (Novidades 2026-02-07)
+
+### Sistema de Revisão Visual v2.0
+- Nodes dinâmicos: `REVISAO_1`, `REVISAO_2`, `REVISAO_3`...
+- Posicionamento: ao lado do HUMAN, perfeitamente alinhados
+- Visual: borda laranja dupla, LED pulsante laranja
+- Conexões: linhas laranjas pontilhadas (Human → Revisão)
+- Botões: **✓ APROVAR** (substitui original + backup) | **✗ REJEITAR** (move pra `archived/`)
+
+### Ideias: Score no Card
+- Node **DECISION (i5)** mostra:
+  - Score grande (32px, colorido)
+  - Status (APROVAR/REFINAR/REJEITAR)
+  - Borda esquerda colorida (verde ≥70, laranja 40-69, vermelho <40)
+- Painel full info (double-click):
+  - Box destacado no topo com score (48px) + status
+  - JSON completo embaixo
+
+### Scheme Atualizado
+- **Marketing:** Diagrama detalhado + descrição de cada role
+- **Projetos:** Idem (com loop Execution ↔ Director)
+- **Ideias:** NOVO (07/02/26) - descrição completa dos 5 roles + filosofia
+
+### Botão Reset Posições
+- Visível no canto superior direito (vermelho com borda)
+- Texto: **"⟲ RESET POSIÇÕES"**
+- Limpa localStorage do modo atual, restaura layout padrão
+
+### Posicionamento Nodes (Ideias)
+- **ANGEL_GEN (i3a):** x: -250 (esquerda)
+- **DEVIL_GEN (i3b):** x: +250 (direita)
+- **Gap:** 180px visível entre eles (ambos em y: 950)
 
 ---
 
 ## ⚙️ Padrões Que FUNCIONAM (NÃO MUDAR)
 
 ### Frontend (public/index.html)
+
+#### Build Timestamp (Cache Busting)
+```html
+<!-- Build: 2026-02-07T11:17:00-03:00 -->
+```
+- Forçar invalidação de cache
+- Atualizar timestamp em mudanças grandes
 
 #### API_URL
 ```javascript
@@ -98,8 +230,9 @@ const API_URL = '/api';
 
 #### fileMapping
 ```javascript
-'VIABILITY': ['VIABILITY']  // Procura arquivo com "VIABILITY" no nome
-'DECISION': ['VIABILITY']   // DECISION mostra resumo do VIABILITY
+'VIABILITY': ['VIABILITY'],
+'ANGEL_GEN': ['ANGEL_GEN', 'ANGLE'],  // Angel, não Angle (corrigido 07/02/26)
+'DECISION': ['VIABILITY']  // DECISION mostra resumo do VIABILITY
 ```
 - Busca por **substring** no nome do arquivo
 - Não precisa ser exato
@@ -125,9 +258,9 @@ source "$PROJECT_ROOT/lib/context-summarizer.sh"
 CONTEXT_SUMMARY=$(create_marketing_context "$JOB_ID" "$WIP_DIR")
 ```
 - Reduz contexto de ~12k → ~4k tokens
-- **Marketing TEM** (desde v2.1)
-- **Ideias TEM** (desde 2026-02-06)
-- **Projetos — Clientes** (sendo implementado)
+- **Marketing:** ✅ TEM (desde v2.1)
+- **Ideias:** ✅ TEM (desde 2026-02-06)
+- **Projetos:** ❌ FALTA (TO-DO)
 
 #### Retry com Backoff
 ```bash
@@ -146,10 +279,10 @@ done
 - **PROBLEMA:** Usa MESMO modelo 3x
 - **FALTA:** Fallback Flash → Sonnet → GPT
 
-#### Etapa 0 (Ingestion)
-- **Marketing:** Processa briefing com agente (adiciona contexto)
-- **Ideias:** Passthrough puro (`cp briefing → RAW_IDEA.md`)
-- **Projetos — Clientes:** Digest de brand do CLIENTE (transforma em contexto técnico da marca do cliente)
+#### Brand Guide v8.0 (Marketing)
+- **ANTES:** Copywriters escreviam "às cegas" → Brand Guardian validava depois
+- **DEPOIS:** `BRAND_GUIDE.md` injetado DIRETO nos 3 copywriters (etapa 5)
+- **Resultado:** Copies saem alinhadas, etapa 6 eliminada, -$0.04 por run
 
 ---
 
@@ -167,8 +300,11 @@ done
 ### 4. "Vou adicionar timeout maior sem context summarizer"
 ❌ Summarizer SEMPRE vem primeiro. Timeout é último recurso.
 
-### 5. "Fiz revert, agora tá consertado"
-❌ Revert não é instantâneo. Espera deploy. Testa. Confirma.
+### 5. "Angel vs Angle? Tanto faz..."
+❌ **ANGEL** (anjo), não ANGLE (ângulo). Nomenclatura corrigida 07/02/26.
+
+### 6. "Nodes de loop escondidos? Vou mostrar na UI"
+❌ Gabriel pediu pra ESCONDER (`_v2`, `_v3`). Loop funciona no backend, UI limpa.
 
 ---
 
@@ -198,20 +334,21 @@ Depois do push:
 
 ## 🚧 TO-DO (Prioridade)
 
-### 1. Fallback de Modelo (CRÍTICO)
+### 1. Context Summarizer em Projetos (IMPORTANTE)
+- Projetos ainda não tem
+- Implementar igual Marketing/Ideias
+- Reduzir contexto de ~15k → ~5k tokens
+
+### 2. Fallback de Modelo (CRÍTICO)
 - Se Flash falhar 3x → Sonnet
 - Se Sonnet falhar 3x → GPT
 - Garantir que pipeline NUNCA aborta
 
-### 2. Sync Incremental (IMPORTANTE)
-- Watcher roda em background
-- A cada 5s checa arquivos novos
-- Sincroniza automático pro Railway
-- Site atualiza em tempo real
-
-### 3. Context Summarizer em Projetos
-- Projetos ainda não tem
-- Implementar igual Marketing/Ideias
+### 3. Event-Driven System (EM PROGRESSO)
+- Substituir watcher.js por Socket.IO
+- `runner.js` no Mac (dispatch determinístico)
+- Catch-up automático ao reconectar
+- **Status:** Bloqueado (SIGKILL matando processos bash filhos)
 
 ---
 
@@ -223,3 +360,7 @@ Se algo quebrar:
 3. Se mesmo assim não funcionar, pergunte pro Gabriel
 
 **Regra de Ouro:** Quando em dúvida, NÃO mexe. Pergunta antes.
+
+---
+
+**Última revisão:** 2026-02-07 11:32 GMT-3 (Douglas)

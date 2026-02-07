@@ -1,5 +1,81 @@
 # CHANGELOG - Brick Marketing War Room
 
+## v2.2 - 2026-02-07
+
+### 🎨 UI/UX Improvements
+
+**Score Visibility (Ideias):**
+- Node DECISION (i5) agora mostra score + status direto no card visual
+- Painel full info (`viewFullViability()`) exibe score destacado no topo
+- Cores dinâmicas: verde (≥70), laranja (40-69), vermelho (<40)
+
+**Layout Fixes:**
+- ANGEL_GEN vs DEVIL_GEN: espaçamento corrigido (gap de 180px entre nodes)
+- Correção de nomenclatura: ANGLE_GEN → ANGEL_GEN (anjo, não ângulo)
+- Botão "Reset Posições" mais visível (vermelho com borda)
+
+**Scheme Updates:**
+- Pipeline Ideias documentado com descrição detalhada dos 5 roles
+- Formatação consistente com Marketing/Projetos
+- Box "Filosofia do Pipeline" + métricas (custo/tempo/taxa de rejeição)
+
+**Cache Busting:**
+- Build timestamp adicionado no `<head>` (força invalidação de cache)
+- Timestamp atualizado: `2026-02-07T11:17:00-03:00`
+
+### 🔧 Technical Fixes
+
+**DECISION Node (Ideias):**
+- `ondblclick` agora chama `viewFullViability()` em vez de `openPanel()` genérico
+- Score extraído de `.viability_assessment.score_final`
+- Status extraído de `.viability_assessment.status`
+
+**Brand Guide v8.0:**
+- Integração direta nos copywriters (etapa 5 de Marketing)
+- Etapa 6 "Brand Guardian" eliminada (validação agora é preventiva, não corretiva)
+- Economia: -$0.04 por run, -10-15s de execução
+- Tom: "The Cold Director" (seco, técnico, autoritário)
+- Vocabulário: "Domínio da Linguagem", "Direção Técnica", "Motor de Visão"
+
+**System de Revisão Visual:**
+- Nodes dinâmicos: `REVISAO_1`, `REVISAO_2`, `REVISAO_3`...
+- Posicionamento: ao lado do HUMAN, alinhamento perfeito
+- Conexões: linhas laranjas pontilhadas (Human → Revision)
+- Botões: Aprovar (substitui + backup) / Rejeitar (arquiva)
+
+### 📝 Documentation
+
+**README.md:**
+- URLs de acesso (war.brick.mov + Railway)
+- Descrição completa dos 3 pipelines (estado 2026-02-07)
+- Brand Guide v8.0 documentado
+- Inovações recentes listadas
+- Erros comuns atualizados (ANGEL vs ANGLE)
+
+**Novos arquivos:**
+- `REVISION_SYSTEM.md` - Documentação completa do sistema de revisão
+- `STATUS.md` - Overview do projeto (criado 06/02, atualizado 07/02)
+- `DIAGNOSTICO.md` - Análise técnica SIGKILL + soluções (event-driven bloqueado)
+
+### 🐛 Bug Fixes
+
+- Fix: fileMapping inconsistente (frontend procurava "PROPOSAL", script salvava "COPYWRITER")
+- Fix: Linhas de revisão desenhadas com coordenadas erradas (5+ tentativas)
+- Fix: localStorage sobrescrevendo posições corretas
+- Fix: Commit experimental quebrou pipeline Ideias (v2.7 com `--model` inexistente)
+
+### ⚠️ Known Issues
+
+**Event-Driven System (BLOQUEADO):**
+- `runner.js` implementado (~350 linhas)
+- Socket.IO auth + dispatch determinístico funcionando
+- **Problema:** Processos bash filhos morrem com SIGKILL antes de terminar
+- **Root cause:** OpenClaw mata processos longos (política de segurança ou timeout)
+- **Status:** 95% implementado, 0% funcional
+- **Soluções propostas:** spawn() em vez de exec(), detached: true, sessions_spawn
+
+---
+
 ## v2.1 - 2026-02-06
 
 ### 🚀 Context-Summarizer Integration
