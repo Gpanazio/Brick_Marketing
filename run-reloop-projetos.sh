@@ -80,19 +80,24 @@ mkdir -p "$LOG_DIR"
 
 # Carregar roles
 PROPOSAL_ROLE=$(cat "$ROLES_DIR/PROPOSAL_WRITER.md" 2>/dev/null || echo "N/A")
-DIRECTOR_ROLE=$(cat "$ROLES_DIR/DIRECTOR.md" 2>/dev/null || echo "N/A")
+DIRECTOR_ROLE=$(cat "$ROLES_DIR/PROJECT_DIRECTOR.md" 2>/dev/null || echo "N/A")
 EXECUTION_ROLE=$(cat "$ROLES_DIR/EXECUTION_DESIGN.md" 2>/dev/null || echo "N/A")
 
 # Encontrar versão mais recente dos arquivos
 find_latest() {
     local base="$1"  # ex: _05_PROPOSAL
-    local ext="$2"   # ex: .json
+    local ext="$2"   # ex: .json ou .md
     
     for v in 3 2; do
         local f="$WIP_DIR/${JOB_ID}${base}_v${v}${ext}"
-        if [ -f "$f" ] && validate_json "$f" 2>/dev/null; then
-            echo "$f"
-            return
+        if [ -f "$f" ]; then
+            # Se for JSON, validar. Se for MD, só checar existência.
+            if [[ "$ext" == ".json" ]]; then
+                if validate_json "$f" 2>/dev/null; then echo "$f"; return; fi
+            else
+                echo "$f"
+                return
+            fi
         fi
     done
     
@@ -112,12 +117,14 @@ case "$TARGET" in
         STEP_NAME="PROPOSAL"
         AGENT="gpt"
         ROLE="$PROPOSAL_ROLE"
+        EXT=".md"
         ;;
     EXECUTION)
         STEP_NUM="04"
         STEP_NAME="EXECUTION"
         AGENT="pro"
         ROLE="$EXECUTION_ROLE"
+        EXT=".json"
         ;;
     CONCEPT)
         echo "❌ CONCEPT reloop não implementado ainda"
@@ -125,13 +132,13 @@ case "$TARGET" in
         ;;
 esac
 
-CURRENT_OUT=$(find_latest "_${STEP_NUM}_${STEP_NAME}" ".json")
+CURRENT_OUT=$(find_latest "_${STEP_NUM}_${STEP_NAME}" "$EXT")
 FEEDBACK_FILE="$WIP_DIR/${JOB_ID}_FEEDBACK_HUMAN.txt"
 
 # Validações
 if [ -z "$CURRENT_OUT" ] || [ ! -f "$CURRENT_OUT" ]; then
     echo "❌ ${STEP_NAME} não encontrado para job: $JOB_ID"
-    echo "   Procurei em: $WIP_DIR/${JOB_ID}_${STEP_NUM}_${STEP_NAME}*.json"
+    echo "   Procurei em: $WIP_DIR/${JOB_ID}_${STEP_NUM}_${STEP_NAME}*${EXT}"
     exit 1
 fi
 
@@ -159,10 +166,11 @@ echo "$FEEDBACK_TEXT"
 echo ""
 
 # Determinar versão do loop
-EXISTING_LOOPS=$(ls "$WIP_DIR"/${JOB_ID}_${STEP_NUM}_${STEP_NAME}_v*.json 2>/dev/null | wc -l | tr -d ' ')
+# Procura tanto json quanto md para contar versões
+EXISTING_LOOPS=$(ls "$WIP_DIR"/${JOB_ID}_${STEP_NUM}_${STEP_NAME}_v* 2>/dev/null | wc -l | tr -d ' ')
 LOOP_VERSION=$((EXISTING_LOOPS + 1))
 
-REVISED_OUT="${WIP_DIR}/${JOB_ID}_${STEP_NUM}_${STEP_NAME}_v${LOOP_VERSION}.json"
+REVISED_OUT="${WIP_DIR}/${JOB_ID}_${STEP_NUM}_${STEP_NAME}_v${LOOP_VERSION}${EXT}"
 DIRECTOR_OUT="${WIP_DIR}/${JOB_ID}_06_DIRECTOR_v${LOOP_VERSION}.json"
 
 echo "🔄 Gerando revisão v$LOOP_VERSION..."
@@ -173,6 +181,12 @@ STEP_START=$(start_timer)
 max_retries=3
 attempt=1
 backoff=2
+
+# Ajustar instrução baseada no formato (JSON vs Markdown)
+SAVE_INSTRUCTION="Salve JSON em: ${REVISED_OUT}"
+if [[ "$EXT" == ".md" ]]; then
+    SAVE_INSTRUCTION="Salve Markdown em: ${REVISED_OUT}"
+fi
 
 while [ $attempt -le $max_retries ]; do
     echo "  >> ${STEP_NAME} v$LOOP_VERSION - Tentativa $attempt/$max_retries"
@@ -204,10 +218,18 @@ INSTRUÇÕES:
 2. Identifique os pontos que precisam ser ajustados
 3. Revise o ${TARGET} aplicando os ajustes solicitados
 4. Mantenha a qualidade e coerência com o briefing original
-5. Salve o JSON revisado no arquivo: ${REVISED_OUT}" \
+5. ${SAVE_INSTRUCTION}" \
       --timeout 180 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_${STEP_NUM}_${STEP_NAME}_v${LOOP_VERSION}.log"
     
-    if [ -f "$REVISED_OUT" ] && validate_json "$REVISED_OUT"; then
+    # Validação depende do formato
+    VALID=false
+    if [[ "$EXT" == ".json" ]]; then
+        if [ -f "$REVISED_OUT" ] && validate_json "$REVISED_OUT"; then VALID=true; fi
+    else
+        if [ -f "$REVISED_OUT" ] && [ -s "$REVISED_OUT" ]; then VALID=true; fi
+    fi
+
+    if [ "$VALID" = true ]; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ ${STEP_NAME} v$LOOP_VERSION concluído"
         print_duration $DURATION "${STEP_NAME} Loop v$LOOP_VERSION"
@@ -223,7 +245,15 @@ INSTRUÇÕES:
     attempt=$((attempt + 1))
 done
 
-if [ ! -f "$REVISED_OUT" ] || ! validate_json "$REVISED_OUT"; then
+# Checagem final também depende do formato
+VALID=false
+if [[ "$EXT" == ".json" ]]; then
+    if [ -f "$REVISED_OUT" ] && validate_json "$REVISED_OUT"; then VALID=true; fi
+else
+    if [ -f "$REVISED_OUT" ] && [ -s "$REVISED_OUT" ]; then VALID=true; fi
+fi
+
+if [ "$VALID" = false ]; then
     echo "❌ ${STEP_NAME} v$LOOP_VERSION falhou após $max_retries tentativas - abortando"
     exit 1
 fi

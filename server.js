@@ -79,11 +79,23 @@ function getFilesForSocket(dir, mode) {
     }));
 }
 
-// Socket.IO middleware: Auth
+// Socket.IO middleware: Auth (Relaxed for Dashboard)
 io.use((socket, next) => {
     const apiKey = socket.handshake.auth.apiKey;
+    const clientType = socket.handshake.auth.type || 'dashboard'; // Default to dashboard if not specified
     
+    // Runner/Admin require API Key
     if (apiKey === API_KEY) {
+        socket.data.role = 'admin';
+        return next();
+    }
+
+    // Dashboard (read-only state updates) allowed without key
+    // Mas não pode emitir comandos privilegiados (se houver)
+    if (!apiKey || apiKey !== API_KEY) {
+        socket.data.role = 'viewer';
+        // Log connection but allow it
+        // log('info', 'websocket_viewer_connected', { id: socket.id });
         return next();
     }
     
