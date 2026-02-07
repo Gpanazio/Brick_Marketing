@@ -877,6 +877,9 @@ fi
 # ============================================
 PIPELINE_DURATION=$(get_duration_ms $PIPELINE_START)
 echo ""
+# Cleanup de processos órfãos antes de finalizar
+cleanup_children 2>/dev/null || true
+
 echo "🏁 Pipeline Marketing Finalizado"
 print_duration $PIPELINE_DURATION "Pipeline Total"
 echo "📁 Arquivos em: $WIP_DIR"

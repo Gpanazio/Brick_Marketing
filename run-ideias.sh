@@ -378,6 +378,9 @@ DECISION=$(jq -r '.decision // .recommendation // .verdict // "UNKNOWN"' "$VIABI
 SCORE=$(jq -r '.score // .viability_score // .final_score // 0' "$VIABILITY_OUT" 2>/dev/null || echo "0")
 
 echo ""
+# Cleanup de processos órfãos antes de finalizar
+cleanup_children 2>/dev/null || true
+
 echo "🏁 Pipeline Ideias Finalizado"
 print_duration $PIPELINE_DURATION "Pipeline Total"
 echo ""

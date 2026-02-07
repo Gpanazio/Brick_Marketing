@@ -140,4 +140,20 @@ create_json_placeholder() {
     echo "{\"status\":\"ERROR\"}" > "$1"
 }
 
-export -f setup_logs log_step validate_json run_agent create_md_placeholder create_json_placeholder
+# Cleanup agressivo de processos filhos (nice-to-have, previne zombies)
+cleanup_children() {
+    local parent_pid=$$
+    # Mata todos os processos filhos do script atual
+    pkill -P "$parent_pid" 2>/dev/null || true
+    # Aguarda 500ms para processos terminarem gracefully
+    sleep 0.5
+    # Força kill -9 em processos restantes
+    pkill -9 -P "$parent_pid" 2>/dev/null || true
+}
+
+# Trap para garantir cleanup em exit/interrupção (só se não existir trap anterior)
+if ! trap -p EXIT | grep -q cleanup_children; then
+    trap cleanup_children EXIT INT TERM
+fi
+
+export -f setup_logs log_step validate_json run_agent create_md_placeholder create_json_placeholder cleanup_children

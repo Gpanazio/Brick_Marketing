@@ -544,6 +544,10 @@ fi
 # SUMÁRIO
 # ============================================
 PIPELINE_DURATION=$(get_duration_ms $PIPELINE_START)
+
+# Cleanup de processos órfãos antes de finalizar
+cleanup_children 2>/dev/null || true
+
 echo ""
 echo "🏁 Pipeline Finalizado"
 print_duration $PIPELINE_DURATION "Total"
