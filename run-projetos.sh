@@ -554,4 +554,7 @@ print_duration $PIPELINE_DURATION "Total"
 echo "📁 Arquivos: $WIP_DIR"
 echo "📋 Logs: $LOG_DIR"
 
+# Log de economia
+log_token_savings "$JOB_ID" "$WIP_DIR" "projetos"
+
 echo "[$(date -Iseconds)] Pipeline finalizado: $JOB_ID (${PIPELINE_DURATION}ms, ${LOOP_COUNT} rodadas, veredito: ${VEREDITO})" >> "$LOG_DIR/pipeline.log"

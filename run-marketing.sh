@@ -888,5 +888,8 @@ echo ""
 echo "Arquivos gerados:"
 ls -la "$WIP_DIR"/${JOB_ID}_* 2>/dev/null || echo "Nenhum arquivo encontrado"
 
+# Log de economia
+log_token_savings "$JOB_ID" "$WIP_DIR" "marketing"
+
 # Log de conclusão
 echo "[$(date -Iseconds)] Pipeline finalizado: $JOB_ID (${PIPELINE_DURATION}ms)" >> "$LOG_DIR/pipeline.log"

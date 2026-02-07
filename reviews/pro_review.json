@@ -1,0 +1,24 @@
+{
+  "reviewer": "GEMINI_PRO",
+  "score": 92,
+  "critical_issues": [
+    {"file": "lib/context-summarizer.sh", "line": "165-172", "issue": "A função `estimate_token_savings` não está sendo usada nos pipelines. Ela foi exportada, mas `run-marketing.sh` e `run-projetos.sh` apenas fazem o resumo sem calcular/logar a economia explicitamente no console.", "severity": "LOW"},
+    {"file": "run-marketing.sh", "line": "416", "issue": "No loop de revisão (Copy Senior ↔ Wall), se o Copy Senior falhar (não gerar JSON válido), o script aborta o loop mas não define um estado de erro claro ou fallback para o FINAL.md, podendo gerar um arquivo final quebrado.", "severity": "MEDIUM"}
+  ],
+  "suggestions": [
+    {"category": "Robustez", "suggestion": "Adicionar verificação de existência do `jq` no início dos scripts, já que ele é dependência crítica para validação de JSON.", "impact": "Previne falhas silenciosas em ambientes novos."},
+    {"category": "Observabilidade", "suggestion": "Implementar o cálculo real de economia de tokens usando `wc -c` nos arquivos originais vs resumidos e logar isso no final.", "impact": "Validação real da métrica de economia."}
+  ],
+  "validations": {
+    "schema_sync": "OK (Schemas em ANGLE_GEN e DEVIL_GEN estão consistentes e rigorosos)",
+    "context_dedup": "OK (lib/context-summarizer.sh implementa lógica correta de extração parcial)",
+    "zombie_cleanup": "OK (lib/pipeline-utils.sh implementa trap para SIGINT/SIGTERM e kill em processos filhos)",
+    "fileMapping": "OK (public/index.html carrega de /config/file-mapping.json com fallback seguro)"
+  },
+  "token_savings_audit": {
+    "marketing_dedup": "~450 tokens - CORRETO",
+    "projetos_optimization": "~1500-2000 tokens - CORRETO (Resumo de briefings longos de clientes + Brand Digest isolado gera grande economia)"
+  },
+  "final_verdict": "APPROVE",
+  "reasoning": "As mudanças são sólidas e focam nos problemas certos. A centralização do fileMapping limpa o frontend. O context-summarizer é uma adição excelente para escalar os pipelines sem estourar limites de contexto ou custo. A limpeza de processos zumbis é crítica para estabilidade. Os issues encontrados são de baixa/média severidade e não bloqueiam o deploy."
+}

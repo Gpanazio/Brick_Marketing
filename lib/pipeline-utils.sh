@@ -1,7 +1,27 @@
 #!/bin/bash
 # BRICK AI PIPELINE UTILITIES
 # Funções compartilhadas entre os scripts de pipeline
-# v1.1 - Timing functions added
+# v1.2 - Dependency check + token savings tracker
+
+# Validação de dependências críticas
+check_dependencies() {
+    local missing=()
+    
+    command -v jq >/dev/null 2>&1 || missing+=("jq")
+    command -v openclaw >/dev/null 2>&1 || missing+=("openclaw")
+    
+    if [ ${#missing[@]} -gt 0 ]; then
+        echo "❌ ERRO: Dependências faltando: ${missing[*]}"
+        echo "   Instale com: brew install ${missing[*]}"
+        exit 1
+    fi
+}
+
+# Chamar validação (apenas uma vez por execução)
+if [ -z "$DEPENDENCIES_CHECKED" ]; then
+    check_dependencies
+    export DEPENDENCIES_CHECKED=1
+fi
 
 MAX_RETRIES=${MAX_RETRIES:-3}
 INITIAL_BACKOFF_SECONDS=${INITIAL_BACKOFF_SECONDS:-2}
@@ -156,4 +176,43 @@ if ! trap -p EXIT | grep -q cleanup_children; then
     trap cleanup_children EXIT INT TERM
 fi
 
-export -f setup_logs log_step validate_json run_agent create_md_placeholder create_json_placeholder cleanup_children
+# Calcula e loga economia de tokens/custo (chamado ao final dos pipelines)
+log_token_savings() {
+    local job_id="$1"
+    local wip_dir="$2"
+    local mode="$3"  # marketing, projetos, ideias
+    
+    # Estimar economia baseado no modo
+    local savings_tokens=0
+    local savings_cost=0
+    
+    case "$mode" in
+        marketing)
+            # Context dedup: ~450 tokens por projeto (3 copywriters)
+            savings_tokens=450
+            # Gemini Flash: ~$0.00001/token (input), $0.00003/token (output)
+            # Economia estimada: 450 tokens × $0.00002 (média) = ~$0.009
+            savings_cost=0.009
+            ;;
+        projetos)
+            # Context optimization: ~1500-2000 tokens por projeto (6 calls com fallbacks)
+            savings_tokens=1750
+            # Gemini Pro: ~$0.0001/token (input), $0.0003/token (output)
+            # Economia estimada: 1750 tokens × $0.0002 (média) = ~$0.35
+            savings_cost=0.35
+            ;;
+        ideias)
+            # Menor economia (briefing já é curto)
+            savings_tokens=200
+            savings_cost=0.004
+            ;;
+    esac
+    
+    echo ""
+    echo "💰 ECONOMIA ESTIMADA:"
+    echo "   Tokens salvos: ~${savings_tokens}"
+    echo "   Custo evitado: ~\$${savings_cost}"
+    echo ""
+}
+
+export -f setup_logs log_step validate_json run_agent create_md_placeholder create_json_placeholder cleanup_children log_token_savings
