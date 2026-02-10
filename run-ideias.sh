@@ -19,6 +19,7 @@ source "$PROJECT_ROOT/lib/pipeline-utils.sh"
 BRIEFING_FILE="$1"
 
 source "$PROJECT_ROOT/lib/context-summarizer.sh"
+source "$PROJECT_ROOT/lib/sync-utils.sh"
 if [ -z "$BRIEFING_FILE" ]; then
     echo "❌ Uso: $0 <briefing-file>"
     exit 1
@@ -81,6 +82,7 @@ RAW_FILE="$WIP_DIR/${JOB_ID}_RAW_IDEA.md"
 cp "$BRIEFING_FILE" "$RAW_FILE"
 DURATION=$(get_duration_ms $STEP_START)
 echo "✅ Raw Idea salva"
+sync_file_to_railway "$JOB_ID" "ideias" "$RAW_FILE"
 print_duration $DURATION "Etapa 0"
 
 # ============================================
@@ -122,6 +124,7 @@ Avalie a ideia conforme seu role acima e salve o resultado JSON no arquivo: ${PA
     if [ -f "$PAIN_OUT" ] && validate_json "$PAIN_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Pain Check concluído"
+        sync_file_to_railway "$JOB_ID" "ideias" "$PAIN_OUT"
         print_duration $DURATION "Etapa 1"
         break
     fi
@@ -185,6 +188,7 @@ Pesquise conforme seu role acima e salve o resultado Markdown no arquivo: ${MARK
     if [ -f "$MARKET_OUT" ] && [ -s "$MARKET_OUT" ]; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Market Scan concluído"
+        sync_file_to_railway "$JOB_ID" "ideias" "$MARKET_OUT"
         print_duration $DURATION "Etapa 2"
         break
     fi
@@ -283,6 +287,7 @@ DURATION=$(get_duration_ms $STEP_START)
 # Verifica resultados com status de cada processo
 if [ -f "$ANGLE_OUT" ] && validate_json "$ANGLE_OUT"; then
     echo "✅ Angel Gen concluído"
+    sync_file_to_railway "$JOB_ID" "ideias" "$ANGLE_OUT"
 else
     [ $ANGEL_STATUS -ne 0 ] && echo "⚠️ Angel falhou com código $ANGEL_STATUS"
     create_json_placeholder "$ANGLE_OUT" "ANGEL_GEN" "$JOB_ID" "Agent failed or invalid JSON"
@@ -290,6 +295,7 @@ fi
 
 if [ -f "$DEVIL_OUT" ] && validate_json "$DEVIL_OUT"; then
     echo "✅ Devil Gen concluído"
+    sync_file_to_railway "$JOB_ID" "ideias" "$DEVIL_OUT"
 else
     [ $DEVIL_STATUS -ne 0 ] && echo "⚠️ Devil falhou com código $DEVIL_STATUS"
     create_json_placeholder "$DEVIL_OUT" "DEVIL_GEN" "$JOB_ID" "Agent failed or invalid JSON"
@@ -351,6 +357,7 @@ Julgue a viabilidade conforme seu role acima e salve o resultado JSON no arquivo
     if [ -f "$VIABILITY_OUT" ] && validate_json "$VIABILITY_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Viability concluído"
+        sync_file_to_railway "$JOB_ID" "ideias" "$VIABILITY_OUT"
         print_duration $DURATION "Etapa 4"
         break
     fi
@@ -403,6 +410,7 @@ Julgue a viabilidade conforme seu role acima e salve o resultado JSON no arquivo
     if [ -f "$VIABILITY_OUT" ] && validate_json "$VIABILITY_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Viability concluído via fallback GPT-5.3"
+        sync_file_to_railway "$JOB_ID" "ideias" "$VIABILITY_OUT"
         print_duration $DURATION "Etapa 4 (fallback)"
     else
         create_json_placeholder "$VIABILITY_OUT" "VIABILITY" "$JOB_ID" "All retries failed (Opus + GPT-5.3 fallback)"
