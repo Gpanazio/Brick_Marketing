@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <!-- Build: 2026-02-07T11:17:00-03:00 -->
     <meta charset="UTF-8">
@@ -8,161 +9,949 @@
     <meta name="googlebot" content="noindex, nofollow">
     <meta name="bingbot" content="noindex, nofollow">
     <title>BRICK AI // WAR ROOM</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text x='50' y='75' font-size='70' text-anchor='middle' fill='%23DC2626' font-family='monospace' font-weight='bold'>B</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text x='50' y='75' font-size='70' text-anchor='middle' fill='%23DC2626' font-family='monospace' font-weight='bold'>B</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
-        :root { --brick-red: #DC2626; --brick-black: #000; --brick-white: #FFF; --brick-gray: #111; }
-        body { background-color: var(--brick-black); color: var(--brick-white); font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; height: 100vh; }
-        .font-brick { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.05em; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        :root {
+            --brick-red: #DC2626;
+            --brick-black: #000;
+            --brick-white: #FFF;
+            --brick-gray: #111;
+        }
+
+        body {
+            background-color: var(--brick-black);
+            color: var(--brick-white);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+        }
+
+        .font-brick {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
 
         /* THE FAVORITE BACKGROUND */
         .grid-bg {
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
             background-image:
                 radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.12) 0%, transparent 60%),
                 linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
             background-size: 100% 100%, 50px 50px, 50px 50px;
-            pointer-events: none; z-index: -1;
+            pointer-events: none;
+            z-index: -1;
         }
+
         .vignette {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.85) 100%);
-            pointer-events: none; z-index: -1;
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* NODE STYLING (MATCHING IMAGE) */
         .node {
-            position: absolute !important; width: 320px;
-            background: rgba(5, 5, 5, 0.9); border: 1px solid #222;
-            padding: 24px; cursor: move; z-index: 10;
+            position: absolute !important;
+            width: 320px;
+            background: rgba(5, 5, 5, 0.9);
+            border: 1px solid #222;
+            padding: 24px;
+            cursor: move;
+            z-index: 10;
             transition: border-color 0.3s;
         }
-        .node:hover { border-color: #444; }
-        .node.node-douglas { border: 1px solid var(--brick-red); box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
-        .node.disabled { opacity: 0.3; filter: grayscale(1); }
 
-        .node-led { position: absolute; top: 10px; right: 10px; width: 4px; height: 4px; background: var(--brick-red); border-radius: 50%; box-shadow: 0 0 8px var(--brick-red); }
-        .disabled .node-led { background: #333; box-shadow: none; }
-        .node[data-provider="openai"] { border-left: 2px solid #10a37f; }
-        .node[data-provider="openai"] .node-led { background: #10a37f; box-shadow: 0 0 8px #10a37f; }
-        .node[data-provider="openai"] .node-subtext { color: #10a37f; }
-        .node[data-provider="gemini-flash"] { border-left: 2px solid #4285f4; }
-        .node[data-provider="gemini-flash"] .node-led { background: #4285f4; box-shadow: 0 0 8px #4285f4; }
-        .node[data-provider="gemini-flash"] .node-subtext { color: #4285f4; }
-        .node[data-provider="gemini-pro"] { border-left: 2px solid #00bcd4; }
-        .node[data-provider="gemini-pro"] .node-led { background: #00bcd4; box-shadow: 0 0 8px #00bcd4; }
-        .node[data-provider="gemini-pro"] .node-subtext { color: #00bcd4; }
-        .node[data-provider="sonnet"] { border-left: 2px solid #d97706; }
-        .node[data-provider="sonnet"] .node-led { background: #d97706; box-shadow: 0 0 8px #d97706; }
-        .node[data-provider="sonnet"] .node-subtext { color: #d97706; }
-        .node[data-provider="opus"] { border-left: 2px solid #9333ea; }
-        .node[data-provider="opus"] .node-led { background: #9333ea; box-shadow: 0 0 8px #9333ea; }
-        .node[data-provider="opus"] .node-subtext { color: #9333ea; }
-        .node[data-provider="human"] { border-left: 2px solid #fff; }
-        .node[data-provider="human"] .node-led { background: #fff; box-shadow: 0 0 8px #fff; }
-        .node[data-provider="human"] .node-subtext { color: #fff; }
-        .node[data-provider="revision"] { border-left: 2px solid #f97316; border: 2px solid #f97316; background: rgba(249, 115, 22, 0.05); }
-        .node[data-provider="revision"] .node-led { background: #f97316; box-shadow: 0 0 12px #f97316; animation: pulse-revision 2s ease-in-out infinite; }
-        .node[data-provider="revision"] .node-subtext { color: #f97316; }
-        .node[data-provider="revision"] .node-title { color: #f97316; }
-        @keyframes pulse-revision { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        
+        .node:hover {
+            border-color: #444;
+        }
+
+        .node.node-douglas {
+            border: 1px solid var(--brick-red);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
+        }
+
+        .node.disabled {
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+
+        .node-led {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 4px;
+            height: 4px;
+            background: var(--brick-red);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--brick-red);
+        }
+
+        .disabled .node-led {
+            background: #333;
+            box-shadow: none;
+        }
+
+        .node[data-provider="openai"] {
+            border-left: 2px solid #10a37f;
+        }
+
+        .node[data-provider="openai"] .node-led {
+            background: #10a37f;
+            box-shadow: 0 0 8px #10a37f;
+        }
+
+        .node[data-provider="openai"] .node-subtext {
+            color: #10a37f;
+        }
+
+        .node[data-provider="gemini-flash"] {
+            border-left: 2px solid #4285f4;
+        }
+
+        .node[data-provider="gemini-flash"] .node-led {
+            background: #4285f4;
+            box-shadow: 0 0 8px #4285f4;
+        }
+
+        .node[data-provider="gemini-flash"] .node-subtext {
+            color: #4285f4;
+        }
+
+        .node[data-provider="gemini-pro"] {
+            border-left: 2px solid #00bcd4;
+        }
+
+        .node[data-provider="gemini-pro"] .node-led {
+            background: #00bcd4;
+            box-shadow: 0 0 8px #00bcd4;
+        }
+
+        .node[data-provider="gemini-pro"] .node-subtext {
+            color: #00bcd4;
+        }
+
+        .node[data-provider="sonnet"] {
+            border-left: 2px solid #d97706;
+        }
+
+        .node[data-provider="sonnet"] .node-led {
+            background: #d97706;
+            box-shadow: 0 0 8px #d97706;
+        }
+
+        .node[data-provider="sonnet"] .node-subtext {
+            color: #d97706;
+        }
+
+        .node[data-provider="opus"] {
+            border-left: 2px solid #9333ea;
+        }
+
+        .node[data-provider="opus"] .node-led {
+            background: #9333ea;
+            box-shadow: 0 0 8px #9333ea;
+        }
+
+        .node[data-provider="opus"] .node-subtext {
+            color: #9333ea;
+        }
+
+        .node[data-provider="human"] {
+            border-left: 2px solid #fff;
+        }
+
+        .node[data-provider="human"] .node-led {
+            background: #fff;
+            box-shadow: 0 0 8px #fff;
+        }
+
+        .node[data-provider="human"] .node-subtext {
+            color: #fff;
+        }
+
+        .node[data-provider="revision"] {
+            border-left: 2px solid #f97316;
+            border: 2px solid #f97316;
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .node[data-provider="revision"] .node-led {
+            background: #f97316;
+            box-shadow: 0 0 12px #f97316;
+            animation: pulse-revision 2s ease-in-out infinite;
+        }
+
+        .node[data-provider="revision"] .node-subtext {
+            color: #f97316;
+        }
+
+        .node[data-provider="revision"] .node-title {
+            color: #f97316;
+        }
+
+        @keyframes pulse-revision {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
         /* Rerun & Loop nodes (Dynamic nodes styling) */
-        .node[data-provider="rerun"] { border: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.05); }
-        .node[data-provider="rerun"] .node-led { background: #3b82f6; box-shadow: 0 0 12px #3b82f6; }
-        .node[data-provider="rerun"] .node-subtext { color: #3b82f6; }
-        .node[data-provider="rerun"] .node-title { color: #3b82f6; }
+        .node[data-provider="rerun"] {
+            border: 2px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
 
-        .node[data-provider="loop-wall"], .node[data-provider="loop-copy"], .node[data-provider="loop-exec"], .node[data-provider="loop-dir"], .node[data-provider="loop-prop"] { 
-            border: 1px solid #f97316; 
+        .node[data-provider="rerun"] .node-led {
+            background: #3b82f6;
+            box-shadow: 0 0 12px #3b82f6;
+        }
+
+        .node[data-provider="rerun"] .node-subtext {
+            color: #3b82f6;
+        }
+
+        .node[data-provider="rerun"] .node-title {
+            color: #3b82f6;
+        }
+
+        .node[data-provider="loop-wall"],
+        .node[data-provider="loop-copy"],
+        .node[data-provider="loop-exec"],
+        .node[data-provider="loop-dir"],
+        .node[data-provider="loop-prop"] {
+            border: 1px solid #f97316;
             background: rgba(249, 115, 22, 0.02);
         }
-        .node[data-provider*="loop"] .node-led { background: #f97316; box-shadow: 0 0 8px #f97316; }
-        .node[data-provider*="loop"] .node-subtext { color: #f97316; }
-        .node[data-provider*="loop"] .node-title { color: #f97316; }
-        .disabled[data-provider] { border-left-color: #222 !important; }
-        .disabled[data-provider] .node-subtext { color: #333 !important; }
 
-        .node-id { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-bottom: 8px; letter-spacing: 0.1em; }
-        .node-title { font-family: 'Inter'; font-weight: 900; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.2; }
-        .node-subtext { font-family: 'JetBrains Mono'; font-size: 8px; color: #444; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #111; padding-top: 12px; }
+        .node[data-provider*="loop"] .node-led {
+            background: #f97316;
+            box-shadow: 0 0 8px #f97316;
+        }
+
+        .node[data-provider*="loop"] .node-subtext {
+            color: #f97316;
+        }
+
+        .node[data-provider*="loop"] .node-title {
+            color: #f97316;
+        }
+
+        .disabled[data-provider] {
+            border-left-color: #222 !important;
+        }
+
+        .disabled[data-provider] .node-subtext {
+            color: #333 !important;
+        }
+
+        .node-id {
+            font-family: 'JetBrains Mono';
+            font-size: 8px;
+            color: #444;
+            margin-bottom: 8px;
+            letter-spacing: 0.1em;
+        }
+
+        .node-title {
+            font-family: 'Inter';
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .node-subtext {
+            font-family: 'JetBrains Mono';
+            font-size: 8px;
+            color: #444;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-top: 1px solid #111;
+            padding-top: 12px;
+        }
 
         /* ANGULAR CONNECTIONS */
-        .conn-line { fill: none; stroke: var(--brick-red); stroke-width: 1; opacity: 0.2; }
-        .conn-line.active { opacity: 0.6; stroke-width: 1.5; }
+        .conn-line {
+            fill: none;
+            stroke: var(--brick-red);
+            stroke-width: 1;
+            opacity: 0.2;
+        }
 
-        .pulse-dot { fill: var(--brick-red); filter: drop-shadow(0 0 3px var(--brick-red)); }
+        .conn-line.active {
+            opacity: 0.6;
+            stroke-width: 1.5;
+        }
+
+        .pulse-dot {
+            fill: var(--brick-red);
+            filter: drop-shadow(0 0 3px var(--brick-red));
+        }
 
         /* SIDE PANEL */
-        .side-panel { position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: #050505; border-left: 1px solid #222; z-index: 250; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .side-panel.open { right: 0; }
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 450px;
+            height: 100vh;
+            background: #050505;
+            border-left: 1px solid #222;
+            z-index: 250;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .side-panel.open {
+            right: 0;
+        }
 
         /* INTERFACE ELEMENTS */
-        .btn-brick { background: var(--brick-red); color: #fff; font-family: 'Inter'; font-weight: 900; font-size: 11px; padding: 8px 16px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
-        .btn-brick:hover { background: #fff; color: #000; }
+        .btn-brick {
+            background: var(--brick-red);
+            color: #fff;
+            font-family: 'Inter';
+            font-weight: 900;
+            font-size: 11px;
+            padding: 8px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.2s;
+        }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #222; }
+        .btn-brick:hover {
+            background: #fff;
+            color: #000;
+        }
 
-        #view-nodegraphic { display: none; }
-        #view-nodegraphic.active { display: block; }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+        }
+
+        #view-nodegraphic {
+            display: none;
+        }
+
+        #view-nodegraphic.active {
+            display: block;
+        }
 
         /* REVISION SYSTEM */
         .revision-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-family: 'JetBrains Mono'; font-size: 9px;
-            text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono';
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
         }
-        .revision-badge.pending { color: #f97316; border: 1px solid #f97316; animation: pulse-badge 2s ease-in-out infinite; }
-        .revision-badge.approved { color: #3b82f6; border: 1px solid #3b82f6; }
-        .revision-badge.feedback-pending { color: #eab308; border: 1px solid #eab308; animation: pulse-badge 2s ease-in-out infinite; }
-        @keyframes pulse-badge { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .revision-badge.pending {
+            color: #f97316;
+            border: 1px solid #f97316;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        .revision-badge.approved {
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+
+        .revision-badge.feedback-pending {
+            color: #eab308;
+            border: 1px solid #eab308;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
         .card-revision-pending {
             border-color: #f97316 !important;
             animation: pulse-border 2s ease-in-out infinite;
         }
+
         .card-feedback-pending {
             border-color: #eab308 !important;
             animation: pulse-border-yellow 2s ease-in-out infinite;
         }
+
         @keyframes pulse-border {
-            0%, 100% { border-color: #f97316; box-shadow: 0 0 0 rgba(249, 115, 22, 0); }
-            50% { border-color: #fb923c; box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); }
+
+            0%,
+            100% {
+                border-color: #f97316;
+                box-shadow: 0 0 0 rgba(249, 115, 22, 0);
+            }
+
+            50% {
+                border-color: #fb923c;
+                box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
+            }
         }
+
         @keyframes pulse-border-yellow {
-            0%, 100% { border-color: #eab308; box-shadow: 0 0 0 rgba(234, 179, 8, 0); }
-            50% { border-color: #facc15; box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+
+            0%,
+            100% {
+                border-color: #eab308;
+                box-shadow: 0 0 0 rgba(234, 179, 8, 0);
+            }
+
+            50% {
+                border-color: #facc15;
+                box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
+            }
         }
-        .diff-added { background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; padding: 8px 12px; margin: 4px 0; }
-        .diff-removed { background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 8px 12px; margin: 4px 0; text-decoration: line-through; opacity: 0.7; }
-        .diff-edit { background: rgba(249, 115, 22, 0.1); border-left: 3px solid #f97316; padding: 8px 12px; margin: 4px 0; }
-        .comparison-col { flex: 1; overflow-y: auto; max-height: 50vh; padding: 16px; }
-        .comparison-col h4 { font-size: 11px; font-family: 'JetBrains Mono'; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #222; }
-        .rev-tab-btn { padding: 8px 16px; font-family: 'JetBrains Mono'; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid #222; color: #666; cursor: pointer; transition: all 0.2s; background: transparent; }
-        .rev-tab-btn:hover { color: #fff; border-color: #444; }
-        .rev-tab-btn.active { color: #DC2626; border-color: #DC2626; background: rgba(220, 38, 38, 0.1); }
+
+        .diff-added {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 3px solid #22c55e;
+            padding: 8px 12px;
+            margin: 4px 0;
+        }
+
+        .diff-removed {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+            padding: 8px 12px;
+            margin: 4px 0;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .diff-edit {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 3px solid #f97316;
+            padding: 8px 12px;
+            margin: 4px 0;
+        }
+
+        .comparison-col {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 50vh;
+            padding: 16px;
+        }
+
+        .comparison-col h4 {
+            font-size: 11px;
+            font-family: 'JetBrains Mono';
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #222;
+        }
+
+        .rev-tab-btn {
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono';
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: 1px solid #222;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+
+        .rev-tab-btn:hover {
+            color: #fff;
+            border-color: #444;
+        }
+
+        .rev-tab-btn.active {
+            color: #DC2626;
+            border-color: #DC2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
 
         /* MARKDOWN STYLING IN PANEL */
-        #panel-body h1 { font-size: 20px; font-weight: 900; color: #fff; margin: 24px 0 12px; text-transform: uppercase; line-height: 1.3; }
-        #panel-body h2 { font-size: 16px; font-weight: 700; color: #DC2626; margin: 20px 0 12px; text-transform: uppercase; line-height: 1.3; }
-        #panel-body h3 { font-size: 14px; font-weight: 600; color: #888; margin: 16px 0 10px; line-height: 1.4; }
-        #panel-body p { margin: 12px 0; line-height: 1.7; color: #aaa; font-size: 14px; }
-        #panel-body ul, #panel-body ol { margin: 12px 0; padding-left: 24px; color: #aaa; }
-        #panel-body li { margin: 8px 0; font-size: 14px; line-height: 1.6; }
-        #panel-body code { background: #0a0a0a; padding: 2px 6px; border-radius: 3px; color: #DC2626; font-size: 12px; }
-        #panel-body pre { background: #0a0a0a; border: 1px solid #222; padding: 12px; border-radius: 4px; overflow-x: auto; margin: 12px 0; font-size: 13px; line-height: 1.5; }
-        #panel-body pre code { background: transparent; padding: 0; }
-        #panel-body strong { color: #fff; font-weight: 700; }
-        #panel-body em { color: #DC2626; font-style: italic; }
-        #panel-body blockquote { border-left: 2px solid #DC2626; padding-left: 16px; margin: 12px 0; color: #666; font-style: italic; font-size: 14px; line-height: 1.6; }
+        #panel-body h1 {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+            margin: 24px 0 12px;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        #panel-body h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #DC2626;
+            margin: 20px 0 12px;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        #panel-body h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+            margin: 16px 0 10px;
+            line-height: 1.4;
+        }
+
+        #panel-body p {
+            margin: 12px 0;
+            line-height: 1.7;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        #panel-body ul,
+        #panel-body ol {
+            margin: 12px 0;
+            padding-left: 24px;
+            color: #aaa;
+        }
+
+        #panel-body li {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        #panel-body code {
+            background: #0a0a0a;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #DC2626;
+            font-size: 12px;
+        }
+
+        #panel-body pre {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 12px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        #panel-body pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        #panel-body strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        #panel-body em {
+            color: #DC2626;
+            font-style: italic;
+        }
+
+        #panel-body blockquote {
+            border-left: 2px solid #DC2626;
+            padding-left: 16px;
+            margin: 12px 0;
+            color: #666;
+            font-style: italic;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 768px) {
+
+            /* GLOBAL LAYOUT & SCROLLING */
+            body {
+                overflow-x: hidden;
+                position: fixed;
+                /* Prevent body scroll bounce on iOS */
+                width: 100%;
+                height: 100%;
+            }
+
+            /* MAIN UI CONTAINER */
+            #main-ui {
+                padding: 16px;
+                height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* HEADER ADAPTATION */
+            #main-ui header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+                margin-bottom: 24px;
+                padding-bottom: 16px;
+            }
+
+            #main-ui header h1 {
+                font-size: 20px;
+                line-height: 1.2;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #header-sector {
+                display: inline-block;
+                margin-left: 0;
+                margin-top: 6px;
+                font-size: 10px;
+            }
+
+            #connection-status {
+                margin-top: 8px;
+            }
+
+            #main-ui header .flex {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            #main-ui header button {
+                flex: 1 1 auto;
+                font-size: 10px;
+                padding: 12px 16px;
+                /* Larger touch target */
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            /* WELCOME SCREEN */
+            #welcome-screen {
+                padding: 0;
+                margin-top: 10px;
+                height: auto;
+                overflow-y: visible;
+                display: block;
+                /* Disable flex centering on mobile to allow scroll */
+            }
+
+            #welcome-screen .w-full {
+                margin-bottom: 40px;
+            }
+
+            #welcome-screen .text-6xl {
+                font-size: 36px;
+                line-height: 1;
+            }
+
+            #welcome-screen .grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            #welcome-screen .p-12 {
+                padding: 24px;
+            }
+
+            #welcome-screen .text-3xl {
+                font-size: 24px;
+            }
+
+            /* LOBBY */
+            #project-lobby {
+                padding-right: 0;
+                margin-bottom: 80px;
+                /* Space for bottom interaction */
+            }
+
+            #lobby-approved-list,
+            #lobby-active-list {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .revision-badge {
+                font-size: 8px;
+                padding: 4px 8px;
+            }
+
+            /* NODE GRAPHIC HEADER */
+            #view-nodegraphic header {
+                padding: 12px;
+                flex-direction: column;
+                gap: 12px;
+                height: auto;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid #222;
+            }
+
+            #view-nodegraphic header h1 {
+                font-size: 16px;
+            }
+
+            #view-nodegraphic header .flex {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            #view-nodegraphic header button {
+                flex: 1 1 auto;
+                padding: 10px;
+                font-size: 10px;
+            }
+
+            /* NODES VISUALIZATION */
+            .node {
+                width: 260px;
+                /* Narrower for mobile */
+                padding: 16px;
+                font-size: 12px;
+                background: rgba(5, 5, 5, 0.95);
+                /* More opaque */
+            }
+
+            .node-title {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .node-subtext {
+                margin-top: 8px;
+                padding-top: 8px;
+                font-size: 7px;
+            }
+
+            .node-led {
+                width: 6px;
+                height: 6px;
+                top: 12px;
+                right: 12px;
+            }
+
+            /* TELEMETRY PANEL */
+            #view-nodegraphic .fixed.bottom-10.left-10.w-80 {
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                border: none;
+                border-top: 1px solid #222;
+                background: #000;
+                padding: 16px;
+                z-index: 90;
+            }
+
+            #telemetry-data {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            /* SIDE PANEL (REPORTS) */
+            .side-panel {
+                width: 100%;
+                right: -100%;
+                border-left: none;
+                z-index: 300;
+            }
+
+            .side-panel.open {
+                right: 0;
+            }
+
+            .side-panel .p-10 {
+                padding: 20px;
+            }
+
+            /* Reduce padding */
+            #panel-body {
+                padding: 24px 20px;
+                padding-bottom: 120px;
+                /* Safe area */
+                font-size: 15px;
+                /* Larger readable text */
+            }
+
+            #panel-body h1 {
+                font-size: 24px;
+                margin-top: 24px;
+            }
+
+            #panel-body h2 {
+                font-size: 18px;
+                color: #fff;
+                margin-top: 32px;
+                border-bottom: 1px solid #222;
+                padding-bottom: 8px;
+            }
+
+            #panel-body p,
+            #panel-body li {
+                color: #ccc;
+                line-height: 1.6;
+                margin-bottom: 16px;
+            }
+
+            #panel-body pre {
+                background: #111;
+                padding: 16px;
+                margin: 20px -20px;
+                /* Bleed to edges */
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+            }
+
+            #panel-title {
+                font-size: 16px;
+            }
+
+            /* MODALS */
+            .fixed.inset-0.z-\[300\] .max-w-6xl,
+            .fixed.inset-0.z-\[300\] .max-w-2xl,
+            .fixed.inset-0.z-\[300\] .max-w-5xl {
+                width: 100%;
+                height: 100%;
+                max-height: 100%;
+                border: none;
+            }
+
+            .fixed.inset-0.z-\[300\] .p-8 {
+                padding: 20px;
+            }
+
+            textarea {
+                font-size: 16px;
+            }
+
+            /* Prevent iOS zoom */
+        }
+
+        /* NEW MOBILE OPTIMIZATIONS OVERRIDE - IMPROVED VISUALIZATION */
+        @media (max-width: 768px) {
+
+            /* NODES: Better size and readability */
+            .node {
+                width: 280px !important;
+                padding: 18px !important;
+                font-size: 13px !important;
+                background: rgba(5, 5, 5, 0.98) !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+            }
+
+            .node-title {
+                font-size: 16px !important;
+                line-height: 1.3 !important;
+                margin-bottom: 10px !important;
+            }
+
+            .node-subtext {
+                font-size: 9px !important;
+                margin-top: 10px !important;
+                padding-top: 10px !important;
+                font-weight: bold !important;
+            }
+
+            /* REPORTS (SIDE PANEL): Better readability */
+            .side-panel {
+                width: 100% !important;
+                z-index: 9999 !important;
+            }
+
+            #panel-body {
+                padding: 24px 20px !important;
+                padding-bottom: 150px !important;
+                font-size: 16px !important;
+                line-height: 1.7 !important;
+            }
+
+            #panel-body h1 {
+                font-size: 24px !important;
+                margin-top: 24px !important;
+                border-bottom: 1px solid #333 !important;
+                padding-bottom: 12px !important;
+            }
+
+            #panel-body h2 {
+                font-size: 20px !important;
+                margin-top: 32px !important;
+                color: #fff !important;
+            }
+
+            #panel-body pre {
+                font-size: 13px !important;
+                padding: 16px !important;
+                margin: 20px -20px !important;
+                background: #111 !important;
+                overflow-x: auto !important;
+            }
+
+            /* HEADER & UI */
+            #main-ui header {
+                padding-bottom: 16px !important;
+                margin-bottom: 20px !important;
+            }
+
+            #welcome-screen .text-6xl {
+                font-size: 32px !important;
+            }
+
+            #welcome-screen .text-3xl {
+                font-size: 22px !important;
+            }
+
+            /* MODALS */
+            .fixed.inset-0 .max-w-6xl,
+            .fixed.inset-0 .max-w-5xl,
+            .fixed.inset-0 .max-w-2xl {
+                width: 100% !important;
+                height: 100% !important;
+                max-height: 100% !important;
+                border-radius: 0 !important;
+                border: none !important;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="grid-bg"></div>
     <div class="vignette"></div>
@@ -172,19 +961,31 @@
         <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8 relative z-50">
             <div>
                 <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
-                    BRICK AI <span id="header-sector" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span>
+                    BRICK AI <span id="header-sector"
+                        class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span>
                 </h1>
-                <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">System_Active</div>
+                <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">
+                    System_Active</div>
             </div>
             <div class="flex gap-4 items-center">
-                <button id="btn-back-lobby" onclick="goHome()" class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">← Sectors</button>
-                <button id="btn-scheme" onclick="openScheme()" class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
-                <button id="btn-delete-project" onclick="confirmDeleteProject()" class="hidden text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">✕ Delete</button>
+                <button id="btn-back-lobby" onclick="goHome()"
+                    class="hidden text-[#444] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2">←
+                    Sectors</button>
+                <button id="btn-scheme" onclick="openScheme()"
+                    class="hidden text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈
+                    Scheme</button>
+                <button id="btn-delete-project" onclick="confirmDeleteProject()"
+                    class="hidden text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">✕
+                    Delete</button>
                 <div id="layout-indicator" class="hidden text-[10px] font-mono text-green-500/60 tracking-widest">
                     <span id="saved-positions-count">0</span> POSIÇÕES SALVAS
                 </div>
-                <button id="btn-clear-layout" onclick="clearLayoutQuick()" class="hidden text-[#666] hover:text-[#DC2626] font-mono text-[9px] uppercase tracking-widest px-3 py-2 hover:underline" title="Limpar TODAS as posições salvas e resetar layout">✕ Limpar</button>
-                <button id="btn-reset-layout" onclick="resetLayout()" class="hidden text-[#DC2626] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#DC2626] px-4 py-2 hover:bg-[#DC2626] hover:text-black">⟲ RESET POSIÇÕES</button>
+                <button id="btn-clear-layout" onclick="clearLayoutQuick()"
+                    class="hidden text-[#666] hover:text-[#DC2626] font-mono text-[9px] uppercase tracking-widest px-3 py-2 hover:underline"
+                    title="Limpar TODAS as posições salvas e resetar layout">✕ Limpar</button>
+                <button id="btn-reset-layout" onclick="resetLayout()"
+                    class="hidden text-[#DC2626] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#DC2626] px-4 py-2 hover:bg-[#DC2626] hover:text-black">⟲
+                    RESET POSIÇÕES</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
@@ -193,26 +994,32 @@
         <div id="welcome-screen" class="flex-1 flex items-center justify-center">
             <div class="w-full max-w-6xl">
                 <div class="text-center mb-10 -mt-6">
-                    <h1 class="text-6xl font-brick text-white uppercase tracking-tighter">Brick <span class="text-[#DC2626]">War</span> Room</h1>
+                    <h1 class="text-6xl font-brick text-white uppercase tracking-tighter">Brick <span
+                            class="text-[#DC2626]">War</span> Room</h1>
                     <p class="text-sm font-mono text-[#666] uppercase tracking-[0.3em] mt-3">Creation Center</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-                <div onclick="enterMode('marketing')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
-                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Marketing</h3>
-                    <p class="text-[#444] font-mono text-xs uppercase">Content & Flow</p>
+                    <div onclick="enterMode('marketing')"
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Marketing
+                        </h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Content & Flow</p>
+                    </div>
+                    <div onclick="enterMode('projetos')"
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos —
+                            Clientes</h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
+                    </div>
+                    <div onclick="enterMode('ideias')"
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
+                    </div>
                 </div>
-                <div onclick="enterMode('projetos')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
-                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos — Clientes</h3>
-                    <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
-                </div>
-                <div onclick="enterMode('ideias')" class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                    <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
-                    <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
-                    <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
-                </div>
-            </div>
             </div>
         </div>
 
@@ -235,20 +1042,30 @@
 
     <!-- THE FAVORITE WAR ROOM (NODE GRAPHIC) -->
     <div id="view-nodegraphic" class="fixed inset-0 z-[100]">
-        <header class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
+        <header
+            class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
             <div>
                 <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
-                    BRICK AI <span id="ng-sector-title" class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">MARKETING</span>
+                    BRICK AI <span id="ng-sector-title"
+                        class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">MARKETING</span>
                 </h1>
                 <div class="text-[9px] font-mono text-[#DC2626] mt-2 tracking-widest uppercase">
                     Mason Protocol v5.0 // <span id="ng-title" class="text-white">PROJECT_TITLE</span>
                 </div>
             </div>
             <div class="flex gap-4">
-                <button onclick="closeNodeGraphic()" class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-4 py-2 uppercase tracking-widest">← Back_To_Lobby</button>
-                <button onclick="rerunJob()" class="text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">↻ Re-run</button>
-                <button onclick="confirmDeleteProject()" class="text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">✕ Delete</button>
-                <button onclick="openScheme()" class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈ Scheme</button>
+                <button onclick="closeNodeGraphic()"
+                    class="text-[#444] hover:text-white font-mono text-[10px] border border-[#222] px-4 py-2 uppercase tracking-widest">←
+                    Back_To_Lobby</button>
+                <button onclick="rerunJob()"
+                    class="text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">↻
+                    Re-run</button>
+                <button onclick="confirmDeleteProject()"
+                    class="text-[#666] hover:text-[#DC2626] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#DC2626]">✕
+                    Delete</button>
+                <button onclick="openScheme()"
+                    class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#444]">◈
+                    Scheme</button>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
@@ -295,11 +1112,16 @@
     </div>
 
     <!-- SCHEME MODAL -->
-    <div id="scheme-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'scheme-modal') closeScheme()">
-        <div class="bg-[#050505] border border-[#222] w-full max-w-3xl max-h-[90vh] flex flex-col relative shadow-2xl shadow-red-900/10" onclick="event.stopPropagation()">
+    <div id="scheme-modal"
+        class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4"
+        onclick="if(event.target.id === 'scheme-modal') closeScheme()">
+        <div class="bg-[#050505] border border-[#222] w-full max-w-3xl max-h-[90vh] flex flex-col relative shadow-2xl shadow-red-900/10"
+            onclick="event.stopPropagation()">
             <div class="p-8 border-b border-[#222] flex-shrink-0">
-                <button onclick="closeScheme()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
-                <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title" class="text-[#DC2626]">MARKETING</span></h2>
+                <button onclick="closeScheme()"
+                    class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <h2 class="text-2xl font-brick text-white uppercase">PIPELINE_SCHEME // <span id="scheme-mode-title"
+                        class="text-[#DC2626]">MARKETING</span></h2>
             </div>
 
             <div class="flex-1 overflow-y-auto p-8">
@@ -314,48 +1136,59 @@
             </div>
 
             <div class="p-4 border-t border-[#222] flex justify-end flex-shrink-0">
-                <button onclick="closeScheme()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
+                <button onclick="closeScheme()"
+                    class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-4 py-2 border border-[#222] hover:border-[#444]">CLOSE</button>
             </div>
         </div>
     </div>
 
     <!-- FEEDBACK MODAL -->
-    <div id="feedback-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'feedback-modal') closeFeedbackModal()">
-        <div class="bg-[#050505] border border-[#222] w-full max-w-2xl flex flex-col relative shadow-2xl shadow-red-900/10" onclick="event.stopPropagation()">
+    <div id="feedback-modal"
+        class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4"
+        onclick="if(event.target.id === 'feedback-modal') closeFeedbackModal()">
+        <div class="bg-[#050505] border border-[#222] w-full max-w-2xl flex flex-col relative shadow-2xl shadow-red-900/10"
+            onclick="event.stopPropagation()">
             <div class="p-8 border-b border-[#222]">
-                <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <button onclick="closeFeedbackModal()"
+                    class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">FEEDBACK DE REVISÃO</h2>
-                <div class="text-[10px] font-mono text-[#666] mt-2 uppercase tracking-wider">Explique o que precisa ser ajustado</div>
+                <div class="text-[10px] font-mono text-[#666] mt-2 uppercase tracking-wider">Explique o que precisa ser
+                    ajustado</div>
             </div>
 
             <div class="p-8">
-                <textarea
-                    id="feedback-text"
+                <textarea id="feedback-text"
                     class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-48 focus:border-[#DC2626] outline-none resize-none"
-                    placeholder="Exemplo: O tom está muito técnico. Precisa ser mais acessível para o público-alvo..."
-                ></textarea>
+                    placeholder="Exemplo: O tom está muito técnico. Precisa ser mais acessível para o público-alvo..."></textarea>
             </div>
 
             <div class="p-6 border-t border-[#222] flex justify-end gap-4">
-                <button onclick="closeFeedbackModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
+                <button onclick="closeFeedbackModal()"
+                    class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
                 <button onclick="submitFeedback()" class="btn-brick px-6 py-3">ENVIAR FEEDBACK</button>
             </div>
         </div>
     </div>
 
     <!-- BRIEFING MODAL -->
-    <div id="briefing-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'briefing-modal') closeBriefingModal()">
-        <div class="bg-[#050505] border border-[#DC2626] w-full max-w-2xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
+    <div id="briefing-modal"
+        class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4"
+        onclick="if(event.target.id === 'briefing-modal') closeBriefingModal()">
+        <div class="bg-[#050505] border border-[#DC2626] w-full max-w-2xl flex flex-col relative shadow-2xl shadow-red-900/30"
+            onclick="event.stopPropagation()">
             <div class="p-8 border-b border-[#222]">
-                <button onclick="closeBriefingModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <button onclick="closeBriefingModal()"
+                    class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">NOVO BRIEFING</h2>
-                <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Crie um novo projeto para o pipeline</div>
+                <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Crie um novo projeto
+                    para o pipeline</div>
             </div>
 
             <div class="p-8 space-y-6">
                 <div>
                     <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">MODO</label>
-                    <select id="briefing-mode" onchange="updateCostEstimate()" class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none">
+                    <select id="briefing-mode" onchange="updateCostEstimate()"
+                        class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none">
                         <option value="marketing">Marketing (Conteúdo & Flow)</option>
                         <option value="projetos">Projetos — Clientes (Strategy & Craft)</option>
                         <option value="ideias">Ideias (Validation)</option>
@@ -367,42 +1200,45 @@
                         <span>Etapas: <span id="steps-value" class="text-white">--</span></span>
                     </div>
                 </div>
-                
+
                 <div>
-                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">TÍTULO *</label>
-                    <input 
-                        type="text"
-                        id="briefing-title"
-                        oninput="saveBriefingDraft()"
+                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">TÍTULO
+                        *</label>
+                    <input type="text" id="briefing-title" oninput="saveBriefingDraft()"
                         class="w-full bg-[#0a0a0a] border border-[#222] text-white p-3 font-mono text-sm focus:border-[#DC2626] outline-none"
-                        placeholder="Ex: Lançamento Brick AI 2026"
-                    >
+                        placeholder="Ex: Lançamento Brick AI 2026">
                 </div>
-                
+
                 <div>
-                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">DESCRIÇÃO *</label>
-                    <textarea
-                        id="briefing-content"
-                        oninput="saveBriefingDraft()"
+                    <label class="block text-[10px] font-mono text-[#666] uppercase tracking-wider mb-2">DESCRIÇÃO
+                        *</label>
+                    <textarea id="briefing-content" oninput="saveBriefingDraft()"
                         class="w-full bg-[#0a0a0a] border border-[#222] text-white p-4 font-mono text-sm h-40 focus:border-[#DC2626] outline-none resize-none"
                         placeholder="Descreva o projeto, objetivo, público-alvo, restrições..."></textarea>
                 </div>
             </div>
 
             <div class="p-6 border-t border-[#222] flex justify-end gap-4">
-                <button onclick="clearBriefingDraft(); closeBriefingModal()" class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">LIMPAR & CANCELAR</button>
+                <button onclick="clearBriefingDraft(); closeBriefingModal()"
+                    class="text-[#666] hover:text-white font-mono text-[10px] uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">LIMPAR
+                    & CANCELAR</button>
                 <button onclick="submitBriefing()" class="btn-brick px-6 py-3">CRIAR BRIEFING</button>
             </div>
         </div>
     </div>
 
     <!-- APPROVAL MODAL -->
-    <div id="approval-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'approval-modal') closeApprovalModal()">
-        <div class="bg-[#050505] border border-[#DC2626] w-full max-xl flex flex-col relative shadow-2xl shadow-red-900/30" onclick="event.stopPropagation()">
+    <div id="approval-modal"
+        class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4"
+        onclick="if(event.target.id === 'approval-modal') closeApprovalModal()">
+        <div class="bg-[#050505] border border-[#DC2626] w-full max-xl flex flex-col relative shadow-2xl shadow-red-900/30"
+            onclick="event.stopPropagation()">
             <div class="p-8 border-b border-[#222]">
-                <button onclick="closeApprovalModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
+                <button onclick="closeApprovalModal()"
+                    class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">×</button>
                 <h2 class="text-2xl font-brick text-white uppercase">APROVAR CAMPANHA</h2>
-                <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Confirme para liberar para execução</div>
+                <div class="text-[10px] font-mono text-[#DC2626] mt-2 uppercase tracking-wider">Confirme para liberar
+                    para execução</div>
             </div>
 
             <div class="p-8">
@@ -422,22 +1258,30 @@
                 </div>
 
                 <div class="mt-6 text-xs text-[#666] font-mono leading-relaxed">
-                    Ao aprovar, você confirma que revisou o conteúdo e autoriza a execução da campanha conforme planejado.
+                    Ao aprovar, você confirma que revisou o conteúdo e autoriza a execução da campanha conforme
+                    planejado.
                 </div>
             </div>
 
             <div class="p-6 border-t border-[#222] flex justify-end gap-4">
-                <button onclick="closeApprovalModal()" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
-                <button onclick="confirmApproval()" class="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-widest px-6 py-3 font-bold">✓ APROVAR</button>
+                <button onclick="closeApprovalModal()"
+                    class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">CANCELAR</button>
+                <button onclick="confirmApproval()"
+                    class="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-widest px-6 py-3 font-bold">✓
+                    APROVAR</button>
             </div>
         </div>
     </div>
 
     <!-- REVISION COMPARISON MODAL -->
-    <div id="revision-modal" class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target.id === 'revision-modal') closeRevisionModal()">
-        <div class="bg-[#050505] border border-[#f97316] w-full max-w-5xl max-h-[90vh] flex flex-col relative shadow-2xl" onclick="event.stopPropagation()">
+    <div id="revision-modal"
+        class="fixed inset-0 z-[300] bg-black/90 hidden backdrop-blur-sm flex items-center justify-center p-4"
+        onclick="if(event.target.id === 'revision-modal') closeRevisionModal()">
+        <div class="bg-[#050505] border border-[#f97316] w-full max-w-5xl max-h-[90vh] flex flex-col relative shadow-2xl"
+            onclick="event.stopPropagation()">
             <div class="p-8 border-b border-[#222] flex-shrink-0">
-                <button onclick="closeRevisionModal()" class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">&times;</button>
+                <button onclick="closeRevisionModal()"
+                    class="absolute top-4 right-4 text-[#444] hover:text-white font-mono text-xl z-10">&times;</button>
                 <h2 class="text-2xl font-brick text-white uppercase">COMPARAÇÃO DE REVISÃO</h2>
                 <div class="text-[10px] font-mono text-[#f97316] mt-2 uppercase tracking-wider">
                     <span id="revision-job-title">--</span>
@@ -450,7 +1294,8 @@
                 <button class="rev-tab-btn" onclick="switchRevisionTab('diff', this)">Diff Completo</button>
             </div>
             <!-- Feedback original -->
-            <div id="revision-feedback-bar" class="mx-8 mt-4 p-4 bg-[#0a0a0a] border border-[#333] text-sm font-mono text-[#aaa] flex-shrink-0">
+            <div id="revision-feedback-bar"
+                class="mx-8 mt-4 p-4 bg-[#0a0a0a] border border-[#333] text-sm font-mono text-[#aaa] flex-shrink-0">
                 <span class="text-[#f97316] font-bold uppercase text-[10px] tracking-wider">Feedback:</span>
                 <span id="revision-feedback-text" class="ml-2">--</span>
             </div>
@@ -459,14 +1304,21 @@
                 <div class="text-center text-[#666] py-12 font-mono">Carregando...</div>
             </div>
             <!-- Actions -->
-            <div id="revision-actions-bar" class="p-6 border-t border-[#222] flex justify-between items-center flex-shrink-0">
+            <div id="revision-actions-bar"
+                class="p-6 border-t border-[#222] flex justify-between items-center flex-shrink-0">
                 <div class="text-[10px] font-mono text-[#444] uppercase tracking-wider">
                     Status: <span id="revision-status-label" class="text-[#f97316]">Pendente</span>
                 </div>
                 <div class="flex gap-4">
-                    <button onclick="revisionAction('reject')" class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">Manter Original</button>
-                    <button onclick="revisionAction('rerun')" class="text-[#f97316] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#f97316] hover:bg-[#f97316]">Rodar Novamente</button>
-                    <button onclick="revisionAction('approve')" class="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-widest px-6 py-3 font-bold">Aprovar Revisão</button>
+                    <button onclick="revisionAction('reject')"
+                        class="text-[#666] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#222] hover:border-[#444]">Manter
+                        Original</button>
+                    <button onclick="revisionAction('rerun')"
+                        class="text-[#f97316] hover:text-white font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[#f97316] hover:bg-[#f97316]">Rodar
+                        Novamente</button>
+                    <button onclick="revisionAction('approve')"
+                        class="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-widest px-6 py-3 font-bold">Aprovar
+                        Revisão</button>
                 </div>
             </div>
         </div>
@@ -519,14 +1371,14 @@
         let currentJobId = null;
         let refreshInterval = null;
         let activeRevisionLinks = [];
-        
+
         // SECURITY: XSS Protection - Sanitize markdown output
         function safeMarkdown(text) {
             if (!text) return '';
             const rawHtml = marked.parse(text);
             return DOMPurify.sanitize(rawHtml);
         }
-        
+
         // SECURITY: Helper for authenticated fetch (all POST/DELETE require API key)
         function authFetch(url, options = {}) {
             if (!options.headers) options.headers = {};
@@ -536,7 +1388,7 @@
             }
             return fetch(url, options);
         }
-        
+
         // FILE MATCHING: Robust pattern matcher (replaces naive includes())
         // Handles versioned files (_v2, _v3) and exact pattern matching
         function matchFile(patterns, filename) {
@@ -574,7 +1426,7 @@
         ];
         // Marketing connections: Validator splits to Audience+Research, converges at Claims,
         // then 3-way parallel copy gen, judged by Copy Senior, filtered by Wall, approved by Human
-        const linksMarketing = [['n0','nd'],['nd','n1'],['n1','n2'],['n1','n3'],['n2','n4'],['n3','n4'],['n4','n5a'],['n4','n5b'],['n4','n5c'],['n5a','n7'],['n5b','n7'],['n5c','n7'],['n7','n8'],['n8','n9'],['n9','n10']];
+        const linksMarketing = [['n0', 'nd'], ['nd', 'n1'], ['n1', 'n2'], ['n1', 'n3'], ['n2', 'n4'], ['n3', 'n4'], ['n4', 'n5a'], ['n4', 'n5b'], ['n4', 'n5c'], ['n5a', 'n7'], ['n5b', 'n7'], ['n5c', 'n7'], ['n7', 'n8'], ['n8', 'n9'], ['n9', 'n10']];
 
         // ============================================================================
         // PROJETOS PIPELINE - Client Projects (External Brand Voice)
@@ -601,7 +1453,7 @@
         // Projetos connections: Brand Digest feeds 3-way ideation (parallel concepts),
         // Critic judges best, Execution designs visuals, Proposal writes commercial doc,
         // Director validates execution feasibility, Human approves/revises
-        const linksProjetos = [['p0','pd'],['pd','p1'],['p1','p2a'],['p1','p2b'],['p1','p2c'],['p2a','p3'],['p2b','p3'],['p2c','p3'],['p3','p4'],['p4','p5'],['p5','p6'],['p6','p9'],['p9','p10']];
+        const linksProjetos = [['p0', 'pd'], ['pd', 'p1'], ['p1', 'p2a'], ['p1', 'p2b'], ['p1', 'p2c'], ['p2a', 'p3'], ['p2b', 'p3'], ['p2c', 'p3'], ['p3', 'p4'], ['p4', 'p5'], ['p5', 'p6'], ['p6', 'p9'], ['p9', 'p10']];
 
         // ============================================================================
         // IDEIAS PIPELINE - Concept Validation (Go/No-Go Decision)
@@ -624,7 +1476,7 @@
         // Ideias connections: Pain Check validates problem, Market Scan researches,
         // Angel+Devil parallel debate (optimist vs pessimist), Viability judges with rubric,
         // Human makes final Go/No-Go decision
-        const linksIdeias = [['i0','id'],['id','i1'],['i1','i2'],['i2','i3a'],['i2','i3b'],['i3a','i4'],['i3b','i4'],['i4','i5']];
+        const linksIdeias = [['i0', 'id'], ['id', 'i1'], ['i1', 'i2'], ['i2', 'i3a'], ['i2', 'i3b'], ['i3a', 'i4'], ['i3b', 'i4'], ['i4', 'i5']];
 
         // ============================================================================
         // FILE MAPPING - Backend Output Pattern Recognition
@@ -633,7 +1485,7 @@
         // Loaded dynamically to avoid hardcoding backend file names in frontend
         // File mapping loaded dynamically from config/file-mapping.json
         let fileMapping = {};
-        
+
         async function loadFileMapping() {
             try {
                 const response = await fetch('/config/file-mapping.json');
@@ -654,11 +1506,11 @@
 
         async function fetchState() {
             try {
-                const res = await fetch(`${API_URL}/state${currentMode ? '?mode='+currentMode : ''}`);
+                const res = await fetch(`${API_URL}/state${currentMode ? '?mode=' + currentMode : ''}`);
                 currentState = await res.json();
                 renderLobby();
-                if(selectedJobId) renderNodeGraphic();
-            } catch(e) {}
+                if (selectedJobId) renderNodeGraphic();
+            } catch (e) { }
         }
 
         function enterMode(mode) {
@@ -672,11 +1524,11 @@
             document.getElementById('btn-delete-project').classList.add('hidden'); // Hide until viewing a project
             const modeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS' };
             document.getElementById('header-sector').textContent = modeLabels[mode] || mode.toUpperCase();
-            
+
             if (socket && socket.connected) {
                 socket.emit('subscribe', mode);
             }
-            
+
             fetchState();
             // Auto-refresh a cada 10 segundos
             if (refreshInterval) clearInterval(refreshInterval);
@@ -1024,23 +1876,23 @@ PROCESSED.md ─── Briefing enriquecido
 
         function extractTitle(files) {
             // Procura por BRIEFING_INPUT, PROCESSED ou RAW_IDEA (Ideias)
-            const briefingFile = files.find(f => 
-                f.name.includes('BRIEFING_INPUT') || 
-                f.name.includes('PROCESSED') || 
+            const briefingFile = files.find(f =>
+                f.name.includes('BRIEFING_INPUT') ||
+                f.name.includes('PROCESSED') ||
                 f.name.includes('RAW_IDEA')
             );
-            
+
             // Fallback: qualquer arquivo com conteúdo que comece com # BRIEFING:
-            const fallbackFile = !briefingFile ? files.find(f => 
+            const fallbackFile = !briefingFile ? files.find(f =>
                 f.content && /^#\s*BRIEFING:/m.test(f.content)
             ) : null;
-            
+
             const targetFile = briefingFile || fallbackFile;
             if (!targetFile || !targetFile.content) return null;
 
             // Se for PROCESSED, tenta pegar o título, se for BRIEFING_INPUT, tenta pegar o conteúdo original
             let content = targetFile.content;
-            
+
             // Extrai título da primeira linha markdown
             const match = content.match(/^#\s*(?:BRIEFING:|BRIEFING PROCESSADO:|RAW IDEA:)?\s*(.+)$/m);
             return match ? match[1].trim() : null;
@@ -1054,8 +1906,8 @@ PROCESSED.md ─── Briefing enriquecido
                 try {
                     const json = JSON.parse(inputFile.content);
                     if (json.content) return json.content;
-                } catch(e) {}
-                
+                } catch (e) { }
+
                 // Se for Markdown, tenta remover o cabeçalho # BRIEFING: se existir
                 let c = inputFile.content;
                 const match = c.match(/^#\s*(?:BRIEFING:|RAW IDEA:).*\n([\s\S]*)$/m);
@@ -1069,14 +1921,14 @@ PROCESSED.md ─── Briefing enriquecido
             const approvedList = document.getElementById('lobby-approved-list');
             activeList.innerHTML = '';
             approvedList.innerHTML = '';
-            
+
             // Separar projetos em andamento (briefing + wip) vs aprovados (done)
             const wipFiles = [...currentState.briefing, ...currentState.wip];
             const doneFiles = [...currentState.done];
-            
+
             const wipGroups = {};
             const doneGroups = {};
-            
+
             function getProjectId(name) {
                 // Marketing: ids numéricos
                 const m = name.match(/^(\d{13,})/);
@@ -1084,9 +1936,9 @@ PROCESSED.md ─── Briefing enriquecido
 
                 // Projetos/Ideias: usar prefixo antes do último "_ROLE"
                 const roleSuffixes = [
-                    'BRAND_DIGEST','CREATIVE_IDEATION','IDEATION_GPT','IDEATION_FLASH','IDEATION_SONNET','CONCEPT_CRITIC','EXECUTION_DESIGN',
-                    'COPYWRITER','DIRECTOR','FINAL','PROCESSED','BRIEFING_INPUT',
-                    'PAIN_CHECK','MARKET_SCAN','ANGEL_GEN','DEVIL_GEN','VIABILITY','DECISION','RAW_IDEA'
+                    'BRAND_DIGEST', 'CREATIVE_IDEATION', 'IDEATION_GPT', 'IDEATION_FLASH', 'IDEATION_SONNET', 'CONCEPT_CRITIC', 'EXECUTION_DESIGN',
+                    'COPYWRITER', 'DIRECTOR', 'FINAL', 'PROCESSED', 'BRIEFING_INPUT',
+                    'PAIN_CHECK', 'MARKET_SCAN', 'ANGEL_GEN', 'DEVIL_GEN', 'VIABILITY', 'DECISION', 'RAW_IDEA'
                 ];
                 for (const role of roleSuffixes) {
                     const idx = name.indexOf(`_${role}`);
@@ -1099,12 +1951,12 @@ PROCESSED.md ─── Briefing enriquecido
 
             wipFiles.forEach(f => {
                 const id = getProjectId(f.name);
-                if(!wipGroups[id]) wipGroups[id] = []; wipGroups[id].push(f);
+                if (!wipGroups[id]) wipGroups[id] = []; wipGroups[id].push(f);
             });
-            
+
             doneFiles.forEach(f => {
                 const id = getProjectId(f.name);
-                if(!doneGroups[id]) doneGroups[id] = []; doneGroups[id].push(f);
+                if (!doneGroups[id]) doneGroups[id] = []; doneGroups[id].push(f);
             });
 
             // Renderizar projetos aprovados (verde)
@@ -1117,7 +1969,7 @@ PROCESSED.md ─── Briefing enriquecido
                 card.className = 'border border-green-600 bg-[#050505] p-8 cursor-pointer hover:border-green-400 transition-all';
                 card.onclick = () => openNodeGraphic(id, title);
                 card.innerHTML = `
-                    <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                    <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                     <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
                     <div class="text-[9px] font-mono text-green-500 tracking-widest flex items-center gap-2">
                         <span>✓</span> APROVADO
@@ -1125,7 +1977,7 @@ PROCESSED.md ─── Briefing enriquecido
                 `;
                 approvedList.appendChild(card);
             });
-            
+
             // Renderizar projetos em andamento (vermelho) - excluir os que já estão em done/aprovados
             Object.keys(wipGroups).filter(id => !doneGroups[id]).sort().reverse().forEach(id => {
                 const files = wipGroups[id];
@@ -1140,7 +1992,7 @@ PROCESSED.md ─── Briefing enriquecido
                     card.className = 'border bg-[#050505] p-8 cursor-pointer card-revision-pending transition-all';
                     card.onclick = () => openNodeGraphic(id, title);
                     card.innerHTML = `
-                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                         <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
                         <div class="revision-badge pending mb-4">REVISÃO DISPONÍVEL</div>
                         <div class="flex gap-2 pt-4 border-t border-[#222]">
@@ -1154,7 +2006,7 @@ PROCESSED.md ─── Briefing enriquecido
                     card.className = 'border bg-[#050505] p-8 cursor-pointer card-feedback-pending transition-all';
                     card.onclick = () => openNodeGraphic(id, title);
                     card.innerHTML = `
-                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                         <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
                         <div class="revision-badge feedback-pending">REVISÃO SOLICITADA</div>
                         <div class="text-[9px] font-mono text-[#666] mt-3 tracking-widest">Aguardando processamento...</div>
@@ -1163,7 +2015,7 @@ PROCESSED.md ─── Briefing enriquecido
                     card.className = 'border border-blue-600 bg-[#050505] p-8 cursor-pointer hover:border-blue-400 transition-all';
                     card.onclick = () => openNodeGraphic(id, title);
                     card.innerHTML = `
-                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                         <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
                         <div class="revision-badge approved">REVISÃO APROVADA</div>
                     `;
@@ -1172,7 +2024,7 @@ PROCESSED.md ─── Briefing enriquecido
                     card.className = 'border border-[#111] bg-[#050505] p-8 cursor-pointer hover:border-[#DC2626] transition-all';
                     card.onclick = () => openNodeGraphic(id, title);
                     card.innerHTML = `
-                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0,8)}</div>
+                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                         <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
                         <div class="text-[9px] font-mono text-[#DC2626] tracking-widest">ACTIVE_NETWORK</div>
                     `;
@@ -1180,7 +2032,7 @@ PROCESSED.md ─── Briefing enriquecido
 
                 activeList.appendChild(card);
             });
-            
+
             // Esconder seções vazias
             document.getElementById('lobby-approved').style.display = Object.keys(doneGroups).length > 0 ? 'block' : 'none';
             document.getElementById('lobby-active').style.display = Object.keys(wipGroups).length > 0 ? 'block' : 'none';
@@ -1232,7 +2084,7 @@ PROCESSED.md ─── Briefing enriquecido
             const savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
             const count = Object.keys(savedPositions).length;
             document.getElementById('saved-positions-count').textContent = count;
-            
+
             const clearBtn = document.getElementById('btn-clear-layout');
             if (clearBtn) {
                 if (count > 0) {
@@ -1307,15 +2159,23 @@ PROCESSED.md ─── Briefing enriquecido
             if (currentMode === 'ideias') nodes = nodeDefIdeias;
 
             let savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
-            const centerX = container.offsetWidth / 2;
-            
+
+            // AUTO-ADJUST CENTER FOR MOBILE
+            // Fixes issue where nodes with large negative X (e.g. -500px) become unreachable on small screens
+            let centerX = container.offsetWidth / 2;
+            if (window.innerWidth < 1000) {
+                // Ensure center is at least 800px to accommodate wide graphs (max left node is ~ -550px)
+                centerX = Math.max(centerX, 800);
+            }
+
+
             nodes.forEach(n => {
                 // OUTPUT só aparece se o projeto foi aprovado (existe na pasta done)
                 if (n.title === 'OUTPUT') {
                     const isApproved = currentState.done.some(f => f.name.toLowerCase().includes(selectedJobId.toLowerCase()));
                     if (!isApproved) return; // Pula a renderização do OUTPUT
                 }
-                
+
                 const el = document.createElement('div');
                 const providerMap = {
                     'GPT': 'openai', 'GPT 5.2': 'openai', 'GPT-5.1': 'openai', 'GPT-4O': 'openai',
@@ -1326,11 +2186,11 @@ PROCESSED.md ─── Briefing enriquecido
                     'APPROVAL': 'human'
                 };
                 const provider = providerMap[n.model] || '';
-                el.className = `node ${n.douglas?'node-douglas':''}`;
+                el.className = `node ${n.douglas ? 'node-douglas' : ''}`;
                 if (provider) el.setAttribute('data-provider', provider);
                 el.id = n.id;
                 el.style.position = 'absolute';
-                
+
                 if (savedPositions[n.id] && savedPositions[n.id].left && savedPositions[n.id].top) {
                     el.style.left = savedPositions[n.id].left;
                     el.style.top = savedPositions[n.id].top;
@@ -1343,11 +2203,11 @@ PROCESSED.md ─── Briefing enriquecido
 
                 const searchTerms = fileMapping[n.title] || [n.title];
                 // Filtrar arquivos versionados (_v2, _v3) criados pelo loop Copy Senior ↔ Wall
-                const hasFile = projectFiles.some(f => 
+                const hasFile = projectFiles.some(f =>
                     !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
                     matchFile(searchTerms, f.name) // Robust pattern matching (not substring)
                 );
-                if(!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
+                if (!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
 
                 // Extrair score/status se for DECISION (Ideias)
                 let scoreHTML = '';
@@ -1373,10 +2233,10 @@ PROCESSED.md ─── Briefing enriquecido
                                     <div style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #888; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">${status}</div>
                                 </div>
                             `;
-                        } catch(e) {}
+                        } catch (e) { }
                     }
                 }
-                
+
                 el.innerHTML = `
                     <div class="node-led"></div>
                     <div class="node-id">${n.id.toUpperCase()} // ${n.label}</div>
@@ -1409,26 +2269,26 @@ PROCESSED.md ─── Briefing enriquecido
                 const loopExecFiles = projectFiles.filter(f => /_v(\d+)\.(json|md)$/i.test(f.name) && f.name.includes('EXECUTION_DESIGN'));
                 const loopPropFiles = projectFiles.filter(f => /_v(\d+)\.(json|md)$/i.test(f.name) && f.name.includes('PROPOSAL'));
                 const loopDirFiles = projectFiles.filter(f => /_v(\d+)\.(json|md)$/i.test(f.name) && f.name.includes('DIRECTOR'));
-                
+
                 // Agrupar por versão (v2, v3...)
                 const loopVersions = new Set();
                 [...loopExecFiles, ...loopPropFiles, ...loopDirFiles].forEach(f => {
                     const match = f.name.match(/_v(\d+)\./);
                     if (match) loopVersions.add(parseInt(match[1]));
                 });
-                
-                const sortedVersions = [...loopVersions].sort((a,b) => a - b);
-                
+
+                const sortedVersions = [...loopVersions].sort((a, b) => a - b);
+
                 sortedVersions.forEach((ver, idx) => {
                     // Node EXECUTION v2/v3
                     const execNode = document.getElementById('p4'); // EXECUTION_DESIGN original
                     const dirNode = document.getElementById('p6'); // DIRECTOR original
-                    
+
                     if (execNode) {
                         const execTop = parseInt(execNode.style.top) || 1150;
                         const execLeft = parseInt(execNode.style.left) || 0;
                         const offset = (idx + 1) * 380; // Cada rodada de loop fica à direita
-                        
+
                         // EXECUTION vN
                         const execEl = document.createElement('div');
                         execEl.className = 'node';
@@ -1450,7 +2310,7 @@ PROCESSED.md ─── Briefing enriquecido
                         };
                         container.appendChild(execEl);
                         makeDraggable(execEl);
-                        
+
                         // PROPOSAL vN
                         const propEl = document.createElement('div');
                         propEl.className = 'node';
@@ -1472,7 +2332,7 @@ PROCESSED.md ─── Briefing enriquecido
                         };
                         container.appendChild(propEl);
                         makeDraggable(propEl);
-                        
+
                         // DIRECTOR vN
                         const dirEl = document.createElement('div');
                         dirEl.className = 'node';
@@ -1501,10 +2361,10 @@ PROCESSED.md ─── Briefing enriquecido
             // DYNAMIC REVISION NODES - Detecta arquivos REVISAO_1, REVISAO_2... e cria nós ao lado do HUMAN
             const revisionFiles = projectFiles.filter(f => /REVISAO_\d+/.test(f.name));
             activeRevisionLinks = [];
-            
+
             // ID do HUMAN node depende do modo atual
             const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : 'n9';
-            
+
             revisionFiles.forEach((revFile, idx) => {
                 const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
                 const revId = `rev${revNum}`;
@@ -1514,13 +2374,13 @@ PROCESSED.md ─── Briefing enriquecido
                     label: `Revision_${revNum}`,
                     model: 'CLAUDE SONNET'
                 };
-                
+
                 const el = document.createElement('div');
                 el.className = 'node';
                 el.setAttribute('data-provider', 'revision');
                 el.id = revId;
                 el.style.position = 'absolute';
-                
+
                 // Posição: ao lado direito do HUMAN node, perfeitamente alinhado
                 const humanNode = document.getElementById(humanNodeId);
                 if (humanNode && !savedPositions[revId]) {
@@ -1540,9 +2400,9 @@ PROCESSED.md ─── Briefing enriquecido
                     el.style.left = `${centerX + 400 + (idx * 370)}px`;
                     el.style.top = `2050px`;
                 }
-                
+
                 el.style.transform = 'none';
-                
+
                 el.innerHTML = `
                     <div class="node-led"></div>
                     <div class="node-id">${revId.toUpperCase()} // Revision_${revNum}</div>
@@ -1553,11 +2413,11 @@ PROCESSED.md ─── Briefing enriquecido
                         <button onclick="rejectRevision('${selectedJobId}', ${revNum}, event)" class="flex-1 border border-[#444] text-[#666] font-brick text-[9px] py-2 hover:border-white hover:text-white transition-colors">✗ REJEITAR</button>
                     </div>
                 `;
-                
+
                 el.ondblclick = () => openPanel(revNode, projectFiles);
                 container.appendChild(el);
                 makeDraggable(el);
-                
+
                 // Adicionar link à lista global de revisões
                 activeRevisionLinks.push([humanNodeId, revId]);
             });
@@ -1574,7 +2434,7 @@ PROCESSED.md ─── Briefing enriquecido
         function updateConnections(revisionLinks = []) {
             const svg = document.getElementById('conn-svg');
             svg.innerHTML = '';
-            
+
             let currentLinks = [...linksMarketing];
             if (currentMode === 'projetos') currentLinks = [...linksProjetos];
             if (currentMode === 'ideias') currentLinks = [...linksIdeias];
@@ -1583,11 +2443,11 @@ PROCESSED.md ─── Briefing enriquecido
             if (currentMode === 'marketing') {
                 const lastApprovedWall = document.getElementById('loop-wall-3') || document.getElementById('loop-wall-2');
                 if (lastApprovedWall) {
-                    currentLinks = currentLinks.filter(([f,t]) => !(f === 'n8' && t === 'n9'));
+                    currentLinks = currentLinks.filter(([f, t]) => !(f === 'n8' && t === 'n9'));
                     currentLinks.push([lastApprovedWall.id, 'n9']);
                 }
             }
-            
+
             // CONDICIONAL: Se Director rejeitou e existe loop, redirecionar fluxo em Projetos
             if (currentMode === 'projetos') {
                 // Detectar versões de loop existentes
@@ -1595,25 +2455,25 @@ PROCESSED.md ─── Briefing enriquecido
                 for (let v = 2; v <= 4; v++) {
                     if (document.getElementById(`loop-exec-${v}`)) loopVersions.push(v);
                 }
-                
+
                 if (loopVersions.length > 0) {
                     // Director original → Execution v2 (seta de retorno/loop)
                     currentLinks.push(['p6', `loop-exec-${loopVersions[0]}`]);
-                    
+
                     // Dentro de cada versão: Exec → Prop → Dir
                     loopVersions.forEach(v => {
                         currentLinks.push([`loop-exec-${v}`, `loop-prop-${v}`]);
                         currentLinks.push([`loop-prop-${v}`, `loop-dir-${v}`]);
                     });
-                    
+
                     // Entre versões: Dir v2 → Exec v3
                     for (let i = 0; i < loopVersions.length - 1; i++) {
-                        currentLinks.push([`loop-dir-${loopVersions[i]}`, `loop-exec-${loopVersions[i+1]}`]);
+                        currentLinks.push([`loop-dir-${loopVersions[i]}`, `loop-exec-${loopVersions[i + 1]}`]);
                     }
-                    
+
                     // Último Director do loop → HUMAN (substituindo Director original)
                     const lastVer = loopVersions[loopVersions.length - 1];
-                    currentLinks = currentLinks.filter(([f,t]) => !(f === 'p6' && t === 'p9'));
+                    currentLinks = currentLinks.filter(([f, t]) => !(f === 'p6' && t === 'p9'));
                     currentLinks.push([`loop-dir-${lastVer}`, 'p9']);
                 }
             }
@@ -1621,44 +2481,44 @@ PROCESSED.md ─── Briefing enriquecido
             // Desenhar links normais do pipeline
             currentLinks.forEach(([fId, tId]) => {
                 const f = document.getElementById(fId), t = document.getElementById(tId);
-                if(!f || !t) return;
-                
+                if (!f || !t) return;
+
                 const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
-                const x1 = fR.left + fR.width/2 - cR.left, y1 = fR.top + fR.height/2 - cR.top;
-                const x2 = tR.left + tR.width/2 - cR.left, y2 = tR.top + tR.height/2 - cR.top;
-                
+                const x1 = fR.left + fR.width / 2 - cR.left, y1 = fR.top + fR.height / 2 - cR.top;
+                const x2 = tR.left + tR.width / 2 - cR.left, y2 = tR.top + tR.height / 2 - cR.top;
+
                 if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2) || !isFinite(x1) || !isFinite(y1) || !isFinite(x2) || !isFinite(y2)) return;
 
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
-                
+                line.setAttribute("d", `M ${x1} ${y1} L ${x1} ${y1 + (y2 - y1) / 2} L ${x2} ${y1 + (y2 - y1) / 2} L ${x2} ${y2}`);
+
                 const isActive = !f.classList.contains('disabled') && !t.classList.contains('disabled');
                 line.setAttribute("class", `conn-line ${isActive ? 'active' : ''}`);
                 svg.appendChild(line);
 
-                if(!f.classList.contains('disabled') && !t.classList.contains('disabled')) {
+                if (!f.classList.contains('disabled') && !t.classList.contains('disabled')) {
                     const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                     pulse.setAttribute("r", "2"); pulse.setAttribute("class", "pulse-dot");
                     const anim = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
-                    anim.setAttribute("path", `M ${x1} ${y1} L ${x1} ${y1 + (y2-y1)/2} L ${x2} ${y1 + (y2-y1)/2} L ${x2} ${y2}`);
+                    anim.setAttribute("path", `M ${x1} ${y1} L ${x1} ${y1 + (y2 - y1) / 2} L ${x2} ${y1 + (y2 - y1) / 2} L ${x2} ${y2}`);
                     anim.setAttribute("dur", "3s"); anim.setAttribute("repeatCount", "indefinite");
                     pulse.appendChild(anim); svg.appendChild(pulse);
                 }
             });
-            
+
             // Desenhar links de revisão (estilo diferente)
             revisionLinks.forEach(([fId, tId]) => {
                 const f = document.getElementById(fId), t = document.getElementById(tId);
-                if(!f || !t) return;
-                
+                if (!f || !t) return;
+
                 const fR = f.getBoundingClientRect(), tR = t.getBoundingClientRect(), cR = document.getElementById('node-container').getBoundingClientRect();
-                
+
                 // Linha reta horizontal da direita do HUMAN para a esquerda da REVISÃO
                 const x1 = fR.right - cR.left;
                 const y1 = fR.top - cR.top + fR.height / 2;
                 const x2 = tR.left - cR.left;
                 const y2 = tR.top - cR.top + tR.height / 2;
-                
+
                 if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return;
 
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -1672,7 +2532,7 @@ PROCESSED.md ─── Briefing enriquecido
                 line.setAttribute("opacity", "0.7");
                 svg.appendChild(line);
             });
-            
+
             // Desenhar linhas do loop automático - DESABILITADO (Gabriel pediu pra esconder)
             // const loopLinks = [];
             // if (document.getElementById('loop-copy-2')) loopLinks.push(['n8', 'loop-copy-2']);
@@ -1682,22 +2542,22 @@ PROCESSED.md ─── Briefing enriquecido
         }
 
         function makeDraggable(el) {
-            let p1=0,p2=0,p3=0,p4=0; 
+            let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
             el.onmousedown = (e) => {
                 if (e.target.tagName === 'BUTTON') return;
-                e.preventDefault(); p3=e.clientX; p4=e.clientY;
+                e.preventDefault(); p3 = e.clientX; p4 = e.clientY;
                 el.style.zIndex = '100';
-                document.onmouseup = () => { 
+                document.onmouseup = () => {
                     el.style.zIndex = '10';
                     const nodePositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
                     nodePositions[el.id] = { left: `${el.offsetLeft}px`, top: `${el.offsetTop}px` };
                     localStorage.setItem(`node_positions_${currentMode}`, JSON.stringify(nodePositions));
                     updateLayoutIndicator();
-                    document.onmouseup = null; document.onmousemove = null; 
+                    document.onmouseup = null; document.onmousemove = null;
                 };
                 document.onmousemove = (e) => {
-                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
+                    p1 = p3 - e.clientX; p2 = p4 - e.clientY; p3 = e.clientX; p4 = e.clientY;
+                    el.style.top = (el.offsetTop - p2) + "px"; el.style.left = (el.offsetLeft - p1) + "px";
                     updateConnections(activeRevisionLinks);
                 };
             };
@@ -1715,11 +2575,11 @@ PROCESSED.md ─── Briefing enriquecido
                     return `<span class="text-white">${val}</span>`;
                 }
                 if (typeof val === 'string') {
-                    const statusColors = { 
-                        'PASS': 'bg-green-900 text-green-400', 
-                        'APPROVED': 'bg-green-900 text-green-400', 
+                    const statusColors = {
+                        'PASS': 'bg-green-900 text-green-400',
+                        'APPROVED': 'bg-green-900 text-green-400',
                         'APROVAR': 'bg-green-900 text-green-400',
-                        'FAIL': 'bg-red-900 text-red-400', 
+                        'FAIL': 'bg-red-900 text-red-400',
                         'REJECTED': 'bg-red-900 text-red-400',
                         'REFINAR': 'bg-yellow-900 text-yellow-400',
                         'REPENSAR': 'bg-red-900 text-red-400'
@@ -1732,8 +2592,8 @@ PROCESSED.md ─── Briefing enriquecido
             }
             function renderAny(val, key, depth) {
                 if (val === null || val === undefined) return '<span class="text-[#666] italic">--</span>';
-                if (Array.isArray(val)) return '<div class="space-y-2 mt-2">' + val.map(item => typeof item === 'object' ? renderAny(item, key, depth+1) : `<div class="text-sm text-[#aaa]">• ${item}</div>`).join('') + '</div>';
-                if (typeof val === 'object') return `<div class="${depth > 0 ? 'pl-4 mt-2' : ''} space-y-3">${Object.entries(val).map(([k,v]) => `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${k.replace(/_/g,' ')}:</span> ${renderAny(v, k, depth+1)}</div>`).join('')}</div>`;
+                if (Array.isArray(val)) return '<div class="space-y-2 mt-2">' + val.map(item => typeof item === 'object' ? renderAny(item, key, depth + 1) : `<div class="text-sm text-[#aaa]">• ${item}</div>`).join('') + '</div>';
+                if (typeof val === 'object') return `<div class="${depth > 0 ? 'pl-4 mt-2' : ''} space-y-3">${Object.entries(val).map(([k, v]) => `<div class="text-sm leading-relaxed"><span class="text-[#888] font-mono font-semibold">${k.replace(/_/g, ' ')}:</span> ${renderAny(v, k, depth + 1)}</div>`).join('')}</div>`;
                 return formatValue(val, key);
             }
             let html = '<div class="space-y-6">';
@@ -1751,9 +2611,9 @@ PROCESSED.md ─── Briefing enriquecido
                 if (!isLoopNode && /_v\d+\.(json|md)$/i.test(f.name)) return false;
                 return matchFile(searchTerms, f.name); // Robust pattern matching
             });
-            
+
             const body = document.getElementById('panel-body');
-            
+
             // RAW_IDEA em Ideias: mostra briefing original (da pasta briefing), não o RAW_IDEA do WIP
             if (n.title === 'RAW_IDEA') {
                 const briefingFile = files.find(f => f.path && f.path.startsWith('briefing/'));
@@ -1766,7 +2626,7 @@ PROCESSED.md ─── Briefing enriquecido
                     return;
                 }
             }
-            
+
             // DOUGLAS em Ideias: mostra PROCESSED.md, fallback para RAW_IDEA.md
             if (n.title === 'DOUGLAS' && currentMode === 'ideias') {
                 const processedFile = files.find(f => f.name.toUpperCase().includes('PROCESSED'));
@@ -1785,20 +2645,20 @@ PROCESSED.md ─── Briefing enriquecido
                 if (rawContent) {
                     body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${rawContent}</div>`;
 
-            if (n.title === 'DECISION' && file) {
-                try {
-                    const viability = JSON.parse(file.content);
-                    const score = viability.viability_assessment?.score_final || 0;
-                    const decision = viability.recommendation?.decision || 'N/A';
-                    const reasoning = viability.recommendation?.reasoning || '';
-                    const nota = viability.nota_final || '';
-                    let statusColor = '#666';
-                    let statusLabel = decision;
-                    if (decision === 'GO') { statusColor = '#10b981'; statusLabel = '✓ GO'; }
-                    else if (decision === 'NO-GO') { statusColor = '#ef4444'; statusLabel = '✗ NO-GO'; }
-                    else if (decision === 'REVISIT') { statusColor = '#f59e0b'; statusLabel = '⚠ REVISIT'; }
-                    else if (decision === 'CONDITIONAL GO') { statusColor = '#3b82f6'; statusLabel = '⚡ CONDITIONAL GO'; }
-                    body.innerHTML = `<div class="p-8 bg-[#0a0a0a] border border-[#222]">
+                    if (n.title === 'DECISION' && file) {
+                        try {
+                            const viability = JSON.parse(file.content);
+                            const score = viability.viability_assessment?.score_final || 0;
+                            const decision = viability.recommendation?.decision || 'N/A';
+                            const reasoning = viability.recommendation?.reasoning || '';
+                            const nota = viability.nota_final || '';
+                            let statusColor = '#666';
+                            let statusLabel = decision;
+                            if (decision === 'GO') { statusColor = '#10b981'; statusLabel = '✓ GO'; }
+                            else if (decision === 'NO-GO') { statusColor = '#ef4444'; statusLabel = '✗ NO-GO'; }
+                            else if (decision === 'REVISIT') { statusColor = '#f59e0b'; statusLabel = '⚠ REVISIT'; }
+                            else if (decision === 'CONDITIONAL GO') { statusColor = '#3b82f6'; statusLabel = '⚡ CONDITIONAL GO'; }
+                            body.innerHTML = `<div class="p-8 bg-[#0a0a0a] border border-[#222]">
                         <div class="text-center mb-8">
                             <div class="text-6xl font-bold mb-4" style="color: ${statusColor}">${score}/100</div>
                             <div class="text-2xl font-bold mb-2" style="color: ${statusColor}">${statusLabel}</div>
@@ -1814,11 +2674,11 @@ PROCESSED.md ─── Briefing enriquecido
                             </button>
                         </div>
                     </div>`;
-                    document.getElementById('panel-title').textContent = 'VEREDITO FINAL';
-                    document.getElementById('agent-panel').classList.add('open');
-                    return;
-                } catch(e) { console.error('Erro ao parsear VIABILITY:', e); }
-            }
+                            document.getElementById('panel-title').textContent = 'VEREDITO FINAL';
+                            document.getElementById('agent-panel').classList.add('open');
+                            return;
+                        } catch (e) { console.error('Erro ao parsear VIABILITY:', e); }
+                    }
                     document.getElementById('panel-title').textContent = 'BRIEFING ORIGINAL';
                     document.getElementById('agent-panel').classList.add('open');
                     return;
@@ -1827,7 +2687,7 @@ PROCESSED.md ─── Briefing enriquecido
 
             if (file) {
                 let content = file.content;
-                try { const json = JSON.parse(content); content = formatJSON(json); } catch(e) { content = safeMarkdown(content); }
+                try { const json = JSON.parse(content); content = formatJSON(json); } catch (e) { content = safeMarkdown(content); }
                 body.innerHTML = content;
             } else {
                 body.innerHTML = '<div class="p-8 text-center text-[#444] italic">Aguardando execução do agente...</div>';
@@ -1837,7 +2697,7 @@ PROCESSED.md ─── Briefing enriquecido
         }
 
         function closePanel() { document.getElementById('agent-panel').classList.remove('open'); }
-        
+
         function viewFullViability(nodeId, projectFiles) {
             // Abre o painel com o JSON completo da VIABILITY (node i4)
             const nodeDef = currentMode === 'ideias' ? nodeDefIdeias.find(n => n.title === 'VIABILITY') : null;
@@ -1853,7 +2713,7 @@ PROCESSED.md ─── Briefing enriquecido
                 const json = JSON.parse(file.content);
                 const score = json.viability_assessment?.score_final || 'N/A';
                 const status = json.viability_assessment?.status || 'UNKNOWN';
-                
+
                 // Determinar cor baseada no score
                 let scoreColor = '#666';
                 if (typeof score === 'number') {
@@ -1861,7 +2721,7 @@ PROCESSED.md ─── Briefing enriquecido
                     else if (score >= 40) scoreColor = '#f59e0b'; // Laranja
                     else scoreColor = '#ef4444'; // Vermelho
                 }
-                
+
                 body.innerHTML = `
                     <div style="background: #0a0a0a; border: 2px solid ${scoreColor}; padding: 20px; margin-bottom: 24px; text-align: center;">
                         <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 48px; color: ${scoreColor}; line-height: 1;">${score}</div>
@@ -1870,14 +2730,14 @@ PROCESSED.md ─── Briefing enriquecido
                     ${formatJSON(json)}
                 `;
                 document.getElementById('panel-title').textContent = 'VIABILITY (ANÁLISE COMPLETA)';
-            } catch(e) {
+            } catch (e) {
                 body.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-mono text-[#ccc]">${file.content}</pre>`;
                 document.getElementById('panel-title').textContent = 'VIABILITY (ANÁLISE COMPLETA)';
             }
             // Abrir o painel
             document.getElementById('agent-panel').classList.add('open');
         }
-        
+
         function openNewBriefing() {
             document.getElementById('briefing-modal').classList.remove('hidden');
             const draft = JSON.parse(localStorage.getItem('briefing_draft') || '{}');
@@ -1906,7 +2766,7 @@ PROCESSED.md ─── Briefing enriquecido
         function clearBriefingDraft() {
             localStorage.removeItem('briefing_draft');
         }
-        
+
         async function updateCostEstimate() {
             const mode = document.getElementById('briefing-mode').value;
             try {
@@ -1914,11 +2774,11 @@ PROCESSED.md ─── Briefing enriquecido
                 const data = await res.json();
                 document.getElementById('cost-value').textContent = `$${data.totalCost}`;
                 document.getElementById('steps-value').textContent = data.steps;
-            } catch(e) {}
+            } catch (e) { }
         }
-        
+
         function closeBriefingModal() { document.getElementById('briefing-modal').classList.add('hidden'); }
-        
+
         async function submitBriefing() {
             const title = document.getElementById('briefing-title').value.trim();
             const content = document.getElementById('briefing-content').value.trim();
@@ -1929,13 +2789,13 @@ PROCESSED.md ─── Briefing enriquecido
                     method: 'POST',
                     body: JSON.stringify({ title, content, mode })
                 });
-                if (res.ok) { 
+                if (res.ok) {
                     clearBriefingDraft();
-                    closeBriefingModal(); 
-                    showNotification(`✅ Briefing "${title}" criado!`); 
-                    setTimeout(fetchState, 1000); 
+                    closeBriefingModal();
+                    showNotification(`✅ Briefing "${title}" criado!`);
+                    setTimeout(fetchState, 1000);
                 }
-            } catch(e) {}
+            } catch (e) { }
         }
 
         function openFeedbackModal(e) { e.stopPropagation(); document.getElementById('feedback-modal').classList.remove('hidden'); document.getElementById('feedback-text').value = ''; }
@@ -1949,7 +2809,7 @@ PROCESSED.md ─── Briefing enriquecido
                     body: JSON.stringify({ jobId: selectedJobId, mode: currentMode, feedback: feedback })
                 });
                 if (res.ok) { closeFeedbackModal(); showNotification('✅ FEEDBACK ENVIADO!'); }
-            } catch(e) {}
+            } catch (e) { }
         }
 
         function aprovarCampanha(e) {
@@ -1965,7 +2825,7 @@ PROCESSED.md ─── Briefing enriquecido
                     body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
                 });
                 if (res.ok) { closeApprovalModal(); closeNodeGraphic(); showNotification('🎉 CAMPANHA APROVADA!'); setTimeout(fetchState, 1000); }
-            } catch(e) {}
+            } catch (e) { }
         }
 
         async function rerunJob() {
@@ -1976,7 +2836,7 @@ PROCESSED.md ─── Briefing enriquecido
                     body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
                 });
                 if (res.ok) showNotification('🔄 Job reiniciado!');
-            } catch(e) {}
+            } catch (e) { }
         }
 
         function showNotification(msg, type = 'success') {
@@ -1994,7 +2854,7 @@ PROCESSED.md ─── Briefing enriquecido
                     body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
                 });
                 if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
-            } catch(err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
+            } catch (err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
         }
 
         async function rejectRevision(jobId, revNum, e) {
@@ -2006,7 +2866,7 @@ PROCESSED.md ─── Briefing enriquecido
                     body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
                 });
                 if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
-            } catch(err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
+            } catch (err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
         }
 
         function getJobRevisionInfo(jobId) {
@@ -2019,7 +2879,7 @@ PROCESSED.md ─── Briefing enriquecido
         }
 
         async function loadRevisionData(jobId) {
-            try { const res = await fetch(`${API_URL}/revisions/${jobId}?mode=${currentMode}`); return await res.json(); } catch(e) { return null; }
+            try { const res = await fetch(`${API_URL}/revisions/${jobId}?mode=${currentMode}`); return await res.json(); } catch (e) { return null; }
         }
 
         function openRevisionModal(jobId, title) {
@@ -2051,7 +2911,7 @@ PROCESSED.md ─── Briefing enriquecido
                     body: JSON.stringify({ mode: currentMode })
                 });
                 if (res.ok) { closeRevisionModal(); fetchState(); }
-            } catch(e) {}
+            } catch (e) { }
         }
 
         let socket = null;
@@ -2063,22 +2923,22 @@ PROCESSED.md ─── Briefing enriquecido
                         apiKey: 'brick-squad-2026'
                     }
                 });
-                socket.on('connect', () => { 
+                socket.on('connect', () => {
                     document.getElementById('connection-status').textContent = 'WebSocket_Active';
                     if (currentMode) socket.emit('subscribe', currentMode);
                 });
                 socket.on('stateUpdate', (state) => { if (state.mode === currentMode) fetchState(); });
-            } catch(e) {}
+            } catch (e) { }
         }
-        
+
         // enterMode já definido acima (linha ~558)
-        
+
         function confirmDeleteProject() {
             if (!currentJobId || !currentMode) {
                 showNotification('⚠️ Nenhum projeto selecionado', 'error');
                 return;
             }
-            
+
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-[300]';
             modal.innerHTML = `
@@ -2098,16 +2958,16 @@ PROCESSED.md ─── Briefing enriquecido
             `;
             document.body.appendChild(modal);
         }
-        
+
         async function deleteProject() {
             if (!currentJobId || !currentMode) return;
-            
+
             try {
                 const res = await authFetch(`${API_URL}/project/${currentJobId}?mode=${currentMode}`, {
                     method: 'DELETE'
                 });
                 const data = await res.json();
-                
+
                 if (data.success) {
                     showNotification(`✓ Projeto deletado (${data.deletedCount} arquivos)`, 'success');
                     closeNodeGraphic();
@@ -2115,7 +2975,7 @@ PROCESSED.md ─── Briefing enriquecido
                 } else {
                     showNotification('✗ Erro ao deletar projeto', 'error');
                 }
-            } catch(e) {
+            } catch (e) {
                 console.error('Erro ao deletar:', e);
                 showNotification('✗ Falha na comunicação com o servidor', 'error');
             }
@@ -2124,30 +2984,30 @@ PROCESSED.md ─── Briefing enriquecido
         window.onload = async () => {
             // Load file mapping config first
             await loadFileMapping();
-            
+
             // Parse shareable URL: /ideias/jobId, /marketing/jobId, /projetos/jobId
             const pathMatch = window.location.pathname.match(/^\/(ideias|marketing|projetos)\/(.+)$/);
             let urlMode = null;
             let urlJobId = null;
-            
+
             if (pathMatch) {
                 urlMode = pathMatch[1];
                 urlJobId = pathMatch[2];
             }
-            
+
             // Then initialize the app
             initWebSocket();
-            
+
             // Priority: URL mode > hash mode > localStorage
-            const savedMode = urlMode || (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');
+            const savedMode = urlMode || (window.location.hash || '').replace('#', '') || localStorage.getItem('last_mode');
             if (savedMode) {
                 enterMode(savedMode);
-                
+
                 // Auto-select job from URL if present
                 if (urlJobId) {
                     // Wait for state to load, then find and select matching job
                     await fetchState(); // Force initial state load
-                    
+
                     const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
                     const matchingFile = allFiles.find(f => f.name.toLowerCase().includes(urlJobId.toLowerCase()));
                     if (matchingFile) {
@@ -2164,4 +3024,5 @@ PROCESSED.md ─── Briefing enriquecido
         };
     </script>
 </body>
+
 </html>
