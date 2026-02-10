@@ -1,0 +1,78 @@
+{
+  "idea_name": "Dinamica Quem Sou Eu - BBB",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "Problema é real no contexto de entretenimento, mas de prioridade média e sem urgência crítica fora da lógica editorial do programa."
+      },
+      "contexto": {
+        "pontos": 20,
+        "max": 25,
+        "feedback": "Contexto foi bem pesquisado (mercado, histórico no BBB 26, padrões de sabotagem), porém com lacunas de viabilidade comercial externa e limitações de IP."
+      },
+      "opcoes": {
+        "pontos": 10,
+        "max": 25,
+        "feedback": "Há opções criativas (ex.: Verdades Anônimas), mas a ideia original está saturada e já implementada; diferencial competitivo permanece fraco."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Execução da proposta original é inviável como oferta externa: formato já existente internamente no BBB e com baixa defensabilidade para pitch."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Dealbreakers absolutos aceitos: redundância com formato já no ar, barreira de IP e irracionalidade econômica (ROI negativo) sem mitigação suficiente no escopo atual."
+      }
+    },
+    "score_before_risk": 50,
+    "score_final": 20,
+    "status": "NO-GO",
+    "confidence": "high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Redundância fatal: dinâmica já existe no BBB 26 ('Quem Sou Eu?' no Sincerão)",
+      "Sabotagem por elenco media-trained reduz conflito real sem consequência material",
+      "Fadiga de formato e queda de engajamento em mecânicas repetitivas",
+      "Risco de IP (Endemol/Globo) para variações de formato",
+      "Dealbreaker econômico: custo de desenvolvimento/pitch sem upside proporcional"
+    ],
+    "viability_response": [
+      "Risco de redundância é aceito como não mitigável na proposta atual; exige descarte da ideia base.",
+      "Sabotagem de execução só seria mitigável com consequência real (recursos/estalecas), o que já caracteriza outra dinâmica.",
+      "Fadiga de formato demanda pivot para mecânica orientada a fatos/provas e não rótulos genéricos.",
+      "Risco de IP impede comercialização segura da versão atual sem enquadramento jurídico/licenciamento.",
+      "ROI permanece negativo para o conceito original; recomendação é não investir nesta linha."
+    ],
+    "remaining_risks": [
+      "Rejeição imediata por falta de originalidade no mercado-alvo",
+      "Exposição jurídica/comercial se houver tentativa de venda de formato muito próximo ao IP existente",
+      "Baixo impacto narrativo caso o elenco neutralize o conflito"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Não executar a ideia original 'Quem Sou Eu' para BBB; arquivar e só reabrir com conceito realmente novo.",
+    "reasoning": "A combinação de saturação, inexistência de diferencial defendível, risco de IP e ROI desfavorável torna a execução irracional. Mesmo com boa intenção de gerar conflito, o custo de estar errado é alto e o upside incremental é baixo.",
+    "next_steps": [
+      "Arquivar esta proposta no backlog como NO-GO (formato redundante).",
+      "Se houver interesse em seguir no tema, iniciar novo briefing com mecânica não derivativa e consequência real mensurável.",
+      "Validar previamente viabilidade jurídica/IP antes de qualquer novo pitch para emissoras.",
+      "Definir critérios mínimos de inovação (ex.: componente de dados em tempo real + prova factual + mensuração de engajamento) antes de reiniciar pipeline."
+    ],
+    "risks_to_monitor": [
+      "Confundir 'variação cosmética' com inovação real",
+      "Subestimar barreiras de propriedade intelectual e acesso ao comprador",
+      "Investir tempo em ideias de baixo moat e alto custo comercial"
+    ],
+    "pivot_triggers": [
+      "Só reconsiderar se surgir mecânica original, juridicamente defensável e validada por especialista de formato/IP",
+      "Só avançar se o novo conceito provar upside claro de engajamento vs. dinâmicas atuais em teste piloto"
+    ]
+  },
+  "timestamp": "2026-02-10T03:34:00Z"
+}
