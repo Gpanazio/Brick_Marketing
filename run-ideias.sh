@@ -365,7 +365,48 @@ Julgue a viabilidade conforme seu role acima e salve o resultado JSON no arquivo
 done
 
 if [ ! -f "$VIABILITY_OUT" ] || ! validate_json "$VIABILITY_OUT"; then
-    create_json_placeholder "$VIABILITY_OUT" "VIABILITY" "$JOB_ID" "All retries failed"
+    echo "⚠️ Opus falhou após $max_retries tentativas. Tentando fallback GPT-5.3..."
+
+    safe_timeout 240s openclaw agent --agent gpt53 \
+      --session-id "bi-${SHORT_ID}-viability-fb" \
+      --message "${VIABILITY_ROLE}
+
+---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
+
+IDEIA ORIGINAL:
+${BRIEFING_CONTENT}
+
+PAIN CHECK:
+${PAIN_CONTENT}
+
+MARKET SCAN:
+${MARKET_CONTENT}
+
+ANGEL (A FAVOR):
+${ANGLE_CONTENT}
+
+DEVIL (CONTRA):
+${DEVIL_CONTENT}
+
+---
+
+INSTRUÇÕES:
+Julgue a viabilidade conforme seu role acima e salve o resultado JSON no arquivo: ${VIABILITY_OUT}" \
+      --timeout 180 --json 2>&1 | tee -a "$VIABILITY_LOG"
+
+    if [ -f "$VIABILITY_OUT" ] && validate_json "$VIABILITY_OUT"; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Viability concluído via fallback GPT-5.3"
+        print_duration $DURATION "Etapa 4 (fallback)"
+    else
+        create_json_placeholder "$VIABILITY_OUT" "VIABILITY" "$JOB_ID" "All retries failed (Opus + GPT-5.3 fallback)"
+    fi
 fi
 
 # ============================================
