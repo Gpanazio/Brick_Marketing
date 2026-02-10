@@ -1474,7 +1474,7 @@ app.delete('/api/project/:jobId', (req, res) => {
 // ============================================================================
 // SHAREABLE PIPELINE URLS: /ideias/:jobId, /marketing/:jobId, /projetos/:jobId
 // ============================================================================
-app.get('/:mode(ideias|marketing|projetos)/:jobId', (req, res) => {
+app.get(/^\/(ideias|marketing|projetos)\/(.+)$/, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
