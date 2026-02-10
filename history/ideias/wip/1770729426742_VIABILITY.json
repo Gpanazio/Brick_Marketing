@@ -1,0 +1,80 @@
+{
+  "idea_name": "Documentário True Crime: Caso Hurb e João Ricardo Mendes",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 30,
+        "max": 30,
+        "feedback": "Problema é real e crítico: impacto financeiro alto, milhares de lesados e interesse público consistente."
+      },
+      "contexto": {
+        "pontos": 15,
+        "max": 25,
+        "feedback": "Há bons insumos em Pain/Angel/Devil, mas o CONTEXT_SCAN veio com erro, gerando lacuna relevante de validação estruturada."
+      },
+      "opcoes": {
+        "pontos": 10,
+        "max": 25,
+        "feedback": "Opções existem, porém a recomendada (perfil do fundador) concentra risco jurídico extremo; alternativas mais seguras perdem força comercial."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Execução no formato proposto é inviável neste timing: alvo vivo e litigante, alto risco de liminar e dependência de ativos caros (E&O + contencioso)."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Dealbreakers absolutos presentes (legal e econômico), além de múltiplos cenários high probability com impacto fatal/critical."
+      }
+    },
+    "score_before_risk": 55,
+    "score_final": 25,
+    "status": "NO-GO",
+    "confidence": "high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Lawfare e censura prévia podem bloquear a obra antes da estreia",
+      "Casos sub judice elevam risco de difamação ao narrar como 'golpe' sem condenação final",
+      "Fadiga narrativa por cobertura gratuita já extensa",
+      "Baixa chance de insiders por NDAs e medo de retaliação",
+      "Custo de seguro E&O potencialmente proibitivo",
+      "Risco de responsabilidade por exposição de vítimas com processos em curso"
+    ],
+    "viability_response": [
+      "Risco de lawfare é aceito como não mitigável no formato atual focado no fundador.",
+      "Para reduzir risco sub judice seria necessário trocar tese acusatória por narrativa estritamente factual e menos comercial.",
+      "Fadiga de mercado só seria mitigada com material exclusivo robusto, não comprovado neste estágio.",
+      "Sem insiders verificáveis, a diferenciação editorial fica fraca e compromete produto premium.",
+      "Pressão de E&O + jurídico corrói a margem e derruba viabilidade financeira.",
+      "Exposição de vítimas exige protocolo jurídico rígido; sem isso, risco processual adicional permanece alto."
+    ],
+    "remaining_risks": [
+      "Bloqueio judicial durante produção/distribuição",
+      "Estouro de orçamento por litígios e compliance",
+      "Perda de atratividade caso o conteúdo precise ser excessivamente neutro para segurança legal"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Não executar o documentário no formato atual; arquivar a ideia como proposta focada no fundador e sem blindagem viável.",
+    "reasoning": "Mesmo com dor social real e potencial narrativo, o risco jurídico-econômico domina a equação. O custo de estar errado é alto (liminares, processos, possível veto de distribuição) e o upside incremental não compensa no recorte atual.",
+    "next_steps": [
+      "Arquivar esta versão da ideia como NO-GO no pipeline.",
+      "Se quiser insistir no tema, abrir novo briefing com recorte setorial (crise de startups) e não personalista.",
+      "Obter parecer jurídico formal (mídia/entretenimento) antes de qualquer novo desenvolvimento.",
+      "Só reavaliar quando houver maior consolidação judicial dos fatos e evidência de acesso exclusivo relevante."
+    ],
+    "risks_to_monitor": [
+      "Mudanças relevantes no status judicial dos casos principais",
+      "Viabilidade real de cobertura E&O para projeto equivalente",
+      "Acesso comprovável a fontes e documentos inéditos"
+    ],
+    "pivot_triggers": [
+      "Se houver trânsito em julgado de núcleos críticos + parecer jurídico favorável, reavaliar para CONDITIONAL GO",
+      "Se surgir acesso exclusivo forte (documentos/fontes) com segurança legal, redesenhar proposta e reiniciar pipeline"
+    ]
+  },
+  "timestamp": "2026-02-10T10:38:00-03:00"
+}
