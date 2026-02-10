@@ -119,7 +119,7 @@ ${BRIEFING_CONTENT}
 
 INSTRUÇÕES:
 Avalie a ideia conforme seu role acima e salve o resultado JSON no arquivo: ${PAIN_OUT}" \
-      --timeout 120 --json 2>&1 | tee "$PAIN_LOG"
+      --timeout 120 > "$PAIN_LOG" 2>&1
     
     if [ -f "$PAIN_OUT" ] && validate_json "$PAIN_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
@@ -183,7 +183,7 @@ ${PAIN_CONTENT}
 
 INSTRUÇÕES:
 Pesquise conforme seu role acima e salve o resultado Markdown no arquivo: ${MARKET_OUT}" \
-      --timeout 240 --json 2>&1 | tee "$MARKET_LOG"
+      --timeout 240 > "$MARKET_LOG" 2>&1
     
     if [ -f "$MARKET_OUT" ] && [ -s "$MARKET_OUT" ]; then
         DURATION=$(get_duration_ms $STEP_START)
@@ -242,7 +242,7 @@ ${MARKET_CONTENT}
 
 INSTRUÇÕES:
 Advogue pela ideia conforme seu role acima e salve o resultado JSON no arquivo: ${ANGLE_OUT}" \
-  --timeout 240 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03A_ANGEL_GEN.log" &
+  --timeout 240 > "$LOG_DIR/${JOB_ID}_03A_ANGEL_GEN.log" 2>&1 &
 ANGEL_PID=$!
 
 # DEVIL (destruição criativa) - com logging e timeout de sistema robusto
@@ -271,7 +271,7 @@ ${MARKET_CONTENT}
 
 INSTRUÇÕES:
 Destrua a ideia conforme seu role acima e salve o resultado JSON no arquivo: ${DEVIL_OUT}" \
-  --timeout 120 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03B_DEVIL_GEN.log" &
+  --timeout 120 > "$LOG_DIR/${JOB_ID}_03B_DEVIL_GEN.log" 2>&1 &
 DEVIL_PID=$!
 
 echo "  >> Angel (PID: $ANGEL_PID) e Devil (PID: $DEVIL_PID) rodando em paralelo..."
@@ -352,7 +352,7 @@ ${DEVIL_CONTENT}
 
 INSTRUÇÕES:
 Julgue a viabilidade conforme seu role acima e salve o resultado JSON no arquivo: ${VIABILITY_OUT}" \
-      --timeout 180 --json 2>&1 | tee "$VIABILITY_LOG"
+      --timeout 180 > "$VIABILITY_LOG" 2>&1
     
     if [ -f "$VIABILITY_OUT" ] && validate_json "$VIABILITY_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
@@ -405,7 +405,7 @@ ${DEVIL_CONTENT}
 
 INSTRUÇÕES:
 Julgue a viabilidade conforme seu role acima e salve o resultado JSON no arquivo: ${VIABILITY_OUT}" \
-      --timeout 180 --json 2>&1 | tee -a "$VIABILITY_LOG"
+      --timeout 180 >> "$VIABILITY_LOG" 2>&1
 
     if [ -f "$VIABILITY_OUT" ] && validate_json "$VIABILITY_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
