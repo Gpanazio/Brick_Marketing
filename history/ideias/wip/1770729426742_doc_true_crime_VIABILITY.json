@@ -1,0 +1,80 @@
+{
+  "idea_name": "Documentário True Crime: Caso Hurb e João Ricardo Mendes",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 30,
+        "max": 30,
+        "feedback": "Questão é crítica e de alto impacto público/financeiro: há milhares de consumidores e hotéis afetados, além de forte interesse social no tema."
+      },
+      "contexto": {
+        "pontos": 25,
+        "max": 25,
+        "feedback": "Contexto foi mapeado com profundidade (linha do tempo, volume de processos, comportamento do fundador, padrões de risco legal e alternativas editoriais)."
+      },
+      "opcoes": {
+        "pontos": 10,
+        "max": 25,
+        "feedback": "Existem ângulos narrativos viáveis, mas o recomendado (perfil do fundador) concentra risco jurídico máximo; alternativas mais seguras reduzem apelo comercial imediato."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "No recorte atual (pessoa viva, litigante, casos sub judice), a execução é juridicamente frágil e economicamente hostil para produção premium."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Há dealbreakers absolutos explícitos (legal + econômico) e cenário de alta probabilidade com impacto fatal (liminares/lawfare + ROI negativo)."
+      }
+    },
+    "score_before_risk": 65,
+    "score_final": 35,
+    "status": "NO-GO",
+    "confidence": "high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Censura prévia e lawfare com potencial de travar lançamento",
+      "Casos ainda sub judice elevam risco de calúnia/difamação ao usar linguagem de condenação",
+      "Fadiga de conteúdo: tema já amplamente explorado em mídia gratuita",
+      "Falta provável de insiders por NDAs/medo de retaliação",
+      "Seguro E&O potencialmente proibitivo para pessoa viva litigante",
+      "Risco de responsabilidade por exposição de vítimas com processos em curso"
+    ],
+    "viability_response": [
+      "Risco jurídico central é aceito como não mitigável no formato atual; blindagem reduz dano, mas não elimina bloqueio por liminar.",
+      "Para reduzir risco sub judice, seria obrigatório trocar tese acusatória por abordagem factual e documental, sem linguagem condenatória.",
+      "Fadiga de mercado só seria mitigada com acesso exclusivo relevante (documentos inéditos/whistleblowers), hoje não comprovado.",
+      "Dependência de fontes internas inviabiliza cronograma e orçamento sem estrutura robusta de proteção legal e anonimização.",
+      "Custo de E&O e contingência judicial pressiona unit economics a patamar incompatível com retorno esperado no Brasil.",
+      "A alternativa viável é pivot editorial (escopo setorial/antológico) ou adiar até maior consolidação judicial dos fatos."
+    ],
+    "remaining_risks": [
+      "Bloqueio judicial parcial/total da obra em fases de produção ou distribuição",
+      "Aumento de custos com contencioso e compliance acima do orçamento",
+      "Perda de atratividade comercial caso o recorte precise ser excessivamente neutro para segurança jurídica"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Não executar agora o documentário focado diretamente em Hurb/fundador; arquivar a versão atual e reestruturar tese.",
+    "reasoning": "Embora o tema tenha dor real e alto interesse público, os riscos legais e econômicos superam o upside no recorte proposto. O custo de estar errado é extremo (injunções, processos, seguro caro, atraso e possível inviabilização comercial).",
+    "next_steps": [
+      "Arquivar o projeto atual como NO-GO no formato 'character study' direto.",
+      "Se houver insistência no tema, refazer briefing para série setorial ('crises em startups') com a Hurb como um entre vários casos.",
+      "Contratar parecer jurídico prévio (mídia/entretenimento) antes de qualquer desenvolvimento de roteiro.",
+      "Só reabrir recorte nominal após marcos judiciais mais estáveis e comprovação de acesso exclusivo que justifique o risco."
+    ],
+    "risks_to_monitor": [
+      "Novas decisões judiciais que alterem substancialmente o risco reputacional e jurídico",
+      "Evolução do custo de seguro E&O para projetos com pessoas vivas litigantes",
+      "Disponibilidade real de fontes/documentos exclusivos com sustentação probatória"
+    ],
+    "pivot_triggers": [
+      "Se houver acesso verificável a prova inédita + aprovação jurídica robusta, migrar para CONDITIONAL GO com protocolo legal rígido",
+      "Se processos-chave transitarem em julgado e reduzirem risco de censura prévia, reavaliar viabilidade comercial"
+    ]
+  },
+  "timestamp": "2026-02-10T13:30:00Z"
+}
