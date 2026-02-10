@@ -2125,10 +2125,42 @@ PROCESSED.md ─── Briefing enriquecido
             // Load file mapping config first
             await loadFileMapping();
             
+            // Parse shareable URL: /ideias/jobId, /marketing/jobId, /projetos/jobId
+            const pathMatch = window.location.pathname.match(/^\/(ideias|marketing|projetos)\/(.+)$/);
+            let urlMode = null;
+            let urlJobId = null;
+            
+            if (pathMatch) {
+                urlMode = pathMatch[1];
+                urlJobId = pathMatch[2];
+            }
+            
             // Then initialize the app
             initWebSocket();
-            const savedMode = (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');
-            if (savedMode) enterMode(savedMode);
+            
+            // Priority: URL mode > hash mode > localStorage
+            const savedMode = urlMode || (window.location.hash || '').replace('#','') || localStorage.getItem('last_mode');
+            if (savedMode) {
+                enterMode(savedMode);
+                
+                // Auto-select job from URL if present
+                if (urlJobId) {
+                    // Wait for state to load, then find and select matching job
+                    await fetchState(); // Force initial state load
+                    
+                    const allFiles = [...currentState.briefing, ...currentState.wip, ...currentState.done];
+                    const matchingFile = allFiles.find(f => f.name.toLowerCase().includes(urlJobId.toLowerCase()));
+                    if (matchingFile) {
+                        // Extract job ID from filename (first part before underscore or full name)
+                        const jobIdMatch = matchingFile.name.match(/^(\d+)(_(.+))?\./);
+                        if (jobIdMatch) {
+                            const jobId = jobIdMatch[1];
+                            const jobTitle = jobIdMatch[3] ? jobIdMatch[3].replace(/_/g, ' ') : jobId;
+                            openNodeGraphic(jobId, jobTitle);
+                        }
+                    }
+                }
+            }
         };
     </script>
 </body>

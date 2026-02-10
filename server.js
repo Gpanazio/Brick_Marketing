@@ -1471,6 +1471,13 @@ app.delete('/api/project/:jobId', (req, res) => {
     res.json({ success: true, jobId, mode, deletedCount, files: deletedFiles });
 });
 
+// ============================================================================
+// SHAREABLE PIPELINE URLS: /ideias/:jobId, /marketing/:jobId, /projetos/:jobId
+// ============================================================================
+app.get('/:mode(ideias|marketing|projetos)/:jobId', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Start server - bind to 0.0.0.0 for Railway/Docker compatibility
 server = httpServer.listen(PORT, '0.0.0.0', () => {
     log('info', 'server_started', { port: PORT, host: '0.0.0.0', marketingRoot: MARKETING_ROOT, websocket: true });
