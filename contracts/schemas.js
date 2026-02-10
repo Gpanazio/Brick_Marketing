@@ -189,8 +189,8 @@ const MARKET_SCAN = {
     }
 };
 
-const ANGLE_GEN = {
-    name: 'ANGLE_GEN',
+const ANGEL_GEN = {
+    name: 'ANGEL_GEN',
     required: ['angles'],
     properties: {
         idea_name: { type: 'string' },
@@ -265,7 +265,7 @@ const schemas = {
     // Ideias
     PAIN_CHECK,
     MARKET_SCAN,
-    ANGLE_GEN,
+    ANGEL_GEN,
     DEVIL_GEN,
     VIABILITY
 };

@@ -340,7 +340,7 @@ Para garantir que o pipeline seja **100% automático** e nunca fique preso em "l
 
 ### Disciplina de Output (Roles)
 - **Instruções Militares:** Todas as roles de agentes técnicos agora possuem um bloco de instruções críticas no topo.
-- **Naming Lock:** Proibição explícita de inventar nomes de arquivos (ex: Sonnet tentando renomear `ANGLE_GEN` para `OPTIONS_GEN`). O agente agora salva **EXATAMENTE** o que o Douglas solicita no prompt.
+- **Naming Lock:** Proibição explícita de inventar nomes de arquivos (ex: Sonnet tentando renomear `ANGEL_GEN` para `OPTIONS_GEN`). O agente agora salva **EXATAMENTE** o que o Douglas solicita no prompt.
 
 ---
 

@@ -121,6 +121,11 @@
     "MARKET_SCAN",
     "MARKET"
   ],
+  "ANGEL_GEN": [
+    "ANGEL_GEN",
+    "ANGLE_GEN",
+    "ANGLE"
+  ],
   "DEVIL_GEN": [
     "DEVIL_GEN",
     "DEVIL"
@@ -133,10 +138,5 @@
   "RE-RUN": [
     "RERUN",
     "RE_RUN"
-  ],
-  "ANGLE_GEN": [
-    "ANGLE_GEN",
-    "ANGEL_GEN",
-    "ANGLE"
   ]
 }

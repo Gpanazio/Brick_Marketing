@@ -1,0 +1,58 @@
+{
+  "idea_name": "Dinamica Quem Sou Eu - BBB",
+  "failure_scenarios": [
+    {
+      "scenario": "A Morte por Redundância (Timing)",
+      "category": "timing",
+      "description": "Você está tentando vender gelo para esquimó. A produção do BBB 26 já implementou exatamente essa dinâmica no 'Sincerão'. Propor algo que está no ar agora como 'inovação' demonstra falta de leitura de mercado.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Gshow confirmou em jan/2026 que o quadro 'Quem Sou Eu?' é a base das segundas-feiras no Sincerão. Tentar emplacar uma ideia idêntica resultará em rejeição imediata por falta de originalidade.",
+      "mitigation": "Pivotar para uma mecânica de 'Verdades Ocultas' com participação direta do público via API, algo que a Endemol ainda não automatizou totalmente."
+    },
+    {
+      "scenario": "A Sabotagem do Elenco Adestrado (Execution)",
+      "category": "execution",
+      "description": "Participantes 'media-trained' aprenderam com o fracasso do BBB 22 que o conflito direto gera cancelamento. Dinâmicas de rótulos são facilmente neutralizadas por 'acordos de paz' entre grupos, tornando o jogo morno e previsível.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "BBB 22 teve a pior média de audiência da história recente (22 pts) porque os participantes se recusavam a usar os jogos da discórdia para se atacar. Sem um componente de 'perda de estalecas' ou 'consequência real', a dinâmica vira apenas uma troca de elogios disfarçada.",
+      "mitigation": "Atrelar a dinâmica a um leilão de recursos vitais (comida/conforto) onde o rótulo tem preço financeiro."
+    },
+    {
+      "scenario": "Rejeição por Fadiga de Formato (Market)",
+      "category": "market",
+      "description": "O público da Gen Z e Alpha na Twitch e TikTok não tolera mais formatos estáticos de 'sentar e julgar'. Se a dinâmica não gerar um meme ou um 'exposed' real nos primeiros 5 minutos, a audiência migra para streamers que reagem ao vivo.",
+      "probability": "medium",
+      "impact": "moderate",
+      "evidence": "Queda de 15% no engajamento de menções no X (Twitter) durante dinâmicas de rótulos repetitivas nas últimas três edições. O público exige 'exposição de fatos' e não apenas 'opiniões sobre quem a pessoa é'.",
+      "mitigation": "Integrar a dinâmica com vídeos de momentos reais da casa que contradigam o que o participante está tentando esconder."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "A Endemol Shine detém o IP de todas as variações de 'Quem Sou Eu'",
+      "why_angel_missed": "O Angel focou no conteúdo, mas ignorou que você não pode vender uma dinâmica para o BBB sem violar contratos de propriedade intelectual globais."
+    },
+    {
+      "risk": "Custo de produção vs. Impacto no Storytelling",
+      "why_angel_missed": "Montar uma estrutura física para um jogo que dura 20 minutos e pode ser sabotado pelo elenco é um risco de ROI baixo para a produção."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "technical",
+      "description": "A ideia é puramente mecânica e não possui um diferencial tecnológico (IA, real-time data) que a torne defensável ou escalável como produto de entretenimento moderno.",
+      "is_absolute": true
+    },
+    {
+      "type": "economic",
+      "description": "ROI Negativo: O custo de desenvolvimento e pitch para uma emissora gigante como a Globo para um formato que eles já possuem internamente é financeiramente irracional.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": "A ideia é um zumbi corporativo: já existe, já foi feita e está saturada. Você está propondo o 'core' do programa (Sincerão) como se fosse uma novidade de fora. Sem um componente de inovação técnica ou uma mecânica de 'consequência real' (perda de dinheiro/recursos), a dinâmica será sabotada por um elenco que tem medo de cancelamento. É um NO-GO por falta de diferenciação e barreiras de IP intransponíveis.",
+  "risk_score": 90,
+  "status": "FAIL",
+  "timestamp": "2026-02-10T03:25:12Z"
+}

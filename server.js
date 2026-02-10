@@ -376,7 +376,7 @@ app.get('/api/estimate', (req, res) => {
         ideias: [
             { name: 'PAIN_CHECK', model: 'flash' },
             { name: 'MARKET_SCAN', model: 'flash' },
-            { name: 'ANGLE_GEN', model: 'sonnet', label: 'Angel (Sonnet)' },
+            { name: 'ANGEL_GEN', model: 'sonnet', label: 'Angel (Sonnet)' },
             { name: 'DEVIL_GEN', model: 'sonnet', label: 'Devil (Sonnet)' },
             { name: 'VIABILITY', model: 'opus' }
         ]

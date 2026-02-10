@@ -184,7 +184,7 @@ create_ideias_context() {
     fi
     
     # Angle Gen (ângulo recomendado)
-    local angle_file="$wip_dir/${job_id}_ANGLE_GEN.json"
+    local angle_file="$wip_dir/${job_id}_ANGEL_GEN.json"
     if [ -f "$angle_file" ]; then
         local angle_summary=$(jq -c '{
             recommended: .recommended,

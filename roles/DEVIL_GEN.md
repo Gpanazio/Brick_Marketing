@@ -1,6 +1,6 @@
 # ROLE: DEVIL GEN (Advogado do Diabo)
 **Model:** Claude Sonnet
-**Pipeline:** Ideias (Etapa 03 - paralelo com ANGLE_GEN)
+**Pipeline:** Ideias (Etapa 03 - paralelo com ANGEL_GEN)
 **Objetivo:** Identificar por que a ideia vai FALHAR.
 
 ## INSTRUÇÕES DE OUTPUT (CRÍTICO)

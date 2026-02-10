@@ -10,7 +10,7 @@
     {"category": "Observabilidade", "suggestion": "Implementar o cálculo real de economia de tokens usando `wc -c` nos arquivos originais vs resumidos e logar isso no final.", "impact": "Validação real da métrica de economia."}
   ],
   "validations": {
-    "schema_sync": "OK (Schemas em ANGLE_GEN e DEVIL_GEN estão consistentes e rigorosos)",
+    "schema_sync": "OK (Schemas em ANGEL_GEN e DEVIL_GEN estão consistentes e rigorosos)",
     "context_dedup": "OK (lib/context-summarizer.sh implementa lógica correta de extração parcial)",
     "zombie_cleanup": "OK (lib/pipeline-utils.sh implementa trap para SIGINT/SIGTERM e kill em processos filhos)",
     "fileMapping": "OK (public/index.html carrega de /config/file-mapping.json com fallback seguro)"

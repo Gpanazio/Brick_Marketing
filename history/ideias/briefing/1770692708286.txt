@@ -1,0 +1,9 @@
+# BRIEFING: Dinamica bbb
+**Date:** 2026-02-10T03:05:08.289Z
+**Status:** PENDING
+**Mode:** ideias
+**Job ID:** 1770692708286_dinamica_bbb
+
+## Descrição
+Fazer uma dinamica do jogo "quem sou eu" com participantes do bbb, para gerar conflito entre eles.
+

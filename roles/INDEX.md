@@ -65,7 +65,7 @@ Validação rápida de conceitos. Responde: "vale a pena investir nessa ideia?"
 | 00 | (Douglas) | -- | Copia ideia pro WIP |
 | 01 | PAIN_CHECK.md | Flash | Valida se a dor é real e tem demanda |
 | 02 | MARKET_SCAN.md | Flash | Analisa mercado e concorrência |
-| 03a | ANGLE_GEN.md | Sonnet | Angel: defende a ideia com argumentos |
+| 03a | ANGEL_GEN.md | Sonnet | Angel: defende a ideia com argumentos |
 | 03b | DEVIL_GEN.md | Sonnet | Devil: ataca a ideia sem piedade |
 | 04 | VIABILITY.md | Opus | Score final GO / NO-GO |
 | 05 | (Humano) | -- | Decisão final |
@@ -110,7 +110,7 @@ Para projetos de clientes. Gera proposta comercial completa.
 |---------|-----------|
 | PAIN_CHECK.md | Etapa 01 |
 | MARKET_SCAN.md | Etapa 02 |
-| ANGLE_GEN.md | Etapa 03a |
+| ANGEL_GEN.md | Etapa 03a |
 | DEVIL_GEN.md | Etapa 03b |
 | VIABILITY.md | Etapa 04 |
 

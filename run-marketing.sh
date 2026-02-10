@@ -655,7 +655,49 @@ Faça a revisão final conforme seu role acima. Para o critério ON-BRAND (20 po
 done
 
 if [ ! -f "$WALL_OUT" ] || ! validate_json "$WALL_OUT"; then
-    create_json_placeholder "$WALL_OUT" "FILTRO_FINAL" "$JOB_ID" "All retries failed"
+    echo "⚠️ Opus falhou após $max_retries tentativas. Tentando fallback GPT-5.3..."
+
+    safe_timeout 210s openclaw agent --agent gpt53 \
+      --session-id "bm-${SHORT_ID}-wall-fb" \
+      --message "${WALL_ROLE}
+
+---
+
+## INSTRUÇÕES DE OUTPUT (CRÍTICO)
+1. Salve o resultado JSON EXATAMENTE no caminho de arquivo fornecido no prompt pelo Douglas.
+2. NÃO mude o nome do arquivo.
+3. NÃO adicione nenhum texto antes ou depois do JSON.
+4. Respeite rigorosamente o schema JSON definido no seu role.
+
+# BRAND GUARDIAN (REFERÊNCIA OBRIGATÓRIA PARA AVALIAÇÃO ON-BRAND)
+
+${BRAND_GUARDIAN}
+
+---
+
+BRIEFING RESUMIDO:
+${BRIEFING_SUMMARY}
+
+COPY FINAL (escolhida e revisada pelo Copy Senior):
+Modelo vencedor: ${CRITIC_WINNER} (score: ${CRITIC_SCORE})
+Justificativa: ${CRITIC_REASON}
+
+TEXTO DA COPY:
+${COPY_REVISADA}
+
+---
+
+INSTRUÇÕES:
+Faça a revisão final conforme seu role acima. Para o critério ON-BRAND (20 pontos), use o BRAND GUARDIAN acima como referência completa (tom, terminologia, red flags, checklist). Salve o resultado JSON no arquivo: ${WALL_OUT}" \
+      --timeout 150 --json 2>&1 | tee -a "$WALL_LOG"
+
+    if [ -f "$WALL_OUT" ] && validate_json "$WALL_OUT"; then
+        DURATION=$(get_duration_ms $STEP_START)
+        echo "✅ Wall concluído via fallback GPT-5.3"
+        print_duration $DURATION "Etapa 7 (fallback)"
+    else
+        create_json_placeholder "$WALL_OUT" "FILTRO_FINAL" "$JOB_ID" "All retries failed (Opus + GPT-5.3 fallback)"
+    fi
 fi
 
 # ============================================
@@ -811,8 +853,42 @@ Avalie esta copy revisada conforme seu role e salve o resultado JSON no arquivo:
     done
     
     if [ ! -f "$WALL_V" ] || ! validate_json "$WALL_V"; then
-        echo "❌ Wall v$LOOP_COUNT falhou após $max_retries tentativas - abortando loop"
-        break
+        echo "⚠️ Opus falhou após $max_retries tentativas. Tentando fallback GPT-5.3..."
+
+        safe_timeout 300s openclaw agent --agent gpt53 \
+          --session-id "bm-${SHORT_ID}-wall-lp-${LOOP_COUNT}-fb" \
+          --message "${WALL_ROLE}
+
+---
+
+# BRAND GUARDIAN (REFERÊNCIA OBRIGATÓRIA PARA AVALIAÇÃO ON-BRAND)
+
+${BRAND_GUARDIAN}
+
+---
+
+COPY REVISADA (versão $LOOP_COUNT):
+${COPY_REVISADA}
+
+---
+
+CONTEXTO:
+Esta é a avaliação $LOOP_COUNT após feedback anterior. Seja justo: se os ajustes foram aplicados corretamente, aprove. Para o critério ON-BRAND, use o BRAND GUARDIAN acima como referência.
+
+---
+
+INSTRUÇÕES:
+Avalie esta copy revisada conforme seu role e salve o resultado JSON no arquivo: ${WALL_V}" \
+          --timeout 150 --json 2>&1 | tee -a "$LOG_DIR/${JOB_ID}_07_WALL_v${LOOP_COUNT}.log"
+
+        if [ -f "$WALL_V" ] && validate_json "$WALL_V"; then
+            DURATION=$(get_duration_ms $STEP_START)
+            echo "✅ Wall v$LOOP_COUNT concluído via fallback GPT-5.3"
+            print_duration $DURATION "Wall Loop $LOOP_COUNT (fallback)"
+        else
+            echo "❌ Wall v$LOOP_COUNT falhou após $max_retries tentativas + fallback GPT-5.3 - abortando loop"
+            break
+        fi
     fi
     
     # Atualizar score para próxima iteração

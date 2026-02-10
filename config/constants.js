@@ -51,7 +51,7 @@ module.exports = {
         // Ideias
         'PAIN_CHECK': 600,
         'MARKET_SCAN': 800,
-        'ANGLE_GEN': 1200,
+        'ANGEL_GEN': 1200,
         'DEVIL_GEN': 1200,
         'VIABILITY': 1000,
         // Projetos
@@ -74,7 +74,7 @@ module.exports = {
         // Ideias
         'PAIN_CHECK': 2000,
         'MARKET_SCAN': 2500,
-        'ANGLE_GEN': 3000,
+        'ANGEL_GEN': 3000,
         'DEVIL_GEN': 3000,
         'VIABILITY': 6000,
         // Projetos

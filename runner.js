@@ -407,57 +407,56 @@ async function verifyPipelineResults(wipDir, jobId, mode) {
 }
 
 async function processPendingJobs() {
-  try {
-    const response = await fetch(`${CONFIG.RAILWAY_URL}/api/pending`, {
-      method: 'GET',
-      headers: {
-        'x-api-key': CONFIG.API_KEY,
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    
-    const pending = await response.json();
-    
-    // Transformar briefings em jobs padronizados
-    const allJobs = [];
-    
-    if (pending.briefings) {
-      for (const briefing of pending.briefings) {
-        // Extrair jobId do filename (pattern: {jobId}_{nome}.md)
-        const match = briefing.name.match(/^(\d+)_/);
-        if (!match) continue;
-        
-        const jobId = match[1];
-        
-        allJobs.push({
-          action: 'briefing',
-          mode: 'marketing', // Todos os briefings pendentes são marketing
-          jobId,
-          content: briefing.content,
-        });
+  const modes = ['marketing', 'projetos', 'ideias'];
+  let totalFound = 0;
+
+  for (const mode of modes) {
+    try {
+      const response = await fetch(`${CONFIG.RAILWAY_URL}/api/pending?mode=${mode}`, {
+        method: 'GET',
+        headers: {
+          'x-api-key': CONFIG.API_KEY,
+        },
+      });
+      
+      if (!response.ok) {
+        if (response.status === 404) continue; // Modo não suportado no backend?
+        console.warn(`[SYNC] Falha ao buscar pendentes para ${mode}: ${response.status}`);
+        continue;
       }
+      
+      const pending = await response.json();
+      
+      if (pending.briefings && pending.briefings.length > 0) {
+        for (const briefing of pending.briefings) {
+          // Extrair jobId do filename
+          const match = briefing.name.match(/^(\d+)_?/);
+          if (!match) continue;
+          
+          const jobId = match[1];
+          
+          // Verificar se já não está na fila (evitar duplicatas)
+          if (jobQueue.some(j => j.jobId === jobId && j.mode === mode)) continue;
+
+          jobQueue.push({
+            action: 'briefing',
+            mode: mode,
+            jobId,
+            content: briefing.content, // Pode vir vazio se backend não mandar content no list
+          });
+          totalFound++;
+        }
+      }
+    } catch (err) {
+      console.error(`[SYNC] Erro ao processar ${mode}:`, err.message);
     }
-    
-    if (allJobs.length === 0) {
-      await log('info', 'Nenhum job pendente');
-      return;
-    }
-    
-    await log('info', 'Jobs pendentes encontrados', { count: allJobs.length });
-    
-    // Enfileirar todos
-    for (const job of allJobs) {
-      jobQueue.push(job);
-    }
-    
-    // Processar
+  }
+
+  if (totalFound > 0) {
+    await log('info', 'Jobs pendentes encontrados e enfileirados', { count: totalFound });
     await processQueue();
-    
-  } catch (err) {
-    await log('error', 'Falha ao buscar jobs pendentes', { error: err.message });
+  } else {
+    await log('info', 'Nenhum job pendente após verificação de todos os modos');
   }
 }
 

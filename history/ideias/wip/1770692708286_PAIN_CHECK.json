@@ -1,0 +1,21 @@
+{
+  "idea_name": "Dinamica Quem Sou Eu - BBB",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "medium",
+    "is_actionable": true,
+    "analysis": "A questão é real dentro do contexto de entretenimento e produção de conteúdo para reality shows. Gerar conflitos e dinâmicas de engajamento é o núcleo do modelo de negócio do BBB. É acionável pois pode ser estruturado em regras de jogo específicas."
+  },
+  "evidence": [
+    "O programa Big Brother Brasil depende de 'Dinamicas da Semana' para manter a audiência.",
+    "Jogos de identificação e rótulos (como o Jogo da Discórdia) são ferramentas padrão da produção para catalisar conflitos.",
+    "Existe um histórico de dinâmicas similares ('Quem sou eu', 'Monte seu pódio') que comprovadamente geram repercussão nas redes sociais."
+  ],
+  "red_flags": [
+    "A ideia é genérica e já muito explorada pelo programa em versões ligeiramente diferentes.",
+    "Depende totalmente da execução e do elenco para gerar conflito real, não garantindo o resultado apenas pela mecânica."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2025-02-10T03:09:45Z"
+}

@@ -1,0 +1,21 @@
+{"timestamp":"2026-02-10T08:00:42.508Z","level":"info","message":"🚀 War Room Runner iniciando...","workspace":"/Users/gabrielpanazio/projects/Brick_Marketing","railwayUrl":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T08:00:42.510Z","level":"info","message":"Conectando ao Railway...","url":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T08:00:43.625Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T08:00:43.628Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T08:00:44.669Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:00:07.862Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:00:28.744Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:00:28.749Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:00:29.882Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:06:05.987Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:06:28.102Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:06:28.105Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:06:29.167Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:10:15.415Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:10:36.125Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:10:36.127Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:10:37.109Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:12:07.625Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:12:28.268Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:12:28.271Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:12:29.564Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}

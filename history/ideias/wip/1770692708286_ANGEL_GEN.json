@@ -1,0 +1,40 @@
+{
+  "idea_name": "Dinamica Quem Sou Eu - BBB (Evolução)",
+  "angles": [
+    {
+      "name": "Dinamica das Sombras (Verdades Anônimas)",
+      "action": "Substituir os rótulos fixos (planta, vilão) por frases anônimas reais capturadas pela produção. O participante deve adivinhar quem disse a frase sobre ele.",
+      "bet": "O anonimato remove a 'blindagem' de grupos identificada no Market Scan. A paranoia de não saber quem é o autor gera conflitos mais duradouros.",
+      "risk": "Risco de 'travar' a edição se as frases forem pesadas demais ou se os participantes se recusarem a chutar nomes.",
+      "upside": "Conflito orgânico e quebra total de confiança entre aliados.",
+      "reversible": true,
+      "strength_score": 88,
+      "rationale": "Resolve o problema de sabotagem dos participantes, pois eles não conseguem proteger uns aos outros de uma crítica anônima."
+    },
+    {
+      "name": "Leilão de Adjetivos (Stake Econômico)",
+      "action": "Participantes devem usar estalecas para 'comprar' rótulos positivos para si ou pagar para 'empurrar' rótulos negativos para outros.",
+      "bet": "Conflitos sobre recursos (comida/conforto) são mais viscerais. Perder estalecas gera rancor imediato com impacto na convivência diária.",
+      "risk": "Desequilíbrio econômico na casa que pode prejudicar a dinâmica de compras da semana (Xepa/Vip).",
+      "upside": "Gera entretenimento tático e expõe as prioridades financeiras/sociais dos jogadores.",
+      "reversible": true,
+      "strength_score": 72,
+      "rationale": "Adiciona uma camada de estratégia e consequência real além do simples 'falar mal'."
+    },
+    {
+      "name": "O Espelho do Público (Fator Social)",
+      "action": "O participante deve adivinhar qual rótulo (baseado em enquetes reais) o público atribuiu a ele. Se errar, sofre uma punição (como o Castigo do Monstro).",
+      "bet": "A discrepância entre a autoimagem e a percepção do público é o maior fator de desestabilização psicológica em reality shows.",
+      "risk": "Fornecer informações demais do mundo externo (meta-gaming), o que pode fazer os participantes mudarem de personalidade artificialmente.",
+      "upside": "Gera crises de identidade e comportamentos defensivos explosivos.",
+      "reversible": false,
+      "strength_score": 78,
+      "rationale": "Aproveita o engajamento massivo das redes sociais para pautar o conflito interno."
+    }
+  ],
+  "recommended": "Dinamica das Sombras (Verdades Anônimas)",
+  "reasoning": "A opção 1 é a mais forte porque ataca diretamente a principal red flag identificada: a sabotagem de participantes que 'pipocam' no conflito. Ao usar frases anônimas reais, a produção força o confronto baseado na paranoia, o que é mais difícil de ser neutralizado por combinações de votos ou amizades, garantindo o 'fogo no parquinho' desejado.",
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-10T03:22:15Z"
+}

@@ -54,7 +54,7 @@ Modelos: Flash (etapa 1), GPT+Flash+Sonnet (etapa 2), Pro (etapas 3-4,6), GPT (e
 
 ### Ideias (run-ideias.sh)
 ```
-RAW_IDEA -> DOUGLAS -> PAIN_CHECK -> MARKET_SCAN -> ANGLE_GEN (angel) ─┐
+RAW_IDEA -> DOUGLAS -> PAIN_CHECK -> MARKET_SCAN -> ANGEL_GEN (angel) ─┐
                                                     DEVIL_GEN (devil) ─┘
                                                            |
                                                        VIABILITY -> [HUMANO]
@@ -124,7 +124,7 @@ Padrao: `{JOB_ID}_{ROLE}.{json|md}`
 - {JOB_ID}_RAW_IDEA.md
 - {JOB_ID}_PAIN_CHECK.json
 - {JOB_ID}_MARKET_SCAN.md
-- {JOB_ID}_ANGLE_GEN.json
+- {JOB_ID}_ANGEL_GEN.json
 - {JOB_ID}_DEVIL_GEN.json
 - {JOB_ID}_VIABILITY.json
 

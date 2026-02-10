@@ -91,7 +91,7 @@ Use `web_search` livremente para:
     "red flags sociedade informal"
   ],
   "status": "PASS",
-  "next_step": "ANGLE_GEN",
+  "next_step": "ANGEL_GEN",
   "timestamp": "ISO8601"
 }
 ```

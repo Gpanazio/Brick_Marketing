@@ -67,7 +67,7 @@ BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
 # Carregar todos os role files
 PAIN_ROLE=$(cat "$ROLES_DIR/PAIN_CHECK.md" 2>/dev/null || echo "N/A")
 MARKET_ROLE=$(cat "$ROLES_DIR/MARKET_SCAN.md" 2>/dev/null || echo "N/A")
-ANGLE_ROLE=$(cat "$ROLES_DIR/ANGLE_GEN.md" 2>/dev/null || echo "N/A")
+ANGLE_ROLE=$(cat "$ROLES_DIR/ANGEL_GEN.md" 2>/dev/null || echo "N/A")
 DEVIL_ROLE=$(cat "$ROLES_DIR/DEVIL_GEN.md" 2>/dev/null || echo "N/A")
 VIABILITY_ROLE=$(cat "$ROLES_DIR/VIABILITY.md" 2>/dev/null || echo "N/A")
 
@@ -209,7 +209,7 @@ MARKET_CONTENT=$(cat "$MARKET_OUT" 2>/dev/null || echo "Market scan não dispon�
 echo ""
 echo "⏳ ETAPA 3: Angel vs Devil (Paralelo - Sonnet)"
 STEP_START=$(start_timer)
-ANGLE_OUT="$WIP_DIR/${JOB_ID}_ANGLE_GEN.json"
+ANGLE_OUT="$WIP_DIR/${JOB_ID}_ANGEL_GEN.json"
 DEVIL_OUT="$WIP_DIR/${JOB_ID}_DEVIL_GEN.json"
 
 # ANGEL (ângulos criativos a favor) - com logging e timeout de sistema robusto
@@ -238,7 +238,7 @@ ${MARKET_CONTENT}
 
 INSTRUÇÕES:
 Advogue pela ideia conforme seu role acima e salve o resultado JSON no arquivo: ${ANGLE_OUT}" \
-  --timeout 240 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03A_ANGLE_GEN.log" &
+  --timeout 240 --json 2>&1 | tee "$LOG_DIR/${JOB_ID}_03A_ANGEL_GEN.log" &
 ANGEL_PID=$!
 
 # DEVIL (destruição criativa) - com logging e timeout de sistema robusto
@@ -285,7 +285,7 @@ if [ -f "$ANGLE_OUT" ] && validate_json "$ANGLE_OUT"; then
     echo "✅ Angel Gen concluído"
 else
     [ $ANGEL_STATUS -ne 0 ] && echo "⚠️ Angel falhou com código $ANGEL_STATUS"
-    create_json_placeholder "$ANGLE_OUT" "ANGLE_GEN" "$JOB_ID" "Agent failed or invalid JSON"
+    create_json_placeholder "$ANGLE_OUT" "ANGEL_GEN" "$JOB_ID" "Agent failed or invalid JSON"
 fi
 
 if [ -f "$DEVIL_OUT" ] && validate_json "$DEVIL_OUT"; then

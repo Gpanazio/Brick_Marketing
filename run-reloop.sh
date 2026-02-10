@@ -270,8 +270,42 @@ Avalie esta copy revisada conforme seu role e salve o resultado JSON no arquivo:
     done
     
     if [ ! -f "$WALL_V" ] || ! validate_json "$WALL_V"; then
-        echo "❌ Wall v$LOOP_COUNT falhou após $max_retries tentativas - abortando"
-        exit 1
+        echo "⚠️ Opus falhou após $max_retries tentativas. Tentando fallback GPT-5.3..."
+
+        safe_timeout 300s openclaw agent --agent gpt53 \
+          --session-id "brick-reloop-${JOB_ID}-wall-${LOOP_COUNT}-fb" \
+          --message "${WALL_ROLE}
+
+---
+
+# BRAND GUARDIAN (REFERÊNCIA OBRIGATÓRIA PARA AVALIAÇÃO ON-BRAND)
+
+${BRAND_GUARDIAN}
+
+---
+
+COPY REVISADA (versão $LOOP_COUNT):
+${COPY_REVISADA}
+
+---
+
+CONTEXTO:
+Esta é a avaliação $LOOP_COUNT após feedback anterior. Seja justo: se os ajustes foram aplicados corretamente, aprove. Para o critério ON-BRAND, use o BRAND GUARDIAN acima como referência.
+
+---
+
+INSTRUÇÕES:
+Avalie esta copy revisada conforme seu role e salve o resultado JSON no arquivo: ${WALL_V}" \
+          --timeout 150 --json 2>&1 | tee -a "$LOG_DIR/${JOB_ID}_07_WALL_v${LOOP_COUNT}.log"
+
+        if [ -f "$WALL_V" ] && validate_json "$WALL_V"; then
+            DURATION=$(get_duration_ms $STEP_START)
+            echo "✅ Wall v$LOOP_COUNT concluído via fallback GPT-5.3"
+            print_duration $DURATION "Wall Loop $LOOP_COUNT (fallback)"
+        else
+            echo "❌ Wall v$LOOP_COUNT falhou após $max_retries tentativas + fallback GPT-5.3 - abortando"
+            exit 1
+        fi
     fi
     
     WALL_SCORE=$(jq -r '.score_final // 0' "$WALL_V" 2>/dev/null)

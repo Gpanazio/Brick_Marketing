@@ -357,3 +357,43 @@
 {"timestamp":"2026-02-07T17:55:16.565Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
 {"timestamp":"2026-02-07T17:55:40.838Z","level":"info","message":"✓ Conectado ao Railway"}
 {"timestamp":"2026-02-07T17:55:40.840Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-07T18:05:30.045Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-07T18:05:54.349Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-07T18:05:54.352Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T03:07:10.402Z","level":"info","message":"🚀 War Room Runner iniciando...","workspace":"/Users/gabrielpanazio/projects/Brick_Marketing","railwayUrl":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T03:07:10.406Z","level":"info","message":"Conectando ao Railway...","url":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T03:07:11.814Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T03:07:11.816Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T03:07:12.273Z","level":"info","message":"Nenhum job pendente"}
+{"timestamp":"2026-02-10T03:09:43.550Z","level":"info","message":"Desligando runner...","stats":{"jobsProcessed":0,"jobsSucceeded":0,"jobsFailed":0,"startTime":1770692830402},"uptime":153148}
+{"timestamp":"2026-02-10T03:09:46.978Z","level":"info","message":"🚀 War Room Runner iniciando...","workspace":"/Users/gabrielpanazio/projects/Brick_Marketing","railwayUrl":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T03:09:46.980Z","level":"info","message":"Conectando ao Railway...","url":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T03:09:48.036Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T03:09:48.045Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T03:09:49.031Z","level":"info","message":"Jobs pendentes encontrados e enfileirados","count":1}
+{"timestamp":"2026-02-10T03:09:49.032Z","level":"info","message":"▶ Processando job","action":"briefing","mode":"ideias","jobId":"1770692708286"}
+{"timestamp":"2026-02-10T03:09:49.034Z","level":"info","message":"Briefing salvo","path":"/Users/gabrielpanazio/projects/Brick_Marketing/history/ideias/briefing/1770692708286.txt"}
+{"timestamp":"2026-02-10T03:09:49.034Z","level":"info","message":"Delegando execução para sub-agent via exec direto","action":"briefing","mode":"ideias","jobId":"1770692708286"}
+{"timestamp":"2026-02-10T03:09:49.038Z","level":"info","message":"Script iniciado em background","cmd":"cd /Users/gabrielpanazio/projects/Brick_Marketing && nohup bash /Users/gabrielpanazio/projects/Brick_Marketing/run-pipeline.sh /Users/gabrielpanazio/projects/Brick_Marketing/history/ideias/briefing/1770692708286.txt --mode=ideias > /dev/null 2>&1 &"}
+{"timestamp":"2026-02-10T03:10:49.057Z","level":"info","message":"Pipeline em andamento...","jobId":"1770692708286","filesGenerated":2,"timeSeconds":60}
+{"timestamp":"2026-02-10T08:00:42.508Z","level":"info","message":"🚀 War Room Runner iniciando...","workspace":"/Users/gabrielpanazio/projects/Brick_Marketing","railwayUrl":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T08:00:42.510Z","level":"info","message":"Conectando ao Railway...","url":"https://brickmarketing-production.up.railway.app"}
+{"timestamp":"2026-02-10T08:00:43.625Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T08:00:43.628Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T08:00:44.669Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:00:07.862Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:00:28.744Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:00:28.749Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:00:29.882Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:06:05.987Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:06:28.102Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:06:28.105Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:06:29.167Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:10:15.415Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:10:36.125Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:10:36.127Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:10:37.109Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-10T13:12:07.625Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-10T13:12:28.268Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-10T13:12:28.271Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-10T13:12:29.564Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
