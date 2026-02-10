@@ -1,0 +1,80 @@
+{
+  "idea_name": "Pintar Favela (Revitalização Estética)",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 20,
+        "max": 30,
+        "feedback": "Problema é real (bem-estar/autoestima/ambiente urbano), mas prioridade média frente a déficits estruturais como saneamento e segurança."
+      },
+      "contexto": {
+        "pontos": 25,
+        "max": 25,
+        "feedback": "Contexto está bem mapeado com dados de escala (IBGE), precedentes, críticas sociais, riscos técnicos e alternativas mais funcionais."
+      },
+      "opcoes": {
+        "pontos": 10,
+        "max": 25,
+        "feedback": "Há opções melhores (tinta térmica, microfranquias, vielas piloto), mas a proposta original de 'todas as casas' permanece fraca e pouco sustentável."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Executar em escala nacional é inviável no desenho atual por logística, segurança territorial, base construtiva inadequada e manutenção recorrente."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Dealbreakers absolutos aceitos: inviabilidade econômica sem modelo de retorno e barreira técnica de durabilidade/aderência em grande parte das fachadas."
+      }
+    },
+    "score_before_risk": 55,
+    "score_final": 25,
+    "status": "NO-GO",
+    "confidence": "high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Rejeição social por percepção de 'maquiagem da pobreza'",
+      "Falha técnica por degradação acelerada sem reboco/selador e com umidade",
+      "Bloqueios logísticos e de segurança em áreas com controle armado",
+      "Risco de gentrificação e expulsão indireta de moradores",
+      "Risco ambiental pelo descarte de resíduos de tinta",
+      "Dealbreakers econômico (R$ 3,25 bi+) e técnico (baixa aderência/durabilidade)"
+    ],
+    "viability_response": [
+      "A crítica de 'estética sem infraestrutura' só seria mitigável acoplando saneamento e reboco, o que muda completamente custo e escopo.",
+      "A falha técnica exige preparação prévia das superfícies e plano de manutenção, tornando o modelo original financeiramente impraticável.",
+      "O risco de segurança inviabiliza operação padronizada nacional; dependeria de governança local complexa e não replicável em massa.",
+      "Efeito de gentrificação demanda políticas habitacionais e proteção de permanência, ausentes na proposta atual.",
+      "Mitigação ambiental requer cadeia formal de descarte e fiscalização, elevando ainda mais CAPEX/OPEX.",
+      "Conclusão: os riscos centrais não são mitigáveis dentro da ideia original 'pintar todas as casas'."
+    ],
+    "remaining_risks": [
+      "Backlash reputacional de marcas/governos por priorização estética",
+      "Deterioração rápida gerando percepção de abandono e desperdício",
+      "Escalada de custos e interrupções operacionais por contexto territorial"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Não executar a ideia original em escala total; arquivar e substituir por programa piloto funcional de baixa escala.",
+    "reasoning": "A proposta atual falha em viabilidade econômica, técnica e social. O custo de estar errado é alto (desperdício de bilhões, rejeição comunitária e risco operacional), enquanto o benefício incremental da estética isolada é limitado.",
+    "next_steps": [
+      "Arquivar o escopo 'todas as casas' como NO-GO.",
+      "Se houver interesse em continuidade, redesenhar como piloto em vielas com metas funcionais (reboco + tinta térmica + conforto térmico).",
+      "Condicionar qualquer expansão à validação comunitária formal e a indicadores objetivos (temperatura interna, durabilidade, aceitação local).",
+      "Integrar o projeto a pacote de infraestrutura essencial (saneamento/drenagem) antes de escalar."
+    ],
+    "risks_to_monitor": [
+      "Percepção comunitária de instrumentalização estética",
+      "Durabilidade real em campo após períodos de chuva/umidade",
+      "Custo de manutenção por domicílio e sustentabilidade financeira"
+    ],
+    "pivot_triggers": [
+      "Se piloto comprovar ganho funcional mensurável + adesão social alta, reavaliar para CONDITIONAL GO em escala local",
+      "Se houver funding dedicado de infraestrutura e governança territorial robusta, considerar expansão gradual"
+    ]
+  },
+  "timestamp": "2026-02-10T12:01:00-03:00"
+}
