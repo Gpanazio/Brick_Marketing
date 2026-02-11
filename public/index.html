@@ -2614,6 +2614,56 @@ PROCESSED.md ─── Briefing enriquecido
 
             const body = document.getElementById('panel-body');
 
+            // HUMAN: mostra copy final aprovada (Wall ou Copy Senior)
+            if (n.title === 'HUMAN') {
+                const wallFile = files.find(f => f.name.includes('WALL') && !/_v\d+/.test(f.name));
+                const copySeniorFile = files.find(f => f.name.includes('COPY_SENIOR') && !/_v\d+/.test(f.name));
+                const approvalFile = wallFile || copySeniorFile;
+                
+                if (approvalFile && approvalFile.content) {
+                    try {
+                        const data = JSON.parse(approvalFile.content);
+                        let copyFinal = '';
+                        
+                        // Extrai copy final dependendo do formato
+                        if (data.copy_revisada) {
+                            copyFinal = data.copy_revisada;
+                        } else if (data.copy_final) {
+                            copyFinal = data.copy_final;
+                        } else if (copySeniorFile) {
+                            copyFinal = data.copy_revisada || data.copy_final || JSON.stringify(data, null, 2);
+                        }
+                        
+                        const score = data.score_final || data.veredito_score || 'N/A';
+                        const status = data.status || data.veredito || 'PENDING';
+                        
+                        body.innerHTML = `
+                            <div class="bg-[#0a0a0a] border border-[#222] p-8 mb-6">
+                                <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#333]">
+                                    <div class="text-2xl font-brick text-white">COPY FINAL - AGUARDANDO APROVAÇÃO</div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-mono text-[#666]">SCORE</div>
+                                        <div class="text-3xl font-brick ${score >= 80 ? 'text-green-500' : 'text-yellow-500'}">${score}/100</div>
+                                        <div class="text-xs font-mono ${status === 'APPROVED' ? 'text-green-500' : 'text-yellow-500'}">${status}</div>
+                                    </div>
+                                </div>
+                                <div class="font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${copyFinal}</div>
+                            </div>
+                            <div class="flex gap-4">
+                                <button onclick="aprovarCampanha(event)" class="flex-1 bg-white text-black font-brick text-sm py-4 hover:bg-green-500 hover:text-white transition-colors">✓ APROVAR</button>
+                                <button onclick="openFeedbackModal(event)" class="flex-1 border-2 border-[#444] text-white font-brick text-sm py-4 hover:border-white hover:bg-white hover:text-black transition-colors">✎ SOLICITAR REVISÃO</button>
+                            </div>
+                        `;
+                        
+                        document.getElementById('panel-title').textContent = 'HUMAN APPROVAL // COPY FINAL';
+                        document.getElementById('agent-panel').classList.add('open');
+                        return;
+                    } catch (e) {
+                        console.error('Erro ao parsear arquivo de aprovação:', e);
+                    }
+                }
+            }
+
             // RAW_IDEA em Ideias: mostra briefing original (da pasta briefing), não o RAW_IDEA do WIP
             if (n.title === 'RAW_IDEA') {
                 const briefingFile = files.find(f => f.path && f.path.startsWith('briefing/'));
