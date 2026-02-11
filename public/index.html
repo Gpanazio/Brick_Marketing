@@ -1930,8 +1930,8 @@ PROCESSED.md ─── Briefing enriquecido
             const doneGroups = {};
 
             function getProjectId(name) {
-                // Marketing: ids numéricos
-                const m = name.match(/^(\d{13,})/);
+                // Marketing: ids numéricos (aceita timestamps em segundos ou milissegundos)
+                const m = name.match(/^(\d{10,})/);
                 if (m) return m[1];
 
                 // Projetos/Ideias: usar prefixo antes do último "_ROLE"
