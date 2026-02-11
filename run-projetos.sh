@@ -46,7 +46,27 @@ echo "---"
 
 echo "[$(date -Iseconds)] Pipeline iniciado: $JOB_ID" >> "$LOG_DIR/pipeline.log"
 
-BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
+# ============================================
+# ETAPA 0: INTAKE AGENT (Gemini Pro)
+# Extrai specs técnicas, timeline, orçamento
+# ============================================
+echo ""
+echo "🔍 ETAPA 0: Intake Agent Projetos (Gemini Pro)"
+INTAKE_START=$(start_timer)
+
+BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-projetos.sh" "$JOB_ID" "projetos" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
+
+if [ ! -f "$BRIEFING_JSON" ]; then
+    echo "❌ Intake Agent falhou - briefing não gerado"
+    exit 1
+fi
+
+INTAKE_DURATION=$(end_timer $INTAKE_START)
+echo "✅ Intake completo em ${INTAKE_DURATION}s"
+echo "📋 Briefing: $BRIEFING_JSON"
+echo "---"
+
+BRIEFING_CONTENT=$(cat "$BRIEFING_JSON")
 
 # Carregar roles
 # NOTA: BRAND_GUIDE.md NÃO é carregado aqui - projetos seguem marca do CLIENTE, não da Brick

@@ -63,7 +63,27 @@ echo "---"
 # Log de início do pipeline
 echo "[$(date -Iseconds)] Pipeline iniciado: $JOB_ID" >> "$LOG_DIR/pipeline.log"
 
-BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
+# ============================================
+# ETAPA 0: INTAKE AGENT (Gemini Pro)
+# Estrutura problema, solução, mercado, validação
+# ============================================
+echo ""
+echo "🔍 ETAPA 0: Intake Agent Ideias (Gemini Pro)"
+INTAKE_START=$(start_timer)
+
+BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-ideias.sh" "$JOB_ID" "ideias" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
+
+if [ ! -f "$BRIEFING_JSON" ]; then
+    echo "❌ Intake Agent falhou - briefing não gerado"
+    exit 1
+fi
+
+INTAKE_DURATION=$(end_timer $INTAKE_START)
+echo "✅ Intake completo em ${INTAKE_DURATION}s"
+echo "📋 Briefing: $BRIEFING_JSON"
+echo "---"
+
+BRIEFING_CONTENT=$(cat "$BRIEFING_JSON")
 
 # Carregar todos os role files
 PAIN_ROLE=$(cat "$ROLES_DIR/PAIN_CHECK.md" 2>/dev/null || echo "N/A")
@@ -71,19 +91,6 @@ MARKET_ROLE=$(cat "$ROLES_DIR/MARKET_SCAN.md" 2>/dev/null || echo "N/A")
 ANGLE_ROLE=$(cat "$ROLES_DIR/ANGEL_GEN.md" 2>/dev/null || echo "N/A")
 DEVIL_ROLE=$(cat "$ROLES_DIR/DEVIL_GEN.md" 2>/dev/null || echo "N/A")
 VIABILITY_ROLE=$(cat "$ROLES_DIR/VIABILITY.md" 2>/dev/null || echo "N/A")
-
-# ============================================
-# ETAPA 0: Douglas (Raw Idea)
-# ============================================
-echo ""
-echo "⏳ ETAPA 0: Douglas (Ingestion)"
-STEP_START=$(start_timer)
-RAW_FILE="$WIP_DIR/${JOB_ID}_RAW_IDEA.md"
-cp "$BRIEFING_FILE" "$RAW_FILE"
-DURATION=$(get_duration_ms $STEP_START)
-echo "✅ Raw Idea salva"
-sync_file_to_railway "$JOB_ID" "ideias" "$RAW_FILE"
-print_duration $DURATION "Etapa 0"
 
 # ============================================
 # ETAPA 1: PAIN CHECK (Flash)

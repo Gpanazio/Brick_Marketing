@@ -2,7 +2,7 @@
 
 Sistema de pipelines multi-agente para criação de conteúdo (Marketing, Projetos — Clientes, Ideias).
 
-**Última atualização:** 2026-02-07
+**Última atualização:** 2026-02-11
 
 ---
 
@@ -65,6 +65,68 @@ Brick_Marketing/
 ├── run-reloop-projetos.sh # Loop Projetos: HUMAN → PROPOSAL (feedback)
 └── sync-to-railway.sh     # Sincroniza arquivo local → Railway
 ```
+
+---
+
+## 🔍 Intake Agent (Gemini Pro) - NOVO 2026-02-11
+
+**O que é:**
+Primeiro agente de TODOS os pipelines. Recebe materiais brutos (texto, PDFs, imagens) e monta um briefing completo estruturado.
+
+**Regras de Ouro:**
+- ❌ **NUNCA faz perguntas pro usuário** (não trava o pipeline)
+- ✅ **Sempre preenche tudo** (infere o que falta)
+- ✅ **Documenta suposições** (campo `inferred_fields`)
+- ✅ **Assume defaults inteligentes** (baseado no setor/tipo)
+
+**Modelos:**
+- **Tentativa 1:** Gemini Pro (google/gemini-3-pro-preview)
+- **Tentativa 2 (fallback):** Gemini Flash (se Pro falhar)
+
+**O que faz por pipeline:**
+
+### Marketing (`lib/intake-marketing.sh`)
+Preenche:
+- Marca, produto, objetivo (awareness/conversão/engagement)
+- Público (primário + secundário + demo + psico)
+- Mensagem central, tom de voz, canal, formato
+- CTA, restrições, contexto
+
+Inferências típicas:
+- Público secundário (ex: influencers se for B2C)
+- Psicografia detalhada (valores, comportamentos)
+- Tom baseado no perfil da marca
+- Formato baseado no budget
+
+### Projetos (`lib/intake-projetos.sh`)
+Preenche:
+- Tipo de projeto (website/app/video/evento)
+- Escopo (entregáveis + features + restrições técnicas)
+- Timeline (prazo + milestones + urgência)
+- Orçamento (valor + alocação + prioridade custo/velocidade/qualidade)
+
+Inferências típicas:
+- Entregáveis típicos do tipo (ex: website → responsivo + CMS + hosting)
+- Duração típica se prazo não informado
+- Range de orçamento típico do mercado
+
+### Ideias (`lib/intake-ideias.sh`)
+Preenche:
+- Problema (dor + público afetado + intensidade + frequência)
+- Solução (proposta + diferenciais + MVP + escalabilidade)
+- Mercado (tamanho + concorrentes + barreiras + oportunidade)
+- Validação (hipóteses + métricas + riscos)
+
+Inferências típicas:
+- Intensidade da dor (nice-to-have vs painkiller)
+- Concorrentes diretos e indiretos
+- MVP (versão mais simples possível)
+- Hipóteses testáveis
+
+**Saída:**
+- `BRIEFING.json` (estruturado, pronto pro pipeline)
+- `INTAKE.md` (markdown legível com metadados)
+- `INTAKE_RAW_*.log` (logs de execução)
 
 ---
 

@@ -62,7 +62,28 @@ echo "---"
 # Log de início do pipeline
 echo "[$(date -Iseconds)] Pipeline iniciado: $JOB_ID" >> "$LOG_DIR/pipeline.log"
 
-BRIEFING_CONTENT=$(cat "$BRIEFING_FILE")
+# ============================================
+# ETAPA 0: INTAKE AGENT (Gemini Pro)
+# Processa materiais brutos, extrai contexto, preenche lacunas
+# ============================================
+echo ""
+echo "🔍 ETAPA 0: Intake Agent (Gemini Pro)"
+INTAKE_START=$(start_timer)
+
+# Executa o Intake Agent
+BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-marketing.sh" "$JOB_ID" "marketing" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
+
+if [ ! -f "$BRIEFING_JSON" ]; then
+    echo "❌ Intake Agent falhou - briefing não gerado"
+    exit 1
+fi
+
+INTAKE_DURATION=$(end_timer $INTAKE_START)
+echo "✅ Intake completo em ${INTAKE_DURATION}s"
+echo "📋 Briefing estruturado: $BRIEFING_JSON"
+echo "---"
+
+BRIEFING_CONTENT=$(cat "$BRIEFING_JSON")
 
 # Carregar todos os role files
 VALIDATOR_ROLE=$(cat "$ROLES_DIR/BRIEF_VALIDATOR.md" 2>/dev/null || echo "N/A")
