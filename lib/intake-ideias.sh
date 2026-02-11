@@ -1,7 +1,7 @@
 #!/bin/bash
 # Intake Agent - Ideias Pipeline
 # Extrai problema, solução proposta, hipóteses, mercado-alvo
-# Modelo: Gemini Pro com fallback Flash
+# Modelo: Gemini Flash com fallback Flash
 
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -101,8 +101,8 @@ MODEL_USED=""
 
 while [ $attempt -le $max_retries ]; do
   if [ $attempt -eq 1 ]; then
-    log "  >> Tentativa 1: Gemini Pro"
-    AGENT="pro"
+    log "  >> Tentativa 1: Gemini Flash"
+    AGENT="flash"
   else
     log "  >> Tentativa 2 (fallback): Gemini Flash"
     AGENT="flash"

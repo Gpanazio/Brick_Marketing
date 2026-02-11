@@ -108,13 +108,9 @@ max_retries=2
 MODEL_USED=""
 
 while [ $attempt -le $max_retries ]; do
-  if [ $attempt -eq 1 ]; then
-    log "  >> Tentativa 1: Gemini Pro"
-    AGENT="pro"
-  else
-    log "  >> Tentativa 2 (fallback): Gemini Flash"
-    AGENT="flash"
-  fi
+  # Sempre usa Flash (muito mais rápido, qualidade OK pra intake)
+  AGENT="flash"
+  log "  >> Tentativa $attempt: Gemini Flash"
   
   RESPONSE=$(safe_timeout 90s openclaw agent \
     --agent "$AGENT" \

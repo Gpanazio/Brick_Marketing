@@ -621,7 +621,7 @@ fi
 # ETAPA 7: WALL / FILTRO FINAL (Opus)
 # ============================================
 echo ""
-echo "⏳ ETAPA 7: Wall / Filtro Final (Opus)"
+echo "⏳ ETAPA 7: Wall / Filtro Final (GPT-5.3)"
 echo "  📊 Resumindo contexto (economia MÁXIMA - Opus é caro)..."
 STEP_START=$(start_timer)
 WALL_OUT="$WIP_DIR/${JOB_ID}_07_WALL.json"
@@ -645,7 +645,7 @@ backoff=2
 while [ $attempt -le $max_retries ]; do
     echo "  >> Tentativa $attempt/$max_retries"
     
-    safe_timeout 210s openclaw agent --agent opus \
+    safe_timeout 210s openclaw agent --agent gpt53 \
       --session-id "bm-${SHORT_ID}-wall" \
       --message "${WALL_ROLE}
 
@@ -852,7 +852,7 @@ INSTRUÇÕES:
     while [ $attempt -le $max_retries ]; do
         echo "  >> Tentativa $attempt/$max_retries"
         
-        safe_timeout 300s openclaw agent --agent opus \
+        safe_timeout 300s openclaw agent --agent gpt53 \
           --session-id "bm-${SHORT_ID}-wall-lp-${LOOP_COUNT}" \
           --message "${WALL_ROLE}
 
