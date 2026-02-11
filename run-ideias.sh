@@ -71,6 +71,16 @@ echo ""
 echo "🔍 ETAPA 0: Intake Agent Ideias (Gemini Pro)"
 INTAKE_START=$(start_timer)
 
+# Prepara INPUT.md pro Intake Agent
+INTAKE_WIP="$PROJECT_ROOT/wip/$JOB_ID"
+mkdir -p "$INTAKE_WIP"
+cp "$BRIEFING_FILE" "$INTAKE_WIP/INPUT.md"
+
+# Copia briefing original como RAW_IDEA pro frontend extrair título
+RAW_IDEA_FILE="$WIP_DIR/${JOB_ID}_RAW_IDEA.md"
+cp "$BRIEFING_FILE" "$RAW_IDEA_FILE"
+sync_file_to_railway "$JOB_ID" "ideias" "$RAW_IDEA_FILE"
+
 BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-ideias.sh" "$JOB_ID" "ideias" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
 
 if [ ! -f "$BRIEFING_JSON" ]; then

@@ -54,6 +54,16 @@ echo ""
 echo "🔍 ETAPA 0: Intake Agent Projetos (Gemini Pro)"
 INTAKE_START=$(start_timer)
 
+# Prepara INPUT.md pro Intake Agent
+INTAKE_WIP="$PROJECT_ROOT/wip/$JOB_ID"
+mkdir -p "$INTAKE_WIP"
+cp "$BRIEFING_FILE" "$INTAKE_WIP/INPUT.md"
+
+# Copia briefing original como BRIEFING_INPUT pro frontend extrair título
+BRIEFING_INPUT="$WIP_DIR/${JOB_ID}_BRIEFING_INPUT.md"
+cp "$BRIEFING_FILE" "$BRIEFING_INPUT"
+sync_file_to_railway "$JOB_ID" "projetos" "$BRIEFING_INPUT"
+
 BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-projetos.sh" "$JOB_ID" "projetos" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
 
 if [ ! -f "$BRIEFING_JSON" ]; then

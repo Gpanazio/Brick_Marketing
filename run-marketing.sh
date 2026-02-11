@@ -76,6 +76,11 @@ INTAKE_WIP="$PROJECT_ROOT/wip/$JOB_ID"
 mkdir -p "$INTAKE_WIP"
 cp "$BRIEFING_FILE" "$INTAKE_WIP/INPUT.md"
 
+# Copia briefing original como BRIEFING_INPUT pro frontend extrair título
+BRIEFING_INPUT="$WIP_DIR/${JOB_ID}_BRIEFING_INPUT.md"
+cp "$BRIEFING_FILE" "$BRIEFING_INPUT"
+sync_file_to_railway "$JOB_ID" "marketing" "$BRIEFING_INPUT"
+
 # Executa o Intake Agent
 BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-marketing.sh" "$JOB_ID" "marketing" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
 
