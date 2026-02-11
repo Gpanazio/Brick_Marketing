@@ -557,6 +557,7 @@ Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os a
     if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Copy Senior concluído"
+        sync_file_to_railway "$JOB_ID" "marketing" "$COPY_SENIOR_OUT"
         print_duration $DURATION "Etapa 6"
         break
     fi
@@ -603,6 +604,7 @@ Você é o Copy Senior. Avalie as 3 copies, escolha a melhor, aplique TODOS os a
     if [ -f "$CRITIC_OUT" ] && validate_json "$CRITIC_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Copy Senior concluído via fallback Sonnet"
+        sync_file_to_railway "$JOB_ID" "marketing" "$COPY_SENIOR_OUT"
         print_duration $DURATION "Etapa 6"
     else
         echo "❌ Fallback Sonnet também falhou. Criando placeholder..."
