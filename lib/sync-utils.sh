@@ -25,7 +25,8 @@ sync_file_to_railway() {
         --arg jobId "$job_id" \
         --arg filename "$filename" \
         --arg content "$content" \
-        '{mode: $mode, jobId: $jobId, filename: $filename, content: $content}')
+        --arg category "wip" \
+        '{mode: $mode, jobId: $jobId, filename: $filename, content: $content, category: $category}')
         
     echo "  🔄 Syncing $filename to Railway..."
     
