@@ -18,6 +18,7 @@ PROJECT_ROOT="$SCRIPT_DIR"
 # Carregar utilitários
 source "$PROJECT_ROOT/lib/pipeline-utils.sh"
 source "$PROJECT_ROOT/lib/context-summarizer.sh"
+source "$PROJECT_ROOT/lib/sync-utils.sh"
 
 BRIEFING_FILE="$1"
 
@@ -69,6 +70,11 @@ echo "[$(date -Iseconds)] Pipeline iniciado: $JOB_ID" >> "$LOG_DIR/pipeline.log"
 echo ""
 echo "🔍 ETAPA 0: Intake Agent (Gemini Pro)"
 INTAKE_START=$(start_timer)
+
+# Prepara INPUT.md pro Intake Agent
+INTAKE_WIP="$PROJECT_ROOT/wip/$JOB_ID"
+mkdir -p "$INTAKE_WIP"
+cp "$BRIEFING_FILE" "$INTAKE_WIP/INPUT.md"
 
 # Executa o Intake Agent
 BRIEFING_JSON=$("$PROJECT_ROOT/lib/intake-marketing.sh" "$JOB_ID" "marketing" 2>&1 | tee "$LOG_DIR/${JOB_ID}_00_INTAKE.log" | tail -1)
@@ -143,6 +149,7 @@ Avalie o briefing conforme seu role acima e salve o resultado JSON no arquivo: $
     if [ -f "$VALIDATOR_OUT" ] && validate_json "$VALIDATOR_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Validator concluído"
+        sync_file_to_railway "$JOB_ID" "marketing" "$VALIDATOR_OUT"
         print_duration $DURATION "Etapa 1"
         break
     fi
@@ -206,6 +213,7 @@ Avalie o alinhamento do briefing com a persona oficial E com o contexto de marca
     if [ -f "$AUDIENCE_OUT" ] && validate_json "$AUDIENCE_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Audience concluído"
+        sync_file_to_railway "$JOB_ID" "marketing" "$AUDIENCE_OUT"
         print_duration $DURATION "Etapa 2"
         break
     fi
@@ -266,6 +274,7 @@ Pesquise conforme seu role acima e salve o resultado JSON no arquivo: ${RESEARCH
     if [ -f "$RESEARCH_OUT" ] && validate_json "$RESEARCH_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Research concluído"
+        sync_file_to_railway "$JOB_ID" "marketing" "$RESEARCH_OUT"
         print_duration $DURATION "Etapa 3"
         break
     fi
@@ -326,6 +335,7 @@ Valide claims conforme seu role acima e salve o resultado JSON no arquivo: ${CLA
     if [ -f "$CLAIMS_OUT" ] && validate_json "$CLAIMS_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Claims concluído"
+        sync_file_to_railway "$JOB_ID" "marketing" "$CLAIMS_OUT"
         print_duration $DURATION "Etapa 4"
         break
     fi
@@ -456,6 +466,7 @@ DURATION=$(get_duration_ms $STEP_START)
 # Verifica resultados e cria placeholders se necessário
 if [ -f "$COPY_GPT_OUT" ] && [ -s "$COPY_GPT_OUT" ]; then
     echo "✅ Copy A (GPT) concluído"
+    sync_file_to_railway "$JOB_ID" "marketing" "$COPY_GPT_OUT"
 else
     [ $GPT_STATUS -ne 0 ] && echo "⚠️ GPT falhou com código $GPT_STATUS"
     create_md_placeholder "$COPY_GPT_OUT" "COPYWRITER_GPT" "$JOB_ID" "Agent failed or empty output"
@@ -463,6 +474,7 @@ fi
 
 if [ -f "$COPY_FLASH_OUT" ] && [ -s "$COPY_FLASH_OUT" ]; then
     echo "✅ Copy B (Flash) concluído"
+    sync_file_to_railway "$JOB_ID" "marketing" "$COPY_FLASH_OUT"
 else
     [ $FLASH_STATUS -ne 0 ] && echo "⚠️ Flash falhou com código $FLASH_STATUS"
     create_md_placeholder "$COPY_FLASH_OUT" "COPYWRITER_FLASH" "$JOB_ID" "Agent failed or empty output"
@@ -470,6 +482,7 @@ fi
 
 if [ -f "$COPY_SONNET_OUT" ] && [ -s "$COPY_SONNET_OUT" ]; then
     echo "✅ Copy C (Sonnet) concluído"
+    sync_file_to_railway "$JOB_ID" "marketing" "$COPY_SONNET_OUT"
 else
     [ $SONNET_STATUS -ne 0 ] && echo "⚠️ Sonnet falhou com código $SONNET_STATUS"
     create_md_placeholder "$COPY_SONNET_OUT" "COPYWRITER_SONNET" "$JOB_ID" "Agent failed or empty output"
@@ -662,6 +675,7 @@ Faça a revisão final conforme seu role acima. Para o critério ON-BRAND (20 po
     if [ -f "$WALL_OUT" ] && validate_json "$WALL_OUT"; then
         DURATION=$(get_duration_ms $STEP_START)
         echo "✅ Wall concluído"
+        sync_file_to_railway "$JOB_ID" "marketing" "$WALL_OUT"
         print_duration $DURATION "Etapa 7"
         break
     fi
