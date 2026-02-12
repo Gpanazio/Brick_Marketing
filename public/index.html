@@ -1492,22 +1492,21 @@
         // Focus: Access (do you HAVE the subject?), Thesis (specific angle?), Format (defined?)
         // Two-track: Creative Doctor (improve story) + Sales Shark (validate market)
         // Angel/Demon debate before final verdict
-        // Human: Approve analysis or request deeper dive
+        // Final node: DOCTOR_FINAL (parecer criativo final por episódio)
         const nodeDefOriginais = [
             { id: 'o0', x: 0, y: 150, title: 'PROJECT_INPUT', label: 'Ingestion', model: 'PDF / DOC' },
             { id: 'od', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
             { id: 'o1', x: 0, y: 550, title: 'TRIAGE', label: 'Classification', model: 'GEMINI FLASH' },
-            { id: 'o2', x: -300, y: 750, title: 'CREATIVE_DOCTOR', label: 'Story_Refiner', model: 'GPT-5.1' },
+            { id: 'o2', x: -300, y: 750, title: 'CREATIVE_DOCTOR', label: 'Story_Refiner', model: 'GPT-5.2' },
             { id: 'o3', x: 300, y: 750, title: 'SALES_SHARK', label: 'Market_Validator', model: 'GPT-5.1' },
             { id: 'o4a', x: -250, y: 950, title: 'ANGEL', label: 'Art_Defender', model: 'CLAUDE SONNET' },
             { id: 'o4b', x: 250, y: 950, title: 'DEMON', label: 'Market_Critic', model: 'CLAUDE SONNET' },
-            { id: 'o5', x: 0, y: 1150, title: 'GREENLIGHT', label: 'Final_Verdict', model: 'GPT-5.3' },
-            { id: 'o6', x: 0, y: 1350, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true }
+            { id: 'o5', x: 0, y: 1150, title: 'DOCTOR_FINAL', label: 'Final_Verdict', model: 'GPT-5.2' }
         ];
         // Originais connections: Douglas orchestrates, Triage classifies input depth,
         // Creative Doctor + Sales Shark analyze in parallel (story vs market),
-        // Angel + Demon debate (art vs commerce), Greenlight gives final score + verdict
-        const linksOriginais = [['o0', 'od'], ['od', 'o1'], ['o1', 'o2'], ['o1', 'o3'], ['o2', 'o4a'], ['o3', 'o4b'], ['o4a', 'o5'], ['o4b', 'o5'], ['o5', 'o6']];
+        // Angel + Demon debate (art vs commerce), Doctor Final dá o veredito
+        const linksOriginais = [['o0', 'od'], ['od', 'o1'], ['o1', 'o2'], ['o1', 'o3'], ['o2', 'o4a'], ['o3', 'o4b'], ['o4a', 'o5'], ['o4b', 'o5']];
 
         // ============================================================================
         // FILE MAPPING - Backend Output Pattern Recognition
@@ -1683,7 +1682,7 @@
 ├────────────────────────┐
 ▼                        ▼
 02. CREATIVE DOCTOR      03. SALES SHARK
-    (GPT-5.1)               (GPT-5.1)
+    (GPT-5.2)               (GPT-5.1)
     Story Refiner            Market Validator
 │                        │
 ├────────────────────────┤
@@ -1693,10 +1692,7 @@
 │                        │
 └────────┬───────────────┘
          ▼
-05. GREENLIGHT (GPT-5.3) ── Score 0-100 + Veredito
-         │
-         ▼
-06. HUMAN ── Aprovar / Refinar / Arquivar`;
+05. DOCTOR_FINAL (GPT-5.2) ── Score 0-100 + Veredito`;
 
                 schemeHtml = `
                     <div style="margin-bottom:16px;">
@@ -1710,27 +1706,22 @@
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">02. CREATIVE DOCTOR <span style="color:#3b82f6;">(GPT-5.1)</span> + 03. SALES SHARK <span style="color:#3b82f6;">(GPT-5.1)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#fff;font-weight:700;">02. CREATIVE DOCTOR <span style="color:#3b82f6;">(GPT-5.2)</span> + 03. SALES SHARK <span style="color:#3b82f6;">(GPT-5.1)</span> <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">2 análises paralelas:
-                        <br>• <span style="color:#22c55e;">CREATIVE DOCTOR</span>: Refina a história. Reescreve logline. Identifica gaps narrativos. Sugere pivots criativos.
-                        <br>• <span style="color:#ef4444;">SALES SHARK</span>: Valida mercado. Audita acesso (tem o entrevistado?), tese (recorte específico?), formato (definido?). Identifica compradores-alvo.</div>
+                        <br>• <span style="color:#22c55e;">CREATIVE DOCTOR</span>: Refina a história e analisa cada episódio.
+                        <br>• <span style="color:#ef4444;">SALES SHARK</span>: Valida mercado. Audita acesso (tem o entrevistado?), tese (recorte específico?), formato (definido?).</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">04. ANGEL + DEMON <span style="color:#d97706;">(Claude Sonnet 4.5)</span> <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Debate interno antes do veredito:
-                        <br>• <span style="color:#22c55e;">ANGEL</span>: Defende a alma do projeto. Por que é genial? Qual o potencial artístico?
-                        <br>• <span style="color:#ef4444;">DEMON</span>: Ataca impiedosamente. Por que vai falhar? Quem disse não e por quê?</div>
+                        <br>• <span style="color:#22c55e;">ANGEL</span>: Defende a alma do projeto.
+                        <br>• <span style="color:#ef4444;">DEMON</span>: Ataca impiedosamente.</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">05. GREENLIGHT <span style="color:#a855f7;">(GPT-5.3)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Veredito final. Score 0-100 baseado em: Acesso (exclusividade), Tese (clareza do recorte), Formato (viabilidade), Mercado (quem compra). Ação: PITCH (pronto), REFINAR (bom mas falta algo), INCUBAR (ideia crua), LIXO (sem salvação). Inclui logline de venda reescrita e sugestão de pivot.</div>
-                    </div>
-
-                    <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">06. HUMAN <span style="color:#888;">(Decision)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Decisão final. Card mostra score, veredito e debate Angel/Demon. Botões: Aprovar (move pra done/) ou Arquivar.</div>
+                        <div style="color:#fff;font-weight:700;">05. DOCTOR_FINAL <span style="color:#a855f7;">(GPT-5.2)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Veredito final por episódio. Score 0-100, top3/bottom3 e plano de ação.</div>
                     </div>
 
                     <div style="margin-top:24px;padding:12px;background:#0a0a0a;border-left:3px solid #DC2626;">
@@ -2470,7 +2461,12 @@ PROCESSED.md ─── Briefing enriquecido
             activeRevisionLinks = [];
 
             // ID do HUMAN node depende do modo atual
-            const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : currentMode === 'originais' ? 'o6' : 'n9';
+            const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : null;
+
+            if (currentMode === 'originais') {
+                // Originais não tem etapa HUMAN nem revisões
+                return;
+            }
 
             revisionFiles.forEach((revFile, idx) => {
                 const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];

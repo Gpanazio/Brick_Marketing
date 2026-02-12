@@ -138,5 +138,33 @@
   "RE-RUN": [
     "RERUN",
     "RE_RUN"
+  ],
+  "PROJECT_INPUT": [
+    "PROJECT_INPUT",
+    "ORIGINAL_INPUT"
+  ],
+  "TRIAGE": [
+    "TRIAGE",
+    "01_TRIAGE"
+  ],
+  "CREATIVE_DOCTOR": [
+    "CREATIVE_DOCTOR",
+    "02_CREATIVE"
+  ],
+  "SALES_SHARK": [
+    "SALES_SHARK",
+    "03_SALES"
+  ],
+  "ANGEL": [
+    "ANGEL",
+    "04A_ANGEL"
+  ],
+  "DEMON": [
+    "DEMON",
+    "04B_DEMON"
+  ],
+  "DOCTOR_FINAL": [
+    "DOCTOR_FINAL",
+    "05_DOCTOR_FINAL"
   ]
 }

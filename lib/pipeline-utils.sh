@@ -93,8 +93,9 @@ run_agent() {
             session_id="${prefix}-${suffix}"
         fi
 
-    local job_id=$(basename "$output_file" | cut -d'_' -f1-2)
-    local step_name=$(basename "$output_file" .json | sed 's/.*_//')
+    local base_name=$(basename "$output_file" .json)
+    local job_id=$(echo "$base_name" | sed -E 's/_(CREATIVE_DOCTOR|SALES_SHARK|ANGEL|DEMON|DOCTOR_FINAL|TRIAGE|PROJECT_INPUT|INTAKE)$//')
+    local step_name=$(echo "$base_name" | sed -E 's/^.*_(CREATIVE_DOCTOR|SALES_SHARK|ANGEL|DEMON|DOCTOR_FINAL|TRIAGE|PROJECT_INPUT|INTAKE)$/\1/')
     local log_file="${log_dir}/${job_id}_${step_name}.log"
     local attempt=1
     
