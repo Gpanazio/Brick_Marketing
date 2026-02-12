@@ -177,11 +177,13 @@ console.log(`[STARTUP] IS_RAILWAY=${IS_RAILWAY} | HISTORY_ROOT=${HISTORY_ROOT}`)
 const MARKETING_ROOT = path.join(HISTORY_ROOT, 'marketing');
 const PROJETOS_ROOT = path.join(HISTORY_ROOT, 'projetos');
 const IDEIAS_ROOT = path.join(HISTORY_ROOT, 'ideias');
+const ORIGINAIS_ROOT = path.join(HISTORY_ROOT, 'originais');
 
 // Helper to get root by mode
 const getModeRoot = (mode) => {
     if (mode === 'projetos') return PROJETOS_ROOT;
     if (mode === 'ideias') return IDEIAS_ROOT;
+    if (mode === 'originais') return ORIGINAIS_ROOT;
     return MARKETING_ROOT; // default: marketing
 };
 
@@ -247,7 +249,7 @@ try {
         console.log(`[STARTUP] Creating HISTORY_ROOT: ${HISTORY_ROOT}`);
         fs.mkdirSync(HISTORY_ROOT, { recursive: true });
     }
-    [MARKETING_ROOT, PROJETOS_ROOT, IDEIAS_ROOT].forEach(root => {
+    [MARKETING_ROOT, PROJETOS_ROOT, IDEIAS_ROOT, ORIGINAIS_ROOT].forEach(root => {
         ['briefing', 'wip', 'done', 'failed', 'feedback'].forEach(dir => {
             const dirPath = path.join(root, dir);
             if (!fs.existsSync(dirPath)) {

@@ -141,5 +141,36 @@
   "ANGLE_GEN": [
     "ANGEL_GEN",
     "ANGLE"
+  ],
+  "PROJECT_INPUT": [
+    "PROJECT_INPUT",
+    "BRIEFING_INPUT"
+  ],
+  "TRIAGE": [
+    "TRIAGE",
+    "CLASSIFICATION"
+  ],
+  "CREATIVE_DOCTOR": [
+    "CREATIVE_DOCTOR",
+    "STORY_REFINER"
+  ],
+  "SALES_SHARK": [
+    "SALES_SHARK",
+    "MARKET_VALIDATOR"
+  ],
+  "ANGEL": [
+    "ANGEL",
+    "ANGEL_GEN",
+    "ART_DEFENDER"
+  ],
+  "DEMON": [
+    "DEMON",
+    "DEVIL_GEN",
+    "MARKET_CRITIC"
+  ],
+  "GREENLIGHT": [
+    "GREENLIGHT",
+    "VERDICT",
+    "FINAL_VERDICT"
   ]
 }

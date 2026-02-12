@@ -998,7 +998,7 @@
                             class="text-[#DC2626]">War</span> Room</h1>
                     <p class="text-sm font-mono text-[#666] uppercase tracking-[0.3em] mt-3">Creation Center</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 w-full">
                     <div onclick="enterMode('marketing')"
                         class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
                         <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
@@ -1018,6 +1018,12 @@
                         <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
                         <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
                         <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
+                    </div>
+                    <div onclick="enterMode('originais')"
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 04</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Originais</h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Development & Viability</p>
                     </div>
                 </div>
             </div>
@@ -1192,6 +1198,7 @@
                         <option value="marketing">Marketing (Conteúdo & Flow)</option>
                         <option value="projetos">Projetos — Clientes (Strategy & Craft)</option>
                         <option value="ideias">Ideias (Validation)</option>
+                        <option value="originais">Originais (Development & Viability)</option>
                     </select>
                     <div id="cost-estimate" class="mt-2 text-[10px] font-mono text-[#666] flex items-center gap-2">
                         <span class="text-[#DC2626]">💰</span>
@@ -1479,6 +1486,30 @@
         const linksIdeias = [['i0', 'id'], ['id', 'i1'], ['i1', 'i2'], ['i2', 'i3a'], ['i2', 'i3b'], ['i3a', 'i4'], ['i3b', 'i4'], ['i4', 'i5']];
 
         // ============================================================================
+        // ORIGINAIS PIPELINE - TV/Streaming Development (Doc & Entertainment)
+        // ============================================================================
+        // Audits original IP projects for commercial viability + creative refinement
+        // Focus: Access (do you HAVE the subject?), Thesis (specific angle?), Format (defined?)
+        // Two-track: Creative Doctor (improve story) + Sales Shark (validate market)
+        // Angel/Demon debate before final verdict
+        // Human: Approve analysis or request deeper dive
+        const nodeDefOriginais = [
+            { id: 'o0', x: 0, y: 150, title: 'PROJECT_INPUT', label: 'Ingestion', model: 'PDF / DOC' },
+            { id: 'od', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
+            { id: 'o1', x: 0, y: 550, title: 'TRIAGE', label: 'Classification', model: 'GEMINI FLASH' },
+            { id: 'o2', x: -300, y: 750, title: 'CREATIVE_DOCTOR', label: 'Story_Refiner', model: 'GPT-5.1' },
+            { id: 'o3', x: 300, y: 750, title: 'SALES_SHARK', label: 'Market_Validator', model: 'GPT-5.1' },
+            { id: 'o4a', x: -250, y: 950, title: 'ANGEL', label: 'Art_Defender', model: 'CLAUDE SONNET' },
+            { id: 'o4b', x: 250, y: 950, title: 'DEMON', label: 'Market_Critic', model: 'CLAUDE SONNET' },
+            { id: 'o5', x: 0, y: 1150, title: 'GREENLIGHT', label: 'Final_Verdict', model: 'GPT-5.3' },
+            { id: 'o6', x: 0, y: 1350, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true }
+        ];
+        // Originais connections: Douglas orchestrates, Triage classifies input depth,
+        // Creative Doctor + Sales Shark analyze in parallel (story vs market),
+        // Angel + Demon debate (art vs commerce), Greenlight gives final score + verdict
+        const linksOriginais = [['o0', 'od'], ['od', 'o1'], ['o1', 'o2'], ['o1', 'o3'], ['o2', 'o4a'], ['o3', 'o4b'], ['o4a', 'o5'], ['o4b', 'o5'], ['o5', 'o6']];
+
+        // ============================================================================
         // FILE MAPPING - Backend Output Pattern Recognition
         // ============================================================================
         // DELIBERATE DUPLICATION: Each pipeline has its own patterns in file-mapping.json
@@ -1522,7 +1553,7 @@
             document.getElementById('btn-back-lobby').classList.remove('hidden');
             document.getElementById('btn-scheme').classList.remove('hidden');
             document.getElementById('btn-delete-project').classList.add('hidden'); // Hide until viewing a project
-            const modeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS' };
+            const modeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS', originais: 'ORIGINAIS' };
             document.getElementById('header-sector').textContent = modeLabels[mode] || mode.toUpperCase();
 
             if (socket && socket.connected) {
@@ -1638,6 +1669,81 @@
                         📊 <strong>Custo estimado:</strong> ~$0.08/ideia (inclui input+output tokens)<br>
                         ⏱️ <strong>Tempo médio:</strong> 2-3 minutos<br>
                         🎯 <strong>Taxa de rejeição esperada:</strong> 60-70% (filtro agressivo é feature, não bug)
+                    </div>
+                `;
+            } else if (currentMode === 'originais') {
+                diagram.textContent = `PROJETO ORIGINAL (PDF / DOC / Texto)
+│
+▼
+[DOUGLAS] ─── Orchestrator (extrai texto, classifica)
+│
+▼
+01. TRIAGE (Flash) ── Classifica profundidade do material
+│
+├────────────────────────┐
+▼                        ▼
+02. CREATIVE DOCTOR      03. SALES SHARK
+    (GPT-5.1)               (GPT-5.1)
+    Story Refiner            Market Validator
+│                        │
+├────────────────────────┤
+▼                        ▼
+04a. ANGEL (Sonnet)      04b. DEMON (Sonnet)
+     Art Defender              Market Critic
+│                        │
+└────────┬───────────────┘
+         ▼
+05. GREENLIGHT (GPT-5.3) ── Score 0-100 + Veredito
+         │
+         ▼
+06. HUMAN ── Aprovar / Refinar / Arquivar`;
+
+                schemeHtml = `
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">00. DOUGLAS <span style="color:#888;">(Manual)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:4px;"><strong>Pré-Pipeline:</strong> Douglas recebe PDF/DOCX via Telegram, extrai texto, cria pasta do projeto e dispara o pipeline. Classifica o tipo de conteúdo (Doc, Reality, Série Doc, etc).</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">01. TRIAGE <span style="color:#22c55e;">(Gemini Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Classifica profundidade do material recebido. Extrai: gênero, formato proposto, personagens-chave, premissa central. Identifica se é tratamento, bíblia, sinopse ou ideia expandida.</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">02. CREATIVE DOCTOR <span style="color:#3b82f6;">(GPT-5.1)</span> + 03. SALES SHARK <span style="color:#3b82f6;">(GPT-5.1)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">2 análises paralelas:
+                        <br>• <span style="color:#22c55e;">CREATIVE DOCTOR</span>: Refina a história. Reescreve logline. Identifica gaps narrativos. Sugere pivots criativos.
+                        <br>• <span style="color:#ef4444;">SALES SHARK</span>: Valida mercado. Audita acesso (tem o entrevistado?), tese (recorte específico?), formato (definido?). Identifica compradores-alvo.</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">04. ANGEL + DEMON <span style="color:#d97706;">(Claude Sonnet 4.5)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Debate interno antes do veredito:
+                        <br>• <span style="color:#22c55e;">ANGEL</span>: Defende a alma do projeto. Por que é genial? Qual o potencial artístico?
+                        <br>• <span style="color:#ef4444;">DEMON</span>: Ataca impiedosamente. Por que vai falhar? Quem disse não e por quê?</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">05. GREENLIGHT <span style="color:#a855f7;">(GPT-5.3)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Veredito final. Score 0-100 baseado em: Acesso (exclusividade), Tese (clareza do recorte), Formato (viabilidade), Mercado (quem compra). Ação: PITCH (pronto), REFINAR (bom mas falta algo), INCUBAR (ideia crua), LIXO (sem salvação). Inclui logline de venda reescrita e sugestão de pivot.</div>
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <div style="color:#fff;font-weight:700;">06. HUMAN <span style="color:#888;">(Decision)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Decisão final. Card mostra score, veredito e debate Angel/Demon. Botões: Aprovar (move pra done/) ou Arquivar.</div>
+                    </div>
+
+                    <div style="margin-top:24px;padding:12px;background:#0a0a0a;border-left:3px solid #DC2626;">
+                        <div style="color:#DC2626;font-weight:700;margin-bottom:8px;">💡 FILOSOFIA DO PIPELINE</div>
+                        <div style="color:#888;font-size:10px;line-height:1.6;">
+                            Auditoria de viabilidade para projetos de Doc e Entretenimento (TV/Streaming). Diagnostica POR QUE executivos dizem "não" — antes da reunião. Foco em Acesso (tem o personagem?), Tese (recorte específico?) e Product-Market Fit. O Creative Doctor melhora a história, o Sales Shark valida o mercado. Angel/Demon força o debate honesto.
+                        </div>
+                    </div>
+
+                    <div style="margin-top:16px;padding:10px;background:#1a1a1a;border:1px solid #333;">
+                        📊 <strong>Custo estimado:</strong> ~$0.15/projeto<br>
+                        ⏱️ <strong>Tempo médio:</strong> 3-5 minutos<br>
+                        🎯 <strong>Foco:</strong> Doc & Entretenimento (Non-Scripted)
                     </div>
                 `;
             } else if (currentMode === 'projetos') {
@@ -2068,7 +2174,7 @@ PROCESSED.md ─── Briefing enriquecido
             selectedJobId = id;
             currentJobId = id; // Track for delete
             document.getElementById('ng-title').textContent = title;
-            const ngModeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS' };
+            const ngModeLabels = { marketing: 'MARKETING', projetos: 'PROJETOS — CLIENTES', ideias: 'IDEIAS', originais: 'ORIGINAIS' };
             document.getElementById('ng-sector-title').textContent = ngModeLabels[currentMode] || currentMode.toUpperCase();
             document.getElementById('view-nodegraphic').classList.add('active');
             document.getElementById('main-ui').style.display = 'none';
@@ -2157,6 +2263,7 @@ PROCESSED.md ─── Briefing enriquecido
             let nodes = nodeDefMarketing;
             if (currentMode === 'projetos') nodes = nodeDefProjetos;
             if (currentMode === 'ideias') nodes = nodeDefIdeias;
+            if (currentMode === 'originais') nodes = nodeDefOriginais;
 
             let savedPositions = JSON.parse(localStorage.getItem(`node_positions_${currentMode}`) || '{}');
 
@@ -2363,7 +2470,7 @@ PROCESSED.md ─── Briefing enriquecido
             activeRevisionLinks = [];
 
             // ID do HUMAN node depende do modo atual
-            const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : 'n9';
+            const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : currentMode === 'originais' ? 'o6' : 'n9';
 
             revisionFiles.forEach((revFile, idx) => {
                 const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
@@ -2438,6 +2545,7 @@ PROCESSED.md ─── Briefing enriquecido
             let currentLinks = [...linksMarketing];
             if (currentMode === 'projetos') currentLinks = [...linksProjetos];
             if (currentMode === 'ideias') currentLinks = [...linksIdeias];
+            if (currentMode === 'originais') currentLinks = [...linksOriginais];
 
             // CONDICIONAL: Se Wall rejeitou e existe loop aprovado, redirecionar fluxo
             if (currentMode === 'marketing') {
@@ -3048,7 +3156,7 @@ PROCESSED.md ─── Briefing enriquecido
             await loadFileMapping();
 
             // Parse shareable URL: /ideias/jobId, /marketing/jobId, /projetos/jobId
-            const pathMatch = window.location.pathname.match(/^\/(ideias|marketing|projetos)\/(.+)$/);
+            const pathMatch = window.location.pathname.match(/^\/(ideias|marketing|projetos|originais)\/(.+)$/);
             let urlMode = null;
             let urlJobId = null;
 
