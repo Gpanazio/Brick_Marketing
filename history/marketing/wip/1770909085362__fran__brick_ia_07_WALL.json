@@ -1,0 +1,44 @@
+{
+  "score_final": 86,
+  "status": "APPROVED",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 22,
+      "max": 25,
+      "feedback": "Oferta está clara: produtora premium com modelo Production Enhanced e proposta tangível de qualidade cinematográfica com prazo viável. Pode ficar ainda mais concreta com um deliverable exemplificado (ex.: campanha + cutdowns em X dias)."
+    },
+    "dor_real": {
+      "pontos": 18,
+      "max": 20,
+      "feedback": "Dor está bem ancorada: pressão de prazo, orçamento comprimido e queda de qualidade ('slop visual'). O trecho do briefing clássico conecta diretamente com a realidade do público-alvo."
+    },
+    "credibilidade": {
+      "pontos": 16,
+      "max": 20,
+      "feedback": "Há base factual (McKinsey/HubSpot/Adobe) e posicionamento consistente de experiência ('10 anos de set'). Para nota máxima, incluir 1 prova concreta de resultado/case validado."
+    },
+    "on_brand": {
+      "pontos": 19,
+      "max": 20,
+      "feedback": "Excelente aderência ao BRAND GUARDIAN: voz de diretor, anti-hype, anti-slop, foco em craft e direção. Terminologia oficial bem aplicada (Production Enhanced, direção, set, resultado)."
+    },
+    "cta_especifico": {
+      "pontos": 11,
+      "max": 15,
+      "feedback": "CTA é claro e acionável ('traga o briefing', 'peça uma sessão de direção'), mas ainda sem mecanismo direto de baixa fricção (link, agenda, prazo de resposta)."
+    }
+  },
+  "destaques_positivos": [
+    "Tom de marca forte e diferenciado (direção de cinema, não tech bro)",
+    "Narrativa com dor real de mercado e contraste claro contra conteúdo genérico",
+    "Arquitetura da mensagem consistente entre versões curto, médio e storytelling"
+  ],
+  "pontos_de_melhoria": [
+    "Adicionar 1 prova concreta de resultado (mini-case ou métrica de campanha)",
+    "Transformar o CTA em ação com fricção menor (ex.: sessão de 15 min com link)",
+    "Quantificar melhor a promessa operacional (prazo/escopo) sem inflar claim"
+  ],
+  "verdict": "APPROVED - Copy pronta para aprovação humana. Ajustes sugeridos elevam conversão, mas não bloqueiam publicação.",
+  "next_step": "HUMAN_APPROVAL",
+  "recommend_return_to": null
+}
