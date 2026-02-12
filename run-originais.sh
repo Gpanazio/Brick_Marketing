@@ -190,9 +190,11 @@ if run_agent "gpt52" "bo-${SHORT_ID}-creative-v2" "$CREATIVE_MSG" "$CREATIVE_OUT
         print_duration $DURATION "Etapa 2"
     else
         create_json_placeholder "$CREATIVE_OUT" "CREATIVE_DOCTOR" "$JOB_ID" "Invalid JSON"
+        sync_file_to_railway "$JOB_ID" "originais" "$CREATIVE_OUT"
     fi
 else
     create_json_placeholder "$CREATIVE_OUT" "CREATIVE_DOCTOR" "$JOB_ID" "All retries failed"
+    sync_file_to_railway "$JOB_ID" "originais" "$CREATIVE_OUT"
 fi
 
 CREATIVE_CONTENT=$(cat "$CREATIVE_OUT" 2>/dev/null || echo "Creative Doctor não disponível")
@@ -238,9 +240,11 @@ if run_agent "gpt" "bo-${SHORT_ID}-sales-v2" "$SALES_MSG" "$SALES_OUT" 240 "$LOG
         print_duration $DURATION "Etapa 3"
     else
         create_json_placeholder "$SALES_OUT" "SALES_SHARK" "$JOB_ID" "Invalid JSON"
+        sync_file_to_railway "$JOB_ID" "originais" "$SALES_OUT"
     fi
 else
     create_json_placeholder "$SALES_OUT" "SALES_SHARK" "$JOB_ID" "All retries failed"
+    sync_file_to_railway "$JOB_ID" "originais" "$SALES_OUT"
 fi
 
 SALES_CONTENT=$(cat "$SALES_OUT" 2>/dev/null || echo "Sales Shark não disponível")
@@ -451,6 +455,7 @@ Salve o resultado JSON no arquivo: ${DOCTOR_OUT}"
 
     if [ $DOCTOR_OK -ne 1 ]; then
         create_json_placeholder "$DOCTOR_OUT" "DOCTOR_FINAL" "$JOB_ID" "All retries failed (GPT-5.2 + GPT-5.3 fallback)"
+        sync_file_to_railway "$JOB_ID" "originais" "$DOCTOR_OUT"
     fi
 fi
 

@@ -2463,12 +2463,8 @@ PROCESSED.md ─── Briefing enriquecido
             // ID do HUMAN node depende do modo atual
             const humanNodeId = currentMode === 'projetos' ? 'p9' : currentMode === 'ideias' ? 'i5' : null;
 
-            if (currentMode === 'originais') {
-                // Originais não tem etapa HUMAN nem revisões
-                return;
-            }
-
-            revisionFiles.forEach((revFile, idx) => {
+            if (currentMode !== 'originais') {
+                revisionFiles.forEach((revFile, idx) => {
                 const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
                 const revId = `rev${revNum}`;
                 const revNode = {
@@ -2524,6 +2520,7 @@ PROCESSED.md ─── Briefing enriquecido
                 // Adicionar link à lista global de revisões
                 activeRevisionLinks.push([humanNodeId, revId]);
             });
+            }
 
             // Esperar o navegador renderizar os novos nós antes de desenhar as linhas
             requestAnimationFrame(() => {

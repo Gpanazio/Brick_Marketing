@@ -2,7 +2,7 @@
 
 Sistema de pipelines multi-agente para criação de conteúdo (Marketing, Projetos — Clientes, Ideias).
 
-**Última atualização:** 2026-02-11
+**Última atualização:** 2026-02-12
 
 ---
 
@@ -216,6 +216,26 @@ Inferências típicas:
 
 **Loop Execution ↔ Director:** Arquivos `_v2`, `_v3` (ESCONDIDOS na UI desde 06/02/26)
 
+### Originais (Doc & Entretenimento) — NOVO 2026-02-12
+**Objetivo:** Auditoria de viabilidade + refinamento criativo para projetos de TV/Streaming (não-ficção). Usa material denso (bíblia, tratamento, PDF). **Sem etapa HUMAN** — termina no **DOCTOR_FINAL**.
+
+```
+00. DOUGLAS (manual) → recebe PDF/DOCX via Telegram, extrai texto e dispara pipeline
+01. TRIAGE (Flash) → classifica profundidade do material (formato, gênero, recorte)
+02. CREATIVE_DOCTOR (GPT-5.2 non-codex) → análise por episódio + sugestões criativas
+03. SALES_SHARK (GPT-5.1) → viabilidade comercial (acesso/tese/formato/mercado)
+04. ANGEL + DEMON (Sonnet) → debate interno arte vs mercado
+05. DOCTOR_FINAL (GPT-5.2, fallback GPT-5.3) → score 0-100 + top/bottom + plano de ação
+```
+
+**Rubrica:** Acesso 30 + Narrativa 25 + Mercado 25 + Risco 20.
+
+**Notas técnicas importantes:**
+- **GPT não escreve arquivo** → `run_agent()` usa `--json` e extrai payload para salvar.
+- **Session ID curto:** agora usa **hash estável (shasum 10 chars)** para evitar colisão.
+- **Sem HUMAN:** o card final é DOCTOR_FINAL.
+- **Placeholders de erro são sincronizados** para o Railway (aparecem no site).
+
 ### Ideias (5 etapas)
 **Objetivo:** Validação ultra-rápida de conceitos (filtro agressivo)
 
@@ -397,7 +417,7 @@ Depois do push:
 ### Blindagem contra Timeouts e Travamentos
 Para garantir que o pipeline seja **100% automático** e nunca fique preso em "limbo", implementamos:
 - **`safe_timeout` (Shell-Level):** Todos os processos paralelos (Angel/Devil, Copywriters, Ideation) agora rodam com um timeout de sistema de 300s. Se o agente travar ou o Gateway der timeout, o SO mata o processo, liberando o script pai para o fallback automático.
-- **Short ID Protocol:** Uso de `${SHORT_ID}` (últimos 8 dígitos do Job ID) para compor o `session-id`. Isso evita o erro `Invalid prompt_cache_key: string too long` (limite de 64 caracteres da API).
+- **Short ID Protocol (ATUALIZADO 12/02):** `${SHORT_ID}` agora é **hash estável (shasum 10 chars)** do Job ID (não mais "últimos 8 dígitos") para evitar colisões entre sessões.
 - **Auto-Trimming:** Função `run_agent` no `pipeline-utils.sh` corta automaticamente IDs que excedam o limite de segurança.
 
 ### Disciplina de Output (Roles)
@@ -413,10 +433,15 @@ Para garantir que o pipeline seja **100% automático** e nunca fique preso em "l
 - Implementar igual Marketing/Ideias
 - Reduzir contexto de ~15k → ~5k tokens
 
+### 0. Originais: sync de placeholders (OBRIGATÓRIO)
+- Se etapa falhar, **sempre sincronizar o placeholder** para o Railway
+- Objetivo: erro aparecer no site (nunca sumir etapa)
+
 ### 2. Fallback de Modelo (CRÍTICO)
 - Se Flash falhar 3x → Sonnet
 - Se Sonnet falhar 3x → GPT
 - Garantir que pipeline NUNCA aborta
+- **Originais já usa fallback** (Doctor Final: GPT-5.2 → GPT-5.3)
 
 ### 3. Event-Driven System (EM PROGRESSO)
 - Substituir watcher.js por Socket.IO
@@ -437,4 +462,4 @@ Se algo quebrar:
 
 ---
 
-**Última revisão:** 2026-02-07 11:32 GMT-3 (Douglas)
+**Última revisão:** 2026-02-12 14:05 GMT-3 (Douglas)
