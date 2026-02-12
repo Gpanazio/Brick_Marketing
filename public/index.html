@@ -2586,9 +2586,10 @@ PROCESSED.md ─── Briefing enriquecido
                     };
                     if (statusColors[val]) return `<span class="px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider ${statusColors[val]}">${val}</span>`;
                     
-                    // Tratamento especial pra campos de copy (converte \n literal)
-                    if (key && (key === 'copy_revisada' || key === 'copy_final' || key === 'copy')) {
-                        const formatted = val.replace(/\\n/g, '\n');  // Converte \n literal
+                    // Tratamento especial pra campos de copy (converte \n literal e double-escaped)
+                    if (key && (key === 'copy_revisada' || key === 'copy_final' || key === 'copy' || key.includes('copy_'))) {
+                        // Trata tanto \\n quanto \\\\n (double-escaped)
+                        let formatted = val.replace(/\\\\n/g, '\n').replace(/\\n/g, '\n');
                         return `<div class="text-[#ddd] leading-relaxed mt-3 mb-3 p-4 bg-[#0a0a0a] border-l-2 border-[#DC2626] prose-sm max-w-none whitespace-pre-line">${safeMarkdown(formatted)}</div>`;
                     }
                     
@@ -2625,35 +2626,48 @@ PROCESSED.md ─── Briefing enriquecido
             if (n.title === 'HUMAN') {
                 const wallFile = files.find(f => f.name.includes('WALL') && !/_v\d+/.test(f.name));
                 const copySeniorFile = files.find(f => f.name.includes('COPY_SENIOR') && !/_v\d+/.test(f.name));
-                const approvalFile = wallFile || copySeniorFile;
                 
-                if (approvalFile && approvalFile.content) {
+                if (copySeniorFile && copySeniorFile.content) {
                     try {
-                        const data = JSON.parse(approvalFile.content);
-                        const score = data.score_final || data.veredito_score || 'N/A';
-                        const status = data.status || data.veredito || 'PENDING';
+                        // Pega score do Wall pra mostrar no header
+                        let wallScore = 'N/A';
+                        let wallStatus = 'PENDING';
+                        if (wallFile && wallFile.content) {
+                            const wallData = JSON.parse(wallFile.content);
+                            wallScore = wallData.score_final || wallData.veredito_score || 'N/A';
+                            wallStatus = wallData.status || wallData.veredito || 'PENDING';
+                        }
+                        
+                        // Pega copy_revisada do Copy Senior
+                        const copySeniorData = JSON.parse(copySeniorFile.content);
+                        const copyRevisada = copySeniorData.copy_revisada || '';
+                        const vencedor = copySeniorData.vencedor || copySeniorData.modelo_vencedor || 'N/A';
                         
                         // Determinar cor baseada no score
                         let scoreColor = '#666';
-                        if (typeof score === 'number') {
-                            if (score >= 80) scoreColor = '#22c55e'; // Verde
-                            else if (score >= 60) scoreColor = '#f59e0b'; // Laranja
+                        if (typeof wallScore === 'number') {
+                            if (wallScore >= 80) scoreColor = '#22c55e'; // Verde
+                            else if (wallScore >= 60) scoreColor = '#f59e0b'; // Laranja
                             else scoreColor = '#ef4444'; // Vermelho
                         }
                         
+                        // Formata copy (converte \n literal)
+                        const copyFormatted = copyRevisada.replace(/\\n/g, '\n');
+                        
                         body.innerHTML = `
                             <div style="background: #0a0a0a; border: 2px solid ${scoreColor}; padding: 20px; margin-bottom: 24px; text-align: center;">
-                                <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 48px; color: ${scoreColor}; line-height: 1;">${score}</div>
-                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888; margin-top: 8px; text-transform: uppercase; letter-spacing: 2px;">${status}</div>
+                                <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 48px; color: ${scoreColor}; line-height: 1;">${wallScore}</div>
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888; margin-top: 8px; text-transform: uppercase; letter-spacing: 2px;">${wallStatus}</div>
+                                <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #666; margin-top: 4px;">Vencedor: ${vencedor}</div>
                             </div>
-                            ${formatJSON(data)}
+                            <div style="background: #0a0a0a; border-left: 3px solid #DC2626; padding: 24px; margin-bottom: 24px; font-family: 'Inter', sans-serif; line-height: 1.7; color: #ddd; white-space: pre-line; font-size: 15px;">${safeMarkdown(copyFormatted)}</div>
                             <div class="flex gap-4 mt-8 pt-6 border-t border-[#222]">
                                 <button onclick="aprovarCampanha(event)" class="flex-1 bg-white text-black font-brick text-sm py-4 hover:bg-green-500 hover:text-white transition-colors">✓ APROVAR</button>
                                 <button onclick="openFeedbackModal(event)" class="flex-1 border-2 border-[#444] text-white font-brick text-sm py-4 hover:border-white hover:bg-white hover:text-black transition-colors">✎ SOLICITAR REVISÃO</button>
                             </div>
                         `;
                         
-                        document.getElementById('panel-title').textContent = 'HUMAN APPROVAL // ANÁLISE COMPLETA';
+                        document.getElementById('panel-title').textContent = 'HUMAN APPROVAL // COPY FINAL';
                         document.getElementById('agent-panel').classList.add('open');
                         return;
                     } catch (e) {
