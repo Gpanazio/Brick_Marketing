@@ -1068,7 +1068,10 @@ app.post('/api/run-autonomous', async (req, res) => {
         return res.status(400).json({ error: 'Briefing é obrigatório' });
     }
 
-    const jobId = Date.now().toString();
+    // Gerar jobId com título (mesmo formato do frontend)
+    const title = req.body.title || briefing.substring(0, 60).trim();
+    const safeName = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const jobId = `${Date.now()}_${safeName}`;
     startPipelineAsync(mode, jobId, briefing);
     
     res.json({ success: true, jobId, message: 'Pipeline iniciado em background' });
