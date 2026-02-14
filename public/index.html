@@ -2811,44 +2811,48 @@ PROCESSED.md ─── Briefing enriquecido
                 const rawContent = getBriefingContent(files);
                 if (rawContent) {
                     body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${rawContent}</div>`;
-
-                    if (n.title === 'DECISION' && file) {
-                        try {
-                            const viability = JSON.parse(file.content);
-                            const score = viability.viability_assessment?.score_final || 0;
-                            const decision = viability.recommendation?.decision || 'N/A';
-                            const reasoning = viability.recommendation?.reasoning || '';
-                            const nota = viability.nota_final || '';
-                            let statusColor = '#666';
-                            let statusLabel = decision;
-                            if (decision === 'GO') { statusColor = '#10b981'; statusLabel = '✓ GO'; }
-                            else if (decision === 'NO-GO') { statusColor = '#ef4444'; statusLabel = '✗ NO-GO'; }
-                            else if (decision === 'REVISIT') { statusColor = '#f59e0b'; statusLabel = '⚠ REVISIT'; }
-                            else if (decision === 'CONDITIONAL GO') { statusColor = '#3b82f6'; statusLabel = '⚡ CONDITIONAL GO'; }
-                            body.innerHTML = `<div class="p-8 bg-[#0a0a0a] border border-[#222]">
-                        <div class="text-center mb-8">
-                            <div class="text-6xl font-bold mb-4" style="color: ${statusColor}">${score}/100</div>
-                            <div class="text-2xl font-bold mb-2" style="color: ${statusColor}">${statusLabel}</div>
-                        </div>
-                        <div class="border-t border-[#222] pt-6">
-                            <h3 class="text-xl font-bold mb-4 text-[#fff]">REASONING</h3>
-                            <p class="text-[#ccc] leading-relaxed whitespace-pre-wrap">${reasoning}</p>
-                        </div>
-                        ${nota ? `<div class="border-t border-[#222] pt-6 mt-6"><h3 class="text-xl font-bold mb-4 text-[#fff]">NOTA FINAL</h3><p class="text-[#ccc] leading-relaxed whitespace-pre-wrap">${nota}</p></div>` : ''}
-                        <div class="border-t border-[#222] pt-6 mt-6 text-center">
-                            <button onclick="viewFullViability('${n.id}')" class="bg-[#DC2626] hover:bg-white hover:text-black text-white font-bold py-3 px-6 text-xs uppercase tracking-wider transition-all">
-                                VER ANÁLISE COMPLETA
-                            </button>
-                        </div>
-                    </div>`;
-                            document.getElementById('panel-title').textContent = 'VEREDITO FINAL';
-                            document.getElementById('agent-panel').classList.add('open');
-                            return;
-                        } catch (e) { console.error('Erro ao parsear VIABILITY:', e); }
-                    }
                     document.getElementById('panel-title').textContent = 'BRIEFING ORIGINAL';
                     document.getElementById('agent-panel').classList.add('open');
                     return;
+                }
+            }
+
+            // DECISION node: mostra score + veredito do VIABILITY
+            if (n.title === 'DECISION') {
+                const viabilityFile = files.find(f => {
+                    const patterns = fileMapping['VIABILITY'] || ['VIABILITY'];
+                    return matchFile(patterns, f.name);
+                });
+                if (viabilityFile) {
+                    try {
+                        const viability = JSON.parse(viabilityFile.content);
+                        const score = viability.viability_assessment?.score_final || 0;
+                        const decision = viability.recommendation?.decision || viability.viability_assessment?.status || 'N/A';
+                        const reasoning = viability.recommendation?.reasoning || viability.recommendation?.action || '';
+                        const nota = viability.nota_final || '';
+                        const nextSteps = viability.recommendation?.next_steps || [];
+                        let statusColor = '#666';
+                        let statusLabel = decision;
+                        if (decision === 'GO') { statusColor = '#10b981'; statusLabel = '✓ GO'; }
+                        else if (decision === 'NO-GO') { statusColor = '#ef4444'; statusLabel = '✗ NO-GO'; }
+                        else if (decision === 'REVISIT') { statusColor = '#f59e0b'; statusLabel = '⚠ REVISIT'; }
+                        else if (decision.includes('CONDITIONAL')) { statusColor = '#3b82f6'; statusLabel = '⚡ CONDITIONAL GO'; }
+                        body.innerHTML = `<div class="p-8 bg-[#0a0a0a] border border-[#222]">
+                            <div class="text-center mb-8">
+                                <div class="text-6xl font-bold mb-4" style="color: ${statusColor}">${score}/100</div>
+                                <div class="text-2xl font-bold mb-2" style="color: ${statusColor}">${statusLabel}</div>
+                            </div>
+                            <div class="border-t border-[#222] pt-6">
+                                <h3 class="text-xl font-bold mb-4 text-[#fff]">REASONING</h3>
+                                <p class="text-[#ccc] leading-relaxed whitespace-pre-wrap">${reasoning}</p>
+                            </div>
+                            ${nextSteps.length > 0 ? `<div class="border-t border-[#222] pt-6 mt-6"><h3 class="text-xl font-bold mb-4 text-[#fff]">NEXT STEPS</h3><ul class="text-[#ccc] list-disc pl-6">${nextSteps.map(s => `<li>${s}</li>`).join('')}</ul></div>` : ''}
+                            ${nota ? `<div class="border-t border-[#222] pt-6 mt-6"><h3 class="text-xl font-bold mb-4 text-[#fff]">NOTA FINAL</h3><p class="text-[#ccc] leading-relaxed whitespace-pre-wrap">${nota}</p></div>` : ''}
+                        </div>`;
+                        document.getElementById('panel-title').textContent = 'VEREDITO FINAL';
+                        document.getElementById('agent-panel').classList.add('open');
+                        return;
+                    } catch (e) { console.error('Erro ao parsear VIABILITY para DECISION:', e); }
                 }
             }
 
