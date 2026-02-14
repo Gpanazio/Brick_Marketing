@@ -1421,11 +1421,11 @@
             { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'GEMINI FLASH' },
             { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'GEMINI FLASH' },
             { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker', model: 'GEMINI FLASH' },
-            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Creative_Alpha', model: 'GPT-5.1' },
-            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Creative_Beta', model: 'GEMINI FLASH' },
-            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Creative_Gamma', model: 'CLAUDE SONNET' },
+            { id: 'n5a', x: -350, y: 1150, title: 'COPY_A', label: 'Vendedor', model: 'GPT-5.1' },
+            { id: 'n5b', x: 0, y: 1150, title: 'COPY_B', label: 'Analista', model: 'DEEPSEEK V3.2' },
+            { id: 'n5c', x: 350, y: 1150, title: 'COPY_C', label: 'Narrador', model: 'SONNET 4.5' },
             { id: 'n7', x: 0, y: 1350, title: 'COPY SENIOR', label: 'Final_Pen', model: 'GPT-5.1' },
-            { id: 'n8', x: 0, y: 1550, title: 'WALL', label: 'Final_Filter', model: 'CLAUDE OPUS' },
+            { id: 'n8', x: 0, y: 1550, title: 'WALL', label: 'Final_Filter', model: 'OPUS 4.6' },
             { id: 'n9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'n10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
@@ -1444,13 +1444,13 @@
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
             { id: 'p1', x: 0, y: 350, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'GEMINI FLASH' },
-            { id: 'p2a', x: -550, y: 750, title: 'IDEATION_GPT', label: 'Concept_A', model: 'GPT' },
-            { id: 'p2b', x: 0, y: 750, title: 'IDEATION_FLASH', label: 'Concept_B', model: 'GEMINI FLASH' },
-            { id: 'p2c', x: 550, y: 750, title: 'IDEATION_SONNET', label: 'Concept_C', model: 'CLAUDE SONNET' },
-            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI PRO' },
-            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'GEMINI PRO' },
+            { id: 'p2a', x: -550, y: 750, title: 'IDEATION_GPT', label: 'Ousado', model: 'GPT-5.1' },
+            { id: 'p2b', x: 0, y: 750, title: 'IDEATION_FLASH', label: 'Pragmático', model: 'GEMINI FLASH' },
+            { id: 'p2c', x: 550, y: 750, title: 'IDEATION_SONNET', label: 'Emocional', model: 'SONNET 4.5' },
+            { id: 'p3', x: 0, y: 950, title: 'CONCEPT_CRITIC', label: 'Concept_Judge', model: 'GEMINI 3 PRO' },
+            { id: 'p4', x: 0, y: 1150, title: 'EXECUTION_DESIGN', label: 'Visual_Director', model: 'OPUS 4.6' },
             { id: 'p5', x: 0, y: 1350, title: 'PROPOSAL', label: 'Script_Writer', model: 'GPT-5.1' },
-            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI PRO' },
+            { id: 'p6', x: 0, y: 1550, title: 'DIRECTOR', label: 'Execution_Judge', model: 'GEMINI 3 PRO' },
             { id: 'p9', x: 0, y: 1750, title: 'HUMAN', label: 'User_Control', model: 'APPROVAL', human: true },
             { id: 'p10', x: 0, y: 1950, title: 'OUTPUT', label: 'Final_Ready', model: 'READY' }
         ];
@@ -1470,10 +1470,10 @@
         const nodeDefIdeias = [
             { id: 'i0', x: 0, y: 150, title: 'RAW_IDEA', label: 'Ingestion', model: 'INPUT' },
             { id: 'i1', x: 0, y: 350, title: 'PAIN_CHECK', label: 'Validation', model: 'GEMINI FLASH' },
-            { id: 'i2', x: 0, y: 750, title: 'MARKET_SCAN', label: 'Research', model: 'GEMINI FLASH' },
-            { id: 'i3a', x: -250, y: 950, title: 'ANGEL_GEN', label: 'Angel', model: 'CLAUDE SONNET' },
-            { id: 'i3b', x: 250, y: 950, title: 'DEVIL_GEN', label: 'Devil', model: 'CLAUDE SONNET' },
-            { id: 'i4', x: 0, y: 1150, title: 'VIABILITY', label: 'Supreme_Judge', model: 'CLAUDE OPUS' },
+            { id: 'i2', x: 0, y: 750, title: 'MARKET_SCAN', label: 'Research', model: 'DEEPSEEK V3.2' },
+            { id: 'i3a', x: -250, y: 950, title: 'ANGEL_GEN', label: 'Angel', model: 'SONNET 4.5' },
+            { id: 'i3b', x: 250, y: 950, title: 'DEVIL_GEN', label: 'Devil', model: 'GROK 4.1' },
+            { id: 'i4', x: 0, y: 1150, title: 'VIABILITY', label: 'Supreme_Judge', model: 'OPUS 4.6' },
             { id: 'i5', x: 0, y: 1350, title: 'DECISION', label: 'User_Control', model: 'APPROVAL', human: true }
         ];
         // Ideias connections: Pain Check validates problem, Market Scan researches,
@@ -1492,10 +1492,10 @@
         const nodeDefOriginais = [
             { id: 'o0', x: 0, y: 150, title: 'PROJECT_INPUT', label: 'Ingestion', model: 'PDF / DOC' },
             { id: 'o1', x: 0, y: 350, title: 'TRIAGE', label: 'Classification', model: 'GEMINI FLASH' },
-            { id: 'o2', x: -300, y: 750, title: 'CREATIVE_DOCTOR', label: 'Story_Refiner', model: 'GPT-5.2' },
-            { id: 'o3', x: 300, y: 750, title: 'SALES_SHARK', label: 'Market_Validator', model: 'GPT-5.1' },
-            { id: 'o4a', x: -250, y: 950, title: 'ANGEL', label: 'Art_Defender', model: 'CLAUDE SONNET' },
-            { id: 'o4b', x: 250, y: 950, title: 'DEMON', label: 'Market_Critic', model: 'CLAUDE SONNET' },
+            { id: 'o2', x: -300, y: 750, title: 'CREATIVE_DOCTOR', label: 'Story_Refiner', model: 'OPUS 4.6' },
+            { id: 'o3', x: 300, y: 750, title: 'SALES_SHARK', label: 'Market_Validator', model: 'GROK 4.1' },
+            { id: 'o4a', x: -250, y: 950, title: 'ANGEL', label: 'Art_Defender', model: 'SONNET 4.5' },
+            { id: 'o4b', x: 250, y: 950, title: 'DEMON', label: 'Market_Critic', model: 'DEEPSEEK R1' },
             { id: 'o5', x: 0, y: 1150, title: 'DOCTOR_FINAL', label: 'Final_Verdict', model: 'GPT-5.2' }
         ];
         // Originais connections: Triage classifies input depth,
@@ -1586,21 +1586,21 @@
                 diagram.textContent = `RAW IDEA (input do usuário)
 │
 ▼
-01. PAIN CHECK (Flash) ── Valida problema/dor real do mercado
+01. PAIN CHECK (Gemini Flash) ── Valida problema/dor real do mercado
 │
 ▼
-02. MARKET SCAN (Flash) ─ Pesquisa concorrência, precedentes, viabilidade de mercado
+02. MARKET SCAN (DeepSeek V3.2) ─ Pesquisa concorrência, precedentes, viabilidade
 │
 ├──────────────┬──────────────┤
 ▼              ▼
 ┌────────────┐ ┌────────────┐
 │ ANGEL      │ │ DEVIL      │
-│ (Sonnet)   │ │ (Sonnet)   │
+│(Sonnet 4.5)│ │(Grok 4.1)  │
 │ Otimista   │ │ Crítico    │
 └────────────┘ └────────────┘
 ├──────────────┴──────────────┘
 ▼
-04. VIABILITY (Opus) ─── Score 0-100 (rubrica 4 critérios: problema, contexto, opções, execução)
+04. VIABILITY (Opus 4.6) ─── Score 0-100 (rubrica 4 critérios)
 │
 ▼
 05. DECISION (Human) ─── Go / No-Go
@@ -1619,24 +1619,24 @@
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">02. MARKET SCAN <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
+                        <div style="color:#fff;font-weight:700;">02. MARKET SCAN <span style="color:#22c55e;">(DeepSeek V3.2)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Pesquisa concorrentes, produtos similares, precedentes de mercado. Identifica barreiras técnicas, regulatórias e financeiras. Role: <code>MARKET_SCAN.md</code>
-                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                        <br><strong>Modelo:</strong> DeepSeek V3.2 — <code>deepseek/deepseek-v3.2</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">03. ANGEL + DEVIL <span style="color:#d97706;">(Claude Sonnet 4.5)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#fff;font-weight:700;">03. ANGEL + DEVIL <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">2 perspectivas opostas em paralelo:
-                        <br>• <span style="color:#22c55e;">ANGEL</span>: Visão otimista, caminhos de execução, oportunidades
-                        <br>• <span style="color:#ef4444;">DEVIL</span>: Visão crítica, red flags, riscos, por que NÃO funciona
-                        <br>Output: 2 arquivos Markdown. Roles: <code>ANGEL_GEN.md</code>, <code>DEVIL_GEN.md</code>
-                        <br><strong>Modelo:</strong> Claude Sonnet 4.5 — <code>anthropic/claude-sonnet-4-5</code></div>
+                        <br>• <span style="color:#22c55e;">ANGEL</span> <span style="color:#d97706;">(Sonnet 4.5)</span>: Visão otimista, caminhos de execução, oportunidades
+                        <br>• <span style="color:#ef4444;">DEVIL</span> <span style="color:#ef4444;">(Grok 4.1)</span>: Visão crítica, red flags, riscos, por que NÃO funciona
+                        <br>Output: 2 JSONs. Roles: <code>ANGEL_GEN.md</code>, <code>DEVIL_GEN.md</code>
+                        <br><strong>Modelos:</strong> Sonnet 4.5 + Grok 4.1 Fast</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">04. VIABILITY <span style="color:#a855f7;">(Claude Opus 4-6)</span></div>
+                        <div style="color:#fff;font-weight:700;">04. VIABILITY <span style="color:#a855f7;">(Opus 4.6)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Juiz imparcial. Avalia ideia com rubrica de 100 pontos (4 critérios: problema 30pts, contexto 25pts, opções 25pts, execução 20pts). Penalidades por riscos sistêmicos. Veredito: APROVAR (70+), REFINAR (40-69), REJEITAR (0-39). Role: <code>VIABILITY.md</code>
-                        <br><strong>Modelo:</strong> Claude Opus 4-6 — <code>anthropic/claude-opus-4-6</code></div>
+                        <br><strong>Modelo:</strong> Claude Opus 4.6 — fallback: GPT-5.2 Codex</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
@@ -1666,12 +1666,12 @@
 ├────────────────────────┐
 ▼                        ▼
 02. CREATIVE DOCTOR      03. SALES SHARK
-    (GPT-5.2)               (GPT-5.1)
+    (Opus 4.6)               (Grok 4.1)
     Story Refiner            Market Validator
 │                        │
 ├────────────────────────┤
 ▼                        ▼
-04a. ANGEL (Sonnet)      04b. DEMON (Sonnet)
+04a. ANGEL (Sonnet 4.5)  04b. DEMON (DeepSeek R1)
      Art Defender              Market Critic
 │                        │
 └────────┬───────────────┘
@@ -1685,17 +1685,17 @@
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">02. CREATIVE DOCTOR <span style="color:#3b82f6;">(GPT-5.2)</span> + 03. SALES SHARK <span style="color:#3b82f6;">(GPT-5.1)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#fff;font-weight:700;">02. CREATIVE DOCTOR <span style="color:#a855f7;">(Opus 4.6)</span> + 03. SALES SHARK <span style="color:#ef4444;">(Grok 4.1)</span> <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">2 análises paralelas:
-                        <br>• <span style="color:#22c55e;">CREATIVE DOCTOR</span>: Refina a história e analisa cada episódio.
-                        <br>• <span style="color:#ef4444;">SALES SHARK</span>: Valida mercado. Audita acesso (tem o entrevistado?), tese (recorte específico?), formato (definido?).</div>
+                        <br>• <span style="color:#22c55e;">CREATIVE DOCTOR</span> (Opus 4.6): Refina a história e analisa cada episódio.
+                        <br>• <span style="color:#ef4444;">SALES SHARK</span> (Grok 4.1 Fast): Valida mercado. Audita acesso, tese, formato.</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">04. ANGEL + DEMON <span style="color:#d97706;">(Claude Sonnet 4.5)</span> <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#fff;font-weight:700;">04. ANGEL + DEMON <span style="color:#888;">// Paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Debate interno antes do veredito:
-                        <br>• <span style="color:#22c55e;">ANGEL</span>: Defende a alma do projeto.
-                        <br>• <span style="color:#ef4444;">DEMON</span>: Ataca impiedosamente.</div>
+                        <br>• <span style="color:#22c55e;">ANGEL</span> (Sonnet 4.5): Defende a alma do projeto.
+                        <br>• <span style="color:#ef4444;">DEMON</span> (DeepSeek R1): Ataca impiedosamente com raciocínio profundo.</div>
                     </div>
 
                     <div style="margin-bottom:16px;">
@@ -1725,22 +1725,23 @@
 ├────────────────┬────────────────┤
 ▼                ▼                ▼
 02a. IDEATION    02b. IDEATION    02c. IDEATION
-(GPT - Ousado)   (Flash - Pragm)  (Sonnet - Emoc)
+(GPT-5.1)        (Gemini Flash)   (Sonnet 4.5)
+Ousado           Pragmático       Emocional
 ├────────────────┴────────────────┤
 ▼
-03. CONCEPT CRITIC (Pro) - Escolhe vencedor + fundamenta
+03. CONCEPT CRITIC (Gemini 3 Pro) - Escolhe vencedor + fundamenta
 │
 ▼
 ╔═══════════════════════════════════════╗
 ║  LOOP EXECUTION ↔ DIRECTOR (Max 3x)   ║
 ╠═══════════════════════════════════════╣
-║  04. EXECUTION DESIGN (Pro)           ║
+║  04. EXECUTION DESIGN (Opus 4.6)      ║
 ║      └─ Visual system + specs         ║
 ║  ▼                                    ║
-║  05. PROPOSAL (GPT)                   ║
+║  05. PROPOSAL (GPT-5.1)               ║
 ║      └─ Roteiro/copy final            ║
 ║  ▼                                    ║
-║  06. DIRECTOR (Pro)                   ║
+║  06. DIRECTOR (Gemini 3 Pro)           ║
 ║      └─ Veredito: APROVAR/REFINAR     ║
 ║                                       ║
 ║  Se REFINAR → volta pro step 04       ║
@@ -1766,44 +1767,38 @@ OUTPUT (Proposta completa)`;
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">02. CREATIVE IDEATION (GPT + Flash + Sonnet) <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#fff;font-weight:700;">02. CREATIVE IDEATION <span style="color:#888;">// 3 modelos em paralelo</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">3 modelos geram conceitos criativos simultaneamente:
                         <br>• <span style="color:#10a37f;">GPT-5.1</span>: Conceito A (Ousado, surpreendente)
-                        <br>• <span style="color:#4285f4;">Gemini 3 Flash</span>: Conceito B (Pragmático, executável)
-                        <br>• <span style="color:#d97706;">Claude Sonnet 4.5</span>: Conceito C (Emocional, storytelling)
-                        <br>Output: 3 arquivos Markdown. Role: <code>CREATIVE_IDEATION.md</code>
-                        <br><strong>Modelos:</strong> GPT-5.1 (<code>openai-codex/gpt-5.1</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
+                        <br>• <span style="color:#4285f4;">Gemini Flash</span>: Conceito B (Pragmático, executável)
+                        <br>• <span style="color:#d97706;">Sonnet 4.5</span>: Conceito C (Emocional, storytelling)
+                        <br>Role: <code>CREATIVE_IDEATION.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">03. CONCEPT CRITIC <span style="color:#00bcd4;">(Gemini 3 Pro)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia os 3 conceitos e escolhe o vencedor com fundamentação. Output: JSON. Role: <code>CONCEPT_CRITIC.md</code>
-                        <br><strong>Modelo:</strong> Gemini 3 Pro (Preview) — <code>google/gemini-3-pro-preview</code></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia os 3 conceitos e escolhe o vencedor com fundamentação. Recebe Brand Digest pra validar alinhamento com marca. Role: <code>CONCEPT_CRITIC.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;padding:12px;background:#0a0a0a;border-left:3px solid #f97316;">
                         <div style="color:#f97316;font-weight:700;margin-bottom:8px;">🔄 LOOP AUTOMÁTICO (Max 3 rodadas)</div>
                         
                         <div style="margin-bottom:12px;">
-                            <div style="color:#fff;font-weight:700;">04. EXECUTION DESIGN <span style="color:#00bcd4;">(Gemini 3 Pro)</span></div>
-                            <div style="color:#888;font-size:10px;margin-top:2px;">Transforma conceito em plano executável: visual system, copy framework, UX, specs técnicas. Se receber feedback do Director (loop), aplica correções e documenta no campo <code>director_feedback_response</code>. Output: JSON. Role: <code>EXECUTION_DESIGN.md</code>
-                            <br><strong>Modelo:</strong> Gemini 3 Pro (Preview) — <code>google/gemini-3-pro-preview</code></div>
+                            <div style="color:#fff;font-weight:700;">04. EXECUTION DESIGN <span style="color:#a855f7;">(Opus 4.6)</span></div>
+                            <div style="color:#888;font-size:10px;margin-top:2px;">Transforma conceito em plano executável: visual system, copy framework, UX, specs técnicas. Se receber feedback do Director (loop), aplica correções. Role: <code>EXECUTION_DESIGN.md</code></div>
                         </div>
 
                         <div style="margin-bottom:12px;">
                             <div style="color:#fff;font-weight:700;">05. PROPOSAL <span style="color:#10a37f;">(GPT-5.1)</span></div>
-                            <div style="color:#888;font-size:10px;margin-top:2px;">Roteiro/copy final baseado na execução. Output: Markdown. Role: <code>PROPOSAL_WRITER.md</code>
-                            <br><strong>Modelo:</strong> GPT-5.1 — <code>openai-codex/gpt-5.1</code></div>
+                            <div style="color:#888;font-size:10px;margin-top:2px;">Proposta comercial completa baseada na execução. Role: <code>PROPOSAL_WRITER.md</code></div>
                         </div>
 
                         <div style="margin-bottom:12px;">
                             <div style="color:#fff;font-weight:700;">06. DIRECTOR <span style="color:#00bcd4;">(Gemini 3 Pro)</span></div>
-                            <div style="color:#888;font-size:10px;margin-top:2px;">Avalia execução com olhar de diretor de fotografia (20 anos de set). Verifica clichês visuais, estrutura narrativa, frame icônico. Score 0-100 + veredito:
-                            <br>• <span style="color:#22c55e;">APROVAR</span> (85-100): Execução tem craft, segue pro HUMAN
-                            <br>• <span style="color:#f59e0b;">REFINAR</span> (60-84): Volta pro step 04 com feedback
-                            <br>• <span style="color:#ef4444;">REPENSAR</span> (0-59): Execução cafona, volta pro IDEATION
-                            <br>Output: JSON. Role: <code>PROJECT_DIRECTOR.md</code>
-                            <br><strong>Modelo:</strong> Gemini 3 Pro (Preview) — <code>google/gemini-3-pro-preview</code></div>
+                            <div style="color:#888;font-size:10px;margin-top:2px;">Avalia execução com olhar de diretor. Verifica clichês visuais, estrutura narrativa, frame icônico. Score 0-100 + veredito:
+                            <br>• <span style="color:#22c55e;">APROVAR</span> (85+): Segue pro HUMAN
+                            <br>• <span style="color:#f59e0b;">REFINAR</span> (&lt;85): Volta pro step 04 com feedback
+                            <br>Role: <code>DIRECTOR.md</code></div>
                         </div>
 
                         <div style="color:#f97316;font-size:10px;margin-top:8px;">
@@ -1841,15 +1836,15 @@ OUTPUT (Proposta completa)`;
 ▼              ▼              ▼
 ┌────────────┐ ┌────────────┐ ┌────────────┐
 │ COPY A     │ │ COPY B     │ │ COPY C     │
-│ GPT-5.1    │ │ FLASH      │ │ SONNET     │
-│ (Direto)   │ │ (Data)     │ │ (Narrativo)│
+│ GPT-5.1    │ │DeepSeek V3 │ │Sonnet 4.5  │
+│ (Vendedor) │ │ (Analista) │ │ (Narrador) │
 └────────────┘ └────────────┘ └────────────┘
 ├──────────────┴──────────────┘
 ▼
-06. COPY SENIOR (GPT 5.2) ─── Escolhe melhor, aplica ajustes, entrega copy_revisada
+06. COPY SENIOR (GPT-5.1) ─── Escolhe melhor, aplica ajustes, entrega copy_revisada
 │
 ▼
-07. WALL (Opus + Brand Guardian) ─── Score 0-100 (rubrica 5 critérios)
+07. WALL (Opus 4.6 + Brand Guardian) ─── Score 0-100 (rubrica 5 critérios)
 │
 ├─► (score < 80) → LOOP: volta pro COPY SENIOR com feedback do Wall
 │                   Copy Senior revisa → Wall reavalia (max 3 loops)
@@ -1867,45 +1862,42 @@ OUTPUT (Proposta completa)`;
                     <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:16px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">O QUE CADA NODE FAZ</h3>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">01. BRIEF VALIDATOR <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Valida se o briefing tem todas as informações necessárias: público, objetivo, canal, formato. Gera JSON com status PASS/FAIL e lista de campos faltantes. Role: <code>BRIEF_VALIDATOR.md</code>
-                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                        <div style="color:#fff;font-weight:700;">01. BRIEF VALIDATOR <span style="color:#4285f4;">(Gemini Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Valida se o briefing tem todas as informações necessárias: público, objetivo, canal, formato. JSON com status PASS/FAIL. Role: <code>BRIEF_VALIDATOR.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">02. AUDIENCE ANALYST <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia alinhamento do briefing com a persona oficial da Brick AI e o Brand Guide completo. Persona hardcoded no role file. Recebe BRAND_GUIDE.md inteiro. Role: <code>AUDIENCE_ANALYST.md</code>
-                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                        <div style="color:#fff;font-weight:700;">02. AUDIENCE ANALYST <span style="color:#4285f4;">(Gemini Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia alinhamento com persona e Brand Guide completo. Role: <code>AUDIENCE_ANALYST.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">03. TOPIC RESEARCHER <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Pesquisa dados de mercado, tendências e referências relevantes pro tema do briefing. Alimenta os copywriters com munição factual. Role: <code>TOPIC_RESEARCHER.md</code>
-                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                        <div style="color:#fff;font-weight:700;">03. TOPIC RESEARCHER <span style="color:#4285f4;">(Gemini Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Pesquisa dados, tendências e referências. Munição factual pros copywriters. Role: <code>TOPIC_RESEARCHER.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">04. CLAIMS CHECKER <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Filtro anti-hype. Valida se claims são verificáveis e sustentados por dados. Proíbe termos como "revolucionário", "disruptivo", "game-changer". Garante autoridade segura. Role: <code>CLAIMS_CHECKER.md</code>
-                        <br><strong>Modelo:</strong> Gemini 3 Flash (Preview) — <code>google/gemini-3-flash-preview</code></div>
+                        <div style="color:#fff;font-weight:700;">04. CLAIMS CHECKER <span style="color:#4285f4;">(Gemini Flash)</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Filtro anti-hype. Valida claims verificáveis, proíbe "revolucionário", "disruptivo". Role: <code>CLAIMS_CHECKER.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">05. COPYWRITERS x3 <span style="color:#10a37f;">(GPT)</span> <span style="color:#4285f4;">(Flash)</span> <span style="color:#d97706;">(Sonnet)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Três modelos escrevem em paralelo com estilos diferentes: A (direto/persuasivo), B (eficiente/data-driven), C (narrativo/emocional). Todos recebem BRAND_GUIDE.md completo e respeitam tom, terminologia e red flags. Role: <code>COPYWRITER.md</code>
-                        <br><strong>Modelos:</strong> GPT-5.1 (<code>openai-codex/gpt-5.1</code>), Gemini 3 Flash (<code>google/gemini-3-flash-preview</code>), Claude Sonnet 4.5 (<code>anthropic/claude-sonnet-4-5</code>)</div>
+                        <div style="color:#fff;font-weight:700;">05. COPYWRITERS x3 <span style="color:#888;">// Paralelo</span></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">3 modelos escrevem em paralelo:
+                        <br>• <span style="color:#10a37f;">GPT-5.1</span>: Copy A (Vendedor — direto/persuasivo)
+                        <br>• <span style="color:#22c55e;">DeepSeek V3.2</span>: Copy B (Analista — data-driven)
+                        <br>• <span style="color:#d97706;">Sonnet 4.5</span>: Copy C (Narrador — emocional)
+                        <br>Todos recebem BRAND_GUIDE.md. Role: <code>COPYWRITER.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">06. COPY SENIOR <span style="color:#10a37f;">(GPT-5.1)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Diretor de Criação Sênior. Avalia as 3 copies, escolhe a melhor (vencedor A/B/C), aplica TODOS os ajustes necessários diretamente no texto e entrega <code>copy_revisada</code> final. Não só sugere — executa. Role: <code>COPY_SENIOR.md</code>
-                        <br><strong>Modelo:</strong> GPT-5.1 — <code>openai-codex/gpt-5.1</code> (fallback: Claude Sonnet 4.5)</div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Avalia as 3 copies, escolhe a melhor, aplica ajustes e entrega <code>copy_revisada</code> final. Role: <code>COPY_SENIOR.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">07. WALL <span style="color:#9333ea;">(Claude Opus 4.6)</span> + Brand Guardian</div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Último portão. Score de 0-100 com rubrica de 5 critérios: Clareza da Oferta (25pts), Dor Real (20pts), Credibilidade (20pts), On-Brand (20pts, usando BRAND_GUARDIAN.md completo), CTA Específico (15pts). Score ≥80 aprova, &lt;80 rejeita e volta pro Copy Senior com feedback detalhado (max 3 loops). Role: <code>FILTRO_FINAL.md</code> + <code>BRAND_GUARDIAN.md</code>
-                        <br><strong>Modelo:</strong> Claude Opus 4.6 — <code>anthropic/claude-opus-4-6</code></div>
+                        <div style="color:#888;font-size:10px;margin-top:2px;">Último portão. Score 0-100 (5 critérios). Score ≥80 aprova, &lt;80 volta pro Copy Senior (max 3 loops). Roles: <code>FILTRO_FINAL.md</code> + <code>BRAND_GUARDIAN.md</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
