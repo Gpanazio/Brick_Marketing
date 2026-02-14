@@ -1,0 +1,33 @@
+{
+  "titulo_extraido": "Pitada de Brasil - Segunda Temporada",
+  "tipo_material": "tratamento",
+  "genero": "entretenimento",
+  "genero_detalhe": "Culinário / Lifestyle",
+  "profundidade": {
+    "nivel": 3,
+    "label": "desenvolvido",
+    "justificativa": "O material possui um histórico sólido (T1), estrutura detalhada de episódios para a nova temporada e tom definido, porém carece de refinamento comercial e narrativo (escada de conflito)."
+  },
+  "elementos_chave": {
+    "premissa": "Uma exploração da audácia gastronômica brasileira que subverte clássicos mundiais através da fartura e da criatividade sem limites.",
+    "universo": "Culinária de rua brasileira, estabelecimentos de 'food porn' viral e o imaginário da reinvenção popular.",
+    "personagens_principais": [
+      "Vendedores de rua e donos de estabelecimentos gastronômicos",
+      "Criadores de receitas 'impossíveis'"
+    ],
+    "conflito_central": "A tensão entre a regra gastronômica clássica e a anarquia criativa do paladar brasileiro.",
+    "formato_proposto": "11 episódios de 10 minutos (10 regulares + 1 especial)"
+  },
+  "lacunas_identificadas": [
+    "Definição de apresentador/host",
+    "Cotas de patrocínio/Merchandising",
+    "Refinamento do arco narrativo de episódio (conflito)"
+  ],
+  "alertas": [
+    "Risco de saturação: o formato pode parecer um compilado de vídeos de redes sociais sem uma direção forte.",
+    "Dependência de viralização: o sucesso depende da plasticidade dos pratos."
+  ],
+  "resumo_executivo": "Tratamento de segunda temporada para série culinária de sucesso na Record TV. O projeto foca em 'temas de excesso' (bordas, barcas, torres). Material altamente vendável para TV aberta e canais de lifestyle, pendente apenas de polimento comercial e narrativo.",
+  "status": "CLASSIFIED",
+  "timestamp": "2026-02-12T13:17:00Z"
+}

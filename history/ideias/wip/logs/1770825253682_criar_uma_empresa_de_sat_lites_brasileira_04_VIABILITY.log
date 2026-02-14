@@ -1,0 +1,28 @@
+**Avaliação VIABILITY concluída e salva.**
+
+**Resultado: REVISIT (50/100)**
+
+---
+
+### Veredicto
+
+A ideia de **"criar uma empresa de satélites brasileira"** esbarra em **2 dealbreakers absolutos**:
+
+1. **ROI Negativo** — Hardware espacial no Brasil tem break-even >10 anos, incompatível com custo de capital local
+2. **Ausência de Lançador Orbital** — Dependência total da SpaceX (concorrente direto) mata a tese de soberania
+
+**Decisão:**
+- **NO-GO** se insistir em fabricar e lançar satélites próprios
+- **CONDITIONAL GO** apenas se pivotar radicalmente para **Asset-Light** (Inteligência Geoespacial processando dados de constelações existentes)
+
+O pivot anula a ideia original — deixa de ser "empresa de satélites" e vira "empresa de dados espaciais". Mas é a única rota viável economicamente.
+
+**Score breakdown:**
+- Problema: 30/30 (crítico)
+- Contexto: 25/25 (exemplar)
+- Opções: 15/25 (viável mas mata premissa)
+- Execução: 10/20 (difícil)
+- Ajuste de Risco: -30/30 (dealbreakers fatais)
+
+JSON completo salvo em:
+`/Users/gabrielpanazio/projects/Brick_Marketing/history/ideias/wip/1770825253682_criar_uma_empresa_de_sat_lites_brasileira_VIABILITY.json`

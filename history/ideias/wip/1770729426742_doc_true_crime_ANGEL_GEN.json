@@ -1,0 +1,40 @@
+{
+  "idea_name": "Documentário True Crime: Caso Hurb",
+  "angles": [
+    {
+      "name": "O Unicórnio de Barro (Character Study)",
+      "action": "Centrar a narrativa na psique e no comportamento errático de João Ricardo Mendes, culminando no 'plot twist' bizarro da prisão por furto de obras de arte em 2025.",
+      "bet": "O público é fascinado por 'Toxic Founders' (estilo WeCrashed). O elemento criminal bizarro (furto de arte) é o diferencial que vende para plataformas globais de streaming.",
+      "risk": "Lawfare agressivo do fundador; necessidade de blindagem jurídica extrema e seguro de Errors & Omissions (E&O) elevado.",
+      "upside": "Altíssimo potencial de viralização e venda para Netflix/HBO/Globoplay; narrativa completa de ascensão e queda cinematográfica.",
+      "reversible": true,
+      "strength_score": 92,
+      "rationale": "A prisão recente transforma o caso de colapso financeiro em um True Crime autêntico com apelo de massa imediato."
+    },
+    {
+      "name": "Férias Interrompidas (Victim-Centric)",
+      "action": "Narrar a história através dos olhos das vítimas (famílias e donos de hotéis lesados), usando o fundador apenas através de material de arquivo público de seus surtos.",
+      "bet": "Focar em fatos narrados por terceiros e material de arquivo reduz drasticamente a exposição a processos de calúnia e difamação direta.",
+      "risk": "Risco de ser percebido como 'jornalismo de denúncia' padrão e perder o apelo de entretenimento 'premium' necessário para longa duração.",
+      "upside": "Maior segurança jurídica; forte engajamento social pelo sentimento de justiça e identificação das vítimas.",
+      "reversible": true,
+      "strength_score": 85,
+      "rationale": "É o caminho mais viável para garantir que o documentário não seja bloqueado por liminares antes da estreia."
+    },
+    {
+      "name": "ApetreXo: O DNA do Caos (Podcast Investigativo)",
+      "action": "Lançar inicialmente como um podcast investigativo de alta fidelidade detalhando o histórico do fundador desde 2006.",
+      "bet": "O baixo custo de entrada permite validar a audiência e coletar depoimentos de 'whistleblowers' que têm medo de aparecer em câmera.",
+      "risk": "Menor alcance inicial que vídeo; dificuldade em monetizar sem uma parceria de distribuição de áudio de peso.",
+      "upside": "Agilidade para acompanhar desdobramentos jurídicos em tempo real e construção de base de fãs para venda futura da série de TV.",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Funciona como uma sonda de baixo risco para mapear a reação jurídica do alvo antes de investir milhões em vídeo."
+    }
+  ],
+  "recommended": "O Unicórnio de Barro (Character Study)",
+  "reasoning": "A prisão do fundador por furto de obras de arte em abril de 2025 é o elemento de drama bizarro que separa o Hurb de uma quebra corporativa comum. É o 'hook' comercial definitivo para venda internacional. Diferente de casos como Americanas ou 123Milhas, este possui um antagonista central cujas ações públicas são visualmente magnéticas para o True Crime.",
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-10T14:18:00Z"
+}

@@ -1,12 +1,12 @@
 {
   "titulo_projeto": "Pitada de Brasil - Segunda Temporada",
   "veredito_geral": {
-    "score_final": 64,
+    "score_final": 76,
     "acao": "REFINAR",
-    "resumo_executivo": "O projeto tem base real de produção e demanda concreta, porque a T1 já foi exibida e a Record pediu continuidade. O problema principal é de formato e identidade: sem host e sem mecânica fixa, vira compilado substituível de food porn. A solução é transformar o pacote em programa com assinatura (host + Termômetro do Exagero + Final Boss) e reordenar a temporada por escalada dramática. Com esse ajuste, mantém força na TV aberta e ganha chance de segunda janela comercial.",
+    "resumo_executivo": "Pitada de Brasil volta na T2 trocando o recorte por países por um guarda-chuva mais elástico: as mutações e exageros que o Brasil faz com qualquer comida. O projeto é altamente televisivo e encaixa no Domingo Espetacular, mas hoje ainda corre risco de parecer um compilado de internet: sem host, sem mecânica fixa e com pouca tensão interna por episódio. A solução é transformar o quadro em um show com assinatura (host + régua fixa + Final Boss + micro-teste), criando identidade, ritmo e defesa comercial sem encarecer a produção.",
     "problema_diferente_demais": {
       "aplica": true,
-      "diagnostico": "A ideia é elogiada pela criatividade do absurdo, mas compradores e marcas hesitam porque não enxergam produto aspiracional nem IP defensável. Sem moldura editorial premium, parece só 'bizarrice compartilhável'."
+      "diagnostico": "Fora do ambiente do Domingo Espetacular, compradores podem elogiar o apelo visual, mas não fechar por três motivos: (1) compete diretamente com Reels/TikTok, (2) falta um personagem/host que torne a IP insubstituível, e (3) parte do humor pode ser percebida como pouco aspiracional para marcas premium. O antídoto é vender como formato (mecânica, bordões, quadro fixo) e calibrar a linguagem para celebrar criatividade popular sem cair no rótulo de podrao."
     }
   },
   "episodios": [
@@ -14,180 +14,180 @@
       "numero": 1,
       "titulo": "Espetinho Brasileiro",
       "veredito": "OK",
-      "funciona": "Tema popular e imediatamente reconhecível; mistura doce/salgado já gera surpresa visual; ótimo para abrir a identidade de rua da temporada.",
-      "melhorar": "Precisa deixar clara a tese da T2 logo no início; trocar o 3º item por um clímax mais memorável; incluir um personagem-vendedor com mini-história para criar afeto.",
-      "sugestao_doctor": "Abrir com cold open do Final Boss e só revelar completo no fim com nota do Termômetro do Exagero.",
-      "ordem_na_temporada": "Ep 1, porque é porta de entrada popular e didática para o novo guarda-chuva de exagero brasileiro."
+      "funciona": "Tema popular e imediato (rua/BR) que conversa com a família e com o humor do domingo. Visual forte pela variedade no palito e pela montagem rápida. Ótimo para reações espontâneas de quem prepara e de quem prova.",
+      "melhorar": "Como abertura, precisa declarar a nova tese da temporada (mutações/exagero) e não só listar variações. O terceiro item pode virar repetição de doce no palito sem escalada real. Falta um Final Boss claramente mais absurdo para justificar clímax.",
+      "sugestao_doctor": "Abrir e fechar com o mesmo prato (Final Boss): teaser de 15s no começo e entrega completa no fim, com nota na régua e replay do momento mais visual.",
+      "ordem_na_temporada": "Deveria ser ep 2: é forte e popular, mas funciona melhor depois que o ep 1 já tiver apresentado a mecânica fixa do programa."
     },
     {
       "numero": 2,
       "titulo": "Só um Pedacinho",
       "veredito": "FORTE",
-      "funciona": "Escala visual é imediata; conversa com humor da fartura brasileira; rende boa dinâmica de captação e reação de público.",
-      "melhorar": "Evitar repetição do beat 'é grande'; inserir mini-tensão real no item de recorde; reforçar voz humana de quem vende e por que funciona.",
-      "sugestao_doctor": "Implementar o quadro fixo 'Medida Brasil' em todos os blocos do episódio para criar progressão objetiva.",
-      "ordem_na_temporada": "Ep 2, porque acelera a curva de exagero logo após a abertura e aumenta retenção cedo."
+      "funciona": "Gancho universal (fartura/tamanho) com punchline instantânea. Escala é mensurável e televisiva (mão, régua, balança). Permite tensão simples com desafio/tempo e participação de pessoas.",
+      "melhorar": "Sem mecânica, vira três vezes o mesmo beat (é grande). Recordes podem soar como informação solta sem risco/cronômetro. Precisa de um rosto recorrente (host) para organizar escalada.",
+      "sugestao_doctor": "Implementar o quadro fixo Medida Brasil (peso/altura/quantas mãos) e um micro-desafio de 2 minutos no item 3 para gerar tensão e payoff.",
+      "ordem_na_temporada": "Deveria ser ep 1: é o melhor manifesto do guarda-chuva exagero e instala a régua de escalada da temporada."
     },
     {
       "numero": 3,
       "titulo": "Embarcações de Açaí",
       "veredito": "FORTE",
-      "funciona": "Tem contraste cultural real (salgado x sobremesa); forte potencial de imagem e textura; oferece narrativa além do choque visual.",
-      "melhorar": "Organizar melhor para não confundir tradição com mutação; amarrar o pastel ao eixo do episódio; calibrar linguagem para evitar estereótipo regional.",
-      "sugestao_doctor": "Estruturar como 'duas origens + uma mutação' para garantir clareza dramática.",
-      "ordem_na_temporada": "Ep 4, porque funciona melhor depois de o público entender a mecânica da série e aceitar contraste cultural."
+      "funciona": "Contraste real (açaí salgado vs sobremesa) cria história, não só imagem. Visual rico (cor, textura, toppings) e alto potencial de viral. Amplia a brasilidade pela regionalidade.",
+      "melhorar": "Pode ficar confuso se misturar tradição e food porn sem trilho narrativo. O pastel parece desconectado se não for tratado como evolução lógica. Precisa de cuidado de tom para não caricaturar Norte vs Sudeste.",
+      "sugestao_doctor": "Estruturar em 3 atos na tela: Raiz (salgado) -> Virou doce (barcas) -> Mutação final (pastel), com uma pergunta-guia do host no fim.",
+      "ordem_na_temporada": "Deveria ser ep 4: depois de dois episódios bem pop, ele amplia o mapa do Brasil e traz variedade de tom."
     },
     {
       "numero": 4,
       "titulo": "Borda da Pizza",
       "veredito": "FORTE",
-      "funciona": "Conceito específico e universal; escalada natural entre variações; visual de corte/puxada excelente para TV e redes.",
-      "melhorar": "Diferenciar melhor contexto de cada item para não repetir linguagem visual; justificar o item intermediário com mais força; criar regra lúdica que guie o episódio.",
-      "sugestao_doctor": "Criar o quadro recorrente 'Tribunal da Borda' com sentença final do host.",
-      "ordem_na_temporada": "Ep 3, porque é tema de alto reconhecimento e consolida a assinatura divertida da T2."
+      "funciona": "Tema específico e inteligível que já nasce com problema e solução. Escalada natural (do recheio ao híbrido absurdo) e imagens ótimas de corte/puxa. Muito bom para virar quadro com regra e sentença.",
+      "melhorar": "Risco de repetição visual se os três itens forem filmados do mesmo jeito. O item borda pãozinho pode parecer menos impactante sem uma justificativa/punchline. Precisa de regra clara para criar expectativa.",
+      "sugestao_doctor": "Criar o quadro Tribunal da Borda (crime: jogar borda fora) e encerrar cada item com uma sentença divertida do host.",
+      "ordem_na_temporada": "Deveria ser ep 3: consolida a mecânica (problema/solução) e é muito fácil de vender em chamada."
     },
     {
       "numero": 5,
       "titulo": "Hambúrguer",
-      "veredito": "FRACO",
-      "funciona": "Apelo massivo e visual fácil; bastidor de chapa e montagem rende ritmo; itemização permite recortes curtos fortes.",
-      "melhorar": "Tema muito saturado nas redes; risco alto de parecer conteúdo genérico; precisa de tese diferenciadora e história comercial por trás das escolhas.",
-      "sugestao_doctor": "Reformular o episódio para foco em um único operador/personagem e usar cada bloco como prova da estratégia de venda dele.",
-      "ordem_na_temporada": "Ep 8, porque no meio-final da temporada ele precisa entrar já com linguagem autoral consolidada para não parecer 'mais do mesmo'."
+      "veredito": "OK",
+      "funciona": "Apelo visual alto e linguagem conhecida do público (camadas, queijo escorrendo). Bastidores de chapa/montagem rendem ritmo. Tema com alta chance de recorte para redes.",
+      "melhorar": "Saturação: sem diferencial, vira commodity do Instagram. A piscina de cheddar pode alongar sem payoff narrativo. Precisa de tese por item (por que isso existe) para não ser só excesso pelo excesso.",
+      "sugestao_doctor": "Amarrar cada item a um motivo simples dito pelo dono (1 frase) e transformar isso em GC de assinatura (marmita = praticidade, piscina = foto, híbrido = churrasco brasileiro).",
+      "ordem_na_temporada": "Deveria ser ep 7: entra como pico de energia depois que a assinatura do formato já estiver clara."
     },
     {
       "numero": 6,
       "titulo": "Strogonoff",
-      "veredito": "OK",
-      "funciona": "Conexão afetiva nacional forte; contraste entre receita clássica e versão brasileira funciona; mutação para sanduíche cria gancho de curiosidade.",
-      "melhorar": "Risco de baixo impacto visual se os blocos parecerem iguais; evitar tom de julgamento sobre 'certo/errado'; dar função dramática ao item de porção exagerada.",
-      "sugestao_doctor": "Usar 'Mapa de Mutações' em GC para organizar o arco do prato do clássico ao final boss.",
-      "ordem_na_temporada": "Ep 6, porque funciona como respiro afetivo entre episódios mais explosivos visualmente."
+      "veredito": "FRACO",
+      "funciona": "Identificação afetiva altíssima (comida de casa) e humor leve garantido. Ideia de Brasilizar um prato conversa com a marca. Mutação para sanduíche pode render boas imagens.",
+      "melhorar": "Impacto visual pode ser baixo (variações parecidas de creme), derrubando ritmo em 8 minutos. Pode virar debate de gosto (certo/errado do ketchup) e isso foge do tom zero julgamento. O item torre precisa ter função dramática, não só tamanho.",
+      "sugestao_doctor": "Trocar a apresentação para um Mapa de Mutações na tela (Original -> Brasilizou -> Mutação final) para garantir escalada e evitar moralismo.",
+      "ordem_na_temporada": "Deveria ser ep 5: funciona melhor no meio como pausa afetiva, desde que venha após episódios mais visuais."
     },
     {
       "numero": 7,
       "titulo": "Bolo Vulcão e Tsunami",
       "veredito": "FORTE",
-      "funciona": "É altamente televisivo e teaser-friendly; tem clímax físico claro (queda/erupção); ótimo para assinatura visual da temporada.",
-      "melhorar": "Evitar canibalização entre vulcão e tsunami; manter a brasilidade irreverente para não virar só confeitaria bonita; conectar o 3º item ao eixo de exagero.",
-      "sugestao_doctor": "Fechar o episódio com replay obrigatório do clímax para virar linguagem de marca da série.",
-      "ordem_na_temporada": "Ep 9, porque é material de reta final com energia de evento."
+      "funciona": "Payoff visual perfeito para TV e chamadas (explosão/desabamento de calda). Já tem clímax natural e mini-tensão. Variedade de cor/textura e reações fortes.",
+      "melhorar": "Vulcão e tsunami podem repetir o mesmo beat se a direção não diferenciar linguagem e ritmo. Confeitaria pode ficar bonita demais e perder irreverência Brasil sem contexto/personagem. O terceiro item precisa ser apresentado como exagero, não só artesanato.",
+      "sugestao_doctor": "Definir três linguagens de direção: vulcão em corte rápido, tsunami em slow com reação, e bolo vestido com bastidor + reveal; fechar com replay curto do clímax como assinatura.",
+      "ordem_na_temporada": "Deveria ser ep 9: deixa um pico de espetáculo perto do fim para manter sensação de escalada."
     },
     {
       "numero": 8,
       "titulo": "Croitudo",
       "veredito": "FRACO",
-      "funciona": "Tem humor no contraste 'chique x popular'; nomes ajudam memorização; folhado e recheio rendem boas imagens de corte.",
-      "melhorar": "Escopo estreito para sustentar episódio inteiro; risco de parecer trend passageira; pode perder identidade brasileira se cair em estética gourmet genérica.",
-      "sugestao_doctor": "Transformar em bloco dentro de outro episódio (Mutantes da Padaria) em vez de episódio solo no formato atual.",
-      "ordem_na_temporada": "Deveria migrar para Ep 5 como quadro interno, porque isolado enfraquece o ritmo da temporada."
+      "funciona": "A sacada de abrasileirar o chique tem humor e nomes com boa memética. O folhado e os recheios rendem imagens bonitas de corte e puxada.",
+      "melhorar": "Tema pequeno e facilmente replicável na internet; risco de virar padaria gourmet genérica sem cara de Brasil. Dois itens são variações de pão com recheio e o terceiro soa trend, enfraquecendo a escalada. Falta situação: por que isso virou febre e qual é o limite?",
+      "sugestao_doctor": "Reformular para depender de um personagem/negócio forte: acompanhar uma padaria popular criando a mutação do dia e terminar com clientes votando no item mais absurdo (placar na tela).",
+      "ordem_na_temporada": "Deveria ser ep 10 (ou substituído): do jeito atual, não sustenta reta final; se ficar, precisa virar episódio de personagem e votação para justificar."
     },
     {
       "numero": 9,
       "titulo": "Tapioca Nada Fit",
       "veredito": "FORTE",
-      "funciona": "Título forte e popular; raiz brasileira robusta; ótima mecânica de clímax com mutação final (tapidog).",
-      "melhorar": "Adicionar respeito explícito à origem tradicional; diferenciar melhor 'gigante' de '40 recheios'; evitar redundância de excesso pelo excesso.",
-      "sugestao_doctor": "Inserir abertura curta de contexto da origem e depois escalada em três funções: dividir, chocar e finalizar.",
-      "ordem_na_temporada": "Ep 7, porque mantém curva alta e reforça identidade nacional antes da reta final."
+      "funciona": "Título é gancho pronto e conversa com a audiência (quebra do fit). Tema com raiz brasileira ajuda a temporada a não parecer só importado. Montagem e variedade de recheios dão ritmo e espetáculo.",
+      "melhorar": "Precisa cuidado para não soar desrespeitoso com a tradição indígena (contexto e tom). Itens 1 e 2 são próximos e podem repetir beat sem uma diferença de proposta. Tapidog deve ser tratado como mutação final com clímax.",
+      "sugestao_doctor": "Inserir um ponto de respeito de 20s no início (origem em 1 frase + imagem) e organizar a escalada como para dividir -> para chocar -> para rir (tapidog como Final Boss).",
+      "ordem_na_temporada": "Deveria ser ep 6: fecha a primeira metade com um tema muito brasileiro e prepara terreno para os episódios mais food porn do fim."
     },
     {
       "numero": 10,
       "titulo": "Pão de Queijo",
       "veredito": "FORTE",
-      "funciona": "Alto apelo transversal; mutações têm cara de Brasil; excelente potencial de conexão afetiva e clipes visuais.",
-      "melhorar": "Garantir novidade real para não parecer variação de padaria; diferenciar os dois blocos de recheio pesado; segurar o item mais inusitado para payoff final.",
-      "sugestao_doctor": "Reservar o 'churros de pão de queijo' exclusivamente para o final boss com tease no começo.",
-      "ordem_na_temporada": "Ep 10, porque funciona como pré-final de temporada com forte identificação popular."
+      "funciona": "Clássico nacional com apelo transversal e afetivo. Mutações propostas têm cara de Brasil e geram imagens ótimas (puxa-queijo, recheio, formato). Chama audiência por identificação.",
+      "melhorar": "Por ser muito conhecido, precisa proteger o fator novidade para não virar só mais uma padaria. Parmegiana e hambúrguer podem parecer a mesma lógica de recheio pesado se filmados iguais. O item mais inesperado deve ser clímax.",
+      "sugestao_doctor": "Guardar o churros de pão de queijo como Final Boss com suspense (flash no teaser, reveal no fim) e amarrar com 1 fala afetiva curta de cliente/dono.",
+      "ordem_na_temporada": "Deveria ser ep 8: pico de identificação antes do espetáculo do bolo e do especial."
     },
     {
       "numero": 11,
       "titulo": "Especial: Pitada de Natal",
       "veredito": "FORTE",
-      "funciona": "Tem cara de evento sazonal; assunto de alta conversa nacional; combina humor, tradição e potencial de repercussão de fim de ano.",
-      "melhorar": "Evitar formato de lista solta; criar mini-arco de ceia tradicional vs reinvenção; simplificar logística de gravação para janela corrida de dezembro.",
-      "sugestao_doctor": "Estruturar o especial como 'Ceia do Exagero' com fechamento de assinatura do host.",
-      "ordem_na_temporada": "Final de temporada, porque entrega apoteose temática e melhor gancho comercial sazonal."
+      "funciona": "Sazonalidade dá cara de evento e melhora vendabilidade no Domingo Espetacular. Panetone de churrasco é manchete instantânea; rabanada entrega calor e textura; panetone de açaí traz mutação brasileira. Fecha a temporada com apoteose e clima familiar.",
+      "melhorar": "Sem arco natalino, vira só lista de sabores. Panetone de açaí pode soar aleatório se não conectar à tese da temporada. Precisa de fechamento emocional simples e logística enxuta por ser dezembro.",
+      "sugestao_doctor": "Transformar o especial em Ceia do Exagero: cada item entra como convidado inesperado e o host fecha montando uma mini-ceia com brinde/assinatura.",
+      "ordem_na_temporada": "Especial final (ep 11): mantém como encerramento e vitrine comercial de fim de ano."
     }
   ],
   "ranking_episodios": {
     "top3": [
       "Especial: Pitada de Natal",
       "Bolo Vulcão e Tsunami",
-      "Pão de Queijo"
+      "Só um Pedacinho"
     ],
     "bottom3": [
       "Croitudo",
-      "Hambúrguer",
-      "Strogonoff"
+      "Strogonoff",
+      "Espetinho Brasileiro"
     ],
     "cortar_ou_reformular": [
       "Croitudo",
-      "Hambúrguer",
       "Strogonoff"
     ]
   },
   "formato_final": {
-    "duracao_recomendada": "8-10 minutos para exibição no Domingo Espetacular + versão compilada de 22-24 minutos para segunda janela",
-    "estrutura_episodio": "Cold open com Final Boss; tese do episódio em 1 frase; bloco 1 (raiz/contexto humano); bloco 2 (escalada com contraste); bloco 3 (final boss com reação); fechamento com Termômetro do Exagero, bordão e teaser do próximo.",
-    "host": "Sim. Perfil: comunicador(a) popular com humor quente e repertório gastronômico de rua, capaz de ancorar narrativa e gerar fandom sem elitizar o tema.",
-    "elemento_diferenciador": "Assinatura editorial fixa (Host + Termômetro do Exagero + Final Boss) combinada com mini-história de quem vende; isso transforma compilado em programa com IP reconhecível."
+    "duracao_recomendada": "8-10 minutos (com recortes de 45-90s por item para redes do Domingo Espetacular)",
+    "estrutura_episodio": "Cold open (15-20s) com o Final Boss + promessa do tema; tese em 1 frase; Item 1 (raiz) com personagem; Item 2 (subida) com gag e medição; Item 3 = Final Boss com reveal e replay; fechamento com bordão + nota na régua + gancho do próximo.",
+    "host": "Sim. Perfil ideal: repórter/apresentador carismático e popular (energia de revista dominical), capaz de fazer humor sem deboche e conduzir entrevistas rápidas com donos e clientes. Pode ser majoritariamente off com aparições pontuais para assinatura.",
+    "elemento_diferenciador": "O programa não é a comida bizarra (isso existe no Reels), é a mecânica proprietária: régua fixa + sentença/voto + Final Boss + micro-teste com gente real. Isso cria expectativa, bordões e uma IP reconhecível no ar."
   },
   "plano_de_acao": [
     {
       "prioridade": 1,
-      "acao": "Definir host e gravar piloto completo de 1 episódio com a nova mecânica (Termômetro + Final Boss + fechamento)",
-      "por_que": "Sem rosto e sem assinatura, o projeto permanece commodity substituível.",
-      "responsavel": "direção"
-    },
-    {
-      "prioridade": 2,
-      "acao": "Reestruturar a bíblia da temporada por curva de exagero e reordenar episódios conforme progressão dramática",
-      "por_que": "Aumenta retenção, reduz sensação de repetição e melhora percepção de série, não quadro solto.",
+      "acao": "Definir host (ou dupla de vozes) e criar a mecânica fixa de temporada (régua + Final Boss + quadro de sentença/voto).",
+      "por_que": "Sem isso o projeto vira commodity e substituível; com isso ganha assinatura, ritmo e defesa de IP dentro do Domingo Espetacular.",
       "responsavel": "todos"
     },
     {
+      "prioridade": 2,
+      "acao": "Padronizar o roteiro para garantir escalada e clímax em todo episódio (3 atos claros + payoff visual + replay curto).",
+      "por_que": "Resolve o problema principal (sensação de compilado) e aumenta retenção em TV linear.",
+      "responsavel": "direção"
+    },
+    {
       "prioridade": 3,
-      "acao": "Reformular os 3 episódios fracos (Croitudo, Hambúrguer, Strogonoff) com foco em personagem e tese específica",
-      "por_que": "Esses capítulos hoje derrubam consistência e valor de pacote da temporada.",
+      "acao": "Reformular os episódios fracos (Croitudo e Strogonoff) para terem personagem forte, diferencial visual e mutação final realmente surpreendente.",
+      "por_que": "Evita queda de energia na reta final e protege a percepção de qualidade da temporada.",
       "responsavel": "produção"
     },
     {
       "prioridade": 4,
-      "acao": "Montar pacote comercial com duas janelas (TV + compilado) e proposta de cotas brand-safe",
-      "por_que": "Diminui dependência de filler da grade e melhora margem de negociação para a produtora.",
+      "acao": "Desenhar pacote comercial simples (cotas/merch) alinhado a brand safety e evitar linguagem de deboche nas peças.",
+      "por_que": "Aumenta viabilidade financeira e reduz risco de rejeição por marcas premium.",
       "responsavel": "comercial"
     },
     {
       "prioridade": 5,
-      "acao": "Negociar com a Record cláusulas mínimas de IP e exploração digital dos recortes",
-      "por_que": "Sem proteção e sem ativo digital, a Brick captura pouco valor mesmo com boa audiência.",
-      "responsavel": "comercial"
+      "acao": "Planejar captação com diversidade de locações e garantir 1 momento de interação humana por item (cliente, fila, família, desafio rápido).",
+      "por_que": "Aumenta conexão emocional e diferencia visualmente os episódios sem subir custo de forma relevante.",
+      "responsavel": "produção"
     }
   ],
   "rubrica": {
     "acesso_viabilidade": {
-      "score": 24,
-      "justificativa": "Há acesso comprovado ao comprador e histórico de entrega na mesma faixa."
+      "score": 25,
+      "justificativa": "Acesso a estabelecimentos é factível e barato (rua/padarias/lanchonetes), e o formato curto favorece logística. Principal dependência é encontrar Final Boss de verdade e liberar filmagem em lugares de alto fluxo."
     },
     "narrativa_diferencial": {
       "score": 16,
-      "justificativa": "Premissa forte e brasileira, mas ainda com repetição estrutural e falta de âncora humana."
+      "justificativa": "A premissa é forte, mas o diferencial narrativo depende da implementação de host e mecânica. Sem isso, a série vira lista; com isso, vira formato reconhecível e renovável por temporadas."
     },
     "mercado_vendabilidade": {
-      "score": 13,
-      "justificativa": "Boa chance de renovação local, porém baixa robustez para expandir sem reformatar duração e posicionamento."
+      "score": 21,
+      "justificativa": "Para o Domingo Espetacular, a vendabilidade é alta (visual + humor + serviço). Para outros compradores, precisa de embalagem de formato e de cuidados de brand safety para não ser visto como descartável."
     },
     "execucao_risco": {
-      "score": 11,
-      "justificativa": "Riscos relevantes (commodity, patrocínio, dependência de um comprador), mas mitigáveis com ajustes editoriais e comerciais claros."
+      "score": 14,
+      "justificativa": "Risco médio: saturação por redes e dependência de pratos realmente impressionantes. Mitigação vem de roteiro/host e de selecionar histórias e personagens, não só pratos."
     }
   },
   "compradores_recomendados": [
-    "Record (Domingo Espetacular)",
-    "PlayPlus/R7 (versões digitais e recortes)",
-    "Canais brasileiros de lifestyle e gastronomia para pacote compilado"
+    "Record TV (Domingo Espetacular)",
+    "PlayPlus (extensões e recortes digitais da Record)",
+    "Band (revistas e variedades de fim de semana, se houver janela)",
+    "SBT (faixas de revista/variedades, dependendo de grade)"
   ],
   "status": "VERDICT",
-  "timestamp": "2026-02-12T13:24:00-03:00"
+  "timestamp": "2026-02-12T13:22:00-03:00"
 }

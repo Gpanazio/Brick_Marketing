@@ -1,0 +1,21 @@
+{
+  "idea_name": "Pintar Favela (Revitalização Estética)",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "medium",
+    "is_actionable": true,
+    "analysis": "A questão do urbanismo e da estética em comunidades carentes é real e impacta a qualidade de vida, autoestima e até a valorização imobiliária local. Embora a descrição seja simplista, o problema da degradação visual e falta de acabamento em favelas é um fato concreto com precedentes de intervenção em urbanismo social."
+  },
+  "evidence": [
+    "Existência de projetos similares consolidados (ex: Favela Painting no Rio, projetos da Coral/Tudo de Cor).",
+    "Dados de urbanismo que mostram que o aspecto visual do entorno afeta a percepção de segurança e bem-estar dos moradores."
+  ],
+  "red_flags": [
+    "Escala utópica: 'pintar todas as casas' exige uma logística e financiamento que podem ser irreais sem apoio estatal.",
+    "Prioridades conflitantes: Moradores podem considerar saneamento, segurança e reboco estrutural mais urgentes que a pintura estética.",
+    "Complexidade técnica: Pintar sobre tijolo baiano sem reboco tem baixa durabilidade e alto custo de manutenção."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-10T15:00:00Z"
+}

@@ -1,0 +1,66 @@
+{
+  "idea_name": "Criar uma empresa de satélites brasileira",
+  "failure_scenarios": [
+    {
+      "scenario": "O Massacre de Escala da Starlink e Planet Labs",
+      "category": "market",
+      "description": "A empresa brasileira será esmagada pela economia de escala dos players globais antes de colocar o segundo satélite em órbita. A SpaceX (Starlink) já opera no Brasil com mais de 6.000 satélites e reduziu preços em 50% recentemente para capturar o mercado rural. Tentar competir em conectividade ou imagens de baixa resolução com uma constelação de 2 ou 3 nanossatélites é suicídio comercial: o custo por bit ou por km² da Starlink é ordens de magnitude menor.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Starlink reduziu a mensalidade no Brasil para R$ 184 em 2024. A Planet Labs possui 200+ satélites imageando a Terra diariamente. O custo de desenvolvimento do VCUB1 brasileiro foi de R$ 12 milhões para um único satélite; a SpaceX lança 60 de uma vez a um custo marginal ínfimo.",
+      "mitigation": "Pivotar 100% para 'Downstream' (análise de dados de terceiros) e abandonar a fabricação de hardware, o que anula o propósito original de ser uma 'empresa de satélites'."
+    },
+    {
+      "scenario": "Refém do Lançador Estrangeiro (Soberania de Papel)",
+      "category": "timing",
+      "description": "A ideia de 'soberania nacional' morre no chão. Como o Brasil não possui um lançador orbital operacional (histórico de falhas do VLS e falta de maturidade do VLM), a empresa brasileira terá que pagar 'aluguel de carona' para a SpaceX ou Rocket Lab. Se houver qualquer tensão geopolítica ou mudança nas políticas de exportação de tecnologia (ITAR), o hardware brasileiro fica mofando no estoque. Você constrói o carro, mas o dono da estrada é o seu concorrente direto (Elon Musk).",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "O projeto PION-BR1 teve que ser lançado via SpaceX Transporter-3. O Centro de Lançamento de Alcântara (CLA), apesar da posição geográfica privilegiada, ainda opera majoritariamente para empresas estrangeiras e foguetes de sondagem, sem previsão de colocar satélites comerciais em órbita de forma independente no curto prazo.",
+      "mitigation": "Nenhuma mitigação privada possível; depende de uma política de Estado de bilhões de reais e décadas de desenvolvimento que fogem ao controle de uma startup."
+    },
+    {
+      "scenario": "Morte por Inanição de Capital (The Valley of Death)",
+      "category": "execution",
+      "description": "O ciclo de desenvolvimento aeroespacial (5-7 anos) é incompatível com o apetite dos VCs latino-americanos. Startups de New Space exigem rodadas de R$ 50M+ em estágios iniciais apenas para prototipagem e certificação. Com a taxa de juros atual e a aversão ao risco de hardware, a empresa ficará presa em 'eternos MVPs' financiados por editais da Finep (que são lentos e burocráticos), morrendo antes de atingir a escala comercial.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "A Pion Labs sobrevive com kits educacionais e projetos menores para manter o fluxo de caixa. A Visiona só existe porque é uma Joint-Venture com a Embraer e tem o Governo Federal como cliente garantido. Nenhuma startup brasileira de hardware espacial captou rodadas Series A/B puramente privadas de escala global nos últimos 3 anos.",
+      "mitigation": "Adotar um modelo híbrido de serviços educacionais ou consultoria para subsidiar o P&D, atrasando o roadmap tecnológico em anos."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Fuga de Cérebros para a Visiona/Embraer",
+      "why_angel_missed": "O Angel assumiu que o talento está disponível. Na realidade, o pool de engenheiros aeroespaciais sêniores no Brasil é minúsculo e quase totalmente absorvido pela Embraer e INPE. Uma startup não conseguirá competir em salários e benefícios com a gigante de São José dos Campos."
+    },
+    {
+      "risk": "Embargo de Componentes de Prateleira (COTS)",
+      "why_angel_missed": "Para reduzir custos, startups usam componentes eletrônicos comuns. No entanto, sensores de alta precisão e chips resistentes à radiação estão sujeitos às regras de exportação ITAR (EUA). A empresa pode ser impedida de comprar componentes críticos se for vista como risco de transferência tecnológica para os BRICS."
+    },
+    {
+      "risk": "Responsabilidade Civil por Lixo Espacial",
+      "why_angel_missed": "Novas regulamentações da FCC e agências internacionais exigem seguros pesados e planos de desorbitagem caros. Um erro de cálculo que gere detritos pode resultar em multas internacionais que quebram o balanço da empresa no dia 1."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "economic",
+      "description": "ROI Negativo: O custo de capital no Brasil inviabiliza projetos com break-even superior a 10 anos em hardware pesado. O LTV do cliente de monitoramento agro não cobre o CAPEX de uma constelação própria.",
+      "is_absolute": true
+    },
+    {
+      "type": "technical",
+      "description": "Ausência de Lançador Orbital Nacional: Depender 100% de concorrentes diretos para colocar o produto em prateleira (órbita) invalida a tese de independência e viabilidade logística.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": {
+    "risk_level": "catastrophic",
+    "fatal_flaws_count": 2,
+    "verdict": "FAIL",
+    "reasoning": "Esta ideia é um 'projeto de vaidade' disfarçado de business. No cenário atual, fabricar e lançar satélites próprios no Brasil é logisticamente impossível (sem lançadores nacionais) e economicamente insano (competindo com a escala global da Starlink). A Visiona já ocupa o nicho de 'queridinha do governo' com o bolso da Embraer. Para uma startup, o risco de queimar R$ 50M e ter o hardware bloqueado por regulamentações americanas ou preços predatórios do Musk é de quase 100%. A única saída real seria não ser uma empresa de satélites, mas sim de dados, o que mata a ideia original."
+  },
+  "status": "FAIL",
+  "timestamp": "2026-02-11T13:25:00Z"
+}

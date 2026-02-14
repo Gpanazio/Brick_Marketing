@@ -1,0 +1,40 @@
+{
+  "idea_name": "Documentário True Crime: Caso Hurb e João Ricardo Mendes",
+  "angles": [
+    {
+      "name": "O Perfil do Caos (Character Study)",
+      "action": "Centrar a narrativa na psique e no comportamento errático do fundador João Ricardo Mendes. Explorar desde a fundação da ApetreXo até o auge da Hurb e o declínio bizarro culminando nas prisões de 2025 (furto de arte) e 2026 (documento falso).",
+      "bet": "O público de streaming é fascinado por figuras de fundadores 'gênios' que descarrilam publicamente (estilo WeCrashed ou The Dropout). O vasto material de arquivo dele xingando clientes em vídeo é ouro para o engajamento viral.",
+      "risk": "Altíssimo risco de litigância e censura prévia por parte do fundador (lawfare). Exige blindagem jurídica pesada e seguro Errors & Omissions (E&O) astronômico.",
+      "upside": "Aposta de maior valor comercial e viralização imediata. Grande potencial de venda para gigantes como Netflix, HBO ou Globoplay.",
+      "reversible": true,
+      "strength_score": 92,
+      "rationale": "A prisão recente transforma um caso de má gestão em um 'True Crime' bizarro e irresistível para a audiência massiva."
+    },
+    {
+      "name": "Sonhos Interrompidos (Victim-Centric)",
+      "action": "Centrar a narrativa na 'Jornada das Vítimas', contrastando a ostentação da diretoria com famílias que perderam economias de uma vida e pousadas que faliram esperando o repasse.",
+      "bet": "A empatia moral sustenta a audiência por longos episódios. Focar nas vítimas cria uma blindagem ética e jurídica maior, dificultando a tese de difamação por parte da empresa.",
+      "risk": "Risco de parecer 'jornalismo de denúncia' padrão (estilo Fantástico) se não tiver uma estética cinematográfica e narrativa de suspense muito forte.",
+      "upside": "Menor exposição jurídica direta ao fundador e alta aceitação em premiações e festivais por seu caráter social/investigativo.",
+      "reversible": true,
+      "strength_score": 85,
+      "rationale": "É a abordagem mais segura e humana, garantindo que o documentário não seja derrubado por liminares antes da estreia."
+    },
+    {
+      "name": "A Bolha Flexível (Industry Analysis)",
+      "action": "Posicionar a Hurb como o sintoma final de uma era de capital de risco desenfreado no Brasil, expondo como investidores e o mercado ignoraram sinais vermelhos em troca de crescimento agressivo.",
+      "bet": "Existe um nicho crescente interessado em 'Business Thrillers'. O diferencial seria mostrar os bastidores financeiros e como o modelo de 'pacotes sem data' era um esquema insustentável desde o dia 1.",
+      "risk": "Abordagem mais técnica que pode afastar o público 'massa' que busca apenas o drama pessoal e os escândalos digitais do fundador.",
+      "upside": "Diferenciação no mercado de True Crime nacional, focando em 'white-collar crime' de alto nível.",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Oferece profundidade e relevância histórica, elevando o projeto de 'fofoca corporativa' para análise sociológica."
+    }
+  ],
+  "recommended": "O Perfil do Caos (Character Study)",
+  "reasoning": "As prisões de João Ricardo Mendes em 2025 e 2026 fecham o arco dramático necessário para um blockbuster de streaming. O comportamento excêntrico e agressivo dele documentado em vídeo fornece o material visual necessário para o sucesso comercial imediato, superando em potencial de entretenimento as outras abordagens mais sóbrias.",
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-10T14:48:00Z"
+}

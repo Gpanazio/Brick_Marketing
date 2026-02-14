@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou marcas com estrutura in-house",
+    "experiencia": "10+ anos no mercado criativo/cinematográfico"
+  },
+  "dores": [
+    "Necessidade de escala massiva sem diluir o craft (qualidade cinematográfica)",
+    "Orçamentos de produção cada vez mais restritos ('fazer cinema com budget de post')",
+    "Fadiga e ceticismo com ferramentas de IA que entregam apenas rascunhos fragmentados",
+    "Pressão competitiva para ser 'IA-First' sem comprometer a autoridade da direção humana"
+  ],
+  "linguagem_comum": [
+    "brief",
+    "deck",
+    "approach",
+    "key visual",
+    "craft",
+    "delivery",
+    "ROI",
+    "latência zero",
+    "direção técnica"
+  ],
+  "objecoes": [
+    "A IA mata a alma e o craft do trabalho premium",
+    "Os outputs de ferramentas genéricas parecem artificiais e de baixa resolução",
+    "Medo de que a ferramenta substitua o olhar clínico do diretor",
+    "Dificuldade de controle técnico preciso sobre o sistema (alucinação vs precisão)"
+  ],
+  "motivadores_de_acao": [
+    "Consolidar o status de Diretor de Visão (Vanguardista Tecnológico)",
+    "Eficiência operacional brutal: transformar briefings em campanhas em tempo recorde",
+    "Capacidade de vender produções de alta complexidade com margens de lucro otimizadas",
+    "Domínio de sistemas multi-agente que elevam o padrão de entrega além da concorrência"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (Análises técnicas, networking de elite e posicionamento de marca pessoal)",
+    "Newsletters: Meio & Mensagem, B9, Marketing Dive",
+    "Eventos: Cannes Lions, Wave Festival, SXSW",
+    "Canais de Direção de Fotografia e Cinema Digital"
+  ],
+  "fontes_consultadas": [
+    "BRAND_GUIDE Brick AI v8.0 (Hardcoded)",
+    "PERSONA OFICIAL BRICK AI (Hardcoded)",
+    "Meio & Mensagem - Rankings de Diretores de Criação e Campanhas 2024-2025",
+    "Análise de Tendências de Produção Sintética e New Space Criativo"
+  ],
+  "alinhamento_briefing": {
+    "status": "APROVADO COM RESSALVA TÉCNICA",
+    "analise": "O briefing captura perfeitamente o gap de mercado (Prompt isolado vs. Pipeline), mas o tom 'profissional' sugerido é insuficiente. Para a persona de 10+ anos de craft, a comunicação deve subir o nível para o 'The Cold Director'. Não estamos 'ajudando', estamos impondo o novo padrão técnico. A mensagem central está correta, mas a execução do copy precisa expurgar qualquer adjetivo ou entusiasmo e focar em latência, precisão e motor de visão."
+  }
+}

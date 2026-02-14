@@ -1,0 +1,60 @@
+{
+  "claims_validados": [
+    {
+      "claim": "Um vídeo institucional de alto craft no Brasil custa entre R$ 20 mil e R$ 80 mil (2025/2026).",
+      "status": "VERIFICADO",
+      "fonte_original": "Cinematika / Tag12 Guia de Preços",
+      "fonte_verificacao": "https://cinematika.com.br/quanto-custa-um-video-institucional/",
+      "confianca": "alta",
+      "notas": "Link verificado e ativo. O artigo cita explicitamente a faixa de R$ 20k a R$ 80k para vídeos com recursos similares aos de publicidade."
+    },
+    {
+      "claim": "O vídeo nativo (short-form) no LinkedIn gera maior engajamento (crescimento de consumo de 36% YoY).",
+      "status": "VERIFICADO",
+      "fonte_original": "Marketing Agent / Hootsuite 2026 Trends",
+      "fonte_verificacao": "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/",
+      "confianca": "alta",
+      "notas": "O blog cita dados internos do LinkedIn e WSJ indicando crescimento de 36% no consumo de vídeo em 2025."
+    },
+    {
+      "claim": "98% dos profissionais de marketing pretendem ampliar o uso de IA em 2025/26.",
+      "status": "VERIFICADO",
+      "fonte_original": "Meio & Mensagem / Relatório IA 2025",
+      "fonte_verificacao": "https://www.meioemensagem.com.br/marketing/ia-no-marketing-98-dos-profissionais-pretendem-ampliar-o-uso-em-2025",
+      "confianca": "alta",
+      "notas": "Baseado na pesquisa 'A Realidade do Marketing no Brasil 2025' da HubSpot, citada pelo Meio & Mensagem. O dado exato é 97,9%."
+    },
+    {
+      "claim": "Engagement de carrosséis no LinkedIn é 6.6%.",
+      "status": "DUVIDOSO",
+      "fonte_original": "LinkedIn Marketing Blog 2025 (citado no template)",
+      "fonte_verificacao": null,
+      "confianca": "baixa",
+      "notas": "[NEEDS SOURCE] - O valor de 6.6% não foi encontrado nas fontes de pesquisa atuais. Benchmarks comuns de engajamento no LinkedIn para marcas costumam ser bem menores (abaixo de 2%). Sugestão: remover o número exato ou usar 'formato de carrossel é um dos que gera maior engajamento visual'."
+    },
+    {
+      "claim": "O mercado de observação da Terra para agricultura deve atingir US$ 815 milhões até 2029.",
+      "status": "⚠️ PARCIAL",
+      "fonte_original": "Euroconsult / TerraMetric",
+      "fonte_verificacao": "https://www.agtechgarage.news/en/earth-observation-market-the-future-of-agribusiness/",
+      "confianca": "média",
+      "notas": "O valor está correto conforme o relatório da Euroconsult, mas refere-se especificamente ao setor de agricultura, não ao mercado total de imagens de satélite. Usar com cautela no contexto do War Room (que é marketing/conteúdo)."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "Faixa de preço de vídeo de alto craft: R$ 20k - R$ 80k (Cinematika 2025)",
+    "Crescimento de 36% no consumo de vídeo nativo no LinkedIn (LinkedIn Data 2025)",
+    "97,9% dos profissionais de marketing brasileiros pretendem ampliar o uso de IA em 2025 (HubSpot/Meio & Mensagem)"
+  ],
+  "estatisticas_evitar": [
+    "Engagement de 6.6% em carrosséis (sem fonte verificável)",
+    "Números globais de mercado de satélite (podem confundir o foco do War Room)"
+  ],
+  "resumo": {
+    "total_claims": 5,
+    "verificados": 3,
+    "parciais": 1,
+    "duvidosos": 1,
+    "recomendacao": "Os dados de custo de produção e adoção de IA no Brasil são sólidos e devem ser a âncora do copy. Evite o claim de 6.6% de engajamento para manter a autoridade técnica."
+  }
+}

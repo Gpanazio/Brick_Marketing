@@ -1,0 +1,69 @@
+{
+  "tema": "Lançamento War Room - Brick AI: Transição de Produtora para Tech SaaS",
+  "keywords_principais": [
+    "multi-agent pipelines",
+    "synthetic production system",
+    "vision-over-prompt",
+    "high-craft AI delivery",
+    "production latency zero"
+  ],
+  "dados_credibilidade": [
+    {
+      "dado": "Um vídeo institucional de alto craft no Brasil custa entre R$ 20 mil e R$ 80 mil (2025/2026).",
+      "fonte": "Cinematika / Tag12 Guia de Preços",
+      "url": "https://cinematika.com.br/quanto-custa-um-video-institucional/"
+    },
+    {
+      "dado": "O LinkedIn Marketing em 2026 prioriza o vídeo nativo (short-form) e estratégias híbridas entre líderes e páginas oficiais para maximizar a autoridade B2B.",
+      "fonte": "Marketing Agent / Hootsuite 2026 Trends",
+      "url": "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/"
+    },
+    {
+      "dado": "98% dos profissionais de marketing pretendem ampliar o uso de IA em 2025/26, com foco em otimização de supply chain de conteúdo.",
+      "fonte": "Meio & Mensagem / Relatório IA 2025",
+      "url": "https://www.meioemensagem.com.br/marketing/ia-no-marketing-98-dos-profissionais-pretendem-ampliar-o-uso-em-2025"
+    }
+  ],
+  "tendencias_atuais": [
+    "Saturação do 'Prompt Único': O mercado está cansado de resultados genéricos de chatbots.",
+    "Pipeline-as-a-Service: A evolução da IA não é a ferramenta, mas o fluxo de trabalho estruturado (Multi-Agent Systems).",
+    "Authentic Authority: No LinkedIn, a autoridade técnica do emissor (ex: 10 anos de cinema) vale mais do que a novidade tecnológica isolada."
+  ],
+  "angulos_concorrentes": [
+    {
+      "concorrente": "Jasper / Copy.ai",
+      "posicionamento": "Escrita de copy isolada em escala.",
+      "fraqueza": "Falta de visão sistêmica e integração multi-agente para campanhas completas."
+    },
+    {
+      "concorrente": "Runway / Sora",
+      "posicionamento": "Motores de renderização sintética.",
+      "fraqueza": "São ferramentas de 'lente', não sistemas de direção e estratégia (necessitam de um 'diretor' externo)."
+    }
+  ],
+  "oportunidades_diferenciacao": [
+    "Posicionamento 'Anti-Prompt': Enquanto outros tentam 'ensinar a promptar', a Brick oferece um motor de visão que entende a linguagem do craft.",
+    "Legado de 10 Anos: Usar a autoridade cinematográfica para validar a IA (AI com alma de diretor).",
+    "War Room como 'Supply Chain Criativo': Posicionar a plataforma como o fim do trabalho fragmentado."
+  ],
+  "brand_guidelines_relevantes": {
+    "tom": "The Cold Director (Seco, Técnico, Autoritário)",
+    "terminologia": [
+      "Motor de Visão",
+      "Direção Técnica",
+      "Sistema de Geração Sintética",
+      "Latência Zero"
+    ],
+    "proibido": [
+      "Dica / Truque / Mágica",
+      "Revolucionário / Disruptivo",
+      "Engenharia de Prompt"
+    ]
+  },
+  "fontes_consultadas": [
+    "https://cinematika.com.br/quanto-custa-um-video-institucional/",
+    "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/",
+    "https://reportei.com/linkedin-2026-novidades-tendencias-e-como-se-preparar/",
+    "BRAND_GUIDE Brick AI v8.0"
+  ]
+}

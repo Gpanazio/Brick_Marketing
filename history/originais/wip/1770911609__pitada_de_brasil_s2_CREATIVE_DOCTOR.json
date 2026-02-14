@@ -1,0 +1,176 @@
+{
+  "titulo_projeto": "Pitada de Brasil - Segunda Temporada",
+  "contexto_exibicao": "Série de pílulas de doc/entretenimento culinário para exibição dentro do Domingo Espetacular (Record), voltada para a família brasileira no domingo à noite. Conteúdo leve, bem-humorado, de alto apelo visual e fácil compreensão, com ritmo de revista eletrônica e potencial de recortes curtos para redes.",
+  "analise_temporada": {
+    "tese_central": "O Brasil pega qualquer comida (ou tradição) e transforma em espetáculo de exagero — não por falta de respeito, mas por criatividade, fartura e vontade de surpreender.",
+    "arco_dramatico": "Os episódios são majoritariamente independentes, mas podem ganhar progressão clara se organizados como uma escalada de 'níveis de exagero' (do improviso de rua ao 'chefão' food porn), culminando no especial de Natal como apoteose.",
+    "tom_geral": "Humor celebratório + curiosidade documental (zero julgamento), com linguagem pop, cortes rápidos e trilha leve; 'brasilidade' como punchline afetivo.",
+    "ponto_forte_serie": "Altíssimo apelo visual e imediato (comida 'impossível'), formato curto que encaixa bem no Domingo Espetacular e permite viralização por trechos.",
+    "ponto_fraco_serie": "Risco de virar 'compilado de internet': repetição de estrutura (texto + 3 itens) sem tensão/drama interno; pouca conexão emocional com pessoas e pouca diferenciação entre episódios (todos viram 'mais um exagero').",
+    "sugestao_estrutural": "Adicionar um fio condutor fixo e barato: um/a host com bordões + uma régua visual ('Termômetro do Exagero' de 1 a 5) e um quadro final obrigatório ('Final Boss') em todo episódio. Isso cria identidade, ritmo e expectativa, sem aumentar muito logística — e dá gancho para recaps, chamadas e redes."
+  },
+  "episodios": [
+    {
+      "numero": 1,
+      "titulo": "Espetinho Brasileiro",
+      "itens_apresentados": [
+        "Espetinho doce com salgado (misturas improváveis)",
+        "Queijo com chocolate no palito",
+        "Sobremesas no palito (brigadeiro, brownie, frutas com cobertura)"
+      ],
+      "o_que_funciona": "O tema é imediatamente reconhecível e 'popular': espetinho é rua, é Brasil, é domingo à noite sem complicação. Visualmente, o palito permite uma mise-en-scène divertida (montagem, repetição, variedade de cores) e rende reações espontâneas de quem prepara e de quem come. A mistura doce/salgado já carrega surpresa e humor sem precisar forçar narração.",
+      "o_que_melhorar": "Como episódio de abertura, ele precisa estabelecer a 'nova tese' da temporada (exagero/transformação) e não só listar variações. O terceiro item pode virar apenas 'mais uma sobremesa', perdendo escalada; falta um 'chefão' claramente mais absurdo que os anteriores. Também pode aprofundar um pouco a persona do vendedor/estabelecimento para criar afeto e não só comida.",
+      "sugestao_concreta": "Abrir com um cold open de 15–20s do 'espetinho mais absurdo do ep' (o Final Boss), voltar para o começo e concluir com a entrega desse item + a régua 'Termômetro do Exagero' dando nota final, com reação do criador.",
+      "potencial_viral": "medio",
+      "nota_episodio": 7.8
+    },
+    {
+      "numero": 2,
+      "titulo": "Só um Pedacinho",
+      "itens_apresentados": [
+        "Fatias gigantes (pizza/bolo/torta em tamanho 'monstro')",
+        "Porções que não cabem na mão (sanduíches e 'torres')",
+        "Recordes e desafios de tamanho (o 'maior do Brasil'/'maior da cidade')"
+      ],
+      "o_que_funciona": "O episódio conversa direto com o humor brasileiro da 'fartura' e com a linguagem de internet (tamanho como punchline). O apelo visual é forte porque escala se enxerga na hora: mãos, régua, balança, comparação com objetos. Também é um tema que permite captação dinâmica (cozinha, corte, montagem, entrega, reação de clientes).",
+      "o_que_melhorar": "Sem um recorte claro, 'tamanho' pode ficar genérico e repetir o mesmo beat três vezes ('é grande'). O item de recorde/desafio pode virar informação solta se não houver uma mini-tensão (vai acabar? quantos minutos? quantas pessoas?). Falta um elemento humano recorrente: alguém tentando, alguém 'defendendo' a loucura, alguém que diga por que isso vende.",
+      "sugestao_concreta": "Incluir um micro-desafio fixo e barato: 'Medida Brasil' (peso/altura/quantas mãos) + uma tentativa rápida de 2 minutos com um convidado local (cliente ou funcionário), para criar tensão e payoff no terceiro item.",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.3
+    },
+    {
+      "numero": 3,
+      "titulo": "Embarcações de Açaí",
+      "itens_apresentados": [
+        "Açaí salgado (uso tradicional do Norte, com peixe/camarão/farinha)",
+        "Barcas gigantes de açaí (versão 'sorvete' com toppings)",
+        "Pastel/derivados de açaí (pastel de açaí e variações)"
+      ],
+      "o_que_funciona": "Aqui existe uma virada de 'história': o açaí tem duas identidades no Brasil, o que gera contraste real e curioso (não é só exagero). Visualmente, açaí é cor, textura e toppings — ótimo para macro e slow motion. O choque 'açaí salgado x açaí sobremesa' dá humor e surpresa sem soar julgador.",
+      "o_que_melhorar": "O risco é virar confuso se o episódio pular entre tradição e 'food porn' sem organizar. O pastel pode parecer desconectado do eixo 'embarcações' se não for apresentado como evolução/derivação lógica (do açaí no prato para açaí em qualquer recipiente/massa). Também pede cuidado de linguagem para não estereotipar Norte vs Sudeste; precisa ser afetivo e informativo.",
+      "sugestao_concreta": "Estruturar como 'duas origens + uma mutação': bloco 1 (raiz salgada, 60–90s com contexto simples), bloco 2 (barcas e toppings com régua de exagero), bloco 3 (a mutação mais inesperada: pastel), amarrando com a pergunta fixa do host: 'Onde o açaí ainda vai caber?'",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.1
+    },
+    {
+      "numero": 4,
+      "titulo": "Borda da Pizza",
+      "itens_apresentados": [
+        "Borda de brownie (doce)",
+        "Borda pãozinho (mini pães/'pão de alho' na borda)",
+        "Borda de coxinha (salgado brasileiro fundindo com pizza)"
+      ],
+      "o_que_funciona": "O tema é inteligente porque é específico (a borda) e todo mundo entende: é um 'problema' da pizza que o Brasil resolveu com invenção. As variações dão um arco natural de escalada (do recheio clássico para o híbrido absurdo). Visualmente, a borda recheada corta bem na câmera e rende ASMR/'puxa'.",
+      "o_que_melhorar": "Pode cair na repetição de 'mostra a borda, corta, puxa, acabou' se não houver diferença de situação e personagem em cada item. O item 'borda pãozinho' precisa de uma justificativa clara para não parecer menos impactante entre brownie e coxinha. Falta uma 'regra do episódio' que crie expectativa: qual é a borda mais Brasil?",
+      "sugestao_concreta": "Criar um quadro fixo de 20s: 'Tribunal da Borda' — o host define o 'crime' (jogar borda fora) e cada item é apresentado como 'solução' com uma sentença final ('absolvido'/'condenado por excesso') sempre em tom de brincadeira.",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.0
+    },
+    {
+      "numero": 5,
+      "titulo": "Hambúrguer",
+      "itens_apresentados": [
+        "Hambúrguer na marmita com 30 ingredientes",
+        "Piscina de cheddar (cheddar como 'cenografia')",
+        "Espetinho de carnes + hambúrguer (combo híbrido e 'overload')"
+      ],
+      "o_que_funciona": "Hambúrguer é linguagem universal e já vem com estética de 'food porn', perfeita para cortes rápidos no Domingo Espetacular. Os itens prometem exagero visual (camadas, queijo escorrendo, quantidade), o que gera humor e espanto na primeira olhada. Também permite boa captação de bastidores (chapa, montagem, fila, entrega).",
+      "o_que_melhorar": "O episódio corre risco de saturação porque o público já viu muito hambúrguer exagerado nas redes — precisa de diferenciação e história de bastidor para justificar por que estes são 'Pitadas' e não 'mais do mesmo'. A 'piscina de cheddar' pode virar um beat longo e viscoso sem payoff narrativo; e o 'espetinho de 40 carnes' precisa de clareza para não parecer outro produto aleatório.",
+      "sugestao_concreta": "Definir uma âncora de diferenciação por item: 1) 'marmita' (o formato), 2) 'cenografia' (a piscina), 3) 'híbrido brasileiro' (churrasco + burger). Em cada bloco, inserir uma única frase de 'por que isso vende' dita pelo dono (insight comercial) — rápido, mas humaniza e dá propósito.",
+      "potencial_viral": "alto",
+      "nota_episodio": 7.6
+    },
+    {
+      "numero": 6,
+      "titulo": "Strogonoff",
+      "itens_apresentados": [
+        "Strogonoff 'brasileiríssimo' com ketchup + batata palha",
+        "Torre/prato exagerado de strogonoff (porção monstra)",
+        "Xis-strogonoff ou burger de strogonoff (transformação em sanduíche)"
+      ],
+      "o_que_funciona": "É um tema com humor afetivo: strogonoff é 'comida de casa' no Brasil, então a audiência se identifica e ri com carinho. A transformação do prato 'fino' em comfort food com ketchup e batata palha traz o contraste cultural sem precisar voltar ao formato por países. A versão sanduíche é uma boa mutação, com visual claro e apetite.",
+      "o_que_melhorar": "Pode faltar impacto visual se os itens forem 'creme com frango' em variações parecidas; precisa de uma escalada bem marcada. O bloco do ketchup/batata palha é ótimo, mas pode virar opinião ('certo/errado') se a narração não for bem calibrada para zero julgamento. E o 'torre' precisa ter função: é só grande ou tem uma lógica brasileira por trás?",
+      "sugestao_concreta": "Usar um 'mapa de mutações' simples em GC (on-screen): Receita original → Brasilizou (ketchup/batata palha) → Mutação final (xis/burger). Isso dá arco claro, evita debate moral e organiza a escalada do episódio.",
+      "potencial_viral": "medio",
+      "nota_episodio": 7.4
+    },
+    {
+      "numero": 7,
+      "titulo": "Bolo Vulcão e Tsunami",
+      "itens_apresentados": [
+        "Bolo vulcão (cobertura que 'explode')",
+        "Bolo tsunami colorido (calda que desaba)",
+        "Bolo 'vestido'/escultural (confeitaria como fantasia)"
+      ],
+      "o_que_funciona": "É um episódio muito televisivo: movimento de calda é payoff perfeito para teaser e para abrir bloco do Domingo Espetacular. Tem espetáculo, cor, textura e uma ação central (o momento do 'desastre controlado') que já cria mini-tensão e clímax. Também permite humor físico e reações do público/cliente.",
+      "o_que_melhorar": "Confeitaria pode ficar 'bonita demais' e perder o lado Brasil irreverente se tudo virar apenas técnica e estética. Os dois primeiros itens (vulcão e tsunami) podem ser muito semelhantes de linguagem (caiu calda) e canibalizar um ao outro. O terceiro item precisa ser amarrado ao conceito de exagero (não só 'um bolo bonito').",
+      "sugestao_concreta": "Diferenciar claramente os beats: 1) 'Explosão' (vulcão) com corte rápido, 2) 'Desabamento' (tsunami) com slow e reação, 3) 'Fantasia' (bolo vestido) com mini-bastidor de montagem + um 'reveal' final. E fechar com o 'momento replay' obrigatório (2 replays curtos do clímax) para assinatura.",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.6
+    },
+    {
+      "numero": 8,
+      "titulo": "Croitudo",
+      "itens_apresentados": [
+        "Croissonho (croissant com cara de 'pãozinho' brasileiro)",
+        "Croiburguer (croissant como pão de hambúrguer)",
+        "Crookie (croissant + cookie)"
+      ],
+      "o_que_funciona": "O episódio tem uma boa sacada de 'abrasileirar o chique': croissant é símbolo de sofisticação e o Brasil transforma em lanche/pop. Os nomes (croissonho, crookie) têm musicalidade e humor; dá para brincar em texto/GC sem esforço. Visualmente, folhado e recheios rendem boas imagens de corte e puxada.",
+      "o_que_melhorar": "O risco é parecer um tema pequeno demais para sustentar 8 minutos se não houver variedade de ambientes e pessoas. Dois itens são 'pão com recheio', e o terceiro pode soar trend de rede social — precisa de um gancho que justifique por que isso virou febre aqui. Também falta 'cara de Brasil': se filmar em padaria gourmet genérica, perde identidade.",
+      "sugestao_concreta": "Escolher um único lugar/personagem forte (padaria/confeitaria) e construir o episódio como 'linha de produção das mutações': começar no croissant base, mostrar a equipe inventando a versão do dia e terminar com o item 'mais polêmico' (crookie) testado por clientes na fila.",
+      "potencial_viral": "medio",
+      "nota_episodio": 7.2
+    },
+    {
+      "numero": 9,
+      "titulo": "Tapioca Nada Fit",
+      "itens_apresentados": [
+        "Tapioca gigante (tamanho família)",
+        "Tapioca com 40 recheios (overload)",
+        "Tapidog (hot dog na tapioca)"
+      ],
+      "o_que_funciona": "O título já é piada pronta (quebra de expectativa do 'fit') e conversa com a audiência sem precisar explicar. Tapioca é muito popular e tem raiz brasileira, então a transformação é mais 'nossa' do que importada — bom para o reposicionamento da temporada. Visualmente, os recheios e a montagem em chapa geram ritmo e variedade.",
+      "o_que_melhorar": "Precisa cuidado para não soar como 'zombaria' de tradição indígena; a celebração tem que ser respeitosa e informada. Os itens 1 e 2 são próximos (grande vs muito recheio) e podem ficar redundantes se não houver uma diferença de proposta (tamanho para dividir vs exagero individual). O tapidog é ótimo, mas precisa ser tratado como mutação final com clímax.",
+      "sugestao_concreta": "Inserir um 'ponto de respeito' de 20–30s logo no começo (origem/uso tradicional em uma frase + imagem de referência) e depois assumir a linha 'o Brasil reinventa sem parar'. Em seguida, organizar os itens como: 'para dividir' (gigante), 'para chocar' (40 recheios), 'para rir' (tapidog) com Final Boss no hot dog.",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.0
+    },
+    {
+      "numero": 10,
+      "titulo": "Pão de Queijo",
+      "itens_apresentados": [
+        "Pão de queijo recheado de parmegiana",
+        "Pão de queijo com hambúrguer (sanduíche)",
+        "'Churros' de pão de queijo (formato e cobertura salgada/doce)"
+      ],
+      "o_que_funciona": "É um clássico nacional com apelo transversal: criança, adulto, avó — todo mundo tem relação com pão de queijo. As mutações propostas são bem 'Brasil': rechear, transformar em sanduíche e brincar com formato. O potencial de cheiro/sabor imaginado é enorme, e o visual (puxar queijo, recheio, formato de churros) rende clipes fortes.",
+      "o_que_melhorar": "Por ser muito amado, o episódio precisa de 'fator novidade' real para não parecer só variação de padaria. O item 'parmegiana' e o 'hambúrguer' podem cair na mesma lógica (recheio pesado), então a diferenciação tem que vir do contexto e do personagem. O 'churros de pão de queijo' é o item mais inesperado e deveria ser guardado para clímax — se aparecer cedo, o resto perde força.",
+      "sugestao_concreta": "Fazer do 'churros de pão de queijo' o Final Boss obrigatório e construir suspense (aparecer em flashes no teaser e só revelar completo no fim). No meio, destacar uma história curta de Minas/afeto (1 depoimento do dono/cliente sobre 'cheiro de casa') para conexão emocional.",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.4
+    },
+    {
+      "numero": 11,
+      "titulo": "Especial: Pitada de Natal",
+      "itens_apresentados": [
+        "Panetone de churrasco",
+        "Rabanada gourmet (recheada/coberturas)",
+        "Panetone de açaí (mutação tropical)"
+      ],
+      "o_que_funciona": "Especial tem cara de evento e encaixa perfeitamente na lógica do Domingo Espetacular (sazonalidade + serviço + curiosidade). Panetone é assunto nacional em dezembro, e 'panetone de churrasco' é manchete instantânea; rende humor e debate de mesa (sem briga). Rabanada dá beleza e textura (fritura, açúcar, recheios) e permite captação calorosa, familiar.",
+      "o_que_melhorar": "O especial corre risco de virar apenas 'lista de sabores' se não tiver um mini-arco natalino (tradição vs reinvenção) e um fechamento emocional. 'Panetone de açaí' pode parecer aleatório se não houver a amarra temática da temporada (Brasil encaixa tudo em tudo). Também pede atenção de produção: dezembro é corrido, então precisa de logística simples e locações acessíveis.",
+      "sugestao_concreta": "Estruturar como 'Ceia do Exagero': abrir com a mesa tradicional (imagens/GC), apresentar cada item como 'convidado inesperado da ceia', e fechar com o host montando uma mini-ceia com os três + uma frase de 'brinde' que vire assinatura da temporada ('Aqui, tradição também vira invenção').",
+      "potencial_viral": "alto",
+      "nota_episodio": 8.7
+    }
+  ],
+  "logline_reescrita": "Na 2ª temporada de Pitada de Brasil, a gente viaja pelo país (sem sair do prato) para descobrir como o brasileiro transforma qualquer clássico — de pizza a panetone — em um espetáculo de exagero, criatividade e humor: do recheio impossível ao 'Final Boss' que só podia ter nascido aqui.",
+  "formato_sugerido": {
+    "duracao_ideal": "8–10 minutos (pensado para bloco do Domingo Espetacular + versões recortadas de 45–90s para redes)",
+    "estrutura_episodio": "1) Cold open (15–20s) com o 'Final Boss' + promessa do tema. 2) Tese em 1 frase + 'Termômetro do Exagero' (GC). 3) Item 1 (raiz/normal) com personagem e contexto curto. 4) Item 2 (subida) com contraste e gag visual. 5) Item 3 = Final Boss (clímax) com reveal, reação e replay curto. 6) Fechamento com bordão + nota no Termômetro + gancho do próximo ep.",
+    "elemento_faltante": "Host/apresentador fixo (pode ser off + aparições pontuais) com bordões e um quadro recorrente ('Termômetro do Exagero' / 'Tribunal do Exagero') para dar identidade, ritmo e assinatura de temporada sem encarecer a produção."
+  },
+  "status": "DIAGNOSED",
+  "timestamp": "2026-02-12T13:18:00-03:00"
+}

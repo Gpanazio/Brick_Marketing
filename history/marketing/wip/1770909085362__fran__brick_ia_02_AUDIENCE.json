@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "cargo_tipico": "Diretor de Criação / Diretor de Marketing / Head of Content",
+    "empresa_tipica": "Agências mid-market (50-200 pessoas) ou marcas premium in-house",
+    "experiencia": "10+ anos no mercado criativo"
+  },
+  "dores": [
+    "Orçamentos de produção cada vez mais restritos ('fazer cinema com budget de post')",
+    "Deadlines comprimidos pelo ritmo do digital ('pra ontem' é o padrão)",
+    "Fadiga e ceticismo com a baixa qualidade visual das ferramentas de IA generativa comuns",
+    "Medo de obsolescência tecnológica vs. necessidade de manter a autoridade do craft"
+  ],
+  "linguagem_comum": [
+    "brief",
+    "deck",
+    "approach",
+    "key visual",
+    "budget",
+    "deadline",
+    "craft",
+    "production value",
+    "premium delivery"
+  ],
+  "objecoes": [
+    "A IA mata a alma do trabalho cinematográfico",
+    "Os clientes de alto nível não aceitam a estética 'artificial' da IA",
+    "Dificuldade de controle técnico preciso (a ferramenta manda mais que o diretor)",
+    "Falta de profundidade técnica em produtoras que 'só usam IA'"
+  ],
+  "motivadores_de_acao": [
+    "Dominar sistemas que escalam a visão humana (Motor de Visão)",
+    "Entregar projetos 'impossíveis' para orçamentos tradicionais",
+    "Consolidar o status de inovador técnico sem perder a sensibilidade de diretor",
+    "Eficiência operacional absoluta (latência zero)"
+  ],
+  "onde_consomem_conteudo": [
+    "LinkedIn (Análises técnicas e networking de elite)",
+    "Newsletters: Meio & Mensagem, B9, Forbes (Inovação)",
+    "Eventos: Cannes Lions, Wave Festival, SXSW",
+    "Podcasts de liderança criativa e tecnologia"
+  ],
+  "fontes_consultadas": [
+    "BRAND_GUIDE Brick AI v8.0 (Hardcoded)",
+    "PERSONA OFICIAL BRICK AI (Hardcoded)",
+    "Forbes Brasil - Entrevista Inovação Media Lab (Out/2025)",
+    "Análise de Tendências New Space Criativo e Produção Sintética"
+  ],
+  "alinhamento_briefing_marca": {
+    "status": "APROVADO COM RESSALVA",
+    "observacoes": "O briefing está perfeitamente alinhado com a persona oficial (Diretores de Criação) e respeita as dores de budget/complexidade. A mensagem central captura o diferencial 'Production Enhanced'. No entanto, o tom 'profissional' sugerido deve ser ignorado em favor do 'The Cold Director' (seco e técnico) para garantir a autoridade da marca. A restrição de 'não focar em facilidade' é crítica para este público cético."
+  }
+}

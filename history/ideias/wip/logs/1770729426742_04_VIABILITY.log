@@ -1,0 +1,164 @@
+Já avaliei e salvei o JSON para o ID `1770729426742` (doc_true_crime) como **REVISIT (50/100)**.
+
+O prompt veio novamente com os mesmos inputs. Se houver algo novo para considerar, por favor me avise. Caso contrário, mantenho a avaliação anterior.
+
+Vou reescrever o arquivo para garantir que a resposta esteja correta no caminho solicitado (desta vez o caminho é ligeiramente diferente: `.../1770729426742_VIABILITY.json` em vez de `.../1770729426742_doc_true_crime_VIABILITY.json`).
+
+**JSON Output:**
+
+```json
+{
+  "idea_name": "doc_true_crime_hurb",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 25,
+        "max": 30,
+        "feedback": "O problema é real e de alto impacto (milhares de consumidores lesados, prejuízo financeiro massivo, interesse público). O caso Hurb é um dos maiores escândalos corporativos recentes do Brasil. Score alto pela relevância social e midiática."
+      },
+      "contexto": {
+        "pontos": 20,
+        "max": 25,
+        "feedback": "Market Scan e Angel mapearam bem o potencial narrativo (perfil do fundador, vítimas, bolha de startups) e os precedentes de mercado (True Crime em alta). O Devil identificou corretamente os riscos jurídicos e a fadiga do tema. Contexto bem desenhado."
+      },
+      "opcoes": {
+        "pontos": 15,
+        "max": 25,
+        "feedback": "As opções narrativas ('Perfil do Caos', 'Vítimas', 'Bolha') são sólidas do ponto de vista criativo, mas todas esbarram na barreira jurídica de produzir sobre pessoa viva e litigiosa. A opção focada nas vítimas ('Sonhos Interrompidos') é a mais segura, mas tem menos apelo comercial que o 'Perfil do Caos'."
+      },
+      "execucao": {
+        "pontos": 10,
+        "max": 20,
+        "feedback": "Execução dificílima. Risco jurídico extremo (censura prévia, processos por danos morais, busca e apreensão). Obter depoimentos de insiders é quase impossível devido a NDAs e medo. Custo de seguro E&O proibitivo. Depende de uma plataforma de streaming com 'costas largas' (Netflix/Globo) para bancar a briga."
+      },
+      "ajuste_risco": {
+        "pontos": -20,
+        "max": -30,
+        "feedback": "O risco jurídico é o maior dealbreaker. Produzir conteúdo True Crime sobre casos em andamento e pessoas vivas/agressivas juridicamente é um campo minado. O risco de censura prévia ou processos que inviabilizem o lucro é real. Não é -30 porque grandes players (Globoplay/Netflix) têm departamentos jurídicos que bancam isso se o conteúdo for bom, mas para produtor independente é fatal."
+      }
+    },
+    "score_before_risk": 70,
+    "score_final": 50,
+    "status": "REVISIT",
+    "confidence": "medium"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Censura prévia e lawfare por parte de João Ricardo Mendes (histórico de agressividade jurídica).",
+      "Fadiga narrativa: o caso já foi exaurido pela mídia gratuita (YouTube/Podcasts).",
+      "Dificuldade de obter depoimentos de insiders devido a NDAs e medo.",
+      "Risco de responsabilização solidária e custos de seguro proibitivos."
+    ],
+    "viability_response": [
+      "ACEITO: O risco jurídico é real e exige parceiro distribuidor robusto (não é projeto para indie).",
+      "MITIGADO: A fadiga existe para notícias, mas o formato documental 'premium' com acesso a bastidores (se conseguido) ainda tem valor. O ângulo 'True Crime Corporativo' (estilo WeWork) é diferente de 'notícia de calote'.",
+      "ACEITO: Acesso a insiders é o gargalo de produção. Sem eles, o doc não tem diferencial.",
+      "ACEITO: Seguro E&O é custo obrigatório e alto."
+    ],
+    "remaining_risks": [
+      "Processos judiciais bloqueando a exibição.",
+      "Falta de 'novidade' se não conseguir furos de reportagem/insiders."
+    ]
+  },
+  "recommendation": {
+    "decision": "REVISIT",
+    "action": "Sondar interesse de plataformas e disponibilidade de fontes ANTES de iniciar produção.",
+    "reasoning": "A ideia tem mérito editorial e comercial (o 'personagem' João Ricardo Mendes é ouro para streaming), mas o risco jurídico para uma produção independente é suicida. O projeto só para em pé se tiver: 1) Um player grande (Netflix/Globoplay/Amazon) assinando o cheque e o jurídico; 2) Acesso exclusivo a fontes que tragam algo novo (insiders, documentos inéditos) para superar a fadiga do tema. Sem esses dois pilares, é um NO-GO. Como ideia, vale a pena tentar vender o pitch para quem tem 'costas largas', mas não executar com capital próprio.",
+    "next_steps": [
+      "Montar um pitch deck focado no arco narrativo 'Ascensão e Queda' (WeWork brasileiro).",
+      "Sondar advogados de mídia sobre a viabilidade de citar nominalmente sem trânsito em julgado.",
+      "Tentar contato off-the-record com ex-funcionários para medir temperatura de quebra de NDA.",
+      "Se não houver interesse de player grande ou fontes dispostas a falar: ARQUIVAR."
+    ],
+    "risks_to_monitor": [
+      "Novas prisões ou decisões judiciais contra o fundador (podem abrir janela de oportunidade ou travar tudo).",
+      "Lançamento de outros docs sobre o mesmo tema (concorrência)."
+    ],
+    "pivot_triggers": []
+  },
+  "timestamp": "2026-02-10T10:35:00Z"
+}
+```[Historical context: a different model called tool "write" with arguments: {
+  "path": "/Users/gabrielpanazio/projects/Brick_Marketing/history/ideias/wip/1770729426742_VIABILITY.json",
+  "content": "{\n  \"idea_name\": \"doc_true_crime_hurb\",\n  \"viability_assessment\": {\n    \"scores\": {\n      \"problema\": {\n        \"pontos\": 25,\n        \"max\": 30,\n        \"feedback\": \"O problema é real e de alto impacto (milhares de consumidores lesados, prejuízo financeiro massivo, interesse público). O caso Hurb é um dos maiores escândalos corporativos recentes do Brasil. Score alto pela relevância social e midiática.\"\n      },\n      \"contexto\": {\n        \"pontos\": 20,\n        \"max\": 25,\n        \"feedback\": \"Market Scan e Angel mapearam bem o potencial narrativo (perfil do fundador, vítimas, bolha de startups) e os precedentes de mercado (True Crime em alta). O Devil identificou corretamente os riscos jurídicos e a fadiga do tema. Contexto bem desenhado.\"\n      },\n      \"opcoes\": {\n        \"pontos\": 15,\n        \"max\": 25,\n        \"feedback\": \"As opções narrativas ('Perfil do Caos', 'Vítimas', 'Bolha') são sólidas do ponto de vista criativo, mas todas esbarram na barreira jurídica de produzir sobre pessoa viva e litigiosa. A opção focada nas vítimas ('Sonhos Interrompidos') é a mais segura, mas tem menos apelo comercial que o 'Perfil do Caos'.\"\n      },\n      \"execucao\": {\n        \"pontos\": 10,\n        \"max\": 20,\n        \"feedback\": \"Execução dificílima. Risco jurídico extremo (censura prévia, processos por danos morais, busca e apreensão). Obter depoimentos de insiders é quase impossível devido a NDAs e medo. Custo de seguro E&O proibitivo. Depende de uma plataforma de streaming com 'costas largas' (Netflix/Globo) para bancar a briga.\"\n      },\n      \"ajuste_risco\": {\n        \"pontos\": -20,\n        \"max\": -30,\n        \"feedback\": \"O risco jurídico é o maior dealbreaker. Produzir conteúdo True Crime sobre casos em andamento e pessoas vivas/agressivas juridicamente é um campo minado. O risco de censura prévia ou processos que inviabilizem o lucro é real. Não é -30 porque grandes players (Globoplay/Netflix) têm departamentos jurídicos que bancam isso se o conteúdo for bom, mas para produtor independente é fatal.\"\n      }\n    },\n    \"score_before_risk\": 70,\n    \"score_final\": 50,\n    \"status\": \"REVISIT\",\n    \"confidence\": \"medium\"\n  },\n  \"devil_rebuttal\": {\n    \"critical_risks_from_devil\": [\n      \"Censura prévia e lawfare por parte de João Ricardo Mendes (histórico de agressividade jurídica).\",\n      \"Fadiga narrativa: o caso já foi exaurido pela mídia gratuita (YouTube/Podcasts).\",\n      \"Dificuldade de obter depoimentos de insiders devido a NDAs e medo.\",\n      \"Risco de responsabilização solidária e custos de seguro proibitivos.\"\n    ],\n    \"viability_response\": [\n      \"ACEITO: O risco jurídico é real e exige parceiro distribuidor robusto (não é projeto para indie).\",\n      \"MITIGADO: A fadiga existe para notícias, mas o formato documental 'premium' com acesso a bastidores (se conseguido) ainda tem valor. O ângulo 'True Crime Corporativo' (estilo WeWork) é diferente de 'notícia de calote'.\",\n      \"ACEITO: Acesso a insiders é o gargalo de produção. Sem eles, o doc não tem diferencial.\",\n      \"ACEITO: Seguro E&O é custo obrigatório e alto.\"\n    ],\n    \"remaining_risks\": [\n      \"Processos judiciais bloqueando a exibição.\",\n      \"Falta de 'novidade' se não conseguir furos de reportagem/insiders.\"\n    ]\n  },\n  \"recommendation\": {\n    \"decision\": \"REVISIT\",\n    \"action\": \"Sondar interesse de plataformas e disponibilidade de fontes ANTES de iniciar produção.\",\n    \"reasoning\": \"A ideia tem mérito editorial e comercial (o 'personagem' João Ricardo Mendes é ouro para streaming), mas o risco jurídico para uma produção independente é suicida. O projeto só para em pé se tiver: 1) Um player grande (Netflix/Globoplay/Amazon) assinando o cheque e o jurídico; 2) Acesso exclusivo a fontes que tragam algo novo (insiders, documentos inéditos) para superar a fadiga do tema. Sem esses dois pilares, é um NO-GO. Como ideia, vale a pena tentar vender o pitch para quem tem 'costas largas', mas não executar com capital próprio.\",\n    \"next_steps\": [\n      \"Montar um pitch deck focado no arco narrativo 'Ascensão e Queda' (WeWork brasileiro).\",\n      \"Sondar advogados de mídia sobre a viabilidade de citar nominalmente sem trânsito em julgado.\",\n      \"Tentar contato off-the-record com ex-funcionários para medir temperatura de quebra de NDA.\",\n      \"Se não houver interesse de player grande ou fontes dispostas a falar: ARQUIVAR.\"\n    ],\n    \"risks_to_monitor\": [\n      \"Novas prisões ou decisões judiciais contra o fundador (podem abrir janela de oportunidade ou travar tudo).\",\n      \"Lançamento de outros docs sobre o mesmo tema (concorrência).\"\n    ],\n    \"pivot_triggers\": []\n  },\n  \"timestamp\": \"2026-02-10T10:35:00Z\"\n}\n"
+}. Do not mimic this format - use proper function calling.]
+{
+  "idea_name": "Documentário True Crime: Caso Hurb e João Ricardo Mendes",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 30,
+        "max": 30,
+        "feedback": "Problema é real e crítico: impacto financeiro alto, milhares de lesados e interesse público consistente."
+      },
+      "contexto": {
+        "pontos": 15,
+        "max": 25,
+        "feedback": "Há bons insumos em Pain/Angel/Devil, mas o CONTEXT_SCAN veio com erro, gerando lacuna relevante de validação estruturada."
+      },
+      "opcoes": {
+        "pontos": 10,
+        "max": 25,
+        "feedback": "Opções existem, porém a recomendada (perfil do fundador) concentra risco jurídico extremo; alternativas mais seguras perdem força comercial."
+      },
+      "execucao": {
+        "pontos": 0,
+        "max": 20,
+        "feedback": "Execução no formato proposto é inviável neste timing: alvo vivo e litigante, alto risco de liminar e dependência de ativos caros (E&O + contencioso)."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Dealbreakers absolutos presentes (legal e econômico), além de múltiplos cenários high probability com impacto fatal/critical."
+      }
+    },
+    "score_before_risk": 55,
+    "score_final": 25,
+    "status": "NO-GO",
+    "confidence": "high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Lawfare e censura prévia podem bloquear a obra antes da estreia",
+      "Casos sub judice elevam risco de difamação ao narrar como 'golpe' sem condenação final",
+      "Fadiga narrativa por cobertura gratuita já extensa",
+      "Baixa chance de insiders por NDAs e medo de retaliação",
+      "Custo de seguro E&O potencialmente proibitivo",
+      "Risco de responsabilidade por exposição de vítimas com processos em curso"
+    ],
+    "viability_response": [
+      "Risco de lawfare é aceito como não mitigável no formato atual focado no fundador.",
+      "Para reduzir risco sub judice seria necessário trocar tese acusatória por narrativa estritamente factual e menos comercial.",
+      "Fadiga de mercado só seria mitigada com material exclusivo robusto, não comprovado neste estágio.",
+      "Sem insiders verificáveis, a diferenciação editorial fica fraca e compromete produto premium.",
+      "Pressão de E&O + jurídico corrói a margem e derruba viabilidade financeira.",
+      "Exposição de vítimas exige protocolo jurídico rígido; sem isso, risco processual adicional permanece alto."
+    ],
+    "remaining_risks": [
+      "Bloqueio judicial durante produção/distribuição",
+      "Estouro de orçamento por litígios e compliance",
+      "Perda de atratividade caso o conteúdo precise ser excessivamente neutro para segurança legal"
+    ]
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "action": "Não executar o documentário no formato atual; arquivar a ideia como proposta focada no fundador e sem blindagem viável.",
+    "reasoning": "Mesmo com dor social real e potencial narrativo, o risco jurídico-econômico domina a equação. O custo de estar errado é alto (liminares, processos, possível veto de distribuição) e o upside incremental não compensa no recorte atual.",
+    "next_steps": [
+      "Arquivar esta versão da ideia como NO-GO no pipeline.",
+      "Se quiser insistir no tema, abrir novo briefing com recorte setorial (crise de startups) e não personalista.",
+      "Obter parecer jurídico formal (mídia/entretenimento) antes de qualquer novo desenvolvimento.",
+      "Só reavaliar quando houver maior consolidação judicial dos fatos e evidência de acesso exclusivo relevante."
+    ],
+    "risks_to_monitor": [
+      "Mudanças relevantes no status judicial dos casos principais",
+      "Viabilidade real de cobertura E&O para projeto equivalente",
+      "Acesso comprovável a fontes e documentos inéditos"
+    ],
+    "pivot_triggers": [
+      "Se houver trânsito em julgado de núcleos críticos + parecer jurídico favorável, reavaliar para CONDITIONAL GO",
+      "Se surgir acesso exclusivo forte (documentos/fontes) com segurança legal, redesenhar proposta e reiniciar pipeline"
+    ]
+  },
+  "timestamp": "2026-02-10T10:38:00-03:00"
+}

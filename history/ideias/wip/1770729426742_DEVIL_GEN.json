@@ -1,0 +1,62 @@
+{
+  "idea_name": "Documentário True Crime: Caso Hurb e João Ricardo Mendes",
+  "failure_scenarios": [
+    {
+      "scenario": "Lawfare e Censura Prévia (Suicídio Jurídico)",
+      "category": "timing",
+      "description": "A produção será enterrada em liminares antes de chegar ao primeiro corte. Diferente de crimes de sangue com réus condenados, o caso Hurb envolve disputas financeiras e 'má gestão' ainda sub judice. João Ricardo Mendes é vivo, agressivo e altamente litigioso. O judiciário brasileiro tem um histórico punitivo contra obras que 'pré-julgam' figuras públicas sem trânsito em julgado, permitindo a suspensão da exibição baseada no 'direito à imagem' e 'presunção de inocência'.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "O histórico de Mendes inclui vazar dados de clientes e xingar autoridades em lives. Ele não hesitará em usar o lawfare como retaliação. Caso similar: O documentário sobre o 'Caso Escola Base' e a censura da biografia de Roberto Carlos mostram a força do judiciário em travar obras sobre pessoas vivas.",
+      "mitigation": "Esperar o trânsito em julgado de todas as condenações criminais (previsão: 2029+) ou focar 100% no relato das vítimas sem citar o nome do fundador (o que mataria o valor comercial da obra)."
+    },
+    {
+      "scenario": "Fadiga Narrativa por Exaustão Gratuita",
+      "category": "market",
+      "description": "O público já assistiu a esse documentário de graça no YouTube. Canais de finanças (Tiago Reis/Suno), tecnologia e direito já dissecaram a Hurb, a ApetreXo e os surtos de Mendes com profundidade investigativa. O mercado de streaming (Netflix/Globoplay) está reduzindo orçamentos para 'Scam True Crimes' corporativos porque a audiência consome esses temas como notícia rápida, não como entretenimento de catálogo com valor de rewatch.",
+      "probability": "high",
+      "impact": "critical",
+      "evidence": "Canais como 'O Primo Rico' e portais como 'G1' já esgotaram a linha do tempo do caso. O documentário 'Eike - Tudo ou Nada' (2022) teve recepção morna porque o tema já estava exaurido pela mídia diária. O CAC (Custo de Aquisição de Cliente) para um tema de 'estelionato corporativo' é muito mais alto do que para 'crimes passionais' no Brasil.",
+      "mitigation": "Obter acesso exclusivo a documentos de auditoria interna nunca vistos ou uma entrevista inédita com o próprio João Ricardo (hipótese de alto risco físico e jurídico)."
+    },
+    {
+      "scenario": "O Paredão de NDAs e a Blacklist de Startups",
+      "category": "execution",
+      "description": "Você não conseguirá depoimentos reais dos 'insiders'. Ex-diretores, funcionários-chave e investidores de Venture Capital estão amarrados por acordos de confidencialidade (NDAs) leoninos. No ecossistema de startups brasileiro, falar sobre fraudes internas é suicídio profissional. Sem as vozes que estavam 'na sala onde aconteceu', o doc será apenas uma colagem de matérias de jornal requentadas.",
+      "probability": "high",
+      "impact": "moderate",
+      "evidence": "Diferente dos EUA (caso Theranos/Elizabeth Holmes), o Brasil não possui leis robustas de proteção a 'whistleblowers' corporativos. No caso Hurb, o silêncio dos ex-executivos tem sido absoluto por medo de responsabilidade solidária nas dívidas de R$ 100M+.",
+      "mitigation": "Oferecer proteção jurídica e anonimato total para fontes, o que encarece o seguro de produção (Errors & Omissions) para níveis inviáveis."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Custo de Seguro E&O (Errors & Omissions) Proibitivo",
+      "why_angel_missed": "Seguradoras recusam cobertura ou cobram prêmios astronômicos para projetos que visam alvos vivos com histórico de instabilidade e ameaças. Sem esse seguro, nenhuma plataforma de streaming assina a distribuição."
+    },
+    {
+      "risk": "Responsabilidade Solidária por Exposição de Vítimas",
+      "why_angel_missed": "Ao entrevistar vítimas com processos em curso, a produção pode ser acusada de interferir em provas judiciais ou 'contaminar testemunhas', abrindo brecha para a Hurb processar a própria produtora."
+    },
+    {
+      "risk": "Instabilidade Mental do Alvo como 'Válvula de Escape'",
+      "why_angel_missed": "Se Mendes for declarado inimputável ou utilizar teses de saúde mental (como já sinalizado pela defesa), o arco de 'vilão' colapsa para uma 'tragédia médica', matando o interesse do público de True Crime que busca punição."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "legal",
+      "description": "Risco iminente de danos morais coletivos e individuais. O custo jurídico de defesa durante os 12-24 meses de produção pode superar o orçamento de captação da obra.",
+      "is_absolute": true
+    },
+    {
+      "type": "economic",
+      "description": "ROI Negativo: O custo de uma produção de alto nível para competir com investigações gratuitas de YouTube, somado ao risco de exibição proibida, torna o projeto financeiramente irracional.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": "O projeto é um campo minado jurídico disfarçado de oportunidade editorial. Você está propondo lucrar com um escândalo que ainda sangra, contra um alvo que provou não ter nada a perder (preso por furto de arte em 2025) e que ataca agressivamente seus críticos. Sem condenações finais, qualquer afirmação de 'golpe' é difamação criminalizável no Brasil. É uma ideia que vai morrer na mesa dos advogados antes mesmo da primeira diária de gravação.",
+  "risk_score": 92,
+  "status": "FAIL",
+  "timestamp": "2026-02-10T14:42:15Z"
+}

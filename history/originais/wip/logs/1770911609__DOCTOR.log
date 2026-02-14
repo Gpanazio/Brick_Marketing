@@ -1,0 +1,408 @@
+{
+  "runId": "6840bbd2-9382-4014-aad8-988ba30d35f1",
+  "status": "ok",
+  "summary": "completed",
+  "result": {
+    "payloads": [
+      {
+        "text": "{\n  \"titulo_projeto\": \"Pitada de Brasil - Segunda Temporada\",\n  \"contexto_exibicao\": \"Série de pílulas de doc/entretenimento culinário para exibição dentro do Domingo Espetacular (Record), voltada para a família brasileira no domingo à noite. Conteúdo leve, bem-humorado, de alto apelo visual e fácil compreensão, com ritmo de revista eletrônica e potencial de recortes curtos para redes.\",\n  \"analise_temporada\": {\n    \"tese_central\": \"O Brasil pega qualquer comida (ou tradição) e transforma em espetáculo de exagero — não por falta de respeito, mas por criatividade, fartura e vontade de surpreender.\",\n    \"arco_dramatico\": \"Os episódios são majoritariamente independentes, mas podem ganhar progressão clara se organizados como uma escalada de 'níveis de exagero' (do improviso de rua ao 'chefão' food porn), culminando no especial de Natal como apoteose.\",\n    \"tom_geral\": \"Humor celebratório + curiosidade documental (zero julgamento), com linguagem pop, cortes rápidos e trilha leve; 'brasilidade' como punchline afetivo.\",\n    \"ponto_forte_serie\": \"Altíssimo apelo visual e imediato (comida 'impossível'), formato curto que encaixa bem no Domingo Espetacular e permite viralização por trechos.\",\n    \"ponto_fraco_serie\": \"Risco de virar 'compilado de internet': repetição de estrutura (texto + 3 itens) sem tensão/drama interno; pouca conexão emocional com pessoas e pouca diferenciação entre episódios (todos viram 'mais um exagero').\",\n    \"sugestao_estrutural\": \"Adicionar um fio condutor fixo e barato: um/a host com bordões + uma régua visual ('Termômetro do Exagero' de 1 a 5) e um quadro final obrigatório ('Final Boss') em todo episódio. Isso cria identidade, ritmo e expectativa, sem aumentar muito logística — e dá gancho para recaps, chamadas e redes.\"\n  },\n  \"episodios\": [\n    {\n      \"numero\": 1,\n      \"titulo\": \"Espetinho Brasileiro\",\n      \"itens_apresentados\": [\n        \"Espetinho doce com salgado (misturas improváveis)\",\n        \"Queijo com chocolate no palito\",\n        \"Sobremesas no palito (brigadeiro, brownie, frutas com cobertura)\"\n      ],\n      \"o_que_funciona\": \"O tema é imediatamente reconhecível e 'popular': espetinho é rua, é Brasil, é domingo à noite sem complicação. Visualmente, o palito permite uma mise-en-scène divertida (montagem, repetição, variedade de cores) e rende reações espontâneas de quem prepara e de quem come. A mistura doce/salgado já carrega surpresa e humor sem precisar forçar narração.\",\n      \"o_que_melhorar\": \"Como episódio de abertura, ele precisa estabelecer a 'nova tese' da temporada (exagero/transformação) e não só listar variações. O terceiro item pode virar apenas 'mais uma sobremesa', perdendo escalada; falta um 'chefão' claramente mais absurdo que os anteriores. Também pode aprofundar um pouco a persona do vendedor/estabelecimento para criar afeto e não só comida.\",\n      \"sugestao_concreta\": \"Abrir com um cold open de 15–20s do 'espetinho mais absurdo do ep' (o Final Boss), voltar para o começo e concluir com a entrega desse item + a régua 'Termômetro do Exagero' dando nota final, com reação do criador.\",\n      \"potencial_viral\": \"medio\",\n      \"nota_episodio\": 7.8\n    },\n    {\n      \"numero\": 2,\n      \"titulo\": \"Só um Pedacinho\",\n      \"itens_apresentados\": [\n        \"Fatias gigantes (pizza/bolo/torta em tamanho 'monstro')\",\n        \"Porções que não cabem na mão (sanduíches e 'torres')\",\n        \"Recordes e desafios de tamanho (o 'maior do Brasil'/'maior da cidade')\"\n      ],\n      \"o_que_funciona\": \"O episódio conversa direto com o humor brasileiro da 'fartura' e com a linguagem de internet (tamanho como punchline). O apelo visual é forte porque escala se enxerga na hora: mãos, régua, balança, comparação com objetos. Também é um tema que permite captação dinâmica (cozinha, corte, montagem, entrega, reação de clientes).\",\n      \"o_que_melhorar\": \"Sem um recorte claro, 'tamanho' pode ficar genérico e repetir o mesmo beat três vezes ('é grande'). O item de recorde/desafio pode virar informação solta se não houver uma mini-tensão (vai acabar? quantos minutos? quantas pessoas?). Falta um elemento humano recorrente: alguém tentando, alguém 'defendendo' a loucura, alguém que diga por que isso vende.\",\n      \"sugestao_concreta\": \"Incluir um micro-desafio fixo e barato: 'Medida Brasil' (peso/altura/quantas mãos) + uma tentativa rápida de 2 minutos com um convidado local (cliente ou funcionário), para criar tensão e payoff no terceiro item.\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.3\n    },\n    {\n      \"numero\": 3,\n      \"titulo\": \"Embarcações de Açaí\",\n      \"itens_apresentados\": [\n        \"Açaí salgado (uso tradicional do Norte, com peixe/camarão/farinha)\",\n        \"Barcas gigantes de açaí (versão 'sorvete' com toppings)\",\n        \"Pastel/derivados de açaí (pastel de açaí e variações)\"\n      ],\n      \"o_que_funciona\": \"Aqui existe uma virada de 'história': o açaí tem duas identidades no Brasil, o que gera contraste real e curioso (não é só exagero). Visualmente, açaí é cor, textura e toppings — ótimo para macro e slow motion. O choque 'açaí salgado x açaí sobremesa' dá humor e surpresa sem soar julgador.\",\n      \"o_que_melhorar\": \"O risco é virar confuso se o episódio pular entre tradição e 'food porn' sem organizar. O pastel pode parecer desconectado do eixo 'embarcações' se não for apresentado como evolução/derivação lógica (do açaí no prato para açaí em qualquer recipiente/massa). Também pede cuidado de linguagem para não estereotipar Norte vs Sudeste; precisa ser afetivo e informativo.\",\n      \"sugestao_concreta\": \"Estruturar como 'duas origens + uma mutação': bloco 1 (raiz salgada, 60–90s com contexto simples), bloco 2 (barcas e toppings com régua de exagero), bloco 3 (a mutação mais inesperada: pastel), amarrando com a pergunta fixa do host: 'Onde o açaí ainda vai caber?'\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.1\n    },\n    {\n      \"numero\": 4,\n      \"titulo\": \"Borda da Pizza\",\n      \"itens_apresentados\": [\n        \"Borda de brownie (doce)\",\n        \"Borda pãozinho (mini pães/'pão de alho' na borda)\",\n        \"Borda de coxinha (salgado brasileiro fundindo com pizza)\"\n      ],\n      \"o_que_funciona\": \"O tema é inteligente porque é específico (a borda) e todo mundo entende: é um 'problema' da pizza que o Brasil resolveu com invenção. As variações dão um arco natural de escalada (do recheio clássico para o híbrido absurdo). Visualmente, a borda recheada corta bem na câmera e rende ASMR/'puxa'.\",\n      \"o_que_melhorar\": \"Pode cair na repetição de 'mostra a borda, corta, puxa, acabou' se não houver diferença de situação e personagem em cada item. O item 'borda pãozinho' precisa de uma justificativa clara para não parecer menos impactante entre brownie e coxinha. Falta uma 'regra do episódio' que crie expectativa: qual é a borda mais Brasil?\",\n      \"sugestao_concreta\": \"Criar um quadro fixo de 20s: 'Tribunal da Borda' — o host define o 'crime' (jogar borda fora) e cada item é apresentado como 'solução' com uma sentença final ('absolvido'/'condenado por excesso') sempre em tom de brincadeira.\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.0\n    },\n    {\n      \"numero\": 5,\n      \"titulo\": \"Hambúrguer\",\n      \"itens_apresentados\": [\n        \"Hambúrguer na marmita com 30 ingredientes\",\n        \"Piscina de cheddar (cheddar como 'cenografia')\",\n        \"Espetinho de carnes + hambúrguer (combo híbrido e 'overload')\"\n      ],\n      \"o_que_funciona\": \"Hambúrguer é linguagem universal e já vem com estética de 'food porn', perfeita para cortes rápidos no Domingo Espetacular. Os itens prometem exagero visual (camadas, queijo escorrendo, quantidade), o que gera humor e espanto na primeira olhada. Também permite boa captação de bastidores (chapa, montagem, fila, entrega).\",\n      \"o_que_melhorar\": \"O episódio corre risco de saturação porque o público já viu muito hambúrguer exagerado nas redes — precisa de diferenciação e história de bastidor para justificar por que estes são 'Pitadas' e não 'mais do mesmo'. A 'piscina de cheddar' pode virar um beat longo e viscoso sem payoff narrativo; e o 'espetinho de 40 carnes' precisa de clareza para não parecer outro produto aleatório.\",\n      \"sugestao_concreta\": \"Definir uma âncora de diferenciação por item: 1) 'marmita' (o formato), 2) 'cenografia' (a piscina), 3) 'híbrido brasileiro' (churrasco + burger). Em cada bloco, inserir uma única frase de 'por que isso vende' dita pelo dono (insight comercial) — rápido, mas humaniza e dá propósito.\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 7.6\n    },\n    {\n      \"numero\": 6,\n      \"titulo\": \"Strogonoff\",\n      \"itens_apresentados\": [\n        \"Strogonoff 'brasileiríssimo' com ketchup + batata palha\",\n        \"Torre/prato exagerado de strogonoff (porção monstra)\",\n        \"Xis-strogonoff ou burger de strogonoff (transformação em sanduíche)\"\n      ],\n      \"o_que_funciona\": \"É um tema com humor afetivo: strogonoff é 'comida de casa' no Brasil, então a audiência se identifica e ri com carinho. A transformação do prato 'fino' em comfort food com ketchup e batata palha traz o contraste cultural sem precisar voltar ao formato por países. A versão sanduíche é uma boa mutação, com visual claro e apetite.\",\n      \"o_que_melhorar\": \"Pode faltar impacto visual se os itens forem 'creme com frango' em variações parecidas; precisa de uma escalada bem marcada. O bloco do ketchup/batata palha é ótimo, mas pode virar opinião ('certo/errado') se a narração não for bem calibrada para zero julgamento. E o 'torre' precisa ter função: é só grande ou tem uma lógica brasileira por trás?\",\n      \"sugestao_concreta\": \"Usar um 'mapa de mutações' simples em GC (on-screen): Receita original → Brasilizou (ketchup/batata palha) → Mutação final (xis/burger). Isso dá arco claro, evita debate moral e organiza a escalada do episódio.\",\n      \"potencial_viral\": \"medio\",\n      \"nota_episodio\": 7.4\n    },\n    {\n      \"numero\": 7,\n      \"titulo\": \"Bolo Vulcão e Tsunami\",\n      \"itens_apresentados\": [\n        \"Bolo vulcão (cobertura que 'explode')\",\n        \"Bolo tsunami colorido (calda que desaba)\",\n        \"Bolo 'vestido'/escultural (confeitaria como fantasia)\"\n      ],\n      \"o_que_funciona\": \"É um episódio muito televisivo: movimento de calda é payoff perfeito para teaser e para abrir bloco do Domingo Espetacular. Tem espetáculo, cor, textura e uma ação central (o momento do 'desastre controlado') que já cria mini-tensão e clímax. Também permite humor físico e reações do público/cliente.\",\n      \"o_que_melhorar\": \"Confeitaria pode ficar 'bonita demais' e perder o lado Brasil irreverente se tudo virar apenas técnica e estética. Os dois primeiros itens (vulcão e tsunami) podem ser muito semelhantes de linguagem (caiu calda) e canibalizar um ao outro. O terceiro item precisa ser amarrado ao conceito de exagero (não só 'um bolo bonito').\",\n      \"sugestao_concreta\": \"Diferenciar claramente os beats: 1) 'Explosão' (vulcão) com corte rápido, 2) 'Desabamento' (tsunami) com slow e reação, 3) 'Fantasia' (bolo vestido) com mini-bastidor de montagem + um 'reveal' final. E fechar com o 'momento replay' obrigatório (2 replays curtos do clímax) para assinatura.\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.6\n    },\n    {\n      \"numero\": 8,\n      \"titulo\": \"Croitudo\",\n      \"itens_apresentados\": [\n        \"Croissonho (croissant com cara de 'pãozinho' brasileiro)\",\n        \"Croiburguer (croissant como pão de hambúrguer)\",\n        \"Crookie (croissant + cookie)\"\n      ],\n      \"o_que_funciona\": \"O episódio tem uma boa sacada de 'abrasileirar o chique': croissant é símbolo de sofisticação e o Brasil transforma em lanche/pop. Os nomes (croissonho, crookie) têm musicalidade e humor; dá para brincar em texto/GC sem esforço. Visualmente, folhado e recheios rendem boas imagens de corte e puxada.\",\n      \"o_que_melhorar\": \"O risco é parecer um tema pequeno demais para sustentar 8 minutos se não houver variedade de ambientes e pessoas. Dois itens são 'pão com recheio', e o terceiro pode soar trend de rede social — precisa de um gancho que justifique por que isso virou febre aqui. Também falta 'cara de Brasil': se filmar em padaria gourmet genérica, perde identidade.\",\n      \"sugestao_concreta\": \"Escolher um único lugar/personagem forte (padaria/confeitaria) e construir o episódio como 'linha de produção das mutações': começar no croissant base, mostrar a equipe inventando a versão do dia e terminar com o item 'mais polêmico' (crookie) testado por clientes na fila.\",\n      \"potencial_viral\": \"medio\",\n      \"nota_episodio\": 7.2\n    },\n    {\n      \"numero\": 9,\n      \"titulo\": \"Tapioca Nada Fit\",\n      \"itens_apresentados\": [\n        \"Tapioca gigante (tamanho família)\",\n        \"Tapioca com 40 recheios (overload)\",\n        \"Tapidog (hot dog na tapioca)\"\n      ],\n      \"o_que_funciona\": \"O título já é piada pronta (quebra de expectativa do 'fit') e conversa com a audiência sem precisar explicar. Tapioca é muito popular e tem raiz brasileira, então a transformação é mais 'nossa' do que importada — bom para o reposicionamento da temporada. Visualmente, os recheios e a montagem em chapa geram ritmo e variedade.\",\n      \"o_que_melhorar\": \"Precisa cuidado para não soar como 'zombaria' de tradição indígena; a celebração tem que ser respeitosa e informada. Os itens 1 e 2 são próximos (grande vs muito recheio) e podem ficar redundantes se não houver uma diferença de proposta (tamanho para dividir vs exagero individual). O tapidog é ótimo, mas precisa ser tratado como mutação final com clímax.\",\n      \"sugestao_concreta\": \"Inserir um 'ponto de respeito' de 20–30s logo no começo (origem/uso tradicional em uma frase + imagem de referência) e depois assumir a linha 'o Brasil reinventa sem parar'. Em seguida, organizar os itens como: 'para dividir' (gigante), 'para chocar' (40 recheios), 'para rir' (tapidog) com Final Boss no hot dog.\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.0\n    },\n    {\n      \"numero\": 10,\n      \"titulo\": \"Pão de Queijo\",\n      \"itens_apresentados\": [\n        \"Pão de queijo recheado de parmegiana\",\n        \"Pão de queijo com hambúrguer (sanduíche)\",\n        \"'Churros' de pão de queijo (formato e cobertura salgada/doce)\"\n      ],\n      \"o_que_funciona\": \"É um clássico nacional com apelo transversal: criança, adulto, avó — todo mundo tem relação com pão de queijo. As mutações propostas são bem 'Brasil': rechear, transformar em sanduíche e brincar com formato. O potencial de cheiro/sabor imaginado é enorme, e o visual (puxar queijo, recheio, formato de churros) rende clipes fortes.\",\n      \"o_que_melhorar\": \"Por ser muito amado, o episódio precisa de 'fator novidade' real para não parecer só variação de padaria. O item 'parmegiana' e o 'hambúrguer' podem cair na mesma lógica (recheio pesado), então a diferenciação tem que vir do contexto e do personagem. O 'churros de pão de queijo' é o item mais inesperado e deveria ser guardado para clímax — se aparecer cedo, o resto perde força.\",\n      \"sugestao_concreta\": \"Fazer do 'churros de pão de queijo' o Final Boss obrigatório e construir suspense (aparecer em flashes no teaser e só revelar completo no fim). No meio, destacar uma história curta de Minas/afeto (1 depoimento do dono/cliente sobre 'cheiro de casa') para conexão emocional.\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.4\n    },\n    {\n      \"numero\": 11,\n      \"titulo\": \"Especial: Pitada de Natal\",\n      \"itens_apresentados\": [\n        \"Panetone de churrasco\",\n        \"Rabanada gourmet (recheada/coberturas)\",\n        \"Panetone de açaí (mutação tropical)\"\n      ],\n      \"o_que_funciona\": \"Especial tem cara de evento e encaixa perfeitamente na lógica do Domingo Espetacular (sazonalidade + serviço + curiosidade). Panetone é assunto nacional em dezembro, e 'panetone de churrasco' é manchete instantânea; rende humor e debate de mesa (sem briga). Rabanada dá beleza e textura (fritura, açúcar, recheios) e permite captação calorosa, familiar.\",\n      \"o_que_melhorar\": \"O especial corre risco de virar apenas 'lista de sabores' se não tiver um mini-arco natalino (tradição vs reinvenção) e um fechamento emocional. 'Panetone de açaí' pode parecer aleatório se não houver a amarra temática da temporada (Brasil encaixa tudo em tudo). Também pede atenção de produção: dezembro é corrido, então precisa de logística simples e locações acessíveis.\",\n      \"sugestao_concreta\": \"Estruturar como 'Ceia do Exagero': abrir com a mesa tradicional (imagens/GC), apresentar cada item como 'convidado inesperado da ceia', e fechar com o host montando uma mini-ceia com os três + uma frase de 'brinde' que vire assinatura da temporada ('Aqui, tradição também vira invenção').\",\n      \"potencial_viral\": \"alto\",\n      \"nota_episodio\": 8.7\n    }\n  ],\n  \"logline_reescrita\": \"Na 2ª temporada de Pitada de Brasil, a gente viaja pelo país (sem sair do prato) para descobrir como o brasileiro transforma qualquer clássico — de pizza a panetone — em um espetáculo de exagero, criatividade e humor: do recheio impossível ao 'Final Boss' que só podia ter nascido aqui.\",\n  \"formato_sugerido\": {\n    \"duracao_ideal\": \"8–10 minutos (pensado para bloco do Domingo Espetacular + versões recortadas de 45–90s para redes)\",\n    \"estrutura_episodio\": \"1) Cold open (15–20s) com o 'Final Boss' + promessa do tema. 2) Tese em 1 frase + 'Termômetro do Exagero' (GC). 3) Item 1 (raiz/normal) com personagem e contexto curto. 4) Item 2 (subida) com contraste e gag visual. 5) Item 3 = Final Boss (clímax) com reveal, reação e replay curto. 6) Fechamento com bordão + nota no Termômetro + gancho do próximo ep.\",\n    \"elemento_faltante\": \"Host/apresentador fixo (pode ser off + aparições pontuais) com bordões e um quadro recorrente ('Termômetro do Exagero' / 'Tribunal do Exagero') para dar identidade, ritmo e assinatura de temporada sem encarecer a produção.\"\n  },\n  \"status\": \"DIAGNOSED\",\n  \"timestamp\": \"2026-02-12T13:18:00-03:00\"\n}",
+        "mediaUrl": null
+      }
+    ],
+    "meta": {
+      "durationMs": 131654,
+      "agentMeta": {
+        "sessionId": "2a5f4b02-6202-4787-a340-c20929497192",
+        "provider": "openai-codex",
+        "model": "gpt-5.2",
+        "usage": {
+          "input": 40610,
+          "output": 5782,
+          "cacheRead": 114816,
+          "total": 161208
+        }
+      },
+      "aborted": false,
+      "systemPromptReport": {
+        "source": "run",
+        "generatedAt": 1770913124002,
+        "sessionId": "2a5f4b02-6202-4787-a340-c20929497192",
+        "sessionKey": "agent:gpt52:main",
+        "provider": "openai-codex",
+        "model": "gpt-5.2",
+        "workspaceDir": "/Users/gabrielpanazio/projects/Brick_Marketing",
+        "bootstrapMaxChars": 20000,
+        "sandbox": {
+          "mode": "off",
+          "sandboxed": false
+        },
+        "systemPrompt": {
+          "chars": 33589,
+          "projectContextChars": 13998,
+          "nonProjectContextChars": 19591
+        },
+        "injectedWorkspaceFiles": [
+          {
+            "name": "AGENTS.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/AGENTS.md",
+            "missing": false,
+            "rawChars": 7804,
+            "injectedChars": 7804,
+            "truncated": false
+          },
+          {
+            "name": "SOUL.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/SOUL.md",
+            "missing": false,
+            "rawChars": 1664,
+            "injectedChars": 1664,
+            "truncated": false
+          },
+          {
+            "name": "TOOLS.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/TOOLS.md",
+            "missing": false,
+            "rawChars": 850,
+            "injectedChars": 850,
+            "truncated": false
+          },
+          {
+            "name": "IDENTITY.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/IDENTITY.md",
+            "missing": false,
+            "rawChars": 632,
+            "injectedChars": 632,
+            "truncated": false
+          },
+          {
+            "name": "USER.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/USER.md",
+            "missing": false,
+            "rawChars": 478,
+            "injectedChars": 478,
+            "truncated": false
+          },
+          {
+            "name": "HEARTBEAT.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/HEARTBEAT.md",
+            "missing": false,
+            "rawChars": 167,
+            "injectedChars": 167,
+            "truncated": false
+          },
+          {
+            "name": "BOOTSTRAP.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/BOOTSTRAP.md",
+            "missing": false,
+            "rawChars": 1449,
+            "injectedChars": 1449,
+            "truncated": false
+          },
+          {
+            "path": "SELF_IMPROVEMENT_REMINDER.md",
+            "rawChars": 616,
+            "injectedChars": 616,
+            "truncated": false
+          }
+        ],
+        "skills": {
+          "promptChars": 10972,
+          "entries": [
+            {
+              "name": "1password",
+              "blockChars": 348
+            },
+            {
+              "name": "apple-notes",
+              "blockChars": 375
+            },
+            {
+              "name": "apple-reminders",
+              "blockChars": 325
+            },
+            {
+              "name": "bear-notes",
+              "blockChars": 224
+            },
+            {
+              "name": "blogwatcher",
+              "blockChars": 243
+            },
+            {
+              "name": "blucli",
+              "blockChars": 224
+            },
+            {
+              "name": "camsnap",
+              "blockChars": 212
+            },
+            {
+              "name": "clawhub",
+              "blockChars": 432
+            },
+            {
+              "name": "coding-agent",
+              "blockChars": 279
+            },
+            {
+              "name": "eightctl",
+              "blockChars": 232
+            },
+            {
+              "name": "gemini",
+              "blockChars": 221
+            },
+            {
+              "name": "gifgrep",
+              "blockChars": 243
+            },
+            {
+              "name": "github",
+              "blockChars": 298
+            },
+            {
+              "name": "gog",
+              "blockChars": 232
+            },
+            {
+              "name": "goplaces",
+              "blockChars": 334
+            },
+            {
+              "name": "healthcheck",
+              "blockChars": 491
+            },
+            {
+              "name": "himalaya",
+              "blockChars": 383
+            },
+            {
+              "name": "imsg",
+              "blockChars": 222
+            },
+            {
+              "name": "local-places",
+              "blockChars": 260
+            },
+            {
+              "name": "mcporter",
+              "blockChars": 330
+            },
+            {
+              "name": "model-usage",
+              "blockChars": 463
+            },
+            {
+              "name": "nano-banana-pro",
+              "blockChars": 245
+            },
+            {
+              "name": "nano-pdf",
+              "blockChars": 234
+            },
+            {
+              "name": "obsidian",
+              "blockChars": 245
+            },
+            {
+              "name": "openai-whisper",
+              "blockChars": 233
+            },
+            {
+              "name": "openhue",
+              "blockChars": 218
+            },
+            {
+              "name": "ordercli",
+              "blockChars": 248
+            },
+            {
+              "name": "peekaboo",
+              "blockChars": 218
+            },
+            {
+              "name": "session-logs",
+              "blockChars": 253
+            },
+            {
+              "name": "skill-creator",
+              "blockChars": 296
+            },
+            {
+              "name": "songsee",
+              "blockChars": 251
+            },
+            {
+              "name": "sonoscli",
+              "blockChars": 225
+            },
+            {
+              "name": "summarize",
+              "blockChars": 296
+            },
+            {
+              "name": "things-mac",
+              "blockChars": 436
+            },
+            {
+              "name": "video-frames",
+              "blockChars": 229
+            },
+            {
+              "name": "wacli",
+              "blockChars": 277
+            },
+            {
+              "name": "weather",
+              "blockChars": 220
+            }
+          ]
+        },
+        "tools": {
+          "listChars": 1984,
+          "schemaChars": 14861,
+          "entries": [
+            {
+              "name": "read",
+              "summaryChars": 298,
+              "schemaChars": 392,
+              "propertiesCount": 4
+            },
+            {
+              "name": "edit",
+              "summaryChars": 129,
+              "schemaChars": 591,
+              "propertiesCount": 6
+            },
+            {
+              "name": "write",
+              "summaryChars": 127,
+              "schemaChars": 313,
+              "propertiesCount": 3
+            },
+            {
+              "name": "exec",
+              "summaryChars": 181,
+              "schemaChars": 1037,
+              "propertiesCount": 12
+            },
+            {
+              "name": "process",
+              "summaryChars": 85,
+              "schemaChars": 844,
+              "propertiesCount": 11
+            },
+            {
+              "name": "browser",
+              "summaryChars": 1251,
+              "schemaChars": 1869,
+              "propertiesCount": 28
+            },
+            {
+              "name": "canvas",
+              "summaryChars": 106,
+              "schemaChars": 661,
+              "propertiesCount": 18
+            },
+            {
+              "name": "nodes",
+              "summaryChars": 101,
+              "schemaChars": 1479,
+              "propertiesCount": 33
+            },
+            {
+              "name": "cron",
+              "summaryChars": 2444,
+              "schemaChars": 581,
+              "propertiesCount": 13
+            },
+            {
+              "name": "message",
+              "summaryChars": 110,
+              "schemaChars": 3921,
+              "propertiesCount": 84
+            },
+            {
+              "name": "tts",
+              "summaryChars": 129,
+              "schemaChars": 223,
+              "propertiesCount": 2
+            },
+            {
+              "name": "gateway",
+              "summaryChars": 225,
+              "schemaChars": 465,
+              "propertiesCount": 11
+            },
+            {
+              "name": "agents_list",
+              "summaryChars": 72,
+              "schemaChars": 33,
+              "propertiesCount": 0
+            },
+            {
+              "name": "sessions_list",
+              "summaryChars": 54,
+              "schemaChars": 176,
+              "propertiesCount": 4
+            },
+            {
+              "name": "sessions_history",
+              "summaryChars": 36,
+              "schemaChars": 149,
+              "propertiesCount": 3
+            },
+            {
+              "name": "sessions_send",
+              "summaryChars": 84,
+              "schemaChars": 203,
+              "propertiesCount": 5
+            },
+            {
+              "name": "sessions_spawn",
+              "summaryChars": 107,
+              "schemaChars": 312,
+              "propertiesCount": 8
+            },
+            {
+              "name": "session_status",
+              "summaryChars": 207,
+              "schemaChars": 89,
+              "propertiesCount": 2
+            },
+            {
+              "name": "web_search",
+              "summaryChars": 175,
+              "schemaChars": 733,
+              "propertiesCount": 6
+            },
+            {
+              "name": "web_fetch",
+              "summaryChars": 129,
+              "schemaChars": 360,
+              "propertiesCount": 3
+            },
+            {
+              "name": "image",
+              "summaryChars": 184,
+              "schemaChars": 163,
+              "propertiesCount": 4
+            },
+            {
+              "name": "memory_search",
+              "summaryChars": 235,
+              "schemaChars": 139,
+              "propertiesCount": 3
+            },
+            {
+              "name": "memory_get",
+              "summaryChars": 151,
+              "schemaChars": 128,
+              "propertiesCount": 3
+            }
+          ]
+        }
+      }
+    }
+  }
+}

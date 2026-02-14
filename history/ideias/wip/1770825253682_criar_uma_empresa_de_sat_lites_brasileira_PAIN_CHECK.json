@@ -1,0 +1,22 @@
+{
+  "idea_name": "Criar uma empresa de satélites brasileira",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "A dependência brasileira de tecnologia aeroespacial estrangeira para comunicações, monitoramento ambiental e defesa nacional é um problema estratégico real e de alto impacto financeiro. O mercado de 'New Space' (pequenos satélites) reduziu barreiras de entrada, tornando a análise de viabilidade de uma empresa nacional extremamente relevante e acionável para reduzir a evasão de divisas e aumentar a soberania tecnológica."
+  },
+  "evidence": [
+    "O Brasil depende majoritariamente de infraestrutura estrangeira para monitoramento da Amazônia e agronegócio.",
+    "Altos custos de aluguel de transponders para comunicações militares e governamentais.",
+    "Crescente mercado global de dados geoespaciais e conectividade via satélite."
+  ],
+  "red_flags": [
+    "Altíssimo investimento inicial (CAPEX) e longo ciclo de retorno.",
+    "Riscos regulatórios internacionais e complexidade tecnológica extrema.",
+    "Dependência de infraestrutura de lançamento (Centro de Alcântara) que ainda busca maturidade comercial."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-11T15:59:00Z"
+}

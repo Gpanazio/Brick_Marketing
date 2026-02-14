@@ -1,0 +1,408 @@
+{
+  "runId": "7c0fb3ba-e344-4c4c-afbf-7dc877c2804a",
+  "status": "ok",
+  "summary": "completed",
+  "result": {
+    "payloads": [
+      {
+        "text": "{\n  \"vencedor\": \"C\",\n  \"modelo_vencedor\": \"sonnet\",\n  \"pontos_fortes\": [\n    \"Hook forte e técnico, ancorado em dado validado (97,9% pretendem ampliar uso de IA)\",\n    \"Posiciona o War Room claramente como sistema de produção sintética sob direção humana, não como fábrica de rascunhos\",\n    \"Conecta a dor real do target (slop, estética plastificada, perda de craft) com a resposta da Brick (pipeline multi-agente curado)\",\n    \"Tom Cold Director consistente, sem misticismo de prompt nem corporativês\",\n    \"Boa integração de BRICK/MASON como dupla visão/sistema\"\n  ],\n  \"pontos_fracos\": [\n    \"Versão original era explicativa demais, flertando com texto de artigo técnico, não post\",\n    \"CTA usava placeholder genérico ([LINK]) e não deixava claro o tipo de projeto ideal para o War Room\"\n  ],\n  \"alteracoes_aplicadas\": [\n    \"Enxuguei o MÉDIO para focar em um arco claro: dado → problema (Model Collapse/slop) → oferta War Room\",\n    \"Ajustei STORYTELLING para reduzir redundância e explicação excessiva, mantendo o foco em direção técnica e pipeline curado\",\n    \"Padronizei a dualidade BRICK/MASON com logs mais objetivos\",\n    \"Substituí o placeholder de CTA por uma URL concreta (brick.ai/war-room) e explicitei o uso ideal (key visuals e filmes)\"\n  ],\n  \"copy_revisada\": \"# COPY VERSION: C\\n\\n## CURTO\\n97,9% dos profissionais de marketing brasileiros pretendem ampliar o uso de IA em 2025. O erro é acreditar que a tecnologia substitui a visão.\\nO War Room da Brick AI não é fábrica de rascunhos; é um sistema de produção sintética que entrega padrão cinematográfico de vídeos de R$ 80 mil com latência operacional mínima. Direção técnica acima de palavras mágicas.\\n\\n## MÉDIO\\nO mercado de alto craft opera com orçamentos entre R$ 20k e R$ 80k por filme. Quando a escala exige volume, a primeira vítima costuma ser o craft: entra o \\\"prompt\\\", saem a unidade estética, o grão e a coerência de linguagem.\\n\\nAo mesmo tempo, 97,9% dos profissionais de marketing já planejam ampliar o uso de IA (HubSpot / Meio & Mensagem). Sem direção, isso é receita para mais slop — não para mais filme.\\n\\nO War Room foi projetado exatamente para esse ponto.\\n\\nNão somos operadores de ferramenta. Somos diretores de um motor de visão multi-agente: pesquisa, claims, conceito, copy, crítica e Brand Guardian trabalhando em fluxo orquestrado, ancorado em 10 anos de set. A IA renderiza. A Brick decide.\\n\\n## STORYTELLING\\n[BRICK] A textura e o grão não vêm da ferramenta. Vêm da intenção.\\n[MASON] LOG: job_id=WAR_ROOM_LAUNCH\\n[MASON] LOG: agents=research,claims,concept,copy,critic,brand_guardian\\n\\nO digital tentou emular a película. Agora o sintético tenta emular o digital. O ceticismo atual com a IA é sintoma de um erro simples: delegar visão para quem só sabe gerar variação. O resultado é sempre o mesmo frame médio, com a mesma luz genérica, repetido até a exaustão.\\n\\nO War Room foi desenhado para quem tem fadiga de fragmento.\\n\\n[BRICK] A direção estabelece o eixo: tom, limites de craft, gramática visual.\\n[MASON] LOG: dataset=curated_only\\n[MASON] LOG: slop_block=active\\n\\nAgentes especializados processam o briefing como uma sala de roteiristas, produtores e montadores: pesquisa, validação de dados, geração de ângulos, escrita, crítica, tudo em ciclo controlado até a peça passar no padrão Cold Director: zero clichê, zero emoji, zero promessa vazia.\\n\\nO resultado não é \\\"conteúdo de IA\\\". É linha editorial dirigida, com cadência que um time humano isolado não acompanha. Um sistema que escala o olhar do diretor em vez de substituí-lo.\\n\\n## CTA SUGERIDO\\nQuer uma War Room operando como sala de direção sintética para o seu próximo key visual ou filme?\\nAcesse **brick.ai/war-room** e agende uma sessão de direção para desenhar seu pipeline multi-agente.\",\n  \"veredito\": \"APPROVED\"\n}",
+        "mediaUrl": null
+      }
+    ],
+    "meta": {
+      "durationMs": 13031,
+      "agentMeta": {
+        "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
+        "provider": "openai-codex",
+        "model": "gpt-5.1",
+        "usage": {
+          "input": 4344,
+          "output": 1324,
+          "cacheRead": 194944,
+          "total": 200612
+        }
+      },
+      "aborted": false,
+      "systemPromptReport": {
+        "source": "run",
+        "generatedAt": 1770825825761,
+        "sessionId": "brick-mkt-1770293201226_anti_ia-critic",
+        "sessionKey": "agent:gpt:main",
+        "provider": "openai-codex",
+        "model": "gpt-5.1",
+        "workspaceDir": "/Users/gabrielpanazio/projects/Brick_Marketing",
+        "bootstrapMaxChars": 20000,
+        "sandbox": {
+          "mode": "off",
+          "sandboxed": false
+        },
+        "systemPrompt": {
+          "chars": 33161,
+          "projectContextChars": 13998,
+          "nonProjectContextChars": 19163
+        },
+        "injectedWorkspaceFiles": [
+          {
+            "name": "AGENTS.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/AGENTS.md",
+            "missing": false,
+            "rawChars": 7804,
+            "injectedChars": 7804,
+            "truncated": false
+          },
+          {
+            "name": "SOUL.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/SOUL.md",
+            "missing": false,
+            "rawChars": 1664,
+            "injectedChars": 1664,
+            "truncated": false
+          },
+          {
+            "name": "TOOLS.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/TOOLS.md",
+            "missing": false,
+            "rawChars": 850,
+            "injectedChars": 850,
+            "truncated": false
+          },
+          {
+            "name": "IDENTITY.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/IDENTITY.md",
+            "missing": false,
+            "rawChars": 632,
+            "injectedChars": 632,
+            "truncated": false
+          },
+          {
+            "name": "USER.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/USER.md",
+            "missing": false,
+            "rawChars": 478,
+            "injectedChars": 478,
+            "truncated": false
+          },
+          {
+            "name": "HEARTBEAT.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/HEARTBEAT.md",
+            "missing": false,
+            "rawChars": 167,
+            "injectedChars": 167,
+            "truncated": false
+          },
+          {
+            "name": "BOOTSTRAP.md",
+            "path": "/Users/gabrielpanazio/projects/Brick_Marketing/BOOTSTRAP.md",
+            "missing": false,
+            "rawChars": 1449,
+            "injectedChars": 1449,
+            "truncated": false
+          },
+          {
+            "path": "SELF_IMPROVEMENT_REMINDER.md",
+            "rawChars": 616,
+            "injectedChars": 616,
+            "truncated": false
+          }
+        ],
+        "skills": {
+          "promptChars": 10576,
+          "entries": [
+            {
+              "name": "1password",
+              "blockChars": 348
+            },
+            {
+              "name": "apple-notes",
+              "blockChars": 375
+            },
+            {
+              "name": "apple-reminders",
+              "blockChars": 325
+            },
+            {
+              "name": "bear-notes",
+              "blockChars": 224
+            },
+            {
+              "name": "bird",
+              "blockChars": 232
+            },
+            {
+              "name": "blogwatcher",
+              "blockChars": 243
+            },
+            {
+              "name": "blucli",
+              "blockChars": 224
+            },
+            {
+              "name": "bluebubbles",
+              "blockChars": 295
+            },
+            {
+              "name": "camsnap",
+              "blockChars": 212
+            },
+            {
+              "name": "coding-agent",
+              "blockChars": 279
+            },
+            {
+              "name": "eightctl",
+              "blockChars": 232
+            },
+            {
+              "name": "gemini",
+              "blockChars": 221
+            },
+            {
+              "name": "gifgrep",
+              "blockChars": 243
+            },
+            {
+              "name": "github",
+              "blockChars": 298
+            },
+            {
+              "name": "gog",
+              "blockChars": 232
+            },
+            {
+              "name": "goplaces",
+              "blockChars": 334
+            },
+            {
+              "name": "himalaya",
+              "blockChars": 383
+            },
+            {
+              "name": "imsg",
+              "blockChars": 222
+            },
+            {
+              "name": "local-places",
+              "blockChars": 260
+            },
+            {
+              "name": "mcporter",
+              "blockChars": 330
+            },
+            {
+              "name": "model-usage",
+              "blockChars": 463
+            },
+            {
+              "name": "nano-banana-pro",
+              "blockChars": 245
+            },
+            {
+              "name": "nano-pdf",
+              "blockChars": 234
+            },
+            {
+              "name": "obsidian",
+              "blockChars": 245
+            },
+            {
+              "name": "openai-whisper",
+              "blockChars": 233
+            },
+            {
+              "name": "openhue",
+              "blockChars": 218
+            },
+            {
+              "name": "ordercli",
+              "blockChars": 248
+            },
+            {
+              "name": "peekaboo",
+              "blockChars": 218
+            },
+            {
+              "name": "session-logs",
+              "blockChars": 253
+            },
+            {
+              "name": "skill-creator",
+              "blockChars": 296
+            },
+            {
+              "name": "songsee",
+              "blockChars": 251
+            },
+            {
+              "name": "sonoscli",
+              "blockChars": 225
+            },
+            {
+              "name": "summarize",
+              "blockChars": 296
+            },
+            {
+              "name": "things-mac",
+              "blockChars": 436
+            },
+            {
+              "name": "video-frames",
+              "blockChars": 229
+            },
+            {
+              "name": "wacli",
+              "blockChars": 277
+            },
+            {
+              "name": "weather",
+              "blockChars": 220
+            }
+          ]
+        },
+        "tools": {
+          "listChars": 1984,
+          "schemaChars": 14861,
+          "entries": [
+            {
+              "name": "read",
+              "summaryChars": 298,
+              "schemaChars": 392,
+              "propertiesCount": 4
+            },
+            {
+              "name": "edit",
+              "summaryChars": 129,
+              "schemaChars": 591,
+              "propertiesCount": 6
+            },
+            {
+              "name": "write",
+              "summaryChars": 127,
+              "schemaChars": 313,
+              "propertiesCount": 3
+            },
+            {
+              "name": "exec",
+              "summaryChars": 181,
+              "schemaChars": 1037,
+              "propertiesCount": 12
+            },
+            {
+              "name": "process",
+              "summaryChars": 85,
+              "schemaChars": 844,
+              "propertiesCount": 11
+            },
+            {
+              "name": "browser",
+              "summaryChars": 1251,
+              "schemaChars": 1869,
+              "propertiesCount": 28
+            },
+            {
+              "name": "canvas",
+              "summaryChars": 106,
+              "schemaChars": 661,
+              "propertiesCount": 18
+            },
+            {
+              "name": "nodes",
+              "summaryChars": 101,
+              "schemaChars": 1479,
+              "propertiesCount": 33
+            },
+            {
+              "name": "cron",
+              "summaryChars": 2444,
+              "schemaChars": 581,
+              "propertiesCount": 13
+            },
+            {
+              "name": "message",
+              "summaryChars": 110,
+              "schemaChars": 3921,
+              "propertiesCount": 84
+            },
+            {
+              "name": "tts",
+              "summaryChars": 129,
+              "schemaChars": 223,
+              "propertiesCount": 2
+            },
+            {
+              "name": "gateway",
+              "summaryChars": 225,
+              "schemaChars": 465,
+              "propertiesCount": 11
+            },
+            {
+              "name": "agents_list",
+              "summaryChars": 72,
+              "schemaChars": 33,
+              "propertiesCount": 0
+            },
+            {
+              "name": "sessions_list",
+              "summaryChars": 54,
+              "schemaChars": 176,
+              "propertiesCount": 4
+            },
+            {
+              "name": "sessions_history",
+              "summaryChars": 36,
+              "schemaChars": 149,
+              "propertiesCount": 3
+            },
+            {
+              "name": "sessions_send",
+              "summaryChars": 84,
+              "schemaChars": 203,
+              "propertiesCount": 5
+            },
+            {
+              "name": "sessions_spawn",
+              "summaryChars": 107,
+              "schemaChars": 312,
+              "propertiesCount": 8
+            },
+            {
+              "name": "session_status",
+              "summaryChars": 207,
+              "schemaChars": 89,
+              "propertiesCount": 2
+            },
+            {
+              "name": "web_search",
+              "summaryChars": 175,
+              "schemaChars": 733,
+              "propertiesCount": 6
+            },
+            {
+              "name": "web_fetch",
+              "summaryChars": 129,
+              "schemaChars": 360,
+              "propertiesCount": 3
+            },
+            {
+              "name": "image",
+              "summaryChars": 184,
+              "schemaChars": 163,
+              "propertiesCount": 4
+            },
+            {
+              "name": "memory_search",
+              "summaryChars": 235,
+              "schemaChars": 139,
+              "propertiesCount": 3
+            },
+            {
+              "name": "memory_get",
+              "summaryChars": 151,
+              "schemaChars": 128,
+              "propertiesCount": 3
+            }
+          ]
+        }
+      }
+    }
+  }
+}

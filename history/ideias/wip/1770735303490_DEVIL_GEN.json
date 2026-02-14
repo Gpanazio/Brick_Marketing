@@ -1,0 +1,62 @@
+{
+  "idea_name": "Pintar Favela (Revitalização Estética)",
+  "failure_scenarios": [
+    {
+      "scenario": "A Revolta da Maquiagem (Rejeição Social)",
+      "category": "market",
+      "description": "A ideia será linchada pela opinião pública e pelos moradores como 'higienismo estético'. Tentar melhorar a fachada sem resolver o esgoto a céu aberto (que atinge 44% da população brasileira, segundo o Instituto Trata Brasil) é visto como uma ofensa à dignidade humana. O projeto ganhará o rótulo de 'maquiagem para turista ver', gerando protestos violentos e pichações de 'Queremos esgoto, não tinta' sobre o trabalho realizado.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Intervenções no Morro do Vidigal e no Santa Marta enfrentaram críticas severas de líderes comunitários por focarem no visual enquanto problemas estruturais de contenção de encostas e saneamento eram ignorados. Projetos como 'Favela-Bairro' fracassaram ao longo prazo por não ouvirem a ordem de prioridades da demanda local.",
+      "mitigation": "Não há mitigação sem alterar o escopo para infraestrutura pesada, o que tornaria o custo 50x maior."
+    },
+    {
+      "scenario": "A Catástrofe do Tijolo Baiano (Falha Técnica)",
+      "category": "execution",
+      "description": "Tecnicamente é um suicídio de engenharia. Pintar sobre o tijolo baiano (material predominante em favelas) sem reboco ou selador é jogar dinheiro no lixo. O tijolo é altamente poroso e a umidade ascensional e capilar fará com que a tinta descasque integralmente em menos de 6 meses. O custo de manutenção seria perpétuo e insustentável, transformando a favela em um mosaico de 'móveis velhos descascados' em tempo recorde.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Normas técnicas de pintura (NBR 13245) exigem cura do reboco e tratamento de superfícies. Projetos amadores de pintura em comunidades costumam apresentar degradação visual grave em um único ciclo de chuvas tropicais no Brasil, criando um aspecto de abandono maior do que o estado original.",
+      "mitigation": "Implementar reboco social antes da pintura, elevando o custo unitário por casa de R$ 500 para R$ 4.500."
+    },
+    {
+      "scenario": "O Pedágio do Poder Paralelo (Logística e Compliance)",
+      "category": "timing",
+      "description": "É impossível entrar em 'todas as casas' sem negociar diretamente com o crime organizado ou milícias que controlam os territórios. A logística de levar toneladas de tinta e equipes para vielas dominadas exige autorizações informais que criam um passivo de compliance intransponível para qualquer empresa privada ou investidor institucional. O risco de roubo de carga e interrupção das obras por confrontos armados é de 100%.",
+      "probability": "high",
+      "impact": "fatal",
+      "evidence": "Empresas de serviços essenciais (Light, Enel, Correios) possuem 'áreas de exclusão' mapeadas por risco de segurança. Se serviços vitais não conseguem universalidade, um projeto de estética urbana é o primeiro a ser interrompido ou taxado ilegalmente.",
+      "mitigation": "Terceirizar para cooperativas locais, o que ainda assim não livra o financiador da responsabilidade ética de negociar com o crime."
+    }
+  ],
+  "hidden_risks": [
+    {
+      "risk": "Efeito Gentrificação 'Expulsão Branca'",
+      "why_angel_missed": "O Angel foca na autoestima, mas ignora que melhorias estéticas aumentam o valor especulativo do aluguel. Sem títulos de propriedade, os moradores mais pobres são expulsos por donos de lajes que aumentam o preço, destruindo o tecido social que o projeto diz ajudar."
+    },
+    {
+      "risk": "Custo de Marketing vs. Realidade",
+      "why_angel_missed": "O Angel acha que é um projeto social, mas na escala proposta (R$ 2.6 bi), o custo de marketing/PR seria menor que a manutenção. No fim, vira um 'scam' de relações públicas que descasca e vira crise de imagem."
+    },
+    {
+      "risk": "Desastre Ambiental de Resíduos",
+      "why_angel_missed": "Lavar pincéis e descartar latas de tinta em comunidades sem rede de esgoto levaria metais pesados e solventes diretamente para o solo e córregos locais."
+    }
+  ],
+  "dealbreakers": [
+    {
+      "type": "economic",
+      "description": "ROI Negativo Absoluto. Investimento de R$ 2,6 bilhões (conservador) sem nenhum modelo de receita ou retorno social auditável de longo prazo. Philanthropy puro sem escala financeira.",
+      "is_absolute": true
+    },
+    {
+      "type": "technical",
+      "description": "Impossibilidade física de pintura duradoura em tijolo aparente sem reboco estrutural prévio.",
+      "is_absolute": true
+    }
+  ],
+  "overall_assessment": "A ideia é um devaneio estético elitista que ignora as leis da física e da sociologia urbana. Pintar casas onde não há saneamento é transformar a pobreza em 'cenário de Instagram' para o conforto visual das classes altas, o que gerará um 'backlash' social catastrófico. Financeiramente é um buraco negro: bilhões gastos em uma solução que dura seis meses e requer autorização de facções criminosas para ser executada. É um NO-GO absoluto.",
+  "risk_score": 98,
+  "status": "FAIL",
+  "timestamp": "2026-02-10T15:12:22Z"
+}

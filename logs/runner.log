@@ -397,3 +397,39 @@
 {"timestamp":"2026-02-10T13:12:28.268Z","level":"info","message":"✓ Conectado ao Railway"}
 {"timestamp":"2026-02-10T13:12:28.271Z","level":"info","message":"✓ Entrou na room runner"}
 {"timestamp":"2026-02-10T13:12:29.564Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:06:18.093Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:06:40.968Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:06:40.971Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:06:42.198Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:06:50.744Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:07:11.038Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:07:11.041Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:07:12.215Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:09:28.818Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:09:50.111Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:09:50.115Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:09:51.288Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:10:50.438Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:11:13.802Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:11:13.806Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:11:14.862Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:15:16.168Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:15:42.051Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:15:42.056Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:15:43.299Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:30:42.013Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:31:05.836Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:31:05.840Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:31:07.063Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:31:30.438Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:31:54.778Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:31:54.781Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:31:55.964Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:32:13.414Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:32:37.244Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:32:37.250Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:32:38.326Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}
+{"timestamp":"2026-02-11T16:36:58.600Z","level":"warn","message":"Desconectado do Railway","reason":"transport close"}
+{"timestamp":"2026-02-11T16:37:23.855Z","level":"info","message":"✓ Conectado ao Railway"}
+{"timestamp":"2026-02-11T16:37:23.858Z","level":"info","message":"✓ Entrou na room runner"}
+{"timestamp":"2026-02-11T16:37:24.971Z","level":"info","message":"Nenhum job pendente após verificação de todos os modos"}

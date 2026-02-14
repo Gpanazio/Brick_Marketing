@@ -1,0 +1,68 @@
+{
+  "tema": "Estratégia de Lançamento Brick AI - Pós-Carnaval 2026",
+  
+  "keywords_principais": [
+    "Production Enhanced",
+    "IA Generativa Vídeo Premium",
+    "Produção Cinematográfica com IA",
+    "Storytelling Sintético",
+    "Eficiência Criativa 2026"
+  ],
+  
+  "dados_credibilidade": [
+    {
+      "dado": "81% dos criadores afirmam que só conseguem produzir determinados conteúdos graças à tecnologia de IA generativa.",
+      "fonte": "Adobe Research 2026 (16 mil criadores)",
+      "url": "https://www.mundoconectado.com.br/tendencia/tendencias-criacao-conteudo-2026/"
+    },
+    {
+      "dado": "92% das empresas brasileiras pretendem investir em IA generativa até 2028.",
+      "fonte": "HubSpot / ESPM 2025",
+      "url": "https://dmi.espm.br/blog/ia-no-marketing-digital-em-2025-10-estatisticas-surpreendentes/"
+    },
+    {
+      "dado": "O consumo de vídeo nativo (short-form) no LinkedIn cresceu 36% ano a ano em 2025.",
+      "fonte": "LinkedIn Internal Data / WSJ 2025",
+      "url": "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/"
+    }
+  ],
+  
+  "tendencias_atuais": [
+    "Vídeo Nativo B2B: LinkedIn priorizando vídeos curtos (<60s) diretamente no feed em vez de links externos.",
+    "Creator-Led B2B: Posts liderados por especialistas/lideranças geram 3x mais engajamento que posts de páginas de marcas.",
+    "Transição da 'Experimentação' para 'Entrega de Elite': O mercado em 2026 não quer mais testar IA, quer resultados que reduzam o gap entre visão e orçamento."
+  ],
+  
+  "angulos_concorrentes": [
+    {
+      "concorrente": "Produtoras de Elite (O2, Conspiração)",
+      "posicionamento": "IA como ferramenta de suporte (brainstorm/pesquisa).",
+      "fraqueza": "Abordagem conservadora; IA não é o motor central da produção."
+    },
+    {
+      "concorrente": "Ferramentas SaaS (Runway, Sora)",
+      "posicionamento": "Democratização do vídeo.",
+      "fraqueza": "Falta de craft cinematográfico e direção técnica; 'slop' visual sem curadoria de elite."
+    }
+  ],
+  
+  "oportunidades_diferenciacao": [
+    "Posicionamento 'Artistas com Armas Nucleares': Focar no poder de fogo técnico + sensibilidade de 10 anos de cinema.",
+    "Production Enhanced: Única que se posiciona não como 'IA' apenas, mas como produção aumentada para viabilizar o impossível.",
+    "Lançamento Pós-Carnaval: Aproveitar a ressaca de conteúdo de entretenimento para entrar com uma mensagem técnica e autoritária ('O ano começou, e nós trouxemos o futuro')."
+  ],
+  
+  "brand_guidelines_relevantes": {
+    "tom": "The Cold Director (Seco, Técnico, Autoritário)",
+    "terminologia": ["Production Enhanced", "Vision over Prompt", "Motor de Visão"],
+    "proibido": ["Mágica", "Fácil", "Barato", "Revolucionário"]
+  },
+  
+  "fontes_consultadas": [
+    "https://www.mundoconectado.com.br/tendencia/tendencias-criacao-conteudo-2026/",
+    "https://dmi.espm.br/blog/ia-no-marketing-digital-em-2025-10-estatisticas-surpreendentes/",
+    "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/",
+    "https://o2filmes.com/",
+    "BRAND_GUIDE Brick AI v8.0"
+  ]
+}

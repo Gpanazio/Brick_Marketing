@@ -1,0 +1,63 @@
+{
+  "titulo_projeto": "Pitada de Brasil - Segunda Temporada",
+  "cenarios_falha": [
+    {
+      "cenario": "A Armadilha da Commodity (Filler vs. Show)",
+      "tipo": "formato",
+      "description": "O comprador (Record) não vê o projeto como uma série original, mas como um 'quadro filler' barato para preencher grade entre reportagens sérias. Isso impede que a Brick negocie valores de licenciamento de mercado (IP) e mantém a produtora como mera prestadora de serviço de baixo custo. Quando o custo de produção subir 10%, eles cortam o projeto.",
+      "evidencia": "A duração de 8 minutos é o padrão de 'interregno' na TV aberta brasileira, usado para segurar audiência sem investir em roteiro complexo. Casos como o 'Tá na Hora' (SBT) e quadros curtos do 'Hoje em Dia' mostram que esses conteúdos são descartáveis assim que a métrica de custo por minuto sobe.",
+      "probabilidade": "alta",
+      "impacto": "fatal"
+    },
+    {
+      "cenario": "Canibalização pelo TikTok/Reels",
+      "tipo": "saturacao",
+      "description": "O projeto compete diretamente com criadores de conteúdo que fazem EXATAMENTE a mesma coisa (mostrar comidas bizarras/exageradas) de graça, com mais agilidade e linguagem mais nativa. O espectador do Domingo Espetacular já viu a 'barca de açaí' no Reels 4 dias antes. Por que a emissora pagaria por algo que o público consome em excesso no celular?",
+      "evidencia": "Crescimento de 45% no consumo de vídeos curtos de culinária (TikTok Data 2024) contra a queda de 12% em programas de lifestyle na TV linear. Canais como 'Cheff Otto' e 'Corbucci Eats' entregam o 'exagero' com 0 custo de aquisição para o player.",
+      "probabilidade": "alta",
+      "impacto": "critico"
+    },
+    {
+      "cenario": "Rejeição de Cota Master (Brand Safety)",
+      "tipo": "custo",
+      "description": "Marcas de alimentos de alto escalão (Nestlé, Seara, BRF) fogem da associação com o termo 'esculhamba'. O conceito celebra a degradação técnica do alimento. Um fabricante de massas premium não quer seu produto sendo usado como 'borda de coxinha'. Sem anunciante de peso, a emissora empurra o custo de produção integralmente para a produtora.",
+      "evidencia": "O 'Manual de Brand Safety' das agências do WPP Group (2024) coloca 'conteúdo de choque/bizarria culinária' como zona de baixo interesse para marcas aspiracionais.",
+      "probabilidade": "media",
+      "impacto": "moderado"
+    }
+  ],
+  "elefante_na_sala": "A Brick não tem um 'show'. Tem um catálogo de imagens de comida bizarra. Sem um Host magnético que personifique a marca, a produtora é 100% substituível. Qualquer editor com acesso a um banco de vídeos e uma IA de locução faz o mesmo quadro pela metade do preço.",
+  "teste_comprador": {
+    "streaming_global": {
+      "reacao": "Isso não é uma série, é um compilado de YouTube.",
+      "objecao": "Falta de arco narrativo e personagem central que sustente 10 episódios fora da TV linear."
+    },
+    "canal_pago_br": {
+      "reacao": "Divertido, mas onde eu coloco 8 minutos? Não cabe no break, não é programa.",
+      "objecao": "Inviabilidade de grade horária para produções 'meio-termo'."
+    },
+    "nicho_festival": {
+      "reacao": "É entretenimento puramente comercial e visual.",
+      "objecao": "Zero valor autoral ou profundidade sociológica que justifique curadoria."
+    }
+  },
+  "dealbreakers": [
+    {
+      "tipo": "formato",
+      "descricao": "Duração de 8 minutos sem apresentador impede a venda internacional e o licenciamento para grandes streamers.",
+      "absoluto": true
+    },
+    {
+      "tipo": "mercado",
+      "descricao": "Inexistência de defesa de IP: o conceito de 'comidas exageradas' é de domínio público e impossível de proteger juridicamente.",
+      "absoluto": true
+    }
+  ],
+  "por_que_diferente_demais": "O 'diferente demais' aqui é um eufemismo para 'esteticamente agressivo'. Os compradores elogiam a criatividade porque é bizarro e chama atenção no WhatsApp, mas não fecham porque o conteúdo não é aspiracional. O brasileiro assiste para rir do absurdo, mas a marca quer estar onde o brasileiro aspira estar. O projeto celebra o 'podrão', e o dinheiro da publicidade está no 'gourmet'.",
+  "score_risco": {
+    "score": 82,
+    "justificativa": "O projeto depende de um único comprador (Record) que detém todo o poder de barganha por tratar o conteúdo como preenchimento de grade substituível."
+  },
+  "status": "DESTROYED",
+  "timestamp": "2026-02-12T13:25:00Z"
+}

@@ -1,0 +1,40 @@
+{
+  "idea_name": "Pintar Favela (Revitalização Estética)",
+  "angles": [
+    {
+      "name": "Efeito Albedo Community (Funcional)",
+      "action": "Implementar a pintura utilizando tintas térmicas reflexivas (Cool Roofs) focando em lajes e telhados, além das fachadas.",
+      "bet": "O morador valoriza o benefício físico (conforto térmico) mais do que a estética. Ao reduzir a temperatura interna em até 5°C, o projeto deixa de ser 'maquiagem' e passa a ser infraestrutura climática.",
+      "risk": "Custo mais elevado da tinta térmica em comparação com a comum.",
+      "upside": "Redução de gastos com energia, melhoria na saúde dos moradores e mitigação de ilhas de calor urbanas.",
+      "reversible": true,
+      "strength_score": 85,
+      "rationale": "Ataca a crítica social de 'futilidade' ao entregar um benefício prático e mensurável de adaptação climática, facilitando captação de recursos via fundos de sustentabilidade."
+    },
+    {
+      "name": "Cooperativa de Cores (Econômico)",
+      "action": "Transformar o projeto em um programa de capacitação técnica, formando micro-cooperativas de pintores e pedreiros locais para executar as obras.",
+      "bet": "A geração de renda e emprego local mitiga a rejeição da comunidade e garante a manutenção futura das fachadas.",
+      "risk": "Complexidade logística e de gestão para coordenar centenas de pequenas equipes locais.",
+      "upside": "Aprovação social massiva, empoderamento da comunidade e redução do custo de logística externa (segurança/acesso).",
+      "reversible": true,
+      "strength_score": 78,
+      "rationale": "Resolve a red flag de 'prioridades' ao transformar o gasto em investimento direto na economia da própria favela."
+    },
+    {
+      "name": "Plataforma 'Adote uma Viela' (Funding)",
+      "action": "Criar um marketplace de patrocínio corporativo onde empresas financiam a revitalização completa de vielas específicas (Reboco + Pintura + LED).",
+      "bet": "O setor privado financiará o projeto em busca de métricas ESG e visibilidade, fragmentando o custo bilionário em cotas gerenciáveis.",
+      "risk": "Risco de branding excessivo transformar a favela em um outdoor corporativo, gerando backlash de imagem.",
+      "upside": "Viabilidade financeira sem depender exclusivamente do estado; garantia de qualidade técnica (inclusão do reboco).",
+      "reversible": true,
+      "strength_score": 70,
+      "rationale": "Resolve o gargalo financeiro de R$ 2.6 bi ao descentralizar o financiamento para marcas que precisam provar impacto social."
+    }
+  ],
+  "recommended": "Efeito Albedo Community (Funcional)",
+  "reasoning": "A opção funcional é a mais forte porque transforma uma intervenção puramente cosmética em uma solução de infraestrutura resiliente. Ao focar no conforto térmico, o projeto ganha adesão genuína dos moradores e se alinha às agendas globais de ESG e mudanças climáticas, o que abre portas para financiamento internacional (Green Bonds) que a pintura estética simples não conseguiria.",
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-10T15:15:00Z"
+}

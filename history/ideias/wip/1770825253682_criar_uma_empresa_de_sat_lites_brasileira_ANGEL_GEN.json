@@ -1,0 +1,40 @@
+{
+  "idea_name": "Criar uma empresa de satélites brasileira",
+  "angles": [
+    {
+      "name": "Nicho de Nanossatélites para IoT Agro",
+      "action": "Desenvolver uma constelação de nanossatélites (CubeSats) focada exclusivamente em conectividade de baixa latência para sensores IoT no campo (monitoramento de gado, umidade e máquinas).",
+      "bet": "O agronegócio brasileiro opera em áreas sem cobertura 4G/5G. O CAPEX reduzido de nanossatélites permite viabilidade econômica comparada a satélites geoestacionários.",
+      "risk": "Avanço da tecnologia 'Direct-to-Cell' da Starlink que pode tornar hardware IoT específico obsoleto.",
+      "upside": "Domínio de um nicho regional crítico; recorrência mensal alta (SaaS + Hardware).",
+      "reversible": true,
+      "strength_score": 85,
+      "rationale": "Foca em uma dor real do maior setor do PIB brasileiro onde a Starlink ainda é cara ou superdimensionada."
+    },
+    {
+      "name": "Inteligência Geoespacial 'Asset-Light'",
+      "action": "Em vez de lançar hardware, criar uma plataforma de IA que processe dados brutos de constelações existentes (Sentinel, Planet) com algoritmos otimizados para biomas brasileiros.",
+      "bet": "O valor está no dado interpretado, não no hardware. Evita o risco de lançamento e os custos massivos de manutenção de infraestrutura orbital.",
+      "risk": "Dependência total de APIs de terceiros e variação de custos de dados estrangeiros.",
+      "upside": "Margens de software; escalabilidade global rápida; zero risco de 'explosão no lançamento'.",
+      "reversible": true,
+      "strength_score": 90,
+      "rationale": "Mitiga o maior risco identificado no Market Scan (CAPEX intensivo) enquanto entrega o valor final desejado pelo mercado."
+    },
+    {
+      "name": "Fornecedor Estratégico de Soberania (SAR)",
+      "action": "Desenvolver satélites de Radar de Abertura Sintética (SAR) para monitoramento da Amazônia, capazes de ver através das nuvens, focando em contratos de Defesa e Meio Ambiente.",
+      "bet": "O Governo Brasileiro possui orçamentos bilionários e necessidade estratégica de não depender de imagens de potências estrangeiras para vigilância de fronteiras.",
+      "risk": "Ciclos de venda governamentais extremamente longos e instabilidade de orçamentos públicos.",
+      "upside": "Contratos de longo prazo garantidos; barreira de entrada técnica altíssima (moat defensável).",
+      "reversible": false,
+      "strength_score": 65,
+      "rationale": "Aproveita a tese de soberania nacional, mas a dependência política reduz a agilidade da empresa."
+    }
+  ],
+  "recommended": "Inteligência Geoespacial 'Asset-Light'",
+  "reasoning": "Embora a ambição original seja 'criar uma empresa de satélites', o caminho mais viável e com maior upside financeiro em 2026 é o modelo Asset-Light. Ele resolve o problema da dependência brasileira sem os riscos catastróficos de lançamentos e o CAPEX proibitivo. Uma vez dominado o mercado de dados, a empresa pode retroceder na cadeia e lançar seus próprios sensores (satélites) com caixa próprio e demanda validada.",
+  "status": "PASS",
+  "next_step": "VIABILITY",
+  "timestamp": "2026-02-11T16:45:00Z"
+}

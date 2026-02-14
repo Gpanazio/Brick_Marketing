@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "briefing_estruturado": {
+    "objetivo": "Gerar awareness para o lançamento do War Room (Brick AI), posicionando-o como uma plataforma de pipelines multi-agente profissional vs. ferramentas de IA generativa isoladas.",
+    "publico": "Diretores de criação e donos de agências/produtoras (30-50 anos), seniores, tech-savvy mas céticos com o hype de IA generativa isolada.",
+    "formato": "Vídeo demonstrativo (30-60s), carrossel de interface e landing page com demo ao vivo.",
+    "contexto": "Transição da Brick (10 anos como produtora) para tech company SaaS. Mercado saturado de prompts genéricos vs. necessidade de escala com qualidade cinematográfica.",
+    "referencias": "Demonstrar o gap entre 'prompt único' vs. 'pipeline estruturado com múltiplas validações'.",
+    "restricoes": "Não citar concorrentes por nome; não prometer substituição de humanos; evitar jargão técnico excessivo; foco em resultados práticos."
+  },
+  "proximo_passo": "Iniciar AUDIENCE ANALYST + TOPIC RESEARCHER"
+}

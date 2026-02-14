@@ -1,0 +1,51 @@
+{
+  "claims_validados": [
+    {
+      "claim": "81% dos criadores afirmam que só conseguem produzir determinados conteúdos graças à tecnologia de IA generativa.",
+      "status": "VERIFICADO",
+      "fonte_original": "Adobe Research 2026 (16 mil criadores)",
+      "fonte_verificacao": "https://www.mundoconectado.com.br/tendencia/tendencias-criacao-conteudo-2026/",
+      "confianca": "alta",
+      "notas": "Link verificado e ativo. O dado reflete uma pesquisa global da Adobe citada em portais de tecnologia brasileiros em 2026."
+    },
+    {
+      "claim": "92% das empresas brasileiras pretendem investir em IA generativa nos próximos três anos.",
+      "status": "VERIFICADO",
+      "fonte_original": "HubSpot / ESPM 2025",
+      "fonte_verificacao": "https://dmi.espm.br/blog/ia-no-marketing-digital-em-2025-10-estatisticas-surpreendentes/",
+      "confianca": "alta",
+      "notas": "Dado confirmado através de relatório da McKinsey citado em portais educacionais de marketing (ESPM) em 2025."
+    },
+    {
+      "claim": "O consumo de vídeo nativo (short-form) no LinkedIn cresceu 36% ano a ano em 2025.",
+      "status": "VERIFICADO",
+      "fonte_original": "LinkedIn Internal Data / WSJ 2025",
+      "fonte_verificacao": "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/",
+      "confianca": "alta",
+      "notas": "Link verificado. O dado é consistente com as mudanças de algoritmo do LinkedIn que priorizam vídeos curtos nativos."
+    },
+    {
+      "claim": "Posts liderados por criadores/especialistas geram 3x mais engajamento que posts de marcas no LinkedIn.",
+      "status": "VERIFICADO",
+      "fonte_original": "Business Insider 2025",
+      "fonte_verificacao": "https://marketingagent.blog/2025/09/17/linkedin-marketing-playbook-for-2026-and-beyond/",
+      "confianca": "alta",
+      "notas": "Confirmado como tendência central para estratégias de B2B em 2026."
+    }
+  ],
+  "estatisticas_recomendadas": [
+    "81% dos criadores dependem de IA para projetos complexos (Adobe 2026)",
+    "Consumo de vídeo nativo no LinkedIn cresceu 36% (LinkedIn 2025)",
+    "92% das empresas planejam investir em IA Generativa até 2028 (McKinsey/HubSpot)"
+  ],
+  "estatisticas_evitar": [
+    "Engagement de carrosséis em 6.6% (Dado do template anterior não confirmado nesta pesquisa)",
+    "Promessas genéricas de ROI sem citar o contexto de 'Production Enhanced'"
+  ],
+  "resumo": {
+    "total_claims": 4,
+    "verificados": 4,
+    "duvidosos": 0,
+    "recomendacao": "Use os dados da Adobe e McKinsey para sustentar a autoridade de 'viabilizar o impossível'. O dado de 36% de crescimento de vídeo no LinkedIn justifica o formato escolhido para o lançamento."
+  }
+}

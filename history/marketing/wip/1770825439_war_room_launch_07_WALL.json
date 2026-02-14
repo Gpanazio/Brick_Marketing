@@ -1,0 +1,45 @@
+{
+  "score_final": 93,
+  "status": "APPROVED",
+  "breakdown": {
+    "clareza_oferta": {
+      "pontos": 20,
+      "max": 25,
+      "feedback": "Oferta clara e tecnicamente bem posicionada ('sistema de produção sintética', 'padrão cinematográfico de R$ 80k'). Perde 5 pontos por não especificar completamente o deliverable operacional: quantos vídeos? em quanto tempo? Ticket mínimo? O CTA esclarece que é 'sessão de direção para desenhar pipeline', mas a oferta poderia ser 1% mais concreta no corpo do texto."
+    },
+    "dor_real": {
+      "pontos": 20,
+      "max": 20,
+      "feedback": "Dor PERFEITAMENTE articulada e verificável. Conecta dado de mercado (97,9% HubSpot) com problema técnico específico ('entra prompt, saem craft, grão e coerência') e dor emocional ('fadiga de fragmento', 'slop', 'frame médio genérico'). Target claro: profissionais que entendem craft e sofrem com Model Collapse visual. Impecável."
+    },
+    "credibilidade": {
+      "pontos": 18,
+      "max": 20,
+      "feedback": "Claims verificados: 97,9% com fonte (HubSpot/Meio & Mensagem), histórico de 10 anos, benchmarks específicos (R$ 20k-80k de mercado). Falta apenas prova social direta: cliente nomeado ou case visual de projeto War Room entregue. Mas credibilidade é sólida."
+    },
+    "on_brand": {
+      "pontos": 20,
+      "max": 20,
+      "feedback": "Alinhamento PERFEITO com BRAND_GUARDIAN v8.0. Tom Cold Director consistente (seco, autoritário, técnico). Zero emojis, zero corporativês, zero misticismo de prompt. Vocabulário impecável: 'Direção Técnica', 'Motor de Visão', 'A IA renderiza. A Brick decide', 'dataset=curated_only', 'slop_block=active'. Autoridade emana do conhecimento técnico, não do entusiasmo. Exemplar."
+    },
+    "cta_especifico": {
+      "pontos": 15,
+      "max": 15,
+      "feedback": "CTA específico, URL concreta (brick.ai/war-room), ação clara ('agende sessão de direção'), contexto explícito ('key visual ou filme'), baixa fricção (um clique). Melhor que o exemplo da rubrica porque especifica o tipo de sessão E o tipo de projeto ideal. Perfeito."
+    }
+  },
+  "destaques_positivos": [
+    "Alinhamento perfeito com Brand Guardian v8.0 - tom Cold Director impecável",
+    "Dor articulada com precisão cirúrgica: 'fadiga de fragmento' + 'slop' + dado de mercado (97,9%)",
+    "CTA específico e concreto: URL + tipo de sessão + tipo de projeto",
+    "Integração técnica BRICK/MASON funciona como diferencial de autoridade",
+    "Vocabulário Anti-Prompt consistente: 'Direção Técnica acima de palavras mágicas'"
+  ],
+  "pontos_de_melhoria": [
+    "Clareza operacional: adicionar spec mínima de deliverable (ex: 'a partir de 3 vídeos/semana' ou 'projetos a partir de R$ Xk') tornaria a oferta 100% cristalina",
+    "Prova social: adicionar logo de 1 cliente ou thumbnail de 1 case War Room aumentaria credibilidade de 18 para 20"
+  ],
+  "verdict": "APPROVED - Copy de elite. Pronta para publicação. Melhorias sugeridas são opcionais e incrementais. Score 93/100 é o mais alto do histórico do pipeline. Autoridade técnica + dor real + CTA concreto + tom impecável = combinação rara.",
+  "next_step": "HUMAN_APPROVAL",
+  "recommend_return_to": null
+}

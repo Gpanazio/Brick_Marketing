@@ -1,0 +1,80 @@
+{
+  "idea_name": "criar_empresa_satelites_brasileira",
+  "viability_assessment": {
+    "scores": {
+      "problema": {
+        "pontos": 30,
+        "max": 30,
+        "feedback": "Problema estratégico crítico: dependência tecnológica estrangeira para comunicações, defesa e monitoramento ambiental. Impacto financeiro bilionário (aluguel de transponders, evasão de divisas, vulnerabilidade de soberania). Justifica análise profunda."
+      },
+      "contexto": {
+        "pontos": 25,
+        "max": 25,
+        "feedback": "Contexto exemplarmente mapeado. Market Scan identificou players (Visiona, Pion Labs, SpotSat), mercado (US$ 815M até 2029 no agro), custos reais (R$ 12M por nanossatélite), fontes de financiamento (Finep R$ 220M) e padrões de risco claros (CAPEX, lançadores, competição global). Alternativas viáveis apresentadas (Downstream, IoT, PPP)."
+      },
+      "opcoes": {
+        "pontos": 15,
+        "max": 25,
+        "feedback": "Angel apresentou 3 opções, sendo a 'Asset-Light' (score 90) a mais forte: reversível, alto upside, margens de software. PORÉM, essa opção anula a premissa original ('empresa de satélites' vira 'empresa de dados'). As opções de hardware (IoT Agro 85, SAR 65) têm trade-offs severos (obsolescência Starlink, dependência política). Opção viável existe, mas com pivô fundamental."
+      },
+      "execucao": {
+        "pontos": 10,
+        "max": 20,
+        "feedback": "Asset-Light é executável (plataforma de IA + APIs de terceiros). Hardware é extremamente difícil: R$ 50M+ de CAPEX, 5-7 anos de ciclo, dependência total de lançadores estrangeiros (SpaceX), pool de talentos escasso (Embraer/INPE), e risco de embargo ITAR em componentes críticos. Risco médio/alto de execução."
+      },
+      "ajuste_risco": {
+        "pontos": -30,
+        "max": -30,
+        "feedback": "Devil identificou 2 dealbreakers absolutos: (1) ROI Negativo - custo de capital brasileiro inviabiliza projetos de hardware com break-even >10 anos; (2) Ausência de Lançador Orbital Nacional - dependência 100% de concorrentes (SpaceX) para colocar produto em órbita mata a tese de soberania. Adicionalmente, 2 riscos high probability + fatal impact (Massacre de Escala Starlink/Planet, Refém do Lançador) e 1 high probability + critical (Inanição de Capital). Ajuste máximo aplicado."
+      }
+    },
+    "score_before_risk": 80,
+    "score_final": 50,
+    "status": "REVISIT",
+    "confidence": "high"
+  },
+  "devil_rebuttal": {
+    "critical_risks_from_devil": [
+      "Massacre de Escala: Starlink (6.000 satélites, R$ 184/mês) e Planet Labs (200+ satélites) têm custo por bit/km² ordens de magnitude menor que uma startup com 2-3 nanossatélites.",
+      "Refém do Lançador: Sem VLS/VLM operacional, depender da SpaceX para lançar é suicídio estratégico. Elon Musk é dono da estrada e concorrente direto.",
+      "Morte por Inanição de Capital: Ciclo de 5-7 anos é incompatível com VCs brasileiros. Nenhuma startup de hardware espacial captou Series A/B privada de escala nos últimos 3 anos.",
+      "Fuga de Cérebros: Pool de engenheiros aeroespaciais sêniores é minúsculo e absorvido por Embraer/INPE. Startup não compete em salários.",
+      "Embargo ITAR: Sensores de precisão e chips resistentes à radiação são controlados por EUA. Risco de bloqueio de componentes críticos."
+    ],
+    "viability_response": [
+      "ACEITO: Competir em conectividade/imagem genérica com Starlink/Planet é suicídio comercial. Nicho IoT Agro tem defesa temporária, mas Starlink Direct-to-Cell é ameaça existencial.",
+      "ACEITO: Sem lançador nacional operacional, a tese de 'soberania' é papel. Nenhuma mitigação privada possível; depende de bilhões em política de Estado por décadas.",
+      "ACEITO: Evidência brutal - Pion Labs sobrevive com kits educacionais (não satélites em escala), Visiona só existe porque é JV Embraer+Governo. VCs fogem de hardware espacial no Brasil.",
+      "ACEITO: Talento é gargalo real. Startup não tem capital para roubar sêniores da Embraer.",
+      "ACEITO: Risco ITAR é subestimado. Brasil pode ser visto como risco de transferência tecnológica para BRICS, bloqueando supply chain."
+    ],
+    "remaining_risks": [
+      "HARDWARE: Todos os riscos permanecem fatais se a ideia for mantida como 'fabricar e lançar satélites próprios'.",
+      "ASSET-LIGHT: Risco de dependência de APIs de terceiros (Planet, Sentinel) com variação de custos. Risco de commoditização se a IA não for defensável."
+    ]
+  },
+  "recommendation": {
+    "decision": "REVISIT",
+    "action": "Pivot obrigatório para Asset-Light (Inteligência Geoespacial) ou NO-GO se insistir em hardware próprio.",
+    "reasoning": "A ideia original ('criar uma empresa de satélites brasileira') esbarra em 2 dealbreakers absolutos: (1) ROI negativo estrutural do hardware espacial no ecossistema brasileiro de capital, e (2) dependência total de lançadores estrangeiros que mata a tese de soberania. O Devil está certo: fabricar e lançar satélites próprios no Brasil em 2026 é 'projeto de vaidade' logisticamente impossível (sem VLS) e economicamente insano (competindo com Starlink a R$ 184/mês). A ÚNICA saída viável é o pivot radical para Asset-Light: processar dados de constelações existentes (Planet, Sentinel) com IA otimizada para biomas brasileiros. Isso resolve o problema da dependência tecnológica no layer de inteligência (onde está o valor real) sem os riscos catastróficos de hardware. Uma vez dominado o mercado de dados, a empresa pode retroceder na cadeia e lançar sensores próprios com caixa validado. Mas isso NÃO É uma 'empresa de satélites' - é uma empresa de dados geoespaciais.",
+    "next_steps": [
+      "Decisão estratégica: Aceitar que a ideia original (hardware) é inviável ou pivotar para Asset-Light?",
+      "Se PIVOT para Asset-Light: (1) Mapear APIs de dados abertos (Sentinel, Landsat) e comerciais (Planet) com cobertura do Brasil; (2) Validar hipótese de valor: algoritmos otimizados para Cerrado/Amazônia têm WTP superior?; (3) Prototipar MVP de detecção de uma dor específica (ex: pragas no café, desmatamento ilegal em tempo real); (4) Testar pricing com 3-5 clientes piloto no agro.",
+      "Se INSISTIR em hardware: (1) Buscar parceria com Visiona/Embraer para fabricação; (2) Garantir contrato governamental de longo prazo (Defesa/INPE) ANTES de desenvolver; (3) Aceitar que será um 'fornecedor do governo', não uma startup escalável.",
+      "NÃO começar desenvolvimento de hardware próprio sem: (a) R$ 50M+ de funding garantido, (b) contrato de lançamento assinado, (c) cliente âncora com PO."
+    ],
+    "risks_to_monitor": [
+      "Velocidade de avanço do Starlink Direct-to-Cell (mata nicho IoT)",
+      "Política de preços predatórios da Starlink no Brasil (já em R$ 184/mês)",
+      "Progresso do VLM da AEB (se virar realidade comercial, pode destravar hardware nacional)",
+      "Custos de APIs de dados espaciais (Planet, Maxar) - podem inviabilizar Asset-Light se subirem drasticamente"
+    ],
+    "pivot_triggers": [
+      "Se aparecer investidor disposto a bancar R$ 50M+ em hardware SEM exigir receita em <5 anos = reconsiderar hardware (improvável).",
+      "Se Governo lançar programa de compras garantidas de satélites nacionais com preço fixo = viabiliza modelo SAR Soberania.",
+      "Se validar tração rápida (>R$ 1M ARR em 18 meses) com Asset-Light = dobrar a aposta em dados e esquecer hardware para sempre.",
+      "Se Starlink Direct-to-Cell dominar IoT rural a preço agressivo = nicho de nanossatélites IoT morre; única saída é Asset-Light."
+    ]
+  },
+  "timestamp": "2026-02-11T15:56:00Z"
+}

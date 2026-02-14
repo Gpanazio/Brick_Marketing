@@ -1,0 +1,48 @@
+{
+  "titulo": "Pitada de Brasil: Sem Limites",
+  "logline_venda": "A culinária brasileira não conhece a palavra 'limite'. Uma jornada pelos arquitetos do caos que transformaram clássicos mundiais em monumentos à ousadia e ao excesso nacional.",
+  "formato": {
+    "tipo": "Série Doc / Entretenimento",
+    "structure": "11 episódios de 10 minutos (10 regulares + 1 especial)",
+    "genero": "Food / Lifestyle / Humor"
+  },
+  "auditoria": {
+    "acesso": {
+      "status": "Público",
+      "risco": "Baixo",
+      "observacao": "Os estabelecimentos citados vivem de exposição viral. O 'acesso' é garantido, mas a exclusividade é nula: qualquer tiktoker tem o mesmo conteúdo."
+    },
+    "tese": {
+      "clareza": "Focada",
+      "problema": "O material é um catálogo, não uma narrativa. Ver comida bizarra por 8 minutos sem uma 'escada' ou conflito cansa no terceiro episódio. Falta o 'quem' e o 'porquê' além do choque visual."
+    }
+  },
+  "mercado": {
+    "target": ["Record TV", "Discovery Home & Health", "Food Network", "YouTube Originals"],
+    "comps": ["Ugly Delicious encontra Choque de Cultura", "Somebody Feed Phil (versão subúrbio)"],
+    "diferencial_competitivo": "Histórico comprovado na Record e a assinatura visual de 'cinema' da Brick aplicada ao 'trash food', elevando a esculhamba ao status de herança cultural."
+  },
+  "creative_doctor": {
+    "diagnostico": "A lista de episódios é comercialmente certeira, mas a estrutura '1 texto + 3 variações' é estática. Para sustentar uma temporada inteira, precisamos de 'personagens-reação' e uma tese central: O Brasileiro como o maior Designer de Experiência Vernacular do mundo.",
+    "debate_interno": {
+      "demon": "Isso é um feed de Reels esticado. Se eu abrir o TikTok agora, vejo a barca de açaí de graça. Por que eu pagaria por algo que o algoritmo me entrega sem comercial?",
+      "angel": "É a celebração do design brasileiro aplicado ao estômago. Existe um orgulho nacional na subversão da regra que gera identificação imediata e potencial de viralização absurdo.",
+    },
+    "pontos_fortes": [
+      "Apelo visual extremo (Food Porn)",
+      "Identificação com o público de massa (Acessível)",
+      "Histórico de sucesso da T1 facilita a venda"
+    ],
+    "pontos_fracos": [
+      "Falta de conflito narrativo",
+      "Risco de saturação do formato 'catálogo'",
+      "Ausência de um 'Host' ou voz autoral forte para amarrar os temas"
+    ],
+    "sugestao_pivot": "Introduzir o 'Tribunal do Estrangeiro': em cada episódio, um chef purista da origem do prato (ex: um pizzaiolo de Nápoles ou um chef russo) reage e tenta racionalizar a 'atrocidade' brasileira. O choque de cultura e a defesa apaixonada do brasileiro pelo seu 'caos' é o que transforma o projeto em entretenimento real."
+  },
+  "veredito": {
+    "score": 85,
+    "acao": "REFINAR",
+    "resumo": "O projeto tem 'cheiro de dinheiro' e é uma venda fácil para a Record. Para subir o nível e virar um produto premium de streaming, precisa de uma 'escada' narrativa (o Tribunal) para não ser engolido pelo conteúdo gratuito de redes sociais."
+  }
+}

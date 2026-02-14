@@ -22,6 +22,8 @@ for arg in "$@"; do
     if [[ "$arg" == --mode=* ]]; then
         MODE="${arg#--mode=}"
     # Compatibilidade: detecta pela string
+    elif [[ "$arg" == *"originais"* ]]; then
+        MODE="originais"
     elif [[ "$arg" == *"ideias"* ]]; then
         MODE="ideias"
     elif [[ "$arg" == *"projetos"* ]]; then
@@ -32,7 +34,7 @@ for arg in "$@"; do
 done
 
 # Validar modo
-if [[ "$MODE" != "marketing" && "$MODE" != "projetos" && "$MODE" != "ideias" ]]; then
+if [[ "$MODE" != "marketing" && "$MODE" != "projetos" && "$MODE" != "ideias" && "$MODE" != "originais" ]]; then
     echo "⚠️ Modo inválido: $MODE. Usando 'marketing' como fallback."
     MODE="marketing"
 fi
@@ -45,6 +47,9 @@ echo "---"
 
 # Executar pipeline correspondente
 case "$MODE" in
+    originais)
+        exec "$SCRIPT_DIR/run-originais.sh" "$BRIEFING_FILE"
+        ;;
     ideias)
         exec "$SCRIPT_DIR/run-ideias.sh" "$BRIEFING_FILE"
         ;;

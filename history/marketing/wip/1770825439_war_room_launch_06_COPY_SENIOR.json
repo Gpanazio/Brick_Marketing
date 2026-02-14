@@ -1,0 +1,23 @@
+{
+  "vencedor": "C",
+  "modelo_vencedor": "sonnet",
+  "pontos_fortes": [
+    "Hook forte e técnico, ancorado em dado validado (97,9% pretendem ampliar uso de IA)",
+    "Posiciona o War Room claramente como sistema de produção sintética sob direção humana, não como fábrica de rascunhos",
+    "Conecta a dor real do target (slop, estética plastificada, perda de craft) com a resposta da Brick (pipeline multi-agente curado)",
+    "Tom Cold Director consistente, sem misticismo de prompt nem corporativês",
+    "Boa integração de BRICK/MASON como dupla visão/sistema"
+  ],
+  "pontos_fracos": [
+    "Versão original era explicativa demais, flertando com texto de artigo técnico, não post",
+    "CTA usava placeholder genérico ([LINK]) e não deixava claro o tipo de projeto ideal para o War Room"
+  ],
+  "alteracoes_aplicadas": [
+    "Enxuguei o MÉDIO para focar em um arco claro: dado → problema (Model Collapse/slop) → oferta War Room",
+    "Ajustei STORYTELLING para reduzir redundância e explicação excessiva, mantendo o foco em direção técnica e pipeline curado",
+    "Padronizei a dualidade BRICK/MASON com logs mais objetivos",
+    "Substituí o placeholder de CTA por uma URL concreta (brick.ai/war-room) e explicitei o uso ideal (key visuals e filmes)"
+  ],
+  "copy_revisada": "# COPY VERSION: C\n\n## CURTO\n97,9% dos profissionais de marketing brasileiros pretendem ampliar o uso de IA em 2025. O erro é acreditar que a tecnologia substitui a visão.\\nO War Room da Brick AI não é fábrica de rascunhos; é um sistema de produção sintética que entrega padrão cinematográfico de vídeos de R$ 80 mil com latência operacional mínima. Direção técnica acima de palavras mágicas.\n\n## MÉDIO\nO mercado de alto craft opera com orçamentos entre R$ 20k e R$ 80k por filme. Quando a escala exige volume, a primeira vítima costuma ser o craft: entra o "prompt", saem a unidade estética, o grão e a coerência de linguagem.\\n\\nAo mesmo tempo, 97,9% dos profissionais de marketing já planejam ampliar o uso de IA (HubSpot / Meio & Mensagem). Sem direção, isso é receita para mais slop — não para mais filme.\\n\\nO War Room foi projetado exatamente para esse ponto.\\n\\nNão somos operadores de ferramenta. Somos diretores de um motor de visão multi-agente: pesquisa, claims, conceito, copy, crítica e Brand Guardian trabalhando em fluxo orquestrado, ancorado em 10 anos de set. A IA renderiza. A Brick decide.\n\n## STORYTELLING\n[BRICK] A textura e o grão não vêm da ferramenta. Vêm da intenção.\\n[MASON] LOG: job_id=WAR_ROOM_LAUNCH\\n[MASON] LOG: agents=research,claims,concept,copy,critic,brand_guardian\\n\\nO digital tentou emular a película. Agora o sintético tenta emular o digital. O ceticismo atual com a IA é sintoma de um erro simples: delegar visão para quem só sabe gerar variação. O resultado é sempre o mesmo frame médio, com a mesma luz genérica, repetido até a exaustão.\\n\\nO War Room foi desenhado para quem tem fadiga de fragmento.\\n\\n[BRICK] A direção estabelece o eixo: tom, limites de craft, gramática visual.\\n[MASON] LOG: dataset=curated_only\\n[MASON] LOG: slop_block=active\\n\\nAgentes especializados processam o briefing como uma sala de roteiristas, produtores e montadores: pesquisa, validação de dados, geração de ângulos, escrita, crítica, tudo em ciclo controlado até a peça passar no padrão Cold Director: zero clichê, zero emoji, zero promessa vazia.\\n\\nO resultado não é "conteúdo de IA". É linha editorial dirigida, com cadência que um time humano isolado não acompanha. Um sistema que escala o olhar do diretor em vez de substituí-lo.\\n\\n## CTA SUGERIDO\\nQuer uma War Room operando como sala de direção sintética para o seu próximo key visual ou filme?\\nAcesse **brick.ai/war-room** e agende uma sessão de direção para desenhar seu pipeline multi-agente.",
+  "veredito": "APPROVED"
+}

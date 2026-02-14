@@ -1,0 +1,22 @@
+{
+  "vencedor": "A",
+  "modelo_vencedor": "gpt",
+  "pontos_fortes": [
+    "Hook direto e alinhado ao contexto: em 2026, vídeo decide reputação de marca",
+    "Posiciona a Brick AI com clareza como produtora Production Enhanced (10 anos de set + sistemas sintéticos como infraestrutura, não atalho)",
+    "Conecta dados validados (92% empresas, 81% criadores) com a dor real do target: volume sem filme, slop visual e fragmentação",
+    "Tom Cold Director consistente, com dualidade BRICK/MASON bem aplicada e sem misticismo de prompt",
+    "Arco completo: problema do mercado → proposta de valor da Brick → pipeline dirigido → convite claro para sessão de direção"
+  ],
+  "pontos_fracos": [
+    "Texto relativamente denso para um único post; na prática, deveria ser desdobrado em múltiplas peças",
+    "CTA poderia, em versões futuras, especificar exemplos de formatos (filme institucional, launch film, manifesto) para afinar ainda mais o tipo de projeto"
+  ],
+  "alteracoes_aplicadas": [
+    "Mantive a estrutura CURTO/MÉDIO/STORYTELLING/CTA e o núcleo conceitual original",
+    "Revisei pontuação e quebras de linha para reforçar o ritmo seco e diretivo",
+    "Ajustei levemente a formulação de alguns trechos para remover qualquer resquício de tom publicitário suave e manter o Cold Director"
+  ],
+  "copy_revisada": "## CURTO\nEm 2026, vídeo decide reputação de marca.\nA Brick AI é Production Enhanced: produtora de elite com 10 anos de set que usa sistemas de geração sintética como infraestrutura de produção, não como atalho.\nVisão de diretor. Motor de visão sob controle.\n\n## MÉDIO\n92% das empresas planejam investir em IA até 2028 (McKinsey / HubSpot). 81% dos criadores já dependem dela em projetos complexos (Adobe, 2026).\n\nA maioria vai ganhar volume. Poucos vão ganhar filme.\n\nO problema não é ter IA. É o que ela faz com o seu craft. Ferramenta genérica entrega rascunhos fragmentados: um take para LinkedIn, outro para Instagram, outro para inbound — todos com a mesma cara plastificada.\n\nA Brick AI opera em outro nível.\n\nSomos uma produtora de vídeo Production Enhanced. Nossa direção estabelece narrativa, enquadramento, luz e gramática de movimento. Os sistemas de geração sintética entram como motor de execução, para viabilizar cenas que o budget de produção tradicional não comporta no prazo em que o digital exige.\n\nResultado: filme com padrão cinematográfico pensado para set e para feed, sem slop visual.\n\n## STORYTELLING\n[BRICK] Briefing clássico de 2026: \"Quero campanha em vídeo com cara de cinema, budget de post e entrega em duas semanas\".\n[MASON] LOG: job_id=BRICK_LAUNCH\n[MASON] LOG: assets_needed=script,kv,film,cutdowns,linkedin,instagram\n\nO mercado responde com pressa e prompt.\n\nO set some. Entra uma sequência de rascunhos: KV inconsistente, vídeo que parece demo de ferramenta, recortes de formato que não conversam com a ideia original.\n\nA Brick AI trava o processo antes disso.\n\n[BRICK] A direção estabelece o eixo: qual é o filme que vale existir? Qual é a linguagem visual que amarra todas as peças? O que entra e o que não entra no dataset da campanha?\n[MASON] LOG: dataset=curated_only\n[MASON] LOG: brand_guardian=locked\n[MASON] LOG: slop_block=active\n\nA partir daí, os sistemas de geração sintética trabalham como equipe técnica — não como autor. Cenas híbridas, extensões de set e variações de formato nascem de uma mesma decisão de direção, não de prompts soltos.\n\nVocê não vê a facilidade. Você vê o resultado: um filme que aguenta projeção grande, corte curto, feed acelerado e olhar de diretor sem denunciar o atalho.\n\nIsso é Production Enhanced.\n\n## CTA SUGERIDO\nSe você lidera criação ou marketing e está cansado de escolher entre cinema e prazo, traga o briefing.\nFale com a Brick AI e peça uma sessão de direção para transformar seu próximo filme em produção Production Enhanced.",
+  "veredito": "APPROVED"
+}

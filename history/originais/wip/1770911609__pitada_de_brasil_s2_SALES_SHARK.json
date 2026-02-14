@@ -1,0 +1,77 @@
+{
+  "titulo_projeto": "Pitada de Brasil - Segunda Temporada",
+  "auditoria_acesso": {
+    "status": "privilegiado",
+    "risco": "medio",
+    "evidencias": "A primeira temporada já foi exibida dentro do Domingo Espetacular (Record) em 2025 e o próprio programa pediu uma proposta de T2, o que indica canal aberto e interesse real. Contudo, o material não deixa explícito quem detém o IP formal do formato/título nem se há qualquer tipo de opção ou termo de renovação já assinado.",
+    "dependencias": [
+      "Renovação contratual específica com o Domingo Espetacular / Record para a T2",
+      "Clarificação jurídica sobre titularidade da marca/formato 'Pitada de Brasil' (Record vs. Brick vs. copropriedade)",
+      "Manutenção de acesso a locações e personagens (vendedores, confeiteiros, donos de estabelecimentos) em diferentes praças"
+    ],
+    "recomendacao": "Obter, por escrito, declaração da Record/Domingo Espetacular sobre: (1) possibilidade de produção da T2 pela Brick; (2) exclusividade ou não do formato; (3) janela de exibição pretendida. Idealmente, garantir um e-mail de interesse ou LOI antes de investir em desenvolvimento adicional. Se houver interesse em vender o conceito para fora da Record, considerar rebatizar o projeto e vender o 'core' criativo, evitando conflito com uma marca possivelmente registrada pela emissora."
+  },
+  "auditoria_tese": {
+    "clareza": "razoavel",
+    "recorte_atual": "Série curta de entretenimento gastronômico que visita exageros brasileiros em torno de pratos específicos (espetinho, açaí, borda de pizza etc.), celebrando a criatividade/esculhambação nacional sem julgamento.",
+    "problema": "Para o Domingo Espetacular, o recorte funciona como quadro leve e visual. Para outros compradores, o projeto hoje se apresenta como mais uma série de curiosidades de comida exagerada, muito próxima de conteúdo de rede social, sem um diferencial editorial claramente articulado (host forte, dispositivo de conflito, arco maior).",
+    "sugestao_recorte": "Ajustar o discurso comercial da T2 para enfatizar um dispositivo claro (por exemplo, 'Tribunal do Paladar' ou confronto entre receita clássica e versão brasileira) em vez de apenas catálogo de exageros. Isso ajuda a vender para qualquer comprador — inclusive a própria Record — como formato com mecânica própria, e não só compilado de virais."
+  },
+  "mercado": {
+    "compradores_potenciais": [
+      {
+        "nome": "Record / Domingo Espetacular",
+        "probabilidade": "alta",
+        "justificativa": "É o comprador original, já exibiu a T1 dentro do Domingo Espetacular e solicitou desenvolvimento da T2. Conhece o desempenho de audiência e sabe onde encaixar o quadro na revista eletrônica de domingo.",
+        "precedente": "Pitada de Brasil - 1ª temporada (Domingo Espetacular, 2025)."
+      },
+      {
+        "nome": "Discovery Home & Health / Food Network Brasil",
+        "probabilidade": "media",
+        "justificativa": "Canais focados em gastronomia e lifestyle com tradição em formatos de comida de rua, exageros e curiosidades culinárias. A série pode entrar como faixa curta temática sobre 'excessos brasileiros', desde que venha com host e identidade visual mais fortes.",
+        "precedente": "Diners, Drive-Ins and Dives; séries de street food e curiosidades gastronômicas na grade Food Network/Discovery."
+      },
+      {
+        "nome": "Globoplay (via conteúdo GNT/Globosat)",
+        "probabilidade": "media",
+        "justificativa": "O Globoplay agrega programas de gastronomia e quadros de entretenimento com forte apelo visual. 'Pitada de Brasil' poderia ser vendido como conteúdo curto complementar a programas do GNT ou como série digital, especialmente se houver pivot que traga um olhar mais autoral ou antropológico sobre a 'esculhambação' brasileira.",
+        "precedente": "Programas como 'Tempero de Família', 'Que Seja Doce' e séries de street food que vivem tanto em TV paga quanto no streaming."
+      },
+      {
+        "nome": "YouTube / AVOD (canal próprio da Brick + patrocínio)",
+        "probabilidade": "media",
+        "justificativa": "O formato de 8–10 minutos, altamente visual e baseado em curiosidade, encaixa muito bem em estratégia digital financiada por marcas (alimentos, delivery, varejo). Como branded content, a série pode ser mais fácil de viabilizar financeiramente do que como pura aquisição de catálogo.",
+        "precedente": "Quadros de comida exagerada e 'maior X do Brasil' que performam bem organicamente no YouTube; séries como 'Food Insider' (Insider) adaptadas à realidade local."
+      }
+    ],
+    "comps": [
+      "Street Food: Latin America (Netflix) encontra quadros de comida exagerada de auditório popular (Eliana / Domingo Legal)",
+      "Diners, Drive-Ins and Dives (Food Network) encontra vídeos virais de comida absurda no TikTok",
+      "BuzzFeed Tasty encontra revista eletrônica dominical brasileira"
+    ],
+    "diferencial_competitivo": "Base instalada: já é um quadro conhecido do Domingo Espetacular, com público e formato testados. O tema 'exageros gastronômicos brasileiros' é fácil de comunicar e altamente visual, gerando bom material de chamada e de rede social. O DNA brasileiro é um diferencial em relação a formatos gringos de comida exagerada.",
+    "tamanho_audiencia": "amplo"
+  },
+  "diagnostico_venda": {
+    "razoes_de_nao": [
+      "Para qualquer comprador fora da Record, o projeto pode parecer só mais um agregador de conteúdo de comida exagerada, sem argumento claro de por que precisa existir como série de TV/streaming.",
+      "Ausência de host conhecido ou personalidade forte reduz o apelo em streamings e canais que esperam 'nome' para puxar audiência.",
+      "Estrutura repetitiva (texto + 3 receitas por episódio) levanta dúvida se o formato sustenta 10 episódios sem cansaço.",
+      "Incerteza sobre direitos de formato/título é um red flag jurídico para players novos; ninguém entra em briga com Record."
+    ],
+    "razoes_de_sim": [
+      "Para a Record, é uma continuação natural de um quadro já aprovado editorialmente e identificável pelo público do Domingo Espetacular.",
+      "Conteúdo de gastronomia visualmente apelativo com humor leve é fácil de programar, monetizar com patrocínio e reciclar em cortes para redes sociais.",
+      "Custo de produção, se bem planejado, tende a ser relativamente baixo por minuto em comparação com realities mais complexos.",
+      "Possibilidade de ativar marcas (maioneses, queijos, carnes, redes de fast-food, apps de delivery) em ações de merchandising e branded content."
+    ],
+    "objecao_principal": "\"Isso não é só 'vídeo de internet' que o público já vê de graça? Por que eu compraria uma série disso em vez de montar um quadro interno ou simplesmente usar conteúdo de redes sociais?\"",
+    "resposta_sugerida": "Posicionar a T2 como formato com mecânica e assinatura próprias (host, dispositivo de julgamento ou disputa, recorte claro tradição x esculhambação) e não como simples compilado de virais. Usar o histórico de T1 no Domingo Espetacular (dados de audiência, repercussão em redes) como prova de que o quadro gera resultado, e complementar com um plano de identidade visual robusta e oportunidades de patrocínio/merchandising para mostrar que o investimento retorna em audiência + receita comercial."
+  },
+  "score_comercial": {
+    "score": 78,
+    "justificativa": "Dentro da Record/Domingo Espetacular, a probabilidade de venda é alta: o projeto já foi testado e pedido pelo comprador. Em outros players, o projeto é vendável como entretenimento leve e barato, mas esbarra na percepção de 'conteúdo de internet esticado' e na falta de um diferencial formal (host, dispositivo, tese). Com alguns ajustes comerciais (clarificar direitos, afinar o pitch para além da curiosidade, trazer figura de apresentação e mecanismo de conflito), a série pode atingir uma faixa de 80+ em vendabilidade, especialmente para TV aberta e canais/lifestyle que buscam produto de alta rotatividade."
+  },
+  "status": "AUDITED",
+  "timestamp": "2026-02-12T14:03:00-03:00"
+}

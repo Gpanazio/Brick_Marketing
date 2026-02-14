@@ -1,0 +1,21 @@
+{
+  "idea_name": "Documentário True Crime: Caso Hurb e João Ricardo Mendes",
+  "pain_check": {
+    "is_real": true,
+    "relevance": "high",
+    "is_actionable": true,
+    "analysis": "O caso Hurb é um escândalo corporativo e de consumo amplamente documentado no Brasil. O problema é real, com milhares de consumidores lesados e processos judiciais em curso. A relevância é alta devido ao impacto financeiro e social, e o projeto é acionável como uma investigação jornalística ou documental, dado o volume de material público disponível."
+  },
+  "evidence": [
+    "Milhares de processos judiciais acumulados e reclamações recordes em sites de defesa do consumidor.",
+    "Reportagens extensas em veículos de grande circulação (G1, Exame, Valor) detalhando o colapso financeiro da empresa.",
+    "Registros públicos de comportamento controverso e ofensivo do fundador contra clientes e funcionários."
+  ],
+  "red_flags": [
+    "Risco de processos jurídicos por difamação ou calúnia vindo dos citados.",
+    "Dificuldade de acesso a balanços financeiros privados para comprovar intenção de golpe vs. má gestão."
+  ],
+  "status": "PASS",
+  "next_step": "MARKET_SCAN",
+  "timestamp": "2026-02-10T13:32:00Z"
+}

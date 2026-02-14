@@ -221,8 +221,14 @@ async function executeViaSubAgent(action, mode, jobId, target) {
     } else if (mode === 'projetos') {
       scriptPath = './run-reloop-projetos.sh';
       args = [jobId, target || 'PROPOSAL'];
+    } else if (mode === 'originais') {
+      // Originais não tem reloop por enquanto -- re-run completo
+      scriptPath = './run-originais.sh';
+      args = [
+        path.join(CONFIG.WORKSPACE, `history/${mode}/briefing/${jobId}.txt`),
+      ];
     } else {
-      throw new Error('Feedback não suportado para modo ideias');
+      throw new Error(`Feedback não suportado para modo ${mode}`);
     }
   } else {
     throw new Error(`Action desconhecida: ${action}`);
@@ -407,7 +413,7 @@ async function verifyPipelineResults(wipDir, jobId, mode) {
 }
 
 async function processPendingJobs() {
-  const modes = ['marketing', 'projetos', 'ideias'];
+  const modes = ['marketing', 'projetos', 'ideias', 'originais'];
   let totalFound = 0;
 
   for (const mode of modes) {

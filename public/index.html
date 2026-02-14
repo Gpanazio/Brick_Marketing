@@ -82,11 +82,6 @@
             border-color: #444;
         }
 
-        .node.node-douglas {
-            border: 1px solid var(--brick-red);
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
-        }
-
         .node.disabled {
             opacity: 0.3;
             filter: grayscale(1);
@@ -1422,8 +1417,7 @@
         // Human: Approve/Revise (revision creates dynamic REVISAO_N nodes)
         const nodeDefMarketing = [
             { id: 'n0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
-            { id: 'nd', x: 0, y: 350, title: 'DOUGLAS', label: 'Pre-Pipeline (Manual)', model: 'OPUS 4.6', douglas: true },
-            { id: 'n1', x: 0, y: 550, title: 'VALIDATOR', label: 'Brief_Validator', model: 'GEMINI FLASH' },
+            { id: 'n1', x: 0, y: 350, title: 'VALIDATOR', label: 'Brief_Validator', model: 'GEMINI FLASH' },
             { id: 'n2', x: -260, y: 750, title: 'AUDIENCE', label: 'Audience_Analyst', model: 'GEMINI FLASH' },
             { id: 'n3', x: 260, y: 750, title: 'RESEARCH', label: 'Topic_Researcher', model: 'GEMINI FLASH' },
             { id: 'n4', x: 0, y: 950, title: 'FACT_CHECK', label: 'Claims_Checker', model: 'GEMINI FLASH' },
@@ -1437,7 +1431,7 @@
         ];
         // Marketing connections: Validator splits to Audience+Research, converges at Claims,
         // then 3-way parallel copy gen, judged by Copy Senior, filtered by Wall, approved by Human
-        const linksMarketing = [['n0', 'nd'], ['nd', 'n1'], ['n1', 'n2'], ['n1', 'n3'], ['n2', 'n4'], ['n3', 'n4'], ['n4', 'n5a'], ['n4', 'n5b'], ['n4', 'n5c'], ['n5a', 'n7'], ['n5b', 'n7'], ['n5c', 'n7'], ['n7', 'n8'], ['n8', 'n9'], ['n9', 'n10']];
+        const linksMarketing = [['n0', 'n1'], ['n1', 'n2'], ['n1', 'n3'], ['n2', 'n4'], ['n3', 'n4'], ['n4', 'n5a'], ['n4', 'n5b'], ['n4', 'n5c'], ['n5a', 'n7'], ['n5b', 'n7'], ['n5c', 'n7'], ['n7', 'n8'], ['n8', 'n9'], ['n9', 'n10']];
 
         // ============================================================================
         // PROJETOS PIPELINE - Client Projects (External Brand Voice)
@@ -1449,8 +1443,7 @@
         // CRITICAL: Uses CLIENT brand voice (extracted via BRAND_DIGEST), NOT Brick's internal brand
         const nodeDefProjetos = [
             { id: 'p0', x: 0, y: 150, title: 'BRIEFING_INPUT', label: 'Ingestion', model: 'RAW INPUT' },
-            { id: 'pd', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
-            { id: 'p1', x: 0, y: 550, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'GEMINI FLASH' },
+            { id: 'p1', x: 0, y: 350, title: 'BRAND_DIGEST', label: 'Brand_Extractor', model: 'GEMINI FLASH' },
             { id: 'p2a', x: -550, y: 750, title: 'IDEATION_GPT', label: 'Concept_A', model: 'GPT' },
             { id: 'p2b', x: 0, y: 750, title: 'IDEATION_FLASH', label: 'Concept_B', model: 'GEMINI FLASH' },
             { id: 'p2c', x: 550, y: 750, title: 'IDEATION_SONNET', label: 'Concept_C', model: 'CLAUDE SONNET' },
@@ -1464,7 +1457,7 @@
         // Projetos connections: Brand Digest feeds 3-way ideation (parallel concepts),
         // Critic judges best, Execution designs visuals, Proposal writes commercial doc,
         // Director validates execution feasibility, Human approves/revises
-        const linksProjetos = [['p0', 'pd'], ['pd', 'p1'], ['p1', 'p2a'], ['p1', 'p2b'], ['p1', 'p2c'], ['p2a', 'p3'], ['p2b', 'p3'], ['p2c', 'p3'], ['p3', 'p4'], ['p4', 'p5'], ['p5', 'p6'], ['p6', 'p9'], ['p9', 'p10']];
+        const linksProjetos = [['p0', 'p1'], ['p1', 'p2a'], ['p1', 'p2b'], ['p1', 'p2c'], ['p2a', 'p3'], ['p2b', 'p3'], ['p2c', 'p3'], ['p3', 'p4'], ['p4', 'p5'], ['p5', 'p6'], ['p6', 'p9'], ['p9', 'p10']];
 
         // ============================================================================
         // IDEIAS PIPELINE - Concept Validation (Go/No-Go Decision)
@@ -1476,8 +1469,7 @@
         // Philosophy: Fast kill bad ideas early, avoid wasting squad cycles on non-viable concepts
         const nodeDefIdeias = [
             { id: 'i0', x: 0, y: 150, title: 'RAW_IDEA', label: 'Ingestion', model: 'INPUT' },
-            { id: 'id', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
-            { id: 'i1', x: 0, y: 550, title: 'PAIN_CHECK', label: 'Validation', model: 'GEMINI FLASH' },
+            { id: 'i1', x: 0, y: 350, title: 'PAIN_CHECK', label: 'Validation', model: 'GEMINI FLASH' },
             { id: 'i2', x: 0, y: 750, title: 'MARKET_SCAN', label: 'Research', model: 'GEMINI FLASH' },
             { id: 'i3a', x: -250, y: 950, title: 'ANGEL_GEN', label: 'Angel', model: 'CLAUDE SONNET' },
             { id: 'i3b', x: 250, y: 950, title: 'DEVIL_GEN', label: 'Devil', model: 'CLAUDE SONNET' },
@@ -1487,7 +1479,7 @@
         // Ideias connections: Pain Check validates problem, Market Scan researches,
         // Angel+Devil parallel debate (optimist vs pessimist), Viability judges with rubric,
         // Human makes final Go/No-Go decision
-        const linksIdeias = [['i0', 'id'], ['id', 'i1'], ['i1', 'i2'], ['i2', 'i3a'], ['i2', 'i3b'], ['i3a', 'i4'], ['i3b', 'i4'], ['i4', 'i5']];
+        const linksIdeias = [['i0', 'i1'], ['i1', 'i2'], ['i2', 'i3a'], ['i2', 'i3b'], ['i3a', 'i4'], ['i3b', 'i4'], ['i4', 'i5']];
 
         // ============================================================================
         // ORIGINAIS PIPELINE - TV/Streaming Development (Doc & Entertainment)
@@ -1499,18 +1491,17 @@
         // Final node: DOCTOR_FINAL (parecer criativo final por episódio)
         const nodeDefOriginais = [
             { id: 'o0', x: 0, y: 150, title: 'PROJECT_INPUT', label: 'Ingestion', model: 'PDF / DOC' },
-            { id: 'od', x: 0, y: 350, title: 'DOUGLAS', label: 'Orchestrator', model: 'CORE', douglas: true },
-            { id: 'o1', x: 0, y: 550, title: 'TRIAGE', label: 'Classification', model: 'GEMINI FLASH' },
+            { id: 'o1', x: 0, y: 350, title: 'TRIAGE', label: 'Classification', model: 'GEMINI FLASH' },
             { id: 'o2', x: -300, y: 750, title: 'CREATIVE_DOCTOR', label: 'Story_Refiner', model: 'GPT-5.2' },
             { id: 'o3', x: 300, y: 750, title: 'SALES_SHARK', label: 'Market_Validator', model: 'GPT-5.1' },
             { id: 'o4a', x: -250, y: 950, title: 'ANGEL', label: 'Art_Defender', model: 'CLAUDE SONNET' },
             { id: 'o4b', x: 250, y: 950, title: 'DEMON', label: 'Market_Critic', model: 'CLAUDE SONNET' },
             { id: 'o5', x: 0, y: 1150, title: 'DOCTOR_FINAL', label: 'Final_Verdict', model: 'GPT-5.2' }
         ];
-        // Originais connections: Douglas orchestrates, Triage classifies input depth,
+        // Originais connections: Triage classifies input depth,
         // Creative Doctor + Sales Shark analyze in parallel (story vs market),
         // Angel + Demon debate (art vs commerce), Doctor Final dá o veredito
-        const linksOriginais = [['o0', 'od'], ['od', 'o1'], ['o1', 'o2'], ['o1', 'o3'], ['o2', 'o4a'], ['o3', 'o4b'], ['o4a', 'o5'], ['o4b', 'o5']];
+        const linksOriginais = [['o0', 'o1'], ['o1', 'o2'], ['o1', 'o3'], ['o2', 'o4a'], ['o3', 'o4b'], ['o4a', 'o5'], ['o4b', 'o5']];
 
         // ============================================================================
         // FILE MAPPING - Backend Output Pattern Recognition
@@ -1595,9 +1586,6 @@
                 diagram.textContent = `RAW IDEA (input do usuário)
 │
 ▼
-[DOUGLAS] ─── Processamento MANUAL via OpenClaw
-│             (interpreta, enriquece com contexto técnico)
-▼
 01. PAIN CHECK (Flash) ── Valida problema/dor real do mercado
 │
 ▼
@@ -1623,11 +1611,6 @@
 
                 info.innerHTML = `
                     <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:16px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">O QUE CADA NODE FAZ</h3>
-
-                    <div style="margin-bottom:16px;background:#1e293b;padding:10px;border-left:3px solid #f59e0b;">
-                        <div style="color:#f59e0b;font-weight:700;">00. DOUGLAS <span style="font-size:9px;background:#f59e0b;color:#000;padding:2px 4px;border-radius:3px;margin-left:4px;">MANUAL</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:4px;"><strong>Pré-Pipeline:</strong> Douglas processa ideia bruta manualmente via OpenClaw session. Interpreta, expande contexto técnico, salva <code>{JOB_ID}_RAW_IDEA.md</code> e executa <code>run-ideias.sh</code>.</div>
-                    </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">01. PAIN CHECK <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
@@ -1678,9 +1661,6 @@
                 diagram.textContent = `PROJETO ORIGINAL (PDF / DOC / Texto)
 │
 ▼
-[DOUGLAS] ─── Orchestrator (extrai texto, classifica)
-│
-▼
 01. TRIAGE (Flash) ── Classifica profundidade do material
 │
 ├────────────────────────┐
@@ -1699,11 +1679,6 @@
 05. DOCTOR_FINAL (GPT-5.2) ── Score 0-100 + Veredito`;
 
                 schemeHtml = `
-                    <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">00. DOUGLAS <span style="color:#888;">(Manual)</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:4px;"><strong>Pré-Pipeline:</strong> Douglas recebe PDF/DOCX via Telegram, extrai texto, cria pasta do projeto e dispara o pipeline. Classifica o tipo de conteúdo (Doc, Reality, Série Doc, etc).</div>
-                    </div>
-
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">01. TRIAGE <span style="color:#22c55e;">(Gemini Flash)</span></div>
                         <div style="color:#888;font-size:10px;margin-top:2px;">Classifica profundidade do material recebido. Extrai: gênero, formato proposto, personagens-chave, premissa central. Identifica se é tratamento, bíblia, sinopse ou ideia expandida.</div>
@@ -1745,9 +1720,6 @@
                 diagram.textContent = `BRIEFING DO CLIENTE
 │
 ▼
-[DOUGLAS] - Processamento MANUAL via OpenClaw
-│
-▼
 01. BRAND DIGEST (Flash) - Extrai DNA/tom/valores da marca DO CLIENTE
 │
 ├────────────────┬────────────────┤
@@ -1785,11 +1757,6 @@ OUTPUT (Proposta completa)`;
                     <div style="margin-bottom:16px;padding:10px;background:#1e293b;border-left:3px solid #f59e0b;">
                         <div style="color:#f59e0b;font-weight:700;">⚠️ PROJETOS DE CLIENTES</div>
                         <div style="color:#888;font-size:10px;margin-top:4px;">Este pipeline processa projetos de clientes da Brick (produtora). Cada projeto usa a <strong>marca do cliente</strong>, não da Brick. O Brand Digest extrai o DNA da marca do briefing recebido.</div>
-                    </div>
-
-                    <div style="margin-bottom:16px;">
-                        <div style="color:#fff;font-weight:700;">00. DOUGLAS (Orchestrator)</div>
-                        <div style="color:#888;font-size:10px;margin-top:2px;">Ingestion do briefing do cliente. Role: <code>N/A</code></div>
                     </div>
 
                     <div style="margin-bottom:16px;">
@@ -1859,12 +1826,6 @@ OUTPUT (Proposta completa)`;
                 diagram.textContent = `BRIEFING (input do usuário)
 │
 ▼
-[DOUGLAS] ─── Processamento MANUAL via OpenClaw
-│             (interpreta, enriquece, decide executar)
-▼
-PROCESSED.md ─── Briefing enriquecido
-│
-▼
 01. BRIEF VALIDATOR (Flash) ── Valida completude, identifica lacunas
 │
 ▼
@@ -1904,11 +1865,6 @@ PROCESSED.md ─── Briefing enriquecido
 
                 info.innerHTML = `
                     <h3 style="color:#DC2626;font-size:13px;font-weight:900;margin:16px 0 12px;text-transform:uppercase;letter-spacing:0.1em;">O QUE CADA NODE FAZ</h3>
-
-                    <div style="margin-bottom:16px;background:#1e293b;padding:10px;border-left:3px solid #f59e0b;">
-                        <div style="color:#f59e0b;font-weight:700;">00. DOUGLAS <span style="font-size:9px;background:#f59e0b;color:#000;padding:2px 4px;border-radius:3px;margin-left:4px;">MANUAL</span></div>
-                        <div style="color:#888;font-size:10px;margin-top:4px;"><strong>Pré-Pipeline:</strong> Douglas processa briefing manualmente via OpenClaw session. Interpreta, enriquece com contexto da Brick AI, baixa anexos se necessário. Decide se vale executar pipeline. Salva <code>{JOB_ID}_PROCESSED.md</code> e executa <code>run-marketing.sh</code>.</div>
-                    </div>
 
                     <div style="margin-bottom:16px;">
                         <div style="color:#fff;font-weight:700;">01. BRIEF VALIDATOR <span style="color:#4285f4;">(Gemini 3 Flash)</span></div>
@@ -2288,7 +2244,7 @@ PROCESSED.md ─── Briefing enriquecido
                     'APPROVAL': 'human'
                 };
                 const provider = providerMap[n.model] || '';
-                el.className = `node ${n.douglas ? 'node-douglas' : ''}`;
+                el.className = `node`;
                 if (provider) el.setAttribute('data-provider', provider);
                 el.id = n.id;
                 el.style.position = 'absolute';
@@ -2309,7 +2265,7 @@ PROCESSED.md ─── Briefing enriquecido
                     !/_v\d+\.(json|md)$/i.test(f.name) && // Exclui arquivos de loop
                     matchFile(searchTerms, f.name) // Robust pattern matching (not substring)
                 );
-                if (!hasFile && !n.douglas && !n.human && n.id !== 'n0') el.classList.add('disabled');
+                if (!hasFile && !n.human && n.id !== 'n0') el.classList.add('disabled');
 
                 // Extrair score/status se for DECISION (Ideias)
                 let scoreHTML = '';
@@ -2794,20 +2750,7 @@ PROCESSED.md ─── Briefing enriquecido
                 }
             }
 
-            // DOUGLAS em Ideias: mostra PROCESSED.md, fallback para RAW_IDEA.md
-            if (n.title === 'DOUGLAS' && currentMode === 'ideias') {
-                const processedFile = files.find(f => f.name.toUpperCase().includes('PROCESSED'));
-                const rawFile = files.find(f => f.name.toUpperCase().includes('RAW_IDEA'));
-                const douglasFile = processedFile || rawFile;
-                if (douglasFile && douglasFile.content) {
-                    body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${douglasFile.content}</div>`;
-                    document.getElementById('panel-title').textContent = processedFile ? 'DOUGLAS // BRIEFING PROCESSADO' : 'DOUGLAS // RAW IDEA (sem processamento)';
-                    document.getElementById('agent-panel').classList.add('open');
-                    return;
-                }
-            }
-
-            if (n.title === 'BRIEFING_INPUT') {
+                        if (n.title === 'BRIEFING_INPUT') {
                 const rawContent = getBriefingContent(files);
                 if (rawContent) {
                     body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${rawContent}</div>`;
