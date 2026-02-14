@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ LEGADO — mantido para histórico/compatibilidade.
+# Fluxo oficial atual: pipeline autônomo Node (server.js + lib/pipeline-runner.js)
 # BRICK AI IDEAS PIPELINE v2.0
 # Executa pipeline de Ideias (Fast Track)
 # Usa openclaw agent (sincrono) com retry, validação e logging

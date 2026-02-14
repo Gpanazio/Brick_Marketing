@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ LEGADO — mantido para histórico/compatibilidade.
+# Fluxo oficial atual: pipeline autônomo Node (server.js + lib/pipeline-runner.js)
 # BRICK AI ORIGINAIS PIPELINE v2.0
 # Executa pipeline de Originais (TV/Streaming/Doc & Entretenimento)
 # Etapas: Triage → Creative Doctor(GPT-5.2) || Sales Shark(GPT) → Angel || Demon → Doctor Final(GPT-5.2)

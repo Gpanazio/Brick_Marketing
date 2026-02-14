@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ LEGADO — mantido para histórico/compatibilidade.
+# Fluxo oficial atual: pipeline autônomo Node (server.js + lib/pipeline-runner.js)
 # BRICK AI PROJECTS PIPELINE v3.0
 # Loop automático: Execution Design ↔ Director
 # Se Director reprovar (veredito != APROVAR), volta pro Execution com feedback

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
- * OpenClaw Bridge - Permite runner.js chamar ferramentas do OpenClaw
- * 
- * Como runner.js roda como processo standalone (não dentro do OpenClaw),
- * precisamos fazer chamadas via CLI para acessar sessions_spawn e outras tools.
+ * ⚠️ LEGADO — bridge da arquitetura antiga (runner + openclaw CLI).
+ *
+ * Mantido só para histórico. Fluxo oficial atual não usa este arquivo.
  */
 
 const { exec } = require('child_process');

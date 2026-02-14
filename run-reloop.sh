@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ LEGADO — mantido para histórico/compatibilidade.
+# Fluxo oficial atual: pipeline autônomo Node (server.js + lib/pipeline-runner.js)
 # ============================================
 # BRICK AI - RE-LOOP: Copy Senior ↔ Wall
 # ============================================

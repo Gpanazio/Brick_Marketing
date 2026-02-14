@@ -1,12 +1,9 @@
 #!/usr/bin/env node
 /**
- * War Room Runner - Event-Driven Pipeline Orchestrator
- * 
- * Substitui Douglas (LLM) por execução determinística.
- * Escuta eventos Socket.IO do Railway e executa scripts bash exatos.
- * 
- * Autor: Douglas (ironicamente)
- * Data: 2026-02-06
+ * ⚠️ LEGADO — runner baseado em scripts bash/openclaw agent.
+ *
+ * Mantido apenas para referência histórica.
+ * Fluxo oficial atual: server.js + lib/pipeline-runner.js (pipeline autônomo Node).
  */
 
 const io = require('socket.io-client');

@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ LEGADO — utilitários dos scripts bash antigos.
+# Fluxo oficial atual: pipeline autônomo Node (server.js + lib/pipeline-runner.js)
 # BRICK AI PIPELINE UTILITIES
 # Funções compartilhadas entre os scripts de pipeline
 # v1.2 - Dependency check + token savings tracker

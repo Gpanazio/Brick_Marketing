@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ LEGADO — mantido para histórico/compatibilidade.
+# Fluxo oficial atual: pipeline autônomo Node (server.js + lib/pipeline-runner.js)
 # BRICK AI MARKETING PIPELINE v2.1
 # Executa pipeline de Marketing (Content & Flow)
 # Usa openclaw agent (sincrono) com retry, validação e logging
