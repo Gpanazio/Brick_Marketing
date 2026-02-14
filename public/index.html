@@ -1089,7 +1089,7 @@
             </div>
             <div id="telemetry-data" class="space-y-2 text-[10px]">
                 <div class="flex justify-between">
-                    <span class="text-[#666]">AGENTS:</span>
+                    <span class="text-[#666]">STAGES:</span>
                     <span id="tel-agents" class="text-[#DC2626]">--</span>
                 </div>
                 <div class="flex justify-between">
@@ -1101,8 +1101,12 @@
                     <span id="tel-files" class="text-[#DC2626]">--</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-[#666]">STATUS:</span>
+                    <span class="text-[#666]">CURRENT:</span>
                     <span id="tel-stage" class="text-[#DC2626]">--</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-[#666]">MODEL:</span>
+                    <span id="tel-model" class="text-[#DC2626]">--</span>
                 </div>
             </div>
         </div>
@@ -3091,6 +3095,63 @@ PROCESSED.md ─── Briefing enriquecido
                     if (currentMode) socket.emit('subscribe', currentMode);
                 });
                 socket.on('stateUpdate', (state) => { if (state.mode === currentMode) fetchState(); });
+
+                // Pipeline progress em tempo real
+                socket.on('pipeline:progress', (data) => {
+                    if (data.mode !== currentMode) return;
+                    
+                    // Atualizar telemetry em tempo real
+                    const telStage = document.getElementById('tel-stage');
+                    const telStatus = document.getElementById('telemetry-status');
+                    const telAgents = document.getElementById('tel-agents');
+                    const telDuration = document.getElementById('tel-duration');
+                    
+                    if (data.status === 'started') {
+                        telStage.textContent = 'STARTING...';
+                        telStatus.textContent = 'ACTIVE';
+                        telStatus.className = 'text-yellow-500 animate-pulse';
+                        const telModel = document.getElementById('tel-model');
+                        if (telModel && data.model) telModel.textContent = data.model.split('/').pop();
+                        // Iniciar timer
+                        window._pipelineStartTime = Date.now();
+                        window._pipelineStagesCompleted = 0;
+                        if (window._pipelineTimer) clearInterval(window._pipelineTimer);
+                        window._pipelineTimer = setInterval(() => {
+                            if (!window._pipelineStartTime) return;
+                            const elapsed = Math.floor((Date.now() - window._pipelineStartTime) / 1000);
+                            const min = Math.floor(elapsed / 60);
+                            const sec = elapsed % 60;
+                            document.getElementById('tel-duration').textContent = min > 0 ? `${min}m ${sec}s` : `${sec}s`;
+                        }, 1000);
+                    } else if (data.status === 'running') {
+                        telStage.textContent = data.stage;
+                        telStage.style.color = '#f59e0b'; // amber
+                    } else if (data.status === 'completed') {
+                        if (data.stage === 'PIPELINE') {
+                            telStage.textContent = 'READY FOR APPROVAL';
+                            telStatus.textContent = 'COMPLETE';
+                            telStatus.className = 'text-green-500';
+                            if (window._pipelineTimer) clearInterval(window._pipelineTimer);
+                            fetchState(); // Refresh final
+                        } else {
+                            window._pipelineStagesCompleted = (window._pipelineStagesCompleted || 0) + 1;
+                            telAgents.textContent = window._pipelineStagesCompleted;
+                            telStage.textContent = data.stage + ' ✓';
+                            telStage.style.color = '#22c55e'; // green
+                            fetchState(); // Refresh para acender nodes
+                        }
+                    } else if (data.status === 'failed') {
+                        if (data.stage === 'PIPELINE') {
+                            telStage.textContent = 'FAILED';
+                            telStatus.textContent = 'ERROR';
+                            telStatus.className = 'text-red-500';
+                            if (window._pipelineTimer) clearInterval(window._pipelineTimer);
+                        } else {
+                            telStage.textContent = data.stage + ' ✗';
+                            telStage.style.color = '#ef4444'; // red
+                        }
+                    }
+                });
             } catch (e) { }
         }
 
