@@ -496,35 +496,13 @@ async function notifyTelegram(message) {
     }
 }
 
-// Douglas notification via OpenClaw Wake API
+// Douglas notification (Telegram only)
 async function notifyDouglas(data) {
-    // OpenClaw Wake: send system event to Douglas session via Gateway API
-    const wakeMessage = data.feedbackAction
-        ? `🔄 FEEDBACK HUMANO RECEBIDO - Projeto ${data.jobId || 'N/A'} (${data.mode || 'marketing'}): "${data.feedbackText || '(vazio)'}". Feedback salvo em history/${data.mode}/feedback/. Aguardando processamento.`
-        : `📋 NOVO BRIEFING RECEBIDO - ${data.title || 'Sem título'} (${data.mode || 'marketing'}, ${data.filesCount || 0} anexos). JobID: ${data.jobId}. Aguardando processamento via War Room.`;
-
-    // Try OpenClaw Gateway Wake API (local gateway)
-    try {
-        const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL || 'http://localhost:18789';
-        await fetch(`${gatewayUrl}/api/cron/wake`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                text: wakeMessage,
-                mode: 'now'
-            })
-        });
-        log('info', 'openclaw_wake_sent', { jobId: data.jobId, type: data.feedbackAction ? 'feedback' : 'briefing' });
-    } catch (e) {
-        log('warn', 'openclaw_wake_failed', { error: e.message });
-    }
-
-    // Fallback: Telegram notification (legacy)
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
     if (!token || !chatId) {
-        return; // OpenClaw wake is enough
+        return;
     }
 
     // Só envia Telegram aqui para FEEDBACK (evita duplicar alerta de briefing)
@@ -609,7 +587,7 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
             filesCount: uploadedFiles.length
         });
 
-        // Notify Douglas via OpenClaw Wake + Telegram
+        // Notify Douglas (Telegram feedback channel)
         const briefingData = {
             title,
             mode: mode || 'marketing',
@@ -617,7 +595,7 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
             jobId
         };
 
-        await notifyDouglas(briefingData); // Primary: OpenClaw system event
+        await notifyDouglas(briefingData);
 
         const emoji = mode === 'projetos' ? '🎬' : '🚨';
         const typeLabel = mode === 'projetos' ? 'NOVO PROJETO DE CLIENTE' : 'NOVO BRIEFING';
@@ -627,7 +605,7 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
         // WebSocket: notificar clientes
         emitStateUpdate(mode || 'marketing');
         
-        // Socket.IO: notificar runner (legacy)
+        // Socket.IO: notificar runner
         io.to('runner').emit('pipeline:run', {
             action: 'briefing',
             mode: mode || 'marketing',
@@ -924,7 +902,7 @@ app.post('/api/rerun', (req, res) => {
     log('info', 'job_rerun_triggered', { jobId, mode, briefingFile });
     emitStateUpdate(mode || 'marketing');
     
-    // Socket.IO: notificar runner (legacy)
+    // Socket.IO: notificar runner
     io.to('runner').emit('pipeline:run', {
         action: 'rerun',
         mode: mode || 'marketing',
@@ -1055,7 +1033,7 @@ function startPipelineAsync(mode, jobId, briefingContent) {
         mode,
         jobId,
         io: ioInstance,
-        model: process.env.PIPELINE_MODEL || 'openrouter/free',
+        model: process.env.PIPELINE_MODEL || 'google/gemini-2.0-flash',
         emitStateUpdate: (m) => emitStateUpdate(m)
     }).then(result => {
         activePipelines.set(jobId, { status: result.status, completedAt: Date.now() });
@@ -1103,7 +1081,7 @@ app.get('/api/models', (req, res) => {
         free: FREE_MODELS,
         paid: PAID_MODELS,
         configured: !!process.env.OPENROUTER_API_KEY,
-        current: process.env.PIPELINE_MODEL || 'openrouter/free'
+        current: process.env.PIPELINE_MODEL || 'google/gemini-2.0-flash'
     });
 });
 
@@ -1115,7 +1093,7 @@ app.get('/api/openrouter-test', async (req, res) => {
     try {
         const result = await client.chat(
             [{ role: 'user', content: 'Responda apenas: OK' }],
-            'openrouter/free'
+            'google/gemini-2.0-flash'
         );
         res.json({ success: true, response: result });
     } catch (error) {
@@ -1188,7 +1166,7 @@ app.post('/api/feedback', async (req, res) => {
     const signalFile = path.join(baseDir, 'FEEDBACK_SIGNAL.txt');
     fs.writeFileSync(signalFile, `FEEDBACK PENDENTE\nJobID: ${jobId || file}\nTexto: ${text || feedback}\nTimestamp: ${new Date().toISOString()}`);
 
-    // Notify Douglas via OpenClaw Wake
+    // Notify Douglas
     const notifyData = {
         jobId: jobId || file,
         mode: mode || 'marketing',
@@ -1201,7 +1179,7 @@ app.post('/api/feedback', async (req, res) => {
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     emitStateUpdate(mode || 'marketing');
     
-    // Socket.IO: notificar runner (legacy)
+    // Socket.IO: notificar runner
     io.to('runner').emit('pipeline:run', {
         action: 'feedback',
         mode: mode || 'marketing',
