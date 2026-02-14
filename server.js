@@ -924,13 +924,20 @@ app.post('/api/rerun', (req, res) => {
     log('info', 'job_rerun_triggered', { jobId, mode, briefingFile });
     emitStateUpdate(mode || 'marketing');
     
-    // Socket.IO: notificar runner
+    // Socket.IO: notificar runner (legacy)
     io.to('runner').emit('pipeline:run', {
         action: 'rerun',
         mode: mode || 'marketing',
         jobId,
         content: fs.readFileSync(briefingPath, 'utf-8'),
     });
+
+    // NOVO: Disparar pipeline autônomo via OpenRouter (se configurado)
+    if (process.env.OPENROUTER_API_KEY) {
+        const briefingContent = fs.readFileSync(briefingPath, 'utf-8');
+        log('info', 'auto_pipeline_rerun', { jobId, mode: mode || 'marketing' });
+        startPipelineAsync(mode || 'marketing', jobId, briefingContent);
+    }
     
     res.json({ success: true, message: 'Job reiniciado', briefingFile });
 });
@@ -1194,14 +1201,51 @@ app.post('/api/feedback', async (req, res) => {
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     emitStateUpdate(mode || 'marketing');
     
-    // Socket.IO: notificar runner
+    // Socket.IO: notificar runner (legacy)
     io.to('runner').emit('pipeline:run', {
         action: 'feedback',
         mode: mode || 'marketing',
         jobId: jobId || file,
-        target: routedTo || 'PROPOSAL', // Marketing: n/a; Projetos: PROPOSAL/EXECUTION
+        target: routedTo || 'PROPOSAL',
         content: text || feedback,
     });
+
+    // NOVO: Disparar pipeline autônomo com feedback integrado
+    if (process.env.OPENROUTER_API_KEY) {
+        const effectiveMode = mode || 'marketing';
+        const effectiveJobId = jobId || file;
+        const feedbackText = text || feedback;
+        
+        // Buscar briefing original
+        const baseDir2 = getModeRoot(effectiveMode);
+        const briefingDir2 = path.join(baseDir2, 'briefing');
+        const wipDir2 = path.join(baseDir2, 'wip');
+        let originalBriefing = '';
+        
+        // Tentar achar briefing original
+        if (fs.existsSync(briefingDir2)) {
+            const bf = fs.readdirSync(briefingDir2).find(f => f.includes(effectiveJobId));
+            if (bf) originalBriefing = fs.readFileSync(path.join(briefingDir2, bf), 'utf-8');
+        }
+        
+        // Juntar briefing + contexto existente + feedback
+        let previousResults = '';
+        if (fs.existsSync(wipDir2)) {
+            const wipFiles = fs.readdirSync(wipDir2).filter(f => f.includes(effectiveJobId) && !f.includes('BRIEFING'));
+            wipFiles.forEach(wf => {
+                try {
+                    const content = fs.readFileSync(path.join(wipDir2, wf), 'utf-8');
+                    previousResults += `\n\n## ${wf}\n${content.substring(0, 500)}`;
+                } catch(e) {}
+            });
+        }
+        
+        const enrichedBriefing = `# BRIEFING ORIGINAL\n${originalBriefing}\n\n# RESULTADO ANTERIOR\n${previousResults}\n\n# FEEDBACK HUMANO\n${feedbackText}\n\n---\nINSTRUÇÃO: Refaça o pipeline levando em consideração o feedback humano acima.`;
+        
+        // Re-run no mesmo jobId (gera arquivos que sobrescrevem os anteriores)
+        log('info', 'auto_pipeline_feedback', { jobId: effectiveJobId, mode: effectiveMode });
+        startPipelineAsync(effectiveMode, effectiveJobId, enrichedBriefing);
+    }
     
     res.json({ success: true, saved: feedbackFile, archived: true });
 });
