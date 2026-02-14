@@ -1013,7 +1013,52 @@ app.post('/api/pipeline', (req, res) => {
     res.json({ success: true, config });
 });
 
-// API: Archive to history
+// OpenRouter Pipeline Runner
+const { handlePipelineRun } = require('./lib/pipeline-runner');
+
+// API: Run autonomous pipeline with OpenRouter
+app.post('/api/run-autonomous', async (req, res) => {
+    const { briefing, mode = 'free' } = req.body;
+    
+    if (!briefing) {
+        return res.status(400).json({ error: 'Briefing é obrigatório' });
+    }
+
+    log('info', 'autonomous_pipeline_start', { mode, hasBriefing: !!briefing });
+
+    try {
+        const result = await handlePipelineRun(req, res);
+    } catch (error) {
+        log('error', 'autonomous_pipeline_error', { error: error.message });
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// API: Get available models
+app.get('/api/models', (req, res) => {
+    const { FREE_MODELS, PAID_MODELS } = require('./lib/openrouter-client');
+    res.json({
+        free: FREE_MODELS,
+        paid: PAID_MODELS,
+        configured: !!process.env.OPENROUTER_API_KEY
+    });
+});
+
+// API: Test OpenRouter connection
+app.get('/api/openrouter-test', async (req, res) => {
+    const { OpenRouterClient } = require('./lib/openrouter-client');
+    const client = new OpenRouterClient();
+    
+    try {
+        const result = await client.chat(
+            [{ role: 'user', content: 'Responda apenas: OK' }],
+            'openrouter/free'
+        );
+        res.json({ success: true, response: result });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 app.post('/api/archive', (req, res) => {
     const { filename, mode } = req.body;
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
