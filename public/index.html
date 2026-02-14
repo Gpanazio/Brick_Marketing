@@ -3096,7 +3096,10 @@ PROCESSED.md ─── Briefing enriquecido
                 });
                 socket.on('connect', () => {
                     document.getElementById('connection-status').textContent = 'WebSocket_Active';
-                    if (currentMode) socket.emit('subscribe', currentMode);
+                    if (currentMode) {
+                        socket.emit('subscribe', currentMode);
+                        fetchState(); // Auto-refresh ao reconectar
+                    }
                 });
                 socket.on('stateUpdate', (state) => { if (state.mode === currentMode) fetchState(); });
 
