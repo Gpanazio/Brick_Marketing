@@ -1,3 +1,7 @@
+# ⚠️ LEGADO (pré-runner autônomo)
+
+> Este arquivo contém histórico de fases antigas (OpenClaw/watcher/scripts bash). Para estado atual, use README.md, ARCHITECTURE.md e STATUS.md.
+
 # CHANGELOG - Brick Marketing War Room
 
 ## v2.2 - 2026-02-07

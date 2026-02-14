@@ -1,3 +1,7 @@
+# ⚠️ LEGADO (release notes de fase anterior)
+
+> Documento histórico. O pipeline atual roda via runner autônomo em Node.
+
 # RELEASE NOTES v2.1 - Context-Summarizer Integration
 
 **Data:** 06/02/2026  

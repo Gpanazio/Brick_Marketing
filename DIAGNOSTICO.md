@@ -1,3 +1,7 @@
+# ⚠️ LEGADO (diagnóstico de arquitetura antiga)
+
+> Este diagnóstico refere-se ao período com OpenClaw agent + watcher.js. Para arquitetura atual, consulte ARCHITECTURE.md e STATUS.md.
+
 # Diagnóstico War Room - 2026-02-06 23:20
 
 ## 🔴 PROBLEMA CRÍTICO

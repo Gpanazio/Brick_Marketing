@@ -1,3 +1,7 @@
+# ⚠️ LEGADO (roadmap antigo)
+
+> Roadmap da arquitetura antiga baseada em OpenClaw agent. Manter apenas para referência histórica.
+
 # Roadmap: Migração para Agent Lightning Architecture
 
 **Status atual:** Fix temporário com spawn() (bash scripts)  
