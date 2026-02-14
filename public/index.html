@@ -3132,6 +3132,7 @@ PROCESSED.md ─── Briefing enriquecido
                             telStatus.textContent = 'COMPLETE';
                             telStatus.className = 'text-green-500';
                             if (window._pipelineTimer) clearInterval(window._pipelineTimer);
+                            showNotification('✅ Pipeline completo! Pronto para aprovação.');
                             fetchState(); // Refresh final
                         } else {
                             window._pipelineStagesCompleted = (window._pipelineStagesCompleted || 0) + 1;
@@ -3146,9 +3147,11 @@ PROCESSED.md ─── Briefing enriquecido
                             telStatus.textContent = 'ERROR';
                             telStatus.className = 'text-red-500';
                             if (window._pipelineTimer) clearInterval(window._pipelineTimer);
+                            showNotification(`❌ Pipeline falhou: ${data.error || 'erro desconhecido'}`, 'error');
                         } else {
                             telStage.textContent = data.stage + ' ✗';
                             telStage.style.color = '#ef4444'; // red
+                            showNotification(`⚠️ ${data.stage} falhou: ${data.error || 'erro desconhecido'}`, 'error');
                         }
                     }
                 });
