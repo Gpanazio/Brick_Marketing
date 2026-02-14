@@ -48,6 +48,9 @@ const io = new Server(httpServer, {
     cors: { origin: '*', methods: ['GET', 'POST'] }
 });
 
+// Disponibilizar io no app para rotas
+app.set('io', io);
+
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY || 'brick-squad-2026';
 
@@ -1014,7 +1017,7 @@ app.post('/api/pipeline', (req, res) => {
 });
 
 // OpenRouter Pipeline Runner
-const { handlePipelineRun } = require('./lib/pipeline-runner');
+const { PipelineRunner, handlePipelineRun } = require('./lib/pipeline-runner');
 
 // API: Run autonomous pipeline with OpenRouter
 app.post('/api/run-autonomous', async (req, res) => {
@@ -1026,8 +1029,22 @@ app.post('/api/run-autonomous', async (req, res) => {
 
     log('info', 'autonomous_pipeline_start', { mode, hasBriefing: !!briefing });
 
+    const io = req.app.get('io');
+
     try {
-        const result = await handlePipelineRun(req, res);
+        const runner = new PipelineRunner({
+            mode,
+            briefingId: Date.now().toString(),
+            io, // Pass Socket.IO instance
+            onProgress: (progress) => {
+                if (io) {
+                    io.emit('pipelineProgress', progress);
+                }
+            }
+        });
+
+        const result = await runner.run(briefing);
+        res.json(result);
     } catch (error) {
         log('error', 'autonomous_pipeline_error', { error: error.message });
         res.status(500).json({ error: error.message });
