@@ -627,13 +627,19 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
         // WebSocket: notificar clientes
         emitStateUpdate(mode || 'marketing');
         
-        // Socket.IO: notificar runner
+        // Socket.IO: notificar runner (legacy)
         io.to('runner').emit('pipeline:run', {
             action: 'briefing',
             mode: mode || 'marketing',
             jobId,
             content: fileContent,
         });
+
+        // NOVO: Disparar pipeline autônomo via OpenRouter (se configurado)
+        if (process.env.OPENROUTER_API_KEY) {
+            log('info', 'auto_pipeline_triggered', { jobId, mode: mode || 'marketing' });
+            startPipelineAsync(mode || 'marketing', jobId, fileContent);
+        }
 
         res.json({ success: true, filename, mode: mode || 'marketing', filesCount: uploadedFiles.length });
     } catch (err) {
@@ -1016,39 +1022,68 @@ app.post('/api/pipeline', (req, res) => {
     res.json({ success: true, config });
 });
 
-// OpenRouter Pipeline Runner
-const { PipelineRunner, handlePipelineRun } = require('./lib/pipeline-runner');
+// ============================================================================
+// PIPELINE AUTÔNOMO (OpenRouter)
+// ============================================================================
+const { PipelineRunner, handlePipelineRun, PIPELINES } = require('./lib/pipeline-runner');
 
-// API: Run autonomous pipeline with OpenRouter
+// Track de pipelines ativos
+const activePipelines = new Map();
+
+// Função para disparar pipeline em background
+function startPipelineAsync(mode, jobId, briefingContent) {
+    if (activePipelines.has(jobId)) {
+        log('warn', 'pipeline_already_running', { jobId });
+        return;
+    }
+
+    const ioInstance = app.get('io');
+    
+    log('info', 'autonomous_pipeline_start', { mode, jobId });
+    activePipelines.set(jobId, { status: 'running', startedAt: Date.now() });
+
+    // Fire & forget - roda em background
+    handlePipelineRun({
+        briefing: briefingContent,
+        mode,
+        jobId,
+        io: ioInstance,
+        model: process.env.PIPELINE_MODEL || 'openrouter/free',
+        emitStateUpdate: (m) => emitStateUpdate(m)
+    }).then(result => {
+        activePipelines.set(jobId, { status: result.status, completedAt: Date.now() });
+        log('info', 'autonomous_pipeline_completed', { jobId, status: result.status });
+        setTimeout(() => activePipelines.delete(jobId), 3600000);
+    }).catch(error => {
+        activePipelines.set(jobId, { status: 'failed', error: error.message });
+        log('error', 'autonomous_pipeline_error', { jobId, error: error.message });
+    });
+}
+
+// API: Run pipeline manually via POST
 app.post('/api/run-autonomous', async (req, res) => {
-    const { briefing, mode = 'free' } = req.body;
+    const { briefing, mode = 'marketing', model } = req.body;
     
     if (!briefing) {
         return res.status(400).json({ error: 'Briefing é obrigatório' });
     }
 
-    log('info', 'autonomous_pipeline_start', { mode, hasBriefing: !!briefing });
+    const jobId = Date.now().toString();
+    startPipelineAsync(mode, jobId, briefing);
+    
+    res.json({ success: true, jobId, message: 'Pipeline iniciado em background' });
+});
 
-    const io = req.app.get('io');
-
-    try {
-        const runner = new PipelineRunner({
-            mode,
-            briefingId: Date.now().toString(),
-            io, // Pass Socket.IO instance
-            onProgress: (progress) => {
-                if (io) {
-                    io.emit('pipelineProgress', progress);
-                }
-            }
-        });
-
-        const result = await runner.run(briefing);
-        res.json(result);
-    } catch (error) {
-        log('error', 'autonomous_pipeline_error', { error: error.message });
-        res.status(500).json({ error: error.message });
+// API: Get pipeline status
+app.get('/api/pipeline-status', (req, res) => {
+    const { jobId } = req.query;
+    if (jobId) {
+        const status = activePipelines.get(jobId);
+        return res.json(status || { status: 'not_found' });
     }
+    const all = {};
+    activePipelines.forEach((v, k) => { all[k] = v; });
+    res.json(all);
 });
 
 // API: Get available models
@@ -1057,7 +1092,8 @@ app.get('/api/models', (req, res) => {
     res.json({
         free: FREE_MODELS,
         paid: PAID_MODELS,
-        configured: !!process.env.OPENROUTER_API_KEY
+        configured: !!process.env.OPENROUTER_API_KEY,
+        current: process.env.PIPELINE_MODEL || 'openrouter/free'
     });
 });
 
@@ -1076,6 +1112,7 @@ app.get('/api/openrouter-test', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
 app.post('/api/archive', (req, res) => {
     const { filename, mode } = req.body;
     const baseDir = mode === 'projetos' ? PROJETOS_ROOT : MARKETING_ROOT;
