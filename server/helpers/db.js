@@ -158,11 +158,47 @@ async function getFilesByCategory(mode, category) {
     }));
 }
 
+// Auto-archive projects older than 30 days
+async function autoArchiveOldProjects() {
+    const p = getPool();
+    if (!p) return 0;
+
+    try {
+        const result = await p.query(`
+            UPDATE projects
+            SET status = 'archived', archived_at = NOW(), updated_at = NOW()
+            WHERE status IN ('briefing', 'running', 'done')
+              AND deleted_at IS NULL
+              AND updated_at < NOW() - INTERVAL '30 days'
+            RETURNING job_id, mode
+        `);
+
+        // Also move their pipeline_files to 'done' category
+        if (result.rowCount > 0) {
+            for (const row of result.rows) {
+                await p.query(`
+                    UPDATE pipeline_files SET category = 'done', updated_at = NOW()
+                    WHERE job_id = $1 AND mode = $2 AND category IN ('briefing', 'wip')
+                `, [row.job_id, row.mode]);
+            }
+            console.log(`[DB] 🗄️ Auto-archived ${result.rowCount} project(s) older than 30 days`);
+            result.rows.forEach(r => console.log(`   → ${r.mode}/${r.job_id}`));
+        }
+
+        return result.rowCount;
+    } catch (err) {
+        console.error('[DB] Auto-archive failed:', err.message);
+        log('error', 'auto_archive_failed', { error: err.message });
+        return 0;
+    }
+}
+
 module.exports = {
     getPool,
     query,
     initDb,
     ensureProject,
     savePipelineFile,
-    getFilesByCategory
+    getFilesByCategory,
+    autoArchiveOldProjects
 };

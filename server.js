@@ -13,7 +13,7 @@ const { log } = require('./server/helpers/logger');
 const { ensureDirectories } = require('./server/helpers/paths');
 const { loadMetrics, saveMetrics } = require('./server/helpers/metrics');
 const { setupSocketIO } = require('./server/helpers/socket');
-const { initDb } = require('./server/helpers/db');
+const { initDb, autoArchiveOldProjects } = require('./server/helpers/db');
 
 // Middleware
 const { createAuthMiddleware } = require('./server/middleware/auth');
@@ -70,8 +70,13 @@ setInterval(saveMetrics, 5 * 60 * 1000);
 
 // Database initialization (async, non-blocking)
 initDb().then(ok => {
-    if (ok) console.log('[STARTUP] Database ready');
-    else console.log('[STARTUP] Running without database (file-system fallback)');
+    if (ok) {
+        console.log('[STARTUP] Database ready');
+        // Auto-archive projects older than 30 days
+        autoArchiveOldProjects();
+    } else {
+        console.log('[STARTUP] Running without database (file-system fallback)');
+    }
 }).catch(err => {
     console.error('[STARTUP] Database init error:', err.message);
 });
