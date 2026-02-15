@@ -3000,15 +3000,39 @@ OUTPUT (Proposta completa)`;
             } catch (e) { }
         }
 
+        /* REUSABLE CONFIRM MODAL (BRAND V5 COMPLIANT) */
+        function showConfirm(title, msg, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[500]';
+            modal.innerHTML = `
+                <div class="bg-[#050505] border border-[#DC2626] p-8 max-w-md w-full shadow-[0_0_30px_rgba(220,38,38,0.2)]">
+                    <h3 class="text-xl font-brick text-white uppercase tracking-tight mb-4 flex items-center gap-3">
+                        <span class="text-[#DC2626]">⚠️</span> ${title}
+                    </h3>
+                    <p class="font-mono text-sm text-[#ccc] mb-8 leading-relaxed uppercase tracking-wide">
+                        ${msg}
+                    </p>
+                    <div class="flex gap-4 justify-end">
+                        <button id="modal-cancel-btn" class="px-6 py-3 border border-[#333] text-[#666] font-mono text-xs uppercase tracking-widest hover:border-[#666] hover:text-white transition-all">CANCEL</button>
+                        <button id="modal-confirm-btn" class="px-6 py-3 bg-[#DC2626] text-white font-brick text-xs uppercase tracking-widest hover:bg-red-700 transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)]">CONFIRM</button>
+                    </div>
+                </div>
+            `;
+            modal.querySelector('#modal-cancel-btn').onclick = () => modal.remove();
+            modal.querySelector('#modal-confirm-btn').onclick = () => { onConfirm(); modal.remove(); };
+            document.body.appendChild(modal);
+        }
+
         async function rerunJob() {
-            if (!confirm('⚠️ Reiniciar pipeline do zero?')) return;
-            try {
-                const res = await authFetch(`${API_URL}/rerun`, {
-                    method: 'POST',
-                    body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
-                });
-                if (res.ok) showNotification('🔄 Job reiniciado!');
-            } catch (e) { }
+            showConfirm('ATTENTION DIRECTOR', 'REINICIAR PIPELINE? DADOS ATUAIS SERÃO PERDIDOS.', async () => {
+                try {
+                    const res = await authFetch(`${API_URL}/rerun`, {
+                        method: 'POST',
+                        body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
+                    });
+                    if (res.ok) showNotification('🔄 Job reiniciado!');
+                } catch (e) { }
+            });
         }
 
         function showNotification(msg, type = 'success') {
@@ -3019,26 +3043,28 @@ OUTPUT (Proposta completa)`;
 
         async function approveRevision(jobId, revNum, e) {
             e.stopPropagation();
-            if (!confirm(`Aprovar REVISÃO ${revNum}? Isso substituirá o conteúdo original.`)) return;
-            try {
-                const res = await authFetch(`${API_URL}/revisions/${jobId}/approve`, {
-                    method: 'POST',
-                    body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
-                });
-                if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
-            } catch (err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
+            showConfirm('APPROVE REVISION', `APROVAR REVISÃO ${revNum}? ISSO SUBSTITUIRÁ O CONTÉUDO ORIGINAL.`, async () => {
+                try {
+                    const res = await authFetch(`${API_URL}/revisions/${jobId}/approve`, {
+                        method: 'POST',
+                        body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
+                    });
+                    if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
+                } catch (err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
+            });
         }
 
         async function rejectRevision(jobId, revNum, e) {
             e.stopPropagation();
-            if (!confirm(`Rejeitar REVISÃO ${revNum}? O arquivo será movido para histórico.`)) return;
-            try {
-                const res = await authFetch(`${API_URL}/revisions/${jobId}/reject`, {
-                    method: 'POST',
-                    body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
-                });
-                if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
-            } catch (err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
+            showConfirm('REJECT REVISION', `REJEITAR REVISÃO ${revNum}? O ARQUIVO SERÁ MOVIDO PARA HISTÓRICO.`, async () => {
+                try {
+                    const res = await authFetch(`${API_URL}/revisions/${jobId}/reject`, {
+                        method: 'POST',
+                        body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
+                    });
+                    if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
+                } catch (err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
+            });
         }
 
         function getJobRevisionInfo(jobId) {
