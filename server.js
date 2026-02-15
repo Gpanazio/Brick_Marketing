@@ -60,22 +60,22 @@ app.set('trust proxy', 1);
 // SECURITY: Path Traversal Protection
 function sanitizePath(userPath) {
     if (!userPath) return null;
-    
+
     // Bloqueia qualquer '..' no input original (antes de normalizar)
     if (userPath.includes('..') || path.isAbsolute(userPath)) {
         log('warn', 'path_traversal_attempt_blocked', { input: userPath });
         return null;
     }
-    
+
     // Normaliza o path
     const normalized = path.normalize(userPath).replace(/^(\.\.[\/\\])+/, '');
-    
+
     // Double-check: bloqueia se normalização introduziu '..'
     if (normalized.includes('..') || path.isAbsolute(normalized)) {
         log('warn', 'path_traversal_post_normalize_blocked', { input: userPath, normalized });
         return null;
     }
-    
+
     return normalized;
 }
 
@@ -107,11 +107,11 @@ function getFilesForSocket(dir, mode) {
 // Socket.IO middleware: Auth
 io.use((socket, next) => {
     const apiKey = socket.handshake.auth.apiKey;
-    
+
     if (apiKey === API_KEY) {
         return next();
     }
-    
+
     log('warn', 'websocket_auth_failed', { id: socket.id, ip: socket.handshake.address });
     next(new Error('Authentication failed'));
 });
@@ -212,7 +212,7 @@ app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps, curl, Postman)
         if (!origin) return callback(null, true);
-        
+
         if (allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -421,6 +421,59 @@ app.get('/api/estimate', (req, res) => {
     });
 });
 
+// API: Get real costs for a specific job
+app.get('/api/costs/:jobId', (req, res) => {
+    const { jobId } = req.params;
+    const mode = req.query.mode || null;
+
+    // Search across all modes for the cost file
+    const modesToSearch = mode ? [mode] : ['marketing', 'projetos', 'ideias', 'originais'];
+
+    for (const m of modesToSearch) {
+        const costFile = path.join(HISTORY_ROOT, m, 'wip', `${jobId}_COSTS.json`);
+        if (fs.existsSync(costFile)) {
+            try {
+                const report = JSON.parse(fs.readFileSync(costFile, 'utf-8'));
+                return res.json(report);
+            } catch (e) {
+                return res.status(500).json({ error: 'Failed to parse cost report' });
+            }
+        }
+    }
+
+    res.status(404).json({ error: 'Cost report not found', jobId });
+});
+
+// API: List all cost reports
+app.get('/api/costs', (req, res) => {
+    const mode = req.query.mode || null;
+    const modesToSearch = mode ? [mode] : ['marketing', 'projetos', 'ideias', 'originais'];
+    const reports = [];
+
+    for (const m of modesToSearch) {
+        const wipDir = path.join(HISTORY_ROOT, m, 'wip');
+        if (!fs.existsSync(wipDir)) continue;
+
+        const costFiles = fs.readdirSync(wipDir).filter(f => f.endsWith('_COSTS.json'));
+        for (const f of costFiles) {
+            try {
+                const report = JSON.parse(fs.readFileSync(path.join(wipDir, f), 'utf-8'));
+                reports.push({
+                    job_id: report.job_id,
+                    mode: report.mode,
+                    total_cost_usd: report.summary?.total_cost_usd,
+                    total_tokens: report.summary?.total_tokens,
+                    total_steps: report.summary?.total_steps,
+                    completed_at: report.completed_at
+                });
+            } catch (e) { /* skip corrupt files */ }
+        }
+    }
+
+    reports.sort((a, b) => new Date(b.completed_at || 0) - new Date(a.completed_at || 0));
+    res.json({ reports, count: reports.length });
+});
+
 // API: Get all state (including failed, revisions, pending feedbacks)
 app.get('/api/state', (req, res) => {
     const mode = req.query.mode || 'marketing';
@@ -434,7 +487,7 @@ app.get('/api/state', (req, res) => {
             .filter(f => f.endsWith('.json'))
             .map(f => {
                 try { return JSON.parse(fs.readFileSync(path.join(feedbackDir, f), 'utf-8')); }
-                catch(e) { return null; }
+                catch (e) { return null; }
             })
             .filter(f => f && f.status === 'pending')
             .map(f => ({ jobId: f.jobId || f.file, text: f.text || f.feedback, timestamp: f.timestamp }));
@@ -457,24 +510,24 @@ app.get('/api/pending', (req, res) => {
     const allBriefings = getFiles('briefing', mode);
     const root = getModeRoot(mode);
     const wipDir = path.join(root, 'wip');
-    
+
     // Filtrar apenas briefings que NÃO têm arquivos processados no wip/
     const pending = allBriefings.filter(briefing => {
         // Extrair jobId do filename (pattern: {jobId}_{nome}.md ou {jobId}.md)
         const match = briefing.name.match(/^(\d+)/);
         if (!match) return false;
-        
+
         const jobId = match[1];
-        
+
         // Verificar se existe QUALQUER arquivo do job no wip/
         if (!fs.existsSync(wipDir)) return true; // Se wip não existe, tá pendente
-        
+
         const wipFiles = fs.readdirSync(wipDir);
         const hasWipFiles = wipFiles.some(f => f.startsWith(jobId));
-        
+
         return !hasWipFiles; // Só retorna se NÃO tem arquivo no wip
     });
-    
+
     res.json({ briefings: pending });
 });
 
@@ -604,7 +657,7 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
 
         // WebSocket: notificar clientes
         emitStateUpdate(mode || 'marketing');
-        
+
         // Socket.IO: notificar runner
         io.to('runner').emit('pipeline:run', {
             action: 'briefing',
@@ -629,15 +682,15 @@ app.post('/api/briefing', upload.array('files', 10), async (req, res) => {
 // API: Submit result from agent (com validação de schema)
 app.post('/api/result', (req, res) => {
     const { filename, content, category, botName, durationMs, model, mode } = req.body;
-    
+
     // SECURITY: Sanitize paths
     const safeFilename = sanitizePath(filename);
     const safeCategory = sanitizePath(category || 'wip');
-    
+
     if (!safeFilename || !safeCategory) {
         return res.status(400).json({ error: 'Invalid path detected' });
     }
-    
+
     const root = getModeRoot(mode || 'marketing');
     const targetCategory = safeCategory;
     const filePath = path.join(root, targetCategory, safeFilename);
@@ -681,16 +734,16 @@ app.post('/api/result', (req, res) => {
 // API: Move File (Approve/Reject)
 app.post('/api/move', (req, res) => {
     const { filename, from, to, mode } = req.body;
-    
+
     // SECURITY: Sanitize paths
     const safeFilename = sanitizePath(filename);
     const safeFrom = sanitizePath(from);
     const safeTo = sanitizePath(to);
-    
+
     if (!safeFilename || !safeFrom || !safeTo) {
         return res.status(400).json({ error: 'Invalid path detected' });
     }
-    
+
     const root = getModeRoot(mode || 'marketing');
     const src = path.join(root, safeFrom, safeFilename);
     const destDir = path.join(root, safeTo);
@@ -711,15 +764,15 @@ app.post('/api/move', (req, res) => {
 // API: Delete File
 app.delete('/api/file', (req, res) => {
     const { category, filename, mode } = req.body;
-    
+
     // SECURITY: Sanitize paths
     const safeCategory = sanitizePath(category);
     const safeFilename = sanitizePath(filename);
-    
+
     if (!safeCategory || !safeFilename) {
         return res.status(400).json({ error: 'Invalid path detected' });
     }
-    
+
     const root = getModeRoot(mode || 'marketing');
     const filePath = path.join(root, safeCategory, safeFilename);
     if (fs.existsSync(filePath)) {
@@ -737,7 +790,7 @@ app.post('/api/briefing/clear', (req, res) => {
     try {
         const { filename, mode } = req.body || {};
         const root = getModeRoot(mode || 'marketing');
-        
+
         // Se não passar filename, limpa TUDO
         if (!filename) {
             const briefingDir = path.join(root, 'briefing');
@@ -752,13 +805,13 @@ app.post('/api/briefing/clear', (req, res) => {
             }
             return res.json({ success: true, cleared: 0 });
         }
-        
+
         // SECURITY: Sanitize filename
         const safeFilename = sanitizePath(filename);
         if (!safeFilename) {
             return res.status(400).json({ error: 'Invalid path detected' });
         }
-        
+
         // Limpar arquivo específico
         const filePath = path.join(root, 'briefing', safeFilename);
         if (fs.existsSync(filePath)) {
@@ -901,7 +954,7 @@ app.post('/api/rerun', (req, res) => {
 
     log('info', 'job_rerun_triggered', { jobId, mode, briefingFile });
     emitStateUpdate(mode || 'marketing');
-    
+
     // Socket.IO: notificar runner
     io.to('runner').emit('pipeline:run', {
         action: 'rerun',
@@ -916,7 +969,7 @@ app.post('/api/rerun', (req, res) => {
         log('info', 'auto_pipeline_rerun', { jobId, mode: mode || 'marketing' });
         startPipelineAsync(mode || 'marketing', jobId, briefingContent);
     }
-    
+
     res.json({ success: true, message: 'Job reiniciado', briefingFile });
 });
 
@@ -1023,7 +1076,7 @@ function startPipelineAsync(mode, jobId, briefingContent) {
     }
 
     const ioInstance = app.get('io');
-    
+
     log('info', 'autonomous_pipeline_start', { mode, jobId });
     activePipelines.set(jobId, { status: 'running', startedAt: Date.now() });
 
@@ -1033,7 +1086,7 @@ function startPipelineAsync(mode, jobId, briefingContent) {
         mode,
         jobId,
         io: ioInstance,
-        model: process.env.PIPELINE_MODEL || 'google/gemini-2.0-flash',
+        model: process.env.PIPELINE_MODEL || 'google/gemini-3-flash-preview',
         emitStateUpdate: (m) => emitStateUpdate(m)
     }).then(result => {
         activePipelines.set(jobId, { status: result.status, completedAt: Date.now() });
@@ -1048,7 +1101,7 @@ function startPipelineAsync(mode, jobId, briefingContent) {
 // API: Run pipeline manually via POST
 app.post('/api/run-autonomous', async (req, res) => {
     const { briefing, mode = 'marketing', model } = req.body;
-    
+
     if (!briefing) {
         return res.status(400).json({ error: 'Briefing é obrigatório' });
     }
@@ -1058,7 +1111,7 @@ app.post('/api/run-autonomous', async (req, res) => {
     const safeName = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     const jobId = `${Date.now()}_${safeName}`;
     startPipelineAsync(mode, jobId, briefing);
-    
+
     res.json({ success: true, jobId, message: 'Pipeline iniciado em background' });
 });
 
@@ -1081,7 +1134,7 @@ app.get('/api/models', (req, res) => {
         free: FREE_MODELS,
         paid: PAID_MODELS,
         configured: !!process.env.OPENROUTER_API_KEY,
-        current: process.env.PIPELINE_MODEL || 'google/gemini-2.0-flash'
+        current: process.env.PIPELINE_MODEL || 'google/gemini-3-flash-preview'
     });
 });
 
@@ -1089,11 +1142,11 @@ app.get('/api/models', (req, res) => {
 app.get('/api/openrouter-test', async (req, res) => {
     const { OpenRouterClient } = require('./lib/openrouter-client');
     const client = new OpenRouterClient();
-    
+
     try {
         const result = await client.chat(
             [{ role: 'user', content: 'Responda apenas: OK' }],
-            'google/gemini-2.0-flash'
+            'google/gemini-3-flash-preview'
         );
         res.json({ success: true, response: result });
     } catch (error) {
@@ -1178,7 +1231,7 @@ app.post('/api/feedback', async (req, res) => {
 
     log('info', 'feedback_received', { jobId, feedback: text || feedback, mode });
     emitStateUpdate(mode || 'marketing');
-    
+
     // Socket.IO: notificar runner
     io.to('runner').emit('pipeline:run', {
         action: 'feedback',
@@ -1193,19 +1246,19 @@ app.post('/api/feedback', async (req, res) => {
         const effectiveMode = mode || 'marketing';
         const effectiveJobId = jobId || file;
         const feedbackText = text || feedback;
-        
+
         // Buscar briefing original
         const baseDir2 = getModeRoot(effectiveMode);
         const briefingDir2 = path.join(baseDir2, 'briefing');
         const wipDir2 = path.join(baseDir2, 'wip');
         let originalBriefing = '';
-        
+
         // Tentar achar briefing original
         if (fs.existsSync(briefingDir2)) {
             const bf = fs.readdirSync(briefingDir2).find(f => f.includes(effectiveJobId));
             if (bf) originalBriefing = fs.readFileSync(path.join(briefingDir2, bf), 'utf-8');
         }
-        
+
         // Juntar briefing + contexto existente + feedback
         let previousResults = '';
         if (fs.existsSync(wipDir2)) {
@@ -1214,17 +1267,17 @@ app.post('/api/feedback', async (req, res) => {
                 try {
                     const content = fs.readFileSync(path.join(wipDir2, wf), 'utf-8');
                     previousResults += `\n\n## ${wf}\n${content.substring(0, 500)}`;
-                } catch(e) {}
+                } catch (e) { }
             });
         }
-        
+
         const enrichedBriefing = `# BRIEFING ORIGINAL\n${originalBriefing}\n\n# RESULTADO ANTERIOR\n${previousResults}\n\n# FEEDBACK HUMANO\n${feedbackText}\n\n---\nINSTRUÇÃO: Refaça o pipeline levando em consideração o feedback humano acima.`;
-        
+
         // Re-run no mesmo jobId (gera arquivos que sobrescrevem os anteriores)
         log('info', 'auto_pipeline_feedback', { jobId: effectiveJobId, mode: effectiveMode });
         startPipelineAsync(effectiveMode, effectiveJobId, enrichedBriefing);
     }
-    
+
     res.json({ success: true, saved: feedbackFile, archived: true });
 });
 
@@ -1317,7 +1370,7 @@ function getFeedbacksForJob(feedbackDir, jobId) {
         .map(f => {
             try {
                 return { filename: f, ...JSON.parse(fs.readFileSync(path.join(feedbackDir, f), 'utf-8')) };
-            } catch(e) { return null; }
+            } catch (e) { return null; }
         })
         .filter(f => f && (f.jobId === jobId || (f.jobId && f.jobId.startsWith(jobId)) || (f.file && f.file.includes(jobId))));
 }
@@ -1334,7 +1387,7 @@ function getRevisions(mode) {
             try {
                 const content = JSON.parse(fs.readFileSync(path.join(wipDir, f), 'utf-8'));
                 return { filename: f, ...content };
-            } catch(e) {
+            } catch (e) {
                 return { filename: f, status: 'error' };
             }
         });
@@ -1362,7 +1415,7 @@ app.get('/api/revisions/:jobId', (req, res) => {
     const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
     let diffData = null;
     if (diffFile) {
-        try { diffData = JSON.parse(diffFile.content); } catch(e) { /* ignore */ }
+        try { diffData = JSON.parse(diffFile.content); } catch (e) { /* ignore */ }
     }
 
     res.json({
@@ -1447,7 +1500,7 @@ app.post('/api/revisions/:jobId/approve', (req, res) => {
         log('info', 'revision_approved', { jobId, mode: mode || 'marketing', backup: backupName });
         emitStateUpdate(mode || 'marketing');
         res.json({ success: true, backup: backupName });
-    } catch(err) {
+    } catch (err) {
         log('error', 'revision_approve_failed', { jobId, error: err.message });
         res.status(500).json({ error: err.message });
     }
@@ -1502,7 +1555,7 @@ app.post('/api/revisions/:jobId/reject', (req, res) => {
         log('info', 'revision_rejected', { jobId, mode: mode || 'marketing' });
         emitStateUpdate(mode || 'marketing');
         res.json({ success: true });
-    } catch(err) {
+    } catch (err) {
         log('error', 'revision_reject_failed', { jobId, error: err.message });
         res.status(500).json({ error: err.message });
     }
@@ -1565,20 +1618,20 @@ process.on('unhandledRejection', (reason, promise) => {
 app.delete('/api/project/:jobId', (req, res) => {
     const { jobId } = req.params;
     const { mode } = req.query;
-    
+
     if (!jobId || !mode) {
         return res.status(400).json({ error: 'jobId and mode required' });
     }
-    
+
     const root = getModeRoot(mode);
     const dirs = ['briefing', 'wip', 'done', 'failed'];
     let deletedCount = 0;
     const deletedFiles = [];
-    
+
     dirs.forEach(dir => {
         const dirPath = path.join(root, dir);
         if (!fs.existsSync(dirPath)) return;
-        
+
         const files = fs.readdirSync(dirPath).filter(f => f.startsWith(jobId));
         files.forEach(file => {
             const filePath = path.join(dirPath, file);
@@ -1587,12 +1640,12 @@ app.delete('/api/project/:jobId', (req, res) => {
                 deletedFiles.push(`${dir}/${file}`);
                 deletedCount++;
                 log('info', 'project_file_deleted', { jobId, file, dir, mode });
-            } catch(e) {
+            } catch (e) {
                 log('error', 'project_delete_failed', { jobId, file, dir, error: e.message });
             }
         });
     });
-    
+
     emitStateUpdate(mode);
     res.json({ success: true, jobId, mode, deletedCount, files: deletedFiles });
 });
@@ -1617,15 +1670,15 @@ app.post('/api/briefings/cleanup', (req, res) => {
     const { mode, keepJobIds } = req.body;
     const root = getModeRoot(mode || 'marketing');
     const briefingDir = path.join(root, 'briefing');
-    
+
     if (!fs.existsSync(briefingDir)) {
         return res.status(404).json({ error: 'Briefing directory not found' });
     }
-    
+
     const keepSet = new Set(keepJobIds || []);
     const files = fs.readdirSync(briefingDir).filter(f => f.endsWith('.md'));
     let deleted = 0;
-    
+
     files.forEach(file => {
         const jobId = file.replace(/\.md$/, '').split('_')[0];
         if (!keepSet.has(jobId)) {
@@ -1635,7 +1688,7 @@ app.post('/api/briefings/cleanup', (req, res) => {
             log('info', 'briefing_cleaned', { file, jobId, mode: mode || 'marketing' });
         }
     });
-    
+
     emitStateUpdate(mode || 'marketing');
     res.json({ success: true, deleted, kept: keepSet.size });
 });

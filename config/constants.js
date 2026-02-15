@@ -20,24 +20,29 @@ module.exports = {
         }
     },
     MODELS: {
-        FLASH: 'gemini-2.0-flash-exp',
+        FLASH: 'gemini-3-flash-preview',
         CREATIVE: 'claude-sonnet-4',
         REASONING: 'claude-opus-4'
     },
-    // Custo estimado por modelo (USD por 1K tokens)
+    // Custo estimado por modelo (USD por 1M tokens — OpenRouter equivalent)
+    // NOTE: 'flash' = Gemini 3 Flash ($0.50/$3.00 per 1M)
     MODEL_COSTS_OUTPUT: {
-        'flash': 0.0004,       // Gemini Flash - $0.40/1M output
-        'pro': 0.010,          // Gemini Pro - $10/1M output
-        'gpt': 0.010,          // GPT-5.2 Codex - $10/1M output
+        'flash': 0.003,        // Gemini 3 Flash - $3.00/1M output
+        'pro': 0.010,          // Gemini 3 Pro - $10/1M output
+        'gpt': 0.010,          // GPT-5.1/5.2 - $10/1M output
         'sonnet': 0.015,       // Claude Sonnet 4.5 - $15/1M output
-        'opus': 0.075          // Claude Opus 4.5 - $75/1M output
+        'opus': 0.075,         // Claude Opus 4.6 - $75/1M output
+        'deepseek': 0.0011,    // DeepSeek v3.2 - $1.10/1M output
+        'grok': 0.010          // Grok 4.1 Fast - $10/1M output
     },
     MODEL_COSTS_INPUT: {
-        'flash': 0.000075,     // Gemini Flash - $0.075/1M input
-        'pro': 0.00125,        // Gemini Pro - $1.25/1M input
-        'gpt': 0.0025,         // GPT-5.2 Codex - $2.50/1M input
+        'flash': 0.0005,       // Gemini 3 Flash - $0.50/1M input
+        'pro': 0.00125,        // Gemini 3 Pro - $1.25/1M input
+        'gpt': 0.0025,         // GPT-5.1/5.2 - $2.50/1M input
         'sonnet': 0.003,       // Claude Sonnet 4.5 - $3/1M input
-        'opus': 0.015          // Claude Opus 4.5 - $15/1M input
+        'opus': 0.015,         // Claude Opus 4.6 - $15/1M input
+        'deepseek': 0.00027,   // DeepSeek v3.2 - $0.27/1M input
+        'grok': 0.002          // Grok 4.1 Fast - $2/1M input
     },
     // Tokens médios por etapa (estimativa output)
     AVG_TOKENS_PER_STEP: {
