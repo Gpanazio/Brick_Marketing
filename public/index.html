@@ -58,6 +58,22 @@
             z-index: -1;
         }
 
+        @keyframes terminal-blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .animate-blink {
+            animation: terminal-blink 1s step-end infinite;
+        }
+
         .vignette {
             position: fixed;
             inset: 0;
@@ -955,9 +971,11 @@
     <div id="main-ui" class="h-screen flex flex-col p-8">
         <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8 relative z-50">
             <div>
-                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
-                    BRICK AI <span id="header-sector"
-                        class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter flex items-baseline">
+                    BRICK<span class="text-[#DC2626] animate-blink mx-1 text-2xl font-light">_</span><span
+                        class="font-mono text-gray-300 text-xl font-bold tracking-tight">AI</span> <span
+                        id="header-sector"
+                        class="text-[#DC2626] text-sm font-mono tracking-tight ml-4">COMMAND_CENTER</span>
                 </h1>
                 <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">
                     System_Active</div>
@@ -996,33 +1014,42 @@
                             class="text-[#DC2626]">War</span> Room</h1>
                     <p class="text-sm font-mono text-[#666] uppercase tracking-[0.3em] mt-3">Creation Center</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 w-full">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
                     <div onclick="enterMode('marketing')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
-                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Marketing
-                        </h3>
-                        <p class="text-[#444] font-mono text-xs uppercase">Content & Flow</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 01</div>
+                        <h3
+                            class="text-2xl font-brick text-white mb-2 uppercase group-hover:text-[#DC2626] tracking-tighter">
+                            MARKETING</h3>
+                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Content & Flow</p>
                     </div>
                     <div onclick="enterMode('projetos')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
-                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos —
-                            Clientes</h3>
-                        <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 02</div>
+                        <h3
+                            class="text-2xl font-brick text-white mb-1 uppercase group-hover:text-[#DC2626] tracking-tighter">
+                            PROJETOS</h3>
+                        <h3
+                            class="text-sm font-brick text-[#666] mb-2 uppercase group-hover:text-[#DC2626] tracking-widest">
+                            — CLIENTES</h3>
+                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Strategy & Craft</p>
                     </div>
                     <div onclick="enterMode('ideias')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
-                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
-                        <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 03</div>
+                        <h3
+                            class="text-2xl font-brick text-white mb-2 uppercase group-hover:text-[#DC2626] tracking-tighter">
+                            IDEIAS</h3>
+                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Validation</p>
                     </div>
                     <div onclick="enterMode('originais')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 04</div>
-                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Originais
-                        </h3>
-                        <p class="text-[#444] font-mono text-xs uppercase">Development & Viability</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 04</div>
+                        <h3
+                            class="text-2xl font-brick text-white mb-2 uppercase group-hover:text-[#DC2626] tracking-tighter">
+                            ORIGINAIS</h3>
+                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Development & Viability
+                        </p>
                     </div>
                 </div>
             </div>
@@ -1057,9 +1084,11 @@
         <header
             class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
             <div>
-                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
-                    BRICK AI <span id="ng-sector-title"
-                        class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">MARKETING</span>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter flex items-baseline">
+                    BRICK<span class="text-[#DC2626] animate-blink mx-1 text-2xl font-light">_</span><span
+                        class="font-mono text-gray-300 text-xl font-bold tracking-tight">AI</span> <span
+                        id="ng-sector-title"
+                        class="text-[#DC2626] text-sm font-mono tracking-tight ml-4">MARKETING</span>
                 </h1>
                 <div class="text-[9px] font-mono text-[#DC2626] mt-2 tracking-widest uppercase">
                     Mason Protocol v5.0 // <span id="ng-title" class="text-white">PROJECT_TITLE</span>
