@@ -7,6 +7,8 @@ Sistema de pipelines autônomos para **Marketing**, **Projetos** e **Ideias**.
 - Execução por etapa via **API de modelos** (OpenRouter/Google), sem `openclaw agent`
 - **PostgreSQL** integrado para persistência (dual-write: filesystem + DB)
 - **Ranking de modelos** (A×B×C leaderboard) disponível em `/ranking.html`
+- **Auto-archive**: projetos com +30 dias são arquivados automaticamente no boot
+- **Migração legada**: `scripts/migrate-legacy.js` para importar pipelines pré-DB
 
 ---
 
@@ -37,13 +39,14 @@ Sistema de pipelines autônomos para **Marketing**, **Projetos** e **Ideias**.
   - Emite progresso por Socket.IO (`pipeline:progress`)
 
 ### Database (PostgreSQL)
-- `server/helpers/db.js` — Connection pool + schema auto-migration
+- `server/helpers/db.js` — Connection pool + schema auto-migration + auto-archive
 - Tabelas:
   - `projects` — Projetos com soft delete (`deleted_at`) e archive (`archived_at`)
   - `pipeline_files` — Arquivos gerados pelas pipelines (status: briefing/wip/done/failed/archived)
   - `feedbacks` — Feedbacks e revisões
   - `cost_reports` — Relatórios de custo por execução
 - Estratégia: **dual-write** (filesystem + DB) para backward compatibility
+- **Auto-archive**: `autoArchiveOldProjects()` roda no boot, arquiva projetos com `updated_at > 30 dias`
 
 ### Routes (modularizadas)
 | Arquivo | Responsabilidade |
@@ -82,6 +85,7 @@ Sistema de pipelines autônomos para **Marketing**, **Projetos** e **Ideias**.
 - Variável de ambiente: `DATABASE_PUBLIC_URL` (ou `DATABASE_URL` como fallback)
 - Schema criado automaticamente no startup via `initDb()`
 - Se o DB não estiver disponível, o sistema funciona normalmente via filesystem
+- **Auto-archive no boot**: projetos com `updated_at > 30 dias` são arquivados automaticamente
 
 ### Tabelas
 ```sql
@@ -89,6 +93,19 @@ projects          (id, job_id, mode, status, title, created_at, updated_at, dele
 pipeline_files    (id, job_id, mode, filename, content, status, model, created_at, updated_at)
 feedbacks         (id, job_id, mode, feedback_text, status, created_at)
 cost_reports      (id, job_id, mode, report_data, created_at)
+```
+
+### Migração de dados legados
+
+Pipelines rodados antes da criação do DB ficavam apenas no filesystem (`history/`).
+O script de migração importa esses dados para o PostgreSQL:
+
+```bash
+# Preview (sem alterar o banco)
+DATABASE_PUBLIC_URL=... node scripts/migrate-legacy.js --dry-run
+
+# Execução
+DATABASE_PUBLIC_URL=... node scripts/migrate-legacy.js
 ```
 
 ---
@@ -176,7 +193,8 @@ No diretório do projeto:
 
 ```bash
 npm start
-npm test    # smoke tests da API
+npm test                                    # smoke tests da API
+node scripts/migrate-legacy.js --dry-run    # preview migração legada
 ```
 
 Checks rápidos:
@@ -227,4 +245,4 @@ Ainda existem scripts bash legados (`run-*.sh`) para histórico/compatibilidade,
 
 ---
 
-**Última revisão:** 2026-02-15 (DB integrado, ranking A×B×C, archive/delete frontend)
+**Última revisão:** 2026-02-15 (migração legada 152 arquivos, auto-archive 30 dias, server modularizado)
