@@ -1,0 +1,160 @@
+{
+  "id": "preset_marketing",
+  "name": "Marketing Pipeline",
+  "description": "Pipeline principal. Transforma briefing em copy publicável com 8 etapas + loop de qualidade.",
+  "version": "3.3",
+  "isPreset": true,
+  "createdAt": "2026-02-15T00:30:00Z",
+  "nodes": [
+    {
+      "id": "validator",
+      "role": "VALIDATOR",
+      "roleFile": "BRIEF_VALIDATOR.md",
+      "label": "Brief Validator",
+      "icon": "GATE",
+      "model": {
+        "primary": { "provider": "google", "model": "gemini-3-flash-preview" },
+        "fallback": { "provider": "openrouter", "model": "deepseek/deepseek-v3.2" }
+      },
+      "position": { "x": 100, "y": 300 },
+      "config": { "expectJSON": true }
+    },
+    {
+      "id": "audience",
+      "role": "AUDIENCE",
+      "roleFile": "AUDIENCE_ANALYST.md",
+      "label": "Audience Analyst",
+      "icon": "PROFILE",
+      "model": {
+        "primary": { "provider": "google", "model": "gemini-3-flash-preview" },
+        "fallback": { "provider": "openrouter", "model": "deepseek/deepseek-v3.2" }
+      },
+      "position": { "x": 450, "y": 300 },
+      "config": {
+        "expectJSON": true,
+        "contextInjections": [
+          { "file": "BRAND_GUIDE.md", "label": "BRAND GUIDE" }
+        ]
+      }
+    },
+    {
+      "id": "research",
+      "role": "RESEARCH",
+      "roleFile": "TOPIC_RESEARCHER.md",
+      "label": "Topic Researcher",
+      "icon": "SEARCH",
+      "model": {
+        "primary": { "provider": "google", "model": "gemini-3-flash-preview" },
+        "fallback": { "provider": "openrouter", "model": "deepseek/deepseek-v3.2" }
+      },
+      "position": { "x": 800, "y": 300 },
+      "config": { "expectJSON": true }
+    },
+    {
+      "id": "claims",
+      "role": "CLAIMS",
+      "roleFile": "CLAIMS_CHECKER.md",
+      "label": "Claims Checker",
+      "icon": "SHIELD",
+      "model": {
+        "primary": { "provider": "google", "model": "gemini-3-flash-preview" },
+        "fallback": { "provider": "openrouter", "model": "deepseek/deepseek-v3.2" }
+      },
+      "position": { "x": 1150, "y": 300 },
+      "config": { "expectJSON": true }
+    },
+    {
+      "id": "copy_a",
+      "role": "COPY_A",
+      "roleFile": "COPYWRITER.md",
+      "label": "Copywriter A (GPT)",
+      "icon": "WRITE",
+      "model": {
+        "primary": { "provider": "openrouter", "model": "openai/gpt-5.1" },
+        "fallback": { "provider": "google", "model": "gemini-3-flash-preview" }
+      },
+      "position": { "x": 1500, "y": 150 },
+      "config": { "expectJSON": false }
+    },
+    {
+      "id": "copy_b",
+      "role": "COPY_B",
+      "roleFile": "COPYWRITER.md",
+      "label": "Copywriter B (DeepSeek)",
+      "icon": "WRITE",
+      "model": {
+        "primary": { "provider": "openrouter", "model": "deepseek/deepseek-v3.2" },
+        "fallback": { "provider": "google", "model": "gemini-3-flash-preview" }
+      },
+      "position": { "x": 1500, "y": 300 },
+      "config": { "expectJSON": false }
+    },
+    {
+      "id": "copy_c",
+      "role": "COPY_C",
+      "roleFile": "COPYWRITER.md",
+      "label": "Copywriter C (Sonnet)",
+      "icon": "WRITE",
+      "model": {
+        "primary": { "provider": "openrouter", "model": "anthropic/claude-sonnet-4.5" },
+        "fallback": { "provider": "google", "model": "gemini-3-flash-preview" }
+      },
+      "position": { "x": 1500, "y": 450 },
+      "config": { "expectJSON": false }
+    },
+    {
+      "id": "copy_senior",
+      "role": "COPY_SENIOR",
+      "roleFile": "COPY_SENIOR.md",
+      "label": "Copy Senior",
+      "icon": "STAR",
+      "model": {
+        "primary": { "provider": "openrouter", "model": "openai/gpt-5.1" },
+        "fallback": { "provider": "openrouter", "model": "deepseek/deepseek-v3.2" }
+      },
+      "position": { "x": 1850, "y": 300 },
+      "config": {
+        "expectJSON": true,
+        "contextInjections": [
+          { "file": "BRAND_GUARDIAN.md", "label": "BRAND GUARDIAN" }
+        ]
+      }
+    },
+    {
+      "id": "wall",
+      "role": "WALL",
+      "roleFile": "FILTRO_FINAL.md",
+      "label": "Wall (Filtro Final)",
+      "icon": "LOCK",
+      "model": {
+        "primary": { "provider": "openrouter", "model": "anthropic/claude-opus-4.6" },
+        "fallback": { "provider": "openrouter", "model": "openai/gpt-5.1" }
+      },
+      "position": { "x": 2200, "y": 300 },
+      "config": {
+        "expectJSON": true,
+        "contextInjections": [
+          { "file": "BRAND_GUARDIAN.md", "label": "BRAND GUARDIAN" }
+        ]
+      }
+    }
+  ],
+  "connections": [
+    { "from": "validator", "to": "audience", "type": "sequential" },
+    { "from": "audience", "to": "research", "type": "sequential" },
+    { "from": "research", "to": "claims", "type": "sequential" },
+    { "from": "claims", "to": ["copy_a", "copy_b", "copy_c"], "type": "parallel" },
+    { "from": "copy_a", "to": "copy_senior", "type": "sequential" },
+    { "from": "copy_b", "to": "copy_senior", "type": "sequential" },
+    { "from": "copy_c", "to": "copy_senior", "type": "sequential" },
+    { "from": "copy_senior", "to": "wall", "type": "sequential" }
+  ],
+  "loops": [
+    {
+      "from": "wall",
+      "to": "copy_senior",
+      "condition": "score_final < 80",
+      "maxIterations": 3
+    }
+  ]
+}

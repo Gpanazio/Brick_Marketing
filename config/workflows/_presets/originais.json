@@ -1,0 +1,191 @@
+{
+    "id": "preset_originais",
+    "name": "Originais Pipeline",
+    "description": "Auditoria criativa e comercial completa. Triage → Doctor + Shark → Angel + Demon → Doctor Final.",
+    "version": "1.0",
+    "isPreset": true,
+    "createdAt": "2026-02-15T00:30:00Z",
+    "nodes": [
+        {
+            "id": "triage",
+            "role": "TRIAGE",
+            "roleFile": "TRIAGE_ORIGINAIS.md",
+            "label": "Triage",
+            "icon": "GATE",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-v3.2"
+                }
+            },
+            "position": {
+                "x": 100,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "creative_doctor",
+            "role": "CREATIVE_DOCTOR",
+            "roleFile": "CREATIVE_DOCTOR_ORIGINAIS.md",
+            "label": "Creative Doctor",
+            "icon": "CPU",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "anthropic/claude-opus-4.6"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "openai/gpt-5.1"
+                }
+            },
+            "position": {
+                "x": 450,
+                "y": 150
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "sales_shark",
+            "role": "SALES_SHARK",
+            "roleFile": "SALES_SHARK_ORIGINAIS.md",
+            "label": "Sales Shark",
+            "icon": "PROFILE",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "x-ai/grok-4.1-fast"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 450,
+                "y": 450
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "angel",
+            "role": "ANGEL",
+            "roleFile": "ANGEL_ORIGINAIS.md",
+            "label": "Angel (Art Defender)",
+            "icon": "STAR",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "anthropic/claude-sonnet-4.5"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 800,
+                "y": 150
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "demon",
+            "role": "DEMON",
+            "roleFile": "DEMON_ORIGINAIS.md",
+            "label": "Demon (Market Critic)",
+            "icon": "SHIELD",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-r1-0528"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-r1-distill-llama-70b"
+                }
+            },
+            "position": {
+                "x": 800,
+                "y": 450
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "doctor_final",
+            "role": "DOCTOR_FINAL",
+            "roleFile": "DOCTOR_FINAL_ORIGINAIS.md",
+            "label": "Doctor Final",
+            "icon": "LOCK",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "openai/gpt-5.2"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "openai/gpt-5.1"
+                }
+            },
+            "position": {
+                "x": 1150,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        }
+    ],
+    "connections": [
+        {
+            "from": "triage",
+            "to": [
+                "creative_doctor",
+                "sales_shark"
+            ],
+            "type": "parallel"
+        },
+        {
+            "from": "creative_doctor",
+            "to": [
+                "angel",
+                "demon"
+            ],
+            "type": "parallel"
+        },
+        {
+            "from": "sales_shark",
+            "to": [
+                "angel",
+                "demon"
+            ],
+            "type": "parallel"
+        },
+        {
+            "from": "angel",
+            "to": "doctor_final",
+            "type": "sequential"
+        },
+        {
+            "from": "demon",
+            "to": "doctor_final",
+            "type": "sequential"
+        }
+    ],
+    "loops": []
+}

@@ -58,22 +58,6 @@
             z-index: -1;
         }
 
-        @keyframes terminal-blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
-        }
-
-        .animate-blink {
-            animation: terminal-blink 1s step-end infinite;
-        }
-
         .vignette {
             position: fixed;
             inset: 0;
@@ -971,11 +955,9 @@
     <div id="main-ui" class="h-screen flex flex-col p-8">
         <header class="flex justify-between items-start mb-12 border-b border-white/5 pb-8 relative z-50">
             <div>
-                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter flex items-baseline">
-                    BRICK<span class="text-[#DC2626] animate-blink mx-1 text-2xl font-light">_</span><span
-                        class="font-mono text-gray-300 text-xl font-bold tracking-tight">AI</span> <span
-                        id="header-sector"
-                        class="text-[#DC2626] text-sm font-mono tracking-tight ml-4">COMMAND_CENTER</span>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
+                    BRICK AI <span id="header-sector"
+                        class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">COMMAND_CENTER</span>
                 </h1>
                 <div id="connection-status" class="text-[9px] font-mono text-green-500 mt-2 uppercase tracking-widest">
                     System_Active</div>
@@ -999,9 +981,9 @@
                 <button id="btn-reset-layout" onclick="resetLayout()"
                     class="hidden text-[#DC2626] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#DC2626] px-4 py-2 hover:bg-[#DC2626] hover:text-black">⟲
                     RESET POSIÇÕES</button>
-                <a href="/ranking.html" target="_blank"
-                    class="text-[#666] hover:text-[#f59e0b] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#f59e0b] transition-all no-underline">🏆
-                    Ranking</a>
+                <a href="/workflow-builder.html"
+                    class="text-[#DC2626] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#DC2626] px-4 py-2 hover:bg-[#DC2626] hover:text-black no-underline"
+                    style="text-decoration:none;">⚙ Workflow_Builder</a>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
@@ -1014,43 +996,42 @@
                             class="text-[#DC2626]">War</span> Room</h1>
                     <p class="text-sm font-mono text-[#666] uppercase tracking-[0.3em] mt-3">Creation Center</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 w-full">
                     <div onclick="enterMode('marketing')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 01</div>
-                        <h3
-                            class="text-2xl font-brick text-white mb-2 uppercase group-hover:text-[#DC2626] tracking-tighter">
-                            MARKETING</h3>
-                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Content & Flow</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 01</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Marketing
+                        </h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Content & Flow</p>
                     </div>
                     <div onclick="enterMode('projetos')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 02</div>
-                        <h3
-                            class="text-2xl font-brick text-white mb-1 uppercase group-hover:text-[#DC2626] tracking-tighter">
-                            PROJETOS</h3>
-                        <h3
-                            class="text-sm font-brick text-[#666] mb-2 uppercase group-hover:text-[#DC2626] tracking-widest">
-                            — CLIENTES</h3>
-                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Strategy & Craft</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 02</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Projetos —
+                            Clientes</h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Strategy & Craft</p>
                     </div>
                     <div onclick="enterMode('ideias')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 03</div>
-                        <h3
-                            class="text-2xl font-brick text-white mb-2 uppercase group-hover:text-[#DC2626] tracking-tighter">
-                            IDEIAS</h3>
-                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Validation</p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 03</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Ideias</h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Validation</p>
                     </div>
                     <div onclick="enterMode('originais')"
-                        class="group cursor-pointer border border-[#111] bg-[#050505] p-10 hover:border-[#DC2626] transition-all">
-                        <div class="text-[9px] font-mono text-[#444] mb-6">SEC // 04</div>
-                        <h3
-                            class="text-2xl font-brick text-white mb-2 uppercase group-hover:text-[#DC2626] tracking-tighter">
-                            ORIGINAIS</h3>
-                        <p class="text-[#444] font-mono text-[10px] uppercase tracking-wider">Development & Viability
-                        </p>
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
+                        <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 04</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Originais
+                        </h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Development & Viability</p>
                     </div>
+                    <a href="/workflow-builder.html"
+                        class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all no-underline"
+                        style="text-decoration:none;">
+                        <div class="text-[9px] font-mono text-[#DC2626] mb-8">SEC // 05</div>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Custom
+                            Nodes</h3>
+                        <p class="text-[#444] font-mono text-xs uppercase">Free-Form Pipelines</p>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1069,13 +1050,6 @@
                 </h2>
                 <div id="lobby-active-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
             </div>
-            <div id="lobby-archived" class="mt-16" style="display:none">
-                <h2 class="text-lg font-brick text-[#666] uppercase mb-6 tracking-wider flex items-center gap-3 cursor-pointer"
-                    onclick="document.getElementById('lobby-archived-list').classList.toggle('hidden'); this.querySelector('.toggle-arrow').textContent = document.getElementById('lobby-archived-list').classList.contains('hidden') ? '▸' : '▾'">
-                    <span class="text-2xl">🗄</span> ARQUIVADOS <span class="toggle-arrow text-sm">▸</span>
-                </h2>
-                <div id="lobby-archived-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 hidden"></div>
-            </div>
         </div>
     </div>
 
@@ -1084,11 +1058,9 @@
         <header
             class="fixed top-0 left-0 w-full flex justify-between items-start p-8 border-b border-white/5 bg-black/80 backdrop-blur-md z-[110]">
             <div>
-                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter flex items-baseline">
-                    BRICK<span class="text-[#DC2626] animate-blink mx-1 text-2xl font-light">_</span><span
-                        class="font-mono text-gray-300 text-xl font-bold tracking-tight">AI</span> <span
-                        id="ng-sector-title"
-                        class="text-[#DC2626] text-sm font-mono tracking-tight ml-4">MARKETING</span>
+                <h1 class="text-3xl font-brick text-white uppercase tracking-tighter">
+                    BRICK AI <span id="ng-sector-title"
+                        class="text-[#DC2626] text-sm font-mono tracking-[0.5em] ml-4">MARKETING</span>
                 </h1>
                 <div class="text-[9px] font-mono text-[#DC2626] mt-2 tracking-widest uppercase">
                     Mason Protocol v5.0 // <span id="ng-title" class="text-white">PROJECT_TITLE</span>
@@ -2076,12 +2048,8 @@ OUTPUT (Proposta completa)`;
                 card.innerHTML = `
                     <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                     <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
-                    <div class="text-[9px] font-mono text-green-500 tracking-widest flex items-center gap-2 mb-4">
+                    <div class="text-[9px] font-mono text-green-500 tracking-widest flex items-center gap-2">
                         <span>✓</span> APROVADO
-                    </div>
-                    <div class="flex gap-2 pt-4 border-t border-[#222]">
-                        <button onclick="confirmArchiveProject('${id}', '${title.replace(/'/g, "\\'")}'); event.stopPropagation();" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#f59e0b] hover:text-[#f59e0b] uppercase tracking-wider transition-all">🗄 Arquivar</button>
-                        <button onclick="confirmDeleteProject('${id}'); event.stopPropagation();" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#DC2626] hover:text-[#DC2626] uppercase tracking-wider transition-all">✕ Apagar</button>
                     </div>
                 `;
                 approvedList.appendChild(card);
@@ -2135,10 +2103,7 @@ OUTPUT (Proposta completa)`;
                     card.innerHTML = `
                         <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                         <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
-                        <div class="text-[9px] font-mono text-[#DC2626] tracking-widest mb-4">ACTIVE_NETWORK</div>
-                        <div class="flex gap-2 pt-4 border-t border-[#222]">
-                            <button onclick="confirmDeleteProject('${id}'); event.stopPropagation();" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#DC2626] hover:text-[#DC2626] uppercase tracking-wider transition-all">✕ Apagar</button>
-                        </div>
+                        <div class="text-[9px] font-mono text-[#DC2626] tracking-widest">ACTIVE_NETWORK</div>
                     `;
                 }
 
@@ -2148,9 +2113,6 @@ OUTPUT (Proposta completa)`;
             // Esconder seções vazias
             document.getElementById('lobby-approved').style.display = Object.keys(doneGroups).length > 0 ? 'block' : 'none';
             document.getElementById('lobby-active').style.display = Object.keys(wipGroups).length > 0 ? 'block' : 'none';
-
-            // Fetch and render archived projects
-            fetchArchivedProjects();
         }
 
         function updateTelemetry(projectFiles) {
@@ -3000,39 +2962,15 @@ OUTPUT (Proposta completa)`;
             } catch (e) { }
         }
 
-        /* REUSABLE CONFIRM MODAL (BRAND V5 COMPLIANT) */
-        function showConfirm(title, msg, onConfirm) {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[500]';
-            modal.innerHTML = `
-                <div class="bg-[#050505] border border-[#DC2626] p-8 max-w-md w-full shadow-[0_0_30px_rgba(220,38,38,0.2)]">
-                    <h3 class="text-xl font-brick text-white uppercase tracking-tight mb-4 flex items-center gap-3">
-                        <span class="text-[#DC2626]">⚠️</span> ${title}
-                    </h3>
-                    <p class="font-mono text-sm text-[#ccc] mb-8 leading-relaxed uppercase tracking-wide">
-                        ${msg}
-                    </p>
-                    <div class="flex gap-4 justify-end">
-                        <button id="modal-cancel-btn" class="px-6 py-3 border border-[#333] text-[#666] font-mono text-xs uppercase tracking-widest hover:border-[#666] hover:text-white transition-all">CANCEL</button>
-                        <button id="modal-confirm-btn" class="px-6 py-3 bg-[#DC2626] text-white font-brick text-xs uppercase tracking-widest hover:bg-red-700 transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)]">CONFIRM</button>
-                    </div>
-                </div>
-            `;
-            modal.querySelector('#modal-cancel-btn').onclick = () => modal.remove();
-            modal.querySelector('#modal-confirm-btn').onclick = () => { onConfirm(); modal.remove(); };
-            document.body.appendChild(modal);
-        }
-
         async function rerunJob() {
-            showConfirm('ATTENTION DIRECTOR', 'REINICIAR PIPELINE? DADOS ATUAIS SERÃO PERDIDOS.', async () => {
-                try {
-                    const res = await authFetch(`${API_URL}/rerun`, {
-                        method: 'POST',
-                        body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
-                    });
-                    if (res.ok) showNotification('🔄 Job reiniciado!');
-                } catch (e) { }
-            });
+            if (!confirm('⚠️ Reiniciar pipeline do zero?')) return;
+            try {
+                const res = await authFetch(`${API_URL}/rerun`, {
+                    method: 'POST',
+                    body: JSON.stringify({ jobId: selectedJobId, mode: currentMode })
+                });
+                if (res.ok) showNotification('🔄 Job reiniciado!');
+            } catch (e) { }
         }
 
         function showNotification(msg, type = 'success') {
@@ -3043,28 +2981,26 @@ OUTPUT (Proposta completa)`;
 
         async function approveRevision(jobId, revNum, e) {
             e.stopPropagation();
-            showConfirm('APPROVE REVISION', `APROVAR REVISÃO ${revNum}? ISSO SUBSTITUIRÁ O CONTÉUDO ORIGINAL.`, async () => {
-                try {
-                    const res = await authFetch(`${API_URL}/revisions/${jobId}/approve`, {
-                        method: 'POST',
-                        body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
-                    });
-                    if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
-                } catch (err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
-            });
+            if (!confirm(`Aprovar REVISÃO ${revNum}? Isso substituirá o conteúdo original.`)) return;
+            try {
+                const res = await authFetch(`${API_URL}/revisions/${jobId}/approve`, {
+                    method: 'POST',
+                    body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
+                });
+                if (res.ok) { showNotification(`✅ REVISÃO ${revNum} APROVADA!`); setTimeout(fetchState, 1000); }
+            } catch (err) { showNotification('❌ Erro ao aprovar revisão', 'error'); }
         }
 
         async function rejectRevision(jobId, revNum, e) {
             e.stopPropagation();
-            showConfirm('REJECT REVISION', `REJEITAR REVISÃO ${revNum}? O ARQUIVO SERÁ MOVIDO PARA HISTÓRICO.`, async () => {
-                try {
-                    const res = await authFetch(`${API_URL}/revisions/${jobId}/reject`, {
-                        method: 'POST',
-                        body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
-                    });
-                    if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
-                } catch (err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
-            });
+            if (!confirm(`Rejeitar REVISÃO ${revNum}? O arquivo será movido para histórico.`)) return;
+            try {
+                const res = await authFetch(`${API_URL}/revisions/${jobId}/reject`, {
+                    method: 'POST',
+                    body: JSON.stringify({ mode: currentMode, revisionNumber: revNum })
+                });
+                if (res.ok) { showNotification(`🗑️ REVISÃO ${revNum} REJEITADA`); setTimeout(fetchState, 1000); }
+            } catch (err) { showNotification('❌ Erro ao rejeitar revisão', 'error'); }
         }
 
         function getJobRevisionInfo(jobId) {
@@ -3194,9 +3130,8 @@ OUTPUT (Proposta completa)`;
 
         // enterMode já definido acima (linha ~558)
 
-        function confirmDeleteProject(lobbyJobId) {
-            const targetJobId = lobbyJobId || currentJobId;
-            if (!targetJobId || !currentMode) {
+        function confirmDeleteProject() {
+            if (!currentJobId || !currentMode) {
                 showNotification('⚠️ Nenhum projeto selecionado', 'error');
                 return;
             }
@@ -3207,12 +3142,12 @@ OUTPUT (Proposta completa)`;
                 <div class="bg-[#050505] border border-[#DC2626] p-8 max-w-md">
                     <h3 class="font-brick text-xl text-white uppercase mb-4">⚠️ DELETAR PROJETO</h3>
                     <p class="text-[#ccc] text-sm mb-6 font-mono">Essa ação é IRREVERSÍVEL. Todos os arquivos deste projeto serão deletados permanentemente.</p>
-                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${targetJobId}</p>
+                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${currentJobId}</p>
                     <div class="flex gap-4">
                         <button onclick="this.closest('div.fixed').remove()" class="flex-1 bg-[#222] hover:bg-[#333] text-white font-mono text-xs uppercase py-3 px-6 transition-all">
                             Cancelar
                         </button>
-                        <button onclick="deleteProject('${targetJobId}'); this.closest('div.fixed').remove()" class="flex-1 bg-[#DC2626] hover:bg-white hover:text-black text-white font-mono text-xs uppercase py-3 px-6 transition-all">
+                        <button onclick="deleteProject(); this.closest('div.fixed').remove()" class="flex-1 bg-[#DC2626] hover:bg-white hover:text-black text-white font-mono text-xs uppercase py-3 px-6 transition-all">
                             ✕ Deletar
                         </button>
                     </div>
@@ -3221,19 +3156,18 @@ OUTPUT (Proposta completa)`;
             document.body.appendChild(modal);
         }
 
-        async function deleteProject(targetJobId) {
-            const jobId = targetJobId || currentJobId;
-            if (!jobId || !currentMode) return;
+        async function deleteProject() {
+            if (!currentJobId || !currentMode) return;
 
             try {
-                const res = await authFetch(`${API_URL}/project/${jobId}?mode=${currentMode}`, {
+                const res = await authFetch(`${API_URL}/project/${currentJobId}?mode=${currentMode}`, {
                     method: 'DELETE'
                 });
                 const data = await res.json();
 
                 if (data.success) {
                     showNotification(`✓ Projeto deletado (${data.deletedCount} arquivos)`, 'success');
-                    if (jobId === currentJobId) closeNodeGraphic();
+                    closeNodeGraphic();
                     fetchState();
                 } else {
                     showNotification('✗ Erro ao deletar projeto', 'error');
@@ -3241,111 +3175,6 @@ OUTPUT (Proposta completa)`;
             } catch (e) {
                 console.error('Erro ao deletar:', e);
                 showNotification('✗ Falha na comunicação com o servidor', 'error');
-            }
-        }
-
-        function confirmArchiveProject(jobId, title) {
-            if (!jobId || !currentMode) {
-                showNotification('⚠️ Nenhum projeto selecionado', 'error');
-                return;
-            }
-
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-[300]';
-            modal.innerHTML = `
-                <div class="bg-[#050505] border border-[#f59e0b] p-8 max-w-md">
-                    <h3 class="font-brick text-xl text-white uppercase mb-4">🗄 ARQUIVAR PROJETO</h3>
-                    <p class="text-[#ccc] text-sm mb-6 font-mono">O projeto será movido para o arquivo. Você poderá restaurá-lo depois.</p>
-                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${title || jobId}</p>
-                    <div class="flex gap-4">
-                        <button onclick="this.closest('div.fixed').remove()" class="flex-1 bg-[#222] hover:bg-[#333] text-white font-mono text-xs uppercase py-3 px-6 transition-all">
-                            Cancelar
-                        </button>
-                        <button onclick="archiveProject('${jobId}'); this.closest('div.fixed').remove()" class="flex-1 bg-[#f59e0b] hover:bg-white hover:text-black text-black font-mono text-xs uppercase py-3 px-6 transition-all font-bold">
-                            🗄 Arquivar
-                        </button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        async function archiveProject(jobId) {
-            if (!jobId || !currentMode) return;
-
-            try {
-                const res = await authFetch(`${API_URL}/archive`, {
-                    method: 'POST',
-                    body: JSON.stringify({ jobId, mode: currentMode })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    showNotification('✓ Projeto arquivado com sucesso', 'success');
-                    fetchState();
-                } else {
-                    showNotification('✗ Erro ao arquivar projeto', 'error');
-                }
-            } catch (e) {
-                console.error('Erro ao arquivar:', e);
-                showNotification('✗ Falha na comunicação com o servidor', 'error');
-            }
-        }
-
-        async function restoreProject(jobId) {
-            if (!jobId || !currentMode) return;
-
-            try {
-                const res = await authFetch(`${API_URL}/restore`, {
-                    method: 'POST',
-                    body: JSON.stringify({ jobId, mode: currentMode })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    showNotification('✓ Projeto restaurado com sucesso', 'success');
-                    fetchState();
-                } else {
-                    showNotification('✗ Erro ao restaurar projeto', 'error');
-                }
-            } catch (e) {
-                console.error('Erro ao restaurar:', e);
-                showNotification('✗ Falha na comunicação com o servidor', 'error');
-            }
-        }
-
-        async function fetchArchivedProjects() {
-            try {
-                const res = await fetch(`${API_URL}/archived?mode=${currentMode || 'marketing'}`);
-                const data = await res.json();
-                const archivedList = document.getElementById('lobby-archived-list');
-                const archivedSection = document.getElementById('lobby-archived');
-
-                if (!data.archived || data.archived.length === 0) {
-                    archivedSection.style.display = 'none';
-                    return;
-                }
-
-                archivedSection.style.display = 'block';
-                archivedList.innerHTML = '';
-
-                data.archived.forEach(project => {
-                    const card = document.createElement('div');
-                    card.className = 'border border-[#333] bg-[#0a0a0a] p-8 opacity-60 hover:opacity-100 transition-all';
-                    const date = project.archived_at ? new Date(project.archived_at).toLocaleDateString('pt-BR') : '';
-                    card.innerHTML = `
-                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${(project.job_id || '').substring(0, 8)}</div>
-                        <h3 class="text-xl font-brick text-[#999] uppercase mb-2">${project.title || project.job_id}</h3>
-                        <div class="text-[9px] font-mono text-[#555] mb-4">Arquivado em ${date} · ${project.file_count || 0} arquivos</div>
-                        <div class="flex gap-2 pt-4 border-t border-[#222]">
-                            <button onclick="restoreProject('${project.job_id}')" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-green-500 hover:text-green-500 uppercase tracking-wider transition-all">↩ Restaurar</button>
-                            <button onclick="confirmDeleteProject('${project.job_id}')" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#DC2626] hover:text-[#DC2626] uppercase tracking-wider transition-all">✕ Apagar</button>
-                        </div>
-                    `;
-                    archivedList.appendChild(card);
-                });
-            } catch (e) {
-                // Silently fail — archived section just won't show
             }
         }
 

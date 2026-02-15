@@ -1,0 +1,251 @@
+{
+    "id": "preset_projetos",
+    "name": "Projetos Pipeline",
+    "description": "Proposta comercial completa para clientes. 3 conceitos criativos + loop de qualidade com Director.",
+    "version": "2.0",
+    "isPreset": true,
+    "createdAt": "2026-02-15T00:30:00Z",
+    "nodes": [
+        {
+            "id": "brand_digest",
+            "role": "BRAND_DIGEST",
+            "roleFile": "BRAND_DIGEST.md",
+            "label": "Brand Digest",
+            "icon": "PROFILE",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-v3.2"
+                }
+            },
+            "position": {
+                "x": 100,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "creative_a",
+            "role": "CREATIVE_A",
+            "roleFile": "CREATIVE_IDEATION.md",
+            "label": "Creative A (GPT)",
+            "icon": "WRITE",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "openai/gpt-5.1"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 450,
+                "y": 100
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "creative_b",
+            "role": "CREATIVE_B",
+            "roleFile": "CREATIVE_IDEATION.md",
+            "label": "Creative B (Flash)",
+            "icon": "WRITE",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-v3.2"
+                }
+            },
+            "position": {
+                "x": 450,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "creative_c",
+            "role": "CREATIVE_C",
+            "roleFile": "CREATIVE_IDEATION.md",
+            "label": "Creative C (Sonnet)",
+            "icon": "WRITE",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "anthropic/claude-sonnet-4.5"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 450,
+                "y": 500
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "concept_critic",
+            "role": "CONCEPT_CRITIC",
+            "roleFile": "CONCEPT_CRITIC.md",
+            "label": "Concept Critic",
+            "icon": "SCAN",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-pro-preview"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 800,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "execution_design",
+            "role": "EXECUTION_DESIGN",
+            "roleFile": "EXECUTION_DESIGN.md",
+            "label": "Execution Design",
+            "icon": "CPU",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "anthropic/claude-opus-4.6"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "minimax/minimax-m2.5"
+                }
+            },
+            "position": {
+                "x": 1150,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "proposal",
+            "role": "PROPOSAL",
+            "roleFile": "PROPOSAL_WRITER.md",
+            "label": "Proposal Writer",
+            "icon": "WRITE",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "openai/gpt-5.1"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-v3.2"
+                }
+            },
+            "position": {
+                "x": 1500,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": false
+            }
+        },
+        {
+            "id": "director",
+            "role": "DIRECTOR",
+            "roleFile": "DIRECTOR.md",
+            "label": "Director",
+            "icon": "LOCK",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-pro-preview"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 1850,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        }
+    ],
+    "connections": [
+        {
+            "from": "brand_digest",
+            "to": [
+                "creative_a",
+                "creative_b",
+                "creative_c"
+            ],
+            "type": "parallel"
+        },
+        {
+            "from": "creative_a",
+            "to": "concept_critic",
+            "type": "sequential"
+        },
+        {
+            "from": "creative_b",
+            "to": "concept_critic",
+            "type": "sequential"
+        },
+        {
+            "from": "creative_c",
+            "to": "concept_critic",
+            "type": "sequential"
+        },
+        {
+            "from": "concept_critic",
+            "to": "execution_design",
+            "type": "sequential"
+        },
+        {
+            "from": "execution_design",
+            "to": "proposal",
+            "type": "sequential"
+        },
+        {
+            "from": "proposal",
+            "to": "director",
+            "type": "sequential"
+        }
+    ],
+    "loops": [
+        {
+            "from": "director",
+            "to": "execution_design",
+            "condition": "score < 85",
+            "maxIterations": 3
+        }
+    ]
+}

@@ -1,0 +1,156 @@
+{
+    "id": "preset_ideias",
+    "name": "Ideias Pipeline",
+    "description": "Validação rápida de conceitos. Angel/Devil polarity + GO/NO-GO final.",
+    "version": "2.0",
+    "isPreset": true,
+    "createdAt": "2026-02-15T00:30:00Z",
+    "nodes": [
+        {
+            "id": "pain_check",
+            "role": "PAIN_CHECK",
+            "roleFile": "PAIN_CHECK.md",
+            "label": "Pain Check",
+            "icon": "GATE",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "minimax/minimax-m2.5"
+                }
+            },
+            "position": {
+                "x": 100,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "market_scan",
+            "role": "MARKET_SCAN",
+            "roleFile": "MARKET_SCAN.md",
+            "label": "Market Scan",
+            "icon": "SEARCH",
+            "model": {
+                "primary": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "deepseek/deepseek-v3.2"
+                }
+            },
+            "position": {
+                "x": 450,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": false
+            }
+        },
+        {
+            "id": "angel",
+            "role": "ANGEL_GEN",
+            "roleFile": "ANGEL_GEN.md",
+            "label": "Angel (Defensor)",
+            "icon": "STAR",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "anthropic/claude-sonnet-4.5"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 800,
+                "y": 150
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "devil",
+            "role": "DEVIL_GEN",
+            "roleFile": "DEVIL_GEN.md",
+            "label": "Devil (Atacante)",
+            "icon": "SHIELD",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "x-ai/grok-4.1-fast"
+                },
+                "fallback": {
+                    "provider": "google",
+                    "model": "gemini-3-flash-preview"
+                }
+            },
+            "position": {
+                "x": 800,
+                "y": 450
+            },
+            "config": {
+                "expectJSON": true
+            }
+        },
+        {
+            "id": "viability",
+            "role": "VIABILITY",
+            "roleFile": "VIABILITY.md",
+            "label": "Viability (GO/NO-GO)",
+            "icon": "LOCK",
+            "model": {
+                "primary": {
+                    "provider": "openrouter",
+                    "model": "anthropic/claude-opus-4.6"
+                },
+                "fallback": {
+                    "provider": "openrouter",
+                    "model": "openai/gpt-5.2-codex"
+                }
+            },
+            "position": {
+                "x": 1150,
+                "y": 300
+            },
+            "config": {
+                "expectJSON": true
+            }
+        }
+    ],
+    "connections": [
+        {
+            "from": "pain_check",
+            "to": "market_scan",
+            "type": "sequential"
+        },
+        {
+            "from": "market_scan",
+            "to": [
+                "angel",
+                "devil"
+            ],
+            "type": "parallel"
+        },
+        {
+            "from": "angel",
+            "to": "viability",
+            "type": "sequential"
+        },
+        {
+            "from": "devil",
+            "to": "viability",
+            "type": "sequential"
+        }
+    ],
+    "loops": []
+}

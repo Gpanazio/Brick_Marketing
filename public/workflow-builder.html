@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK AI — Workflow Builder</title>
+    <meta name="description" content="Visual Workflow Builder — Monte pipelines livres com qualquer prompt e modelo">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/workflow-builder.css">
+</head>
+
+<body>
+    <!-- ════════ TOOLBAR ════════ -->
+    <header class="toolbar" id="toolbar">
+        <div class="toolbar-left">
+            <div class="toolbar-logo">BRICK<span class="logo-accent">AI</span></div>
+            <span class="toolbar-divider">//</span>
+            <span class="toolbar-title">WORKFLOW_BUILDER</span>
+        </div>
+        <div class="toolbar-center">
+            <input class="toolbar-input" id="workflowName" type="text" value="" placeholder="Nome do workflow..."
+                spellcheck="false">
+        </div>
+        <div class="toolbar-right">
+            <button class="btn btn-ghost btn-tutorial" id="btnTutorial" onclick="WorkflowBuilder.showTutorial()">?
+                TUTORIAL</button>
+            <button class="btn btn-ghost" id="btnNew" onclick="WorkflowBuilder.newWorkflow()">NEW</button>
+            <button class="btn btn-ghost" id="btnLoad" onclick="WorkflowBuilder.showLoadModal()">LOAD</button>
+            <button class="btn btn-ghost" id="btnSave" onclick="WorkflowBuilder.saveWorkflow()">SAVE</button>
+            <button class="btn btn-primary" id="btnRun" onclick="WorkflowBuilder.showRunModal()">▶ RUN</button>
+            <a class="btn btn-ghost" href="/index.html" style="text-decoration:none;">← DASHBOARD</a>
+        </div>
+    </header>
+
+    <!-- ════════ MAIN LAYOUT ════════ -->
+    <div class="main-layout">
+        <!-- ──── SIDEBAR: TOOLS ──── -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">COMPONENTES</div>
+                <div class="sidebar-subtitle">Adicione nós ao canvas</div>
+            </div>
+            <input class="sidebar-search" id="agentSearch" type="text" placeholder="Buscar template..."
+                spellcheck="false">
+            <div class="filter-bar">
+                <span class="filter-tag active" data-filter="all">TODOS</span>
+                <span class="filter-tag" data-filter="free">LIVRES</span>
+                <span class="filter-tag" data-filter="marketing">MKT</span>
+                <span class="filter-tag" data-filter="ideias">IDEIAS</span>
+                <span class="filter-tag" data-filter="projetos">PROJ</span>
+                <span class="filter-tag" data-filter="originais">ORIG</span>
+            </div>
+            <div class="agents-list" id="agentsList">
+                <!-- populated by JS -->
+            </div>
+        </aside>
+
+        <!-- ──── CANVAS ──── -->
+        <main class="canvas-container" id="canvas">
+            <div class="canvas-grid"></div>
+            <div class="canvas-world">
+                <svg class="canvas-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+                <div class="canvas-nodes"></div>
+            </div>
+            <div class="canvas-hint" id="canvasHint">
+                <div class="hint-icon">⊞</div>
+                <div>Conecte <strong>RAW IDEA</strong> ao primeiro agente</div>
+                <div class="hint-sub">Clique em + NÓ LIVRE para adicionar agentes</div>
+            </div>
+        </main>
+
+        <!-- ──── CONFIG PANEL ──── -->
+        <aside class="config-panel" id="configPanel">
+            <div class="config-header">
+                <div class="config-header-title">CONFIGURAÇÃO</div>
+            </div>
+            <div class="config-body">
+                <div class="config-empty">Selecione um nó<br>para configurar</div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ════════ STATUS BAR ════════ -->
+    <footer class="statusbar">
+        <div class="statusbar-left"></div>
+        <div class="statusbar-right"></div>
+    </footer>
+
+    <!-- ════════ MODALS ════════ -->
+
+    <!-- Save Modal -->
+    <div class="modal-overlay" id="saveModal">
+        <div class="modal" style="max-width:420px;">
+            <div class="modal-header">
+                <div class="modal-title">💾 SALVAR WORKFLOW</div>
+                <button class="modal-close" onclick="WorkflowBuilder.closeModal('saveModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="config-label" style="margin-bottom:8px;">NOME DO WORKFLOW</div>
+                <input class="config-input" id="saveNameInput" type="text" placeholder="Ex: Pipeline de Conteúdo..."
+                    spellcheck="false" onkeydown="if(event.key==='Enter') WorkflowBuilder.confirmSave()">
+                <button class="btn btn-primary" onclick="WorkflowBuilder.confirmSave()"
+                    style="margin-top:12px;width:100%;">✓ SALVAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Modal -->
+    <div class="modal-overlay" id="loadModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">CARREGAR WORKFLOW</div>
+                <button class="modal-close" onclick="WorkflowBuilder.closeModal('loadModal')">&times;</button>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Run Modal -->
+    <div class="modal-overlay" id="runModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">EXECUTAR WORKFLOW</div>
+                <button class="modal-close" onclick="WorkflowBuilder.closeModal('runModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="config-label" style="margin-bottom:8px;">BRIEFING (será injetado no RAW IDEA)</div>
+                <textarea class="config-textarea" id="runBriefing" placeholder="Cole o briefing / ideia aqui..."
+                    style="min-height:180px;"></textarea>
+                <button class="btn btn-primary" onclick="WorkflowBuilder.runWorkflow()"
+                    style="margin-top:12px;width:100%;">▶ INICIAR PIPELINE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Preview Modal -->
+    <div class="modal-overlay" id="roleModal">
+        <div class="modal" style="max-width:700px;">
+            <div class="modal-header">
+                <div class="modal-title">ROLE PREVIEW</div>
+                <button class="modal-close" onclick="WorkflowBuilder.closeModal('roleModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height:500px;overflow-y:auto;"></div>
+        </div>
+    </div>
+
+    <!-- ════════ TUTORIAL MODAL ════════ -->
+    <div class="modal-overlay" id="tutorialModal">
+        <div class="modal tutorial-modal">
+            <div class="modal-header">
+                <div class="modal-title">📖 TUTORIAL — WORKFLOW BUILDER</div>
+                <button class="modal-close" onclick="WorkflowBuilder.closeModal('tutorialModal')">&times;</button>
+            </div>
+            <div class="modal-body tutorial-body">
+
+                <div class="tutorial-section">
+                    <h3>🔴 O que é o Workflow Builder?</h3>
+                    <p>É um construtor visual de pipelines de IA. Cada <strong>nó</strong> é um agente com seu próprio
+                        prompt e modelo. Você conecta os nós em sequência, e o output de um vira o input do próximo.</p>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>📥 RAW IDEA (Nó de Entrada)</h3>
+                    <p>Todo workflow começa com o <strong>RAW IDEA</strong>. Ele representa o briefing que o usuário
+                        digita ao clicar em "RUN". Esse texto é injetado como input para o primeiro agente conectado.
+                    </p>
+                    <div class="tutorial-example">
+                        <strong>Exemplo de briefing:</strong><br>
+                        <em>"Criar campanha de lançamento para novo produto de skincare orgânico, público feminino 25-40
+                            anos, tom sofisticado e clean."</em>
+                    </div>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>➕ Criando Nós</h3>
+                    <p>Clique em <span class="tutorial-highlight">+ NÓ LIVRE</span> na sidebar. Cada nó precisa de:</p>
+                    <ul>
+                        <li><strong>Nome</strong> — identificação visual (ex: "Pesquisador", "Copywriter")</li>
+                        <li><strong>System Prompt</strong> — a personalidade e instruções do agente</li>
+                        <li><strong>Modelo</strong> — qual LLM vai executar (Gemini, GPT, Claude, etc)</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>🔗 Conectando Nós</h3>
+                    <p>Cada nó tem <strong>portas</strong>:</p>
+                    <ul>
+                        <li><strong>Porta de saída</strong> (→ direita) — arraste daqui...</li>
+                        <li><strong>Porta de entrada</strong> (← esquerda) — ...até aqui</li>
+                    </ul>
+                    <p>O <strong>output completo</strong> do nó anterior é passado como <code>user message</code> para o
+                        próximo nó. Isso significa que cada agente recebe o texto gerado pelo agente anterior.</p>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>📝 Prompts Ideais para System Prompt</h3>
+                    <p>O system prompt define <em>quem</em> o agente é e <em>como</em> ele deve processar o input.
+                        Dicas:</p>
+
+                    <div class="tutorial-example">
+                        <strong>Nó 1 — Pesquisador:</strong><br>
+                        <code>Você é um pesquisador de mercado sênior. Analise o briefing recebido e produza um relatório com: 1) Análise do público-alvo, 2) Tendências do segmento, 3) Oportunidades de posicionamento, 4) Referências de campanhas similares. Seja específico e cite dados quando possível.</code>
+                    </div>
+
+                    <div class="tutorial-example">
+                        <strong>Nó 2 — Estrategista:</strong><br>
+                        <code>Você é um estrategista de marketing. Com base na pesquisa recebida, crie um plano estratégico com: 1) Big Idea da campanha, 2) Pillars de comunicação, 3) Canais prioritários, 4) Cronograma sugerido. Use o relatório anterior como base factual.</code>
+                    </div>
+
+                    <div class="tutorial-example">
+                        <strong>Nó 3 — Copywriter:</strong><br>
+                        <code>Você é um copywriter criativo. Com base na estratégia recebida, produza: 1) Headline principal, 2) 5 variações de copy para social media, 3) Texto para landing page, 4) CTA principal. Mantenha o tom de voz indicado na estratégia.</code>
+                    </div>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>🔄 O que um nó passa para o outro?</h3>
+                    <p>A cadeia funciona assim:</p>
+                    <div class="tutorial-chain">
+                        <div class="chain-step">
+                            <span class="chain-label">RAW IDEA</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-data">briefing do usuário</span>
+                        </div>
+                        <div class="chain-step">
+                            <span class="chain-label">Agente 1</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-data">recebe briefing, gera pesquisa</span>
+                        </div>
+                        <div class="chain-step">
+                            <span class="chain-label">Agente 2</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-data">recebe pesquisa, gera estratégia</span>
+                        </div>
+                        <div class="chain-step">
+                            <span class="chain-label">Agente 3</span>
+                            <span class="chain-arrow">→</span>
+                            <span class="chain-data">recebe estratégia, gera copies</span>
+                        </div>
+                    </div>
+                    <p style="margin-top:8px;color:var(--gray-500);font-size:10px;">Cada agente recebe o texto COMPLETO
+                        gerado pelo nó anterior como mensagem do usuário.</p>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>🔀 Conexões Paralelas</h3>
+                    <p>Se um nó tem mais de uma saída, os nós seguintes rodam em <strong>paralelo</strong> — útil para
+                        gerar variações (ex: 3 copywriters diferentes recebendo a mesma estratégia).</p>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>🔁 Loops</h3>
+                    <p>Use loops para iteração (ex: um revisor que devolve para o copywriter se a qualidade estiver
+                        abaixo de um threshold). Configure a condição e o máximo de iterações.</p>
+                </div>
+
+                <div class="tutorial-section">
+                    <h3>💾 Salvando</h3>
+                    <p>Ao salvar, o workflow fica disponível em <strong>Custom Nodes</strong> no dashboard. Você pode
+                        reutilizá-lo a qualquer momento.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ TOAST CONTAINER ════════ -->
+    <div class="toast-container"></div>
+
+    <script src="/workflow-builder.js"></script>
+</body>
+
+</html>
