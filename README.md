@@ -1,11 +1,12 @@
 # Brick AI — War Room
 
-Sistema de pipelines autônomos para **Marketing**, **Projetos** e **Ideias**.
+Sistema de pipelines autônomos para **Marketing**, **Projetos**, **Ideias** e **Custom Nodes**.
 
 **Status atual (2026-02-15):**
 - Pipeline principal roda em **Node.js** (`server.js` + `lib/pipeline-runner.js`)
 - Execução por etapa via **API de modelos** (OpenRouter/Google), sem `openclaw agent`
 - **PostgreSQL** integrado para persistência (dual-write: filesystem + DB)
+- **Workflow Builder** visual para criação de pipelines free-form com nós customizados
 - **Ranking de modelos** (A×B×C leaderboard) disponível em `/ranking.html`
 - **Auto-archive**: projetos com +30 dias são arquivados automaticamente no boot
 - **Migração legada**: `scripts/migrate-legacy.js` para importar pipelines pré-DB
@@ -69,9 +70,12 @@ Sistema de pipelines autônomos para **Marketing**, **Projetos** e **Ideias**.
 ### Frontend
 - `public/index.html`
   - Lobby com cards de projeto (ativo, aprovado, arquivado)
+  - 5 setores: Marketing, Projetos, Ideias, Originais, **Custom Nodes**
   - Ações: Arquivar, Deletar, Restaurar (com modais de confirmação)
   - Telemetria em tempo real
   - Mapa visual dos pipelines
+- `public/workflow-builder.html` + `workflow-builder.js` + `workflow-builder.css`
+  - Workflow Builder visual (ver seção dedicada abaixo)
 - `public/ranking.html`
   - Leaderboard A×B×C com barras animadas
   - Histórico de batalhas por pipeline
@@ -187,6 +191,47 @@ Ajuste recente:
 
 ---
 
+## Workflow Builder (Custom Nodes)
+
+Builder visual para criação de pipelines **free-form** — cada nó é um agente com prompt e modelo próprio.
+
+### Acessos
+- Dashboard → card **Custom Nodes** (SEC // 05)
+- Direto: `/workflow-builder.html`
+- Toolbar: botão **⚙ Workflow_Builder** no header
+
+### Conceitos
+| Conceito | Descrição |
+|---|---|
+| **RAW IDEA** | Nó obrigatório de entrada — o briefing do usuário é injetado aqui |
+| **Nó Livre** | Agente customizado com system prompt + modelo à escolha |
+| **Template** | Nó baseado em um role existente (`roles/*.md`) |
+| **Conexão vertical** | Portas top/bottom — output de um nó vira input do próximo |
+| **Loop** | Conexão de retorno com condição e max iterações |
+
+### Fluxo de dados
+```
+RAW IDEA (briefing) → Agente 1 (pesquisa) → Agente 2 (estratégia) → Agente 3 (copies)
+```
+Cada agente recebe o **output completo** do nó anterior como `user message`.
+
+### Funcionalidades
+- **Tutorial modal** (`? TUTORIAL`) — explica criação de nós, prompts ideais e passagem de dados
+- **Templates colapsáveis** — roles existentes podem ser usados como base, seção recolhível na sidebar
+- **Save modal estilizado** — salva workflows com nome sob "Custom Nodes"
+- **Drag & drop** — arrastar nós pelo canvas com snap grid de 20px
+- **Pan & zoom** — scroll para zoom, click+drag no fundo para pan
+- **Conexões paralelas** — um nó pode ter múltiplas saídas (execução paralela)
+
+### Arquivos
+| Arquivo | Responsabilidade |
+|---|---|
+| `public/workflow-builder.html` | Layout, modals (save, load, run, tutorial, role preview) |
+| `public/workflow-builder.js` | IIFE `WorkflowBuilder` — toda a lógica do builder |
+| `public/workflow-builder.css` | Design system HUD (dark, mono, red accents) |
+
+---
+
 ## Comandos úteis
 
 No diretório do projeto:
@@ -245,4 +290,4 @@ Ainda existem scripts bash legados (`run-*.sh`) para histórico/compatibilidade,
 
 ---
 
-**Última revisão:** 2026-02-15 (migração legada 152 arquivos, auto-archive 30 dias, server modularizado)
+**Última revisão:** 2026-02-15 (workflow builder vertical, save modal, tutorial, custom nodes, fix text selection)
