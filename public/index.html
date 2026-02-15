@@ -981,6 +981,9 @@
                 <button id="btn-reset-layout" onclick="resetLayout()"
                     class="hidden text-[#DC2626] hover:text-white font-mono text-[10px] uppercase tracking-widest border border-[#DC2626] px-4 py-2 hover:bg-[#DC2626] hover:text-black">⟲
                     RESET POSIÇÕES</button>
+                <a href="/ranking.html" target="_blank"
+                    class="text-[#666] hover:text-[#f59e0b] font-mono text-[10px] uppercase tracking-widest border border-[#222] px-4 py-2 hover:border-[#f59e0b] transition-all no-underline">🏆
+                    Ranking</a>
                 <button onclick="openNewBriefing()" class="btn-brick">+ New_Briefing</button>
             </div>
         </header>
@@ -1017,7 +1020,8 @@
                     <div onclick="enterMode('originais')"
                         class="group cursor-pointer border border-[#111] bg-[#050505] p-12 hover:border-[#DC2626] transition-all">
                         <div class="text-[9px] font-mono text-[#444] mb-8">SEC // 04</div>
-                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Originais</h3>
+                        <h3 class="text-3xl font-brick text-white mb-4 uppercase group-hover:text-[#DC2626]">Originais
+                        </h3>
                         <p class="text-[#444] font-mono text-xs uppercase">Development & Viability</p>
                     </div>
                 </div>
@@ -1037,6 +1041,13 @@
                     <span class="text-2xl">●</span> EM ANDAMENTO
                 </h2>
                 <div id="lobby-active-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+            </div>
+            <div id="lobby-archived" class="mt-16" style="display:none">
+                <h2 class="text-lg font-brick text-[#666] uppercase mb-6 tracking-wider flex items-center gap-3 cursor-pointer"
+                    onclick="document.getElementById('lobby-archived-list').classList.toggle('hidden'); this.querySelector('.toggle-arrow').textContent = document.getElementById('lobby-archived-list').classList.contains('hidden') ? '▸' : '▾'">
+                    <span class="text-2xl">🗄</span> ARQUIVADOS <span class="toggle-arrow text-sm">▸</span>
+                </h2>
+                <div id="lobby-archived-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 hidden"></div>
             </div>
         </div>
     </div>
@@ -2036,8 +2047,12 @@ OUTPUT (Proposta completa)`;
                 card.innerHTML = `
                     <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                     <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
-                    <div class="text-[9px] font-mono text-green-500 tracking-widest flex items-center gap-2">
+                    <div class="text-[9px] font-mono text-green-500 tracking-widest flex items-center gap-2 mb-4">
                         <span>✓</span> APROVADO
+                    </div>
+                    <div class="flex gap-2 pt-4 border-t border-[#222]">
+                        <button onclick="confirmArchiveProject('${id}', '${title.replace(/'/g, "\\'")}'); event.stopPropagation();" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#f59e0b] hover:text-[#f59e0b] uppercase tracking-wider transition-all">🗄 Arquivar</button>
+                        <button onclick="confirmDeleteProject('${id}'); event.stopPropagation();" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#DC2626] hover:text-[#DC2626] uppercase tracking-wider transition-all">✕ Apagar</button>
                     </div>
                 `;
                 approvedList.appendChild(card);
@@ -2091,7 +2106,10 @@ OUTPUT (Proposta completa)`;
                     card.innerHTML = `
                         <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${id.substring(0, 8)}</div>
                         <h3 class="text-2xl font-brick text-white uppercase mb-4">${title}</h3>
-                        <div class="text-[9px] font-mono text-[#DC2626] tracking-widest">ACTIVE_NETWORK</div>
+                        <div class="text-[9px] font-mono text-[#DC2626] tracking-widest mb-4">ACTIVE_NETWORK</div>
+                        <div class="flex gap-2 pt-4 border-t border-[#222]">
+                            <button onclick="confirmDeleteProject('${id}'); event.stopPropagation();" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#DC2626] hover:text-[#DC2626] uppercase tracking-wider transition-all">✕ Apagar</button>
+                        </div>
                     `;
                 }
 
@@ -2101,6 +2119,9 @@ OUTPUT (Proposta completa)`;
             // Esconder seções vazias
             document.getElementById('lobby-approved').style.display = Object.keys(doneGroups).length > 0 ? 'block' : 'none';
             document.getElementById('lobby-active').style.display = Object.keys(wipGroups).length > 0 ? 'block' : 'none';
+
+            // Fetch and render archived projects
+            fetchArchivedProjects();
         }
 
         function updateTelemetry(projectFiles) {
@@ -2433,44 +2454,44 @@ OUTPUT (Proposta completa)`;
 
             if (currentMode !== 'originais') {
                 revisionFiles.forEach((revFile, idx) => {
-                const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
-                const revId = `rev${revNum}`;
-                const revNode = {
-                    id: revId,
-                    title: `REVISÃO ${revNum}`,
-                    label: `Revision_${revNum}`,
-                    model: 'CLAUDE SONNET'
-                };
+                    const revNum = revFile.name.match(/REVISAO_(\d+)/)[1];
+                    const revId = `rev${revNum}`;
+                    const revNode = {
+                        id: revId,
+                        title: `REVISÃO ${revNum}`,
+                        label: `Revision_${revNum}`,
+                        model: 'CLAUDE SONNET'
+                    };
 
-                const el = document.createElement('div');
-                el.className = 'node';
-                el.setAttribute('data-provider', 'revision');
-                el.id = revId;
-                el.style.position = 'absolute';
+                    const el = document.createElement('div');
+                    el.className = 'node';
+                    el.setAttribute('data-provider', 'revision');
+                    el.id = revId;
+                    el.style.position = 'absolute';
 
-                // Posição: ao lado direito do HUMAN node, perfeitamente alinhado
-                const humanNode = document.getElementById(humanNodeId);
-                if (humanNode && !savedPositions[revId]) {
-                    // Usar as coordenadas de estilo do HUMAN diretamente para garantir alinhamento perfeito
-                    const humanLeft = parseInt(humanNode.style.left) || humanNode.offsetLeft;
-                    const humanTop = parseInt(humanNode.style.top) || humanNode.offsetTop;
-                    const humanWidth = 320; // Largura fixa de todos os nós
-                    const gap = 50; // Gap entre nós
-                    const baseX = humanLeft + humanWidth + gap;
-                    const offsetX = (idx * (humanWidth + gap)); // Cada revisão adicional se afasta mais 370px
-                    el.style.left = `${baseX + offsetX}px`;
-                    el.style.top = `${humanTop}px`; // Mesma altura exata do HUMAN
-                } else if (savedPositions[revId]) {
-                    el.style.left = savedPositions[revId].left;
-                    el.style.top = savedPositions[revId].top;
-                } else {
-                    el.style.left = `${centerX + 400 + (idx * 370)}px`;
-                    el.style.top = `2050px`;
-                }
+                    // Posição: ao lado direito do HUMAN node, perfeitamente alinhado
+                    const humanNode = document.getElementById(humanNodeId);
+                    if (humanNode && !savedPositions[revId]) {
+                        // Usar as coordenadas de estilo do HUMAN diretamente para garantir alinhamento perfeito
+                        const humanLeft = parseInt(humanNode.style.left) || humanNode.offsetLeft;
+                        const humanTop = parseInt(humanNode.style.top) || humanNode.offsetTop;
+                        const humanWidth = 320; // Largura fixa de todos os nós
+                        const gap = 50; // Gap entre nós
+                        const baseX = humanLeft + humanWidth + gap;
+                        const offsetX = (idx * (humanWidth + gap)); // Cada revisão adicional se afasta mais 370px
+                        el.style.left = `${baseX + offsetX}px`;
+                        el.style.top = `${humanTop}px`; // Mesma altura exata do HUMAN
+                    } else if (savedPositions[revId]) {
+                        el.style.left = savedPositions[revId].left;
+                        el.style.top = savedPositions[revId].top;
+                    } else {
+                        el.style.left = `${centerX + 400 + (idx * 370)}px`;
+                        el.style.top = `2050px`;
+                    }
 
-                el.style.transform = 'none';
+                    el.style.transform = 'none';
 
-                el.innerHTML = `
+                    el.innerHTML = `
                     <div class="node-led"></div>
                     <div class="node-id">${revId.toUpperCase()} // Revision_${revNum}</div>
                     <div class="node-title">REVISÃO ${revNum}</div>
@@ -2481,13 +2502,13 @@ OUTPUT (Proposta completa)`;
                     </div>
                 `;
 
-                el.ondblclick = () => openPanel(revNode, projectFiles);
-                container.appendChild(el);
-                makeDraggable(el);
+                    el.ondblclick = () => openPanel(revNode, projectFiles);
+                    container.appendChild(el);
+                    makeDraggable(el);
 
-                // Adicionar link à lista global de revisões
-                activeRevisionLinks.push([humanNodeId, revId]);
-            });
+                    // Adicionar link à lista global de revisões
+                    activeRevisionLinks.push([humanNodeId, revId]);
+                });
             }
 
             // Esperar o navegador renderizar os novos nós antes de desenhar as linhas
@@ -2654,14 +2675,14 @@ OUTPUT (Proposta completa)`;
                         'REPENSAR': 'bg-red-900 text-red-400'
                     };
                     if (statusColors[val]) return `<span class="px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider ${statusColors[val]}">${val}</span>`;
-                    
+
                     // Tratamento especial pra campos de copy (converte \n literal e double-escaped)
                     if (key && (key === 'copy_revisada' || key === 'copy_final' || key === 'copy' || key.includes('copy_'))) {
                         // Trata tanto \\n quanto \\\\n (double-escaped)
                         let formatted = val.replace(/\\\\n/g, '\n').replace(/\\n/g, '\n');
                         return `<div class="text-[#ddd] leading-relaxed mt-3 mb-3 p-4 bg-[#0a0a0a] border-l-2 border-[#DC2626] prose-sm max-w-none whitespace-pre-line">${safeMarkdown(formatted)}</div>`;
                     }
-                    
+
                     if (val.length > 200) return `<div class="text-[#ddd] leading-relaxed mt-3 mb-3 p-4 bg-[#0a0a0a] border-l-2 border-[#DC2626] prose-sm max-w-none">${safeMarkdown(val)}</div>`;
                     return `<span class="text-[#ccc]">${val}</span>`;
                 }
@@ -2695,7 +2716,7 @@ OUTPUT (Proposta completa)`;
             if (n.title === 'HUMAN') {
                 const wallFile = files.find(f => f.name.includes('WALL') && !/_v\d+/.test(f.name));
                 const copySeniorFile = files.find(f => f.name.includes('COPY_SENIOR') && !/_v\d+/.test(f.name));
-                
+
                 if (copySeniorFile && copySeniorFile.content) {
                     try {
                         // Pega score do Wall pra mostrar no header
@@ -2706,12 +2727,12 @@ OUTPUT (Proposta completa)`;
                             wallScore = wallData.score_final || wallData.veredito_score || 'N/A';
                             wallStatus = wallData.status || wallData.veredito || 'PENDING';
                         }
-                        
+
                         // Pega copy_revisada do Copy Senior
                         const copySeniorData = JSON.parse(copySeniorFile.content);
                         const copyRevisada = copySeniorData.copy_revisada || '';
                         const vencedor = copySeniorData.vencedor || copySeniorData.modelo_vencedor || 'N/A';
-                        
+
                         // Determinar cor baseada no score
                         let scoreColor = '#666';
                         if (typeof wallScore === 'number') {
@@ -2719,10 +2740,10 @@ OUTPUT (Proposta completa)`;
                             else if (wallScore >= 60) scoreColor = '#f59e0b'; // Laranja
                             else scoreColor = '#ef4444'; // Vermelho
                         }
-                        
+
                         // Formata copy (converte \n literal)
                         const copyFormatted = copyRevisada.replace(/\\n/g, '\n');
-                        
+
                         body.innerHTML = `
                             <div style="background: #0a0a0a; border: 2px solid ${scoreColor}; padding: 20px; margin-bottom: 24px; text-align: center;">
                                 <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 48px; color: ${scoreColor}; line-height: 1;">${wallScore}</div>
@@ -2735,7 +2756,7 @@ OUTPUT (Proposta completa)`;
                                 <button onclick="openFeedbackModal(event)" class="flex-1 border-2 border-[#444] text-white font-brick text-sm py-4 hover:border-white hover:bg-white hover:text-black transition-colors">✎ SOLICITAR REVISÃO</button>
                             </div>
                         `;
-                        
+
                         document.getElementById('panel-title').textContent = 'HUMAN APPROVAL // COPY FINAL';
                         document.getElementById('agent-panel').classList.add('open');
                         return;
@@ -2758,7 +2779,7 @@ OUTPUT (Proposta completa)`;
                 }
             }
 
-                        if (n.title === 'BRIEFING_INPUT') {
+            if (n.title === 'BRIEFING_INPUT') {
                 const rawContent = getBriefingContent(files);
                 if (rawContent) {
                     body.innerHTML = `<div class="bg-[#0a0a0a] border border-[#222] p-8 font-mono text-sm leading-relaxed text-[#ccc] whitespace-pre-wrap">${rawContent}</div>`;
@@ -3057,13 +3078,13 @@ OUTPUT (Proposta completa)`;
                 // Pipeline progress em tempo real
                 socket.on('pipeline:progress', (data) => {
                     if (data.mode !== currentMode) return;
-                    
+
                     // Atualizar telemetry em tempo real
                     const telStage = document.getElementById('tel-stage');
                     const telStatus = document.getElementById('telemetry-status');
                     const telAgents = document.getElementById('tel-agents');
                     const telDuration = document.getElementById('tel-duration');
-                    
+
                     if (data.status === 'started') {
                         telStage.textContent = 'STARTING...';
                         telStatus.textContent = 'ACTIVE';
@@ -3118,8 +3139,9 @@ OUTPUT (Proposta completa)`;
 
         // enterMode já definido acima (linha ~558)
 
-        function confirmDeleteProject() {
-            if (!currentJobId || !currentMode) {
+        function confirmDeleteProject(lobbyJobId) {
+            const targetJobId = lobbyJobId || currentJobId;
+            if (!targetJobId || !currentMode) {
                 showNotification('⚠️ Nenhum projeto selecionado', 'error');
                 return;
             }
@@ -3130,12 +3152,12 @@ OUTPUT (Proposta completa)`;
                 <div class="bg-[#050505] border border-[#DC2626] p-8 max-w-md">
                     <h3 class="font-brick text-xl text-white uppercase mb-4">⚠️ DELETAR PROJETO</h3>
                     <p class="text-[#ccc] text-sm mb-6 font-mono">Essa ação é IRREVERSÍVEL. Todos os arquivos deste projeto serão deletados permanentemente.</p>
-                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${currentJobId}</p>
+                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${targetJobId}</p>
                     <div class="flex gap-4">
                         <button onclick="this.closest('div.fixed').remove()" class="flex-1 bg-[#222] hover:bg-[#333] text-white font-mono text-xs uppercase py-3 px-6 transition-all">
                             Cancelar
                         </button>
-                        <button onclick="deleteProject(); this.closest('div.fixed').remove()" class="flex-1 bg-[#DC2626] hover:bg-white hover:text-black text-white font-mono text-xs uppercase py-3 px-6 transition-all">
+                        <button onclick="deleteProject('${targetJobId}'); this.closest('div.fixed').remove()" class="flex-1 bg-[#DC2626] hover:bg-white hover:text-black text-white font-mono text-xs uppercase py-3 px-6 transition-all">
                             ✕ Deletar
                         </button>
                     </div>
@@ -3144,18 +3166,19 @@ OUTPUT (Proposta completa)`;
             document.body.appendChild(modal);
         }
 
-        async function deleteProject() {
-            if (!currentJobId || !currentMode) return;
+        async function deleteProject(targetJobId) {
+            const jobId = targetJobId || currentJobId;
+            if (!jobId || !currentMode) return;
 
             try {
-                const res = await authFetch(`${API_URL}/project/${currentJobId}?mode=${currentMode}`, {
+                const res = await authFetch(`${API_URL}/project/${jobId}?mode=${currentMode}`, {
                     method: 'DELETE'
                 });
                 const data = await res.json();
 
                 if (data.success) {
                     showNotification(`✓ Projeto deletado (${data.deletedCount} arquivos)`, 'success');
-                    closeNodeGraphic();
+                    if (jobId === currentJobId) closeNodeGraphic();
                     fetchState();
                 } else {
                     showNotification('✗ Erro ao deletar projeto', 'error');
@@ -3163,6 +3186,111 @@ OUTPUT (Proposta completa)`;
             } catch (e) {
                 console.error('Erro ao deletar:', e);
                 showNotification('✗ Falha na comunicação com o servidor', 'error');
+            }
+        }
+
+        function confirmArchiveProject(jobId, title) {
+            if (!jobId || !currentMode) {
+                showNotification('⚠️ Nenhum projeto selecionado', 'error');
+                return;
+            }
+
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-[300]';
+            modal.innerHTML = `
+                <div class="bg-[#050505] border border-[#f59e0b] p-8 max-w-md">
+                    <h3 class="font-brick text-xl text-white uppercase mb-4">🗄 ARQUIVAR PROJETO</h3>
+                    <p class="text-[#ccc] text-sm mb-6 font-mono">O projeto será movido para o arquivo. Você poderá restaurá-lo depois.</p>
+                    <p class="text-white text-sm mb-6 font-bold">Projeto: ${title || jobId}</p>
+                    <div class="flex gap-4">
+                        <button onclick="this.closest('div.fixed').remove()" class="flex-1 bg-[#222] hover:bg-[#333] text-white font-mono text-xs uppercase py-3 px-6 transition-all">
+                            Cancelar
+                        </button>
+                        <button onclick="archiveProject('${jobId}'); this.closest('div.fixed').remove()" class="flex-1 bg-[#f59e0b] hover:bg-white hover:text-black text-black font-mono text-xs uppercase py-3 px-6 transition-all font-bold">
+                            🗄 Arquivar
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        async function archiveProject(jobId) {
+            if (!jobId || !currentMode) return;
+
+            try {
+                const res = await authFetch(`${API_URL}/archive`, {
+                    method: 'POST',
+                    body: JSON.stringify({ jobId, mode: currentMode })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showNotification('✓ Projeto arquivado com sucesso', 'success');
+                    fetchState();
+                } else {
+                    showNotification('✗ Erro ao arquivar projeto', 'error');
+                }
+            } catch (e) {
+                console.error('Erro ao arquivar:', e);
+                showNotification('✗ Falha na comunicação com o servidor', 'error');
+            }
+        }
+
+        async function restoreProject(jobId) {
+            if (!jobId || !currentMode) return;
+
+            try {
+                const res = await authFetch(`${API_URL}/restore`, {
+                    method: 'POST',
+                    body: JSON.stringify({ jobId, mode: currentMode })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showNotification('✓ Projeto restaurado com sucesso', 'success');
+                    fetchState();
+                } else {
+                    showNotification('✗ Erro ao restaurar projeto', 'error');
+                }
+            } catch (e) {
+                console.error('Erro ao restaurar:', e);
+                showNotification('✗ Falha na comunicação com o servidor', 'error');
+            }
+        }
+
+        async function fetchArchivedProjects() {
+            try {
+                const res = await fetch(`${API_URL}/archived?mode=${currentMode || 'marketing'}`);
+                const data = await res.json();
+                const archivedList = document.getElementById('lobby-archived-list');
+                const archivedSection = document.getElementById('lobby-archived');
+
+                if (!data.archived || data.archived.length === 0) {
+                    archivedSection.style.display = 'none';
+                    return;
+                }
+
+                archivedSection.style.display = 'block';
+                archivedList.innerHTML = '';
+
+                data.archived.forEach(project => {
+                    const card = document.createElement('div');
+                    card.className = 'border border-[#333] bg-[#0a0a0a] p-8 opacity-60 hover:opacity-100 transition-all';
+                    const date = project.archived_at ? new Date(project.archived_at).toLocaleDateString('pt-BR') : '';
+                    card.innerHTML = `
+                        <div class="text-[9px] font-mono text-[#444] mb-6">PROJ // ${(project.job_id || '').substring(0, 8)}</div>
+                        <h3 class="text-xl font-brick text-[#999] uppercase mb-2">${project.title || project.job_id}</h3>
+                        <div class="text-[9px] font-mono text-[#555] mb-4">Arquivado em ${date} · ${project.file_count || 0} arquivos</div>
+                        <div class="flex gap-2 pt-4 border-t border-[#222]">
+                            <button onclick="restoreProject('${project.job_id}')" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-green-500 hover:text-green-500 uppercase tracking-wider transition-all">↩ Restaurar</button>
+                            <button onclick="confirmDeleteProject('${project.job_id}')" class="flex-1 text-[#666] font-mono text-[9px] border border-[#333] py-2 hover:border-[#DC2626] hover:text-[#DC2626] uppercase tracking-wider transition-all">✕ Apagar</button>
+                        </div>
+                    `;
+                    archivedList.appendChild(card);
+                });
+            } catch (e) {
+                // Silently fail — archived section just won't show
             }
         }
 

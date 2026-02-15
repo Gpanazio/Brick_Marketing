@@ -4,12 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const CONFIG = require('../../config/constants');
 const { HISTORY_ROOT } = require('../helpers/paths');
+const { query } = require('../helpers/db');
+const { log } = require('../helpers/logger');
 
-// API: Estimativa de custo do pipeline
+// API: Estimativa de custo do pipeline (static, no DB needed)
 router.get('/estimate', (req, res) => {
     const mode = req.query.mode || 'marketing';
 
-    // Definir etapas por modo (DEVE espelhar os scripts run-*.sh)
     const pipelines = {
         marketing: [
             { name: 'VALIDATOR', model: 'flash' },
@@ -76,13 +77,33 @@ router.get('/estimate', (req, res) => {
 });
 
 // API: Get real costs for a specific job
-router.get('/costs/:jobId', (req, res) => {
+router.get('/costs/:jobId', async (req, res) => {
     const { jobId } = req.params;
     const mode = req.query.mode || null;
 
-    // Search across all modes for the cost file
-    const modesToSearch = mode ? [mode] : ['marketing', 'projetos', 'ideias', 'originais'];
+    try {
+        let result;
+        if (mode) {
+            result = await query(
+                `SELECT report FROM cost_reports WHERE job_id = $1 AND mode = $2 LIMIT 1`,
+                [jobId, mode]
+            );
+        } else {
+            result = await query(
+                `SELECT report FROM cost_reports WHERE job_id = $1 LIMIT 1`,
+                [jobId]
+            );
+        }
 
+        if (result.rows.length > 0) {
+            return res.json(result.rows[0].report);
+        }
+    } catch (dbErr) {
+        log('warn', 'costs_db_read_failed', { error: dbErr.message });
+    }
+
+    // Fallback to filesystem
+    const modesToSearch = mode ? [mode] : ['marketing', 'projetos', 'ideias', 'originais'];
     for (const m of modesToSearch) {
         const costFile = path.join(HISTORY_ROOT, m, 'wip', `${jobId}_COSTS.json`);
         if (fs.existsSync(costFile)) {
@@ -99,8 +120,32 @@ router.get('/costs/:jobId', (req, res) => {
 });
 
 // API: List all cost reports
-router.get('/costs', (req, res) => {
+router.get('/costs', async (req, res) => {
     const mode = req.query.mode || null;
+
+    try {
+        let result;
+        if (mode) {
+            result = await query(
+                `SELECT job_id, mode, total_cost AS total_cost_usd, total_tokens, total_steps, completed_at
+                 FROM cost_reports WHERE mode = $1 ORDER BY completed_at DESC`,
+                [mode]
+            );
+        } else {
+            result = await query(
+                `SELECT job_id, mode, total_cost AS total_cost_usd, total_tokens, total_steps, completed_at
+                 FROM cost_reports ORDER BY completed_at DESC`
+            );
+        }
+
+        if (result.rows.length > 0) {
+            return res.json({ reports: result.rows, count: result.rows.length });
+        }
+    } catch (dbErr) {
+        log('warn', 'costs_list_db_failed', { error: dbErr.message });
+    }
+
+    // Fallback to filesystem
     const modesToSearch = mode ? [mode] : ['marketing', 'projetos', 'ideias', 'originais'];
     const reports = [];
 
@@ -126,6 +171,35 @@ router.get('/costs', (req, res) => {
 
     reports.sort((a, b) => new Date(b.completed_at || 0) - new Date(a.completed_at || 0));
     res.json({ reports, count: reports.length });
+});
+
+// API: Save cost report (called by pipeline runner)
+router.post('/costs', async (req, res) => {
+    const { job_id, mode, report } = req.body;
+
+    if (!job_id || !report) {
+        return res.status(400).json({ error: 'job_id and report required' });
+    }
+
+    try {
+        await query(
+            `INSERT INTO cost_reports (job_id, mode, report, total_cost, total_tokens, total_steps)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             ON CONFLICT DO NOTHING`,
+            [
+                job_id,
+                mode || 'marketing',
+                JSON.stringify(report),
+                report.summary?.total_cost_usd || 0,
+                report.summary?.total_tokens || 0,
+                report.summary?.total_steps || 0
+            ]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        log('error', 'cost_report_save_failed', { error: err.message });
+        res.status(500).json({ error: err.message });
+    }
 });
 
 module.exports = router;

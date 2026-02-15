@@ -5,46 +5,92 @@ const path = require('path');
 const { log } = require('../helpers/logger');
 const { getModeRoot, findFileByPattern, getFeedbacksForJob } = require('../helpers/paths');
 const { emitStateUpdate } = require('../helpers/socket');
+const { query } = require('../helpers/db');
 
-router.get('/revisions/:jobId', (req, res) => {
+router.get('/revisions/:jobId', async (req, res) => {
     const { jobId } = req.params;
     const mode = req.query.mode || 'marketing';
-    const root = getModeRoot(mode);
-    const wipDir = path.join(root, 'wip');
-    const doneDir = path.join(root, 'done');
-    const feedbackDir = path.join(root, 'feedback');
-    const searchDirs = [wipDir, doneDir].filter(d => fs.existsSync(d));
 
-    let original = null, revision = null, diffFile = null;
-    for (const dir of searchDirs) {
-        if (!original) original = findFileByPattern(dir, jobId, 'FINAL.md');
-        if (!revision) revision = findFileByPattern(dir, jobId, 'FINAL_v2.md');
-        if (!diffFile) diffFile = findFileByPattern(dir, jobId, 'revision_diff.json');
+    try {
+        // Try DB first
+        const filesRes = await query(
+            `SELECT filename, content, category, updated_at AS mtime
+             FROM pipeline_files WHERE job_id = $1 AND mode = $2
+             ORDER BY created_at ASC`,
+            [jobId, mode]
+        );
+
+        const files = filesRes.rows;
+        const original = files.find(f => f.filename.includes('FINAL.md') && !f.filename.includes('_v2'));
+        const revision = files.find(f => f.filename.includes('FINAL_v2.md'));
+        const diffFile = files.find(f => f.filename.includes('revision_diff.json'));
+
+        const fbRes = await query(
+            `SELECT id, text, status, created_at AS timestamp
+             FROM feedbacks WHERE job_id = $1 AND mode = $2
+             ORDER BY created_at DESC`,
+            [jobId, mode]
+        );
+
+        let diffData = null;
+        if (diffFile) {
+            try { diffData = JSON.parse(diffFile.content); } catch (e) { /* ignore */ }
+        }
+
+        res.json({
+            jobId, mode,
+            hasRevision: !!(revision || diffFile),
+            original: original ? { name: original.filename, content: original.content } : null,
+            revision: revision ? { name: revision.filename, content: revision.content } : null,
+            diff: diffData,
+            feedbacks: fbRes.rows.map(f => ({
+                id: f.id,
+                text: f.text,
+                timestamp: f.timestamp,
+                status: f.status
+            }))
+        });
+    } catch (dbErr) {
+        // Fallback to filesystem
+        log('warn', 'revisions_db_read_failed', { error: dbErr.message });
+        const root = getModeRoot(mode);
+        const wipDir = path.join(root, 'wip');
+        const doneDir = path.join(root, 'done');
+        const feedbackDir = path.join(root, 'feedback');
+        const searchDirs = [wipDir, doneDir].filter(d => fs.existsSync(d));
+
+        let original = null, revision = null, diffFile = null;
+        for (const dir of searchDirs) {
+            if (!original) original = findFileByPattern(dir, jobId, 'FINAL.md');
+            if (!revision) revision = findFileByPattern(dir, jobId, 'FINAL_v2.md');
+            if (!diffFile) diffFile = findFileByPattern(dir, jobId, 'revision_diff.json');
+        }
+
+        const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
+        let diffData = null;
+        if (diffFile) {
+            try { diffData = JSON.parse(diffFile.content); } catch (e) { /* ignore */ }
+        }
+
+        res.json({
+            jobId, mode,
+            hasRevision: !!(revision || diffFile),
+            original: original ? { name: original.name, content: original.content } : null,
+            revision: revision ? { name: revision.name, content: revision.content } : null,
+            diff: diffData,
+            feedbacks: feedbacks.map(f => ({
+                filename: f.filename, text: f.text || f.feedback,
+                timestamp: f.timestamp, status: f.status
+            }))
+        });
     }
-
-    const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
-    let diffData = null;
-    if (diffFile) {
-        try { diffData = JSON.parse(diffFile.content); } catch (e) { /* ignore */ }
-    }
-
-    res.json({
-        jobId, mode,
-        hasRevision: !!(revision || diffFile),
-        original: original ? { name: original.name, content: original.content } : null,
-        revision: revision ? { name: revision.name, content: revision.content } : null,
-        diff: diffData,
-        feedbacks: feedbacks.map(f => ({
-            filename: f.filename, text: f.text || f.feedback,
-            timestamp: f.timestamp, status: f.status
-        }))
-    });
 });
 
-router.post('/revisions/:jobId/approve', (req, res) => {
+router.post('/revisions/:jobId/approve', async (req, res) => {
     const { jobId } = req.params;
     const { mode, revisionNumber } = req.body;
-    const root = getModeRoot(mode || 'marketing');
+    const effectiveMode = mode || 'marketing';
+    const root = getModeRoot(effectiveMode);
     const wipDir = path.join(root, 'wip');
     const originalFile = findFileByPattern(wipDir, jobId, 'FINAL.md');
     const revPattern = revisionNumber ? `REVISAO_${revisionNumber}.md` : 'FINAL_v2.md';
@@ -80,6 +126,7 @@ router.post('/revisions/:jobId/approve', (req, res) => {
             fs.writeFileSync(diffPath, JSON.stringify(diffData, null, 2));
         }
 
+        // Resolve feedbacks in filesystem
         const feedbackDir = path.join(root, 'feedback');
         const feedbacks = getFeedbacksForJob(feedbackDir, jobId);
         feedbacks.forEach(fb => {
@@ -94,9 +141,20 @@ router.post('/revisions/:jobId/approve', (req, res) => {
             }
         });
 
+        // DB: resolve feedbacks
+        try {
+            await query(
+                `UPDATE feedbacks SET status = 'resolved', resolved_at = NOW()
+                 WHERE job_id = $1 AND mode = $2 AND status = 'pending'`,
+                [jobId, effectiveMode]
+            );
+        } catch (dbErr) {
+            log('warn', 'revision_approve_db_failed', { error: dbErr.message });
+        }
+
         const io = req.app.get('io');
-        log('info', 'revision_approved', { jobId, mode: mode || 'marketing', backup: backupName });
-        emitStateUpdate(io, mode || 'marketing');
+        log('info', 'revision_approved', { jobId, mode: effectiveMode, backup: backupName });
+        emitStateUpdate(io, effectiveMode);
         res.json({ success: true, backup: backupName });
     } catch (err) {
         log('error', 'revision_approve_failed', { jobId, error: err.message });
@@ -104,10 +162,11 @@ router.post('/revisions/:jobId/approve', (req, res) => {
     }
 });
 
-router.post('/revisions/:jobId/reject', (req, res) => {
+router.post('/revisions/:jobId/reject', async (req, res) => {
     const { jobId } = req.params;
     const { mode, revisionNumber } = req.body;
-    const root = getModeRoot(mode || 'marketing');
+    const effectiveMode = mode || 'marketing';
+    const root = getModeRoot(effectiveMode);
     const wipDir = path.join(root, 'wip');
     const feedbackDir = path.join(root, 'feedback');
     const archivedDir = path.join(feedbackDir, 'archived');
@@ -140,9 +199,20 @@ router.post('/revisions/:jobId/reject', (req, res) => {
             }
         });
 
+        // DB: reject feedbacks
+        try {
+            await query(
+                `UPDATE feedbacks SET status = 'rejected', resolved_at = NOW()
+                 WHERE job_id = $1 AND mode = $2 AND status = 'pending'`,
+                [jobId, effectiveMode]
+            );
+        } catch (dbErr) {
+            log('warn', 'revision_reject_db_failed', { error: dbErr.message });
+        }
+
         const io = req.app.get('io');
-        log('info', 'revision_rejected', { jobId, mode: mode || 'marketing' });
-        emitStateUpdate(io, mode || 'marketing');
+        log('info', 'revision_rejected', { jobId, mode: effectiveMode });
+        emitStateUpdate(io, effectiveMode);
         res.json({ success: true });
     } catch (err) {
         log('error', 'revision_reject_failed', { jobId, error: err.message });

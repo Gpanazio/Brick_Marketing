@@ -13,6 +13,7 @@ const { log } = require('./server/helpers/logger');
 const { ensureDirectories } = require('./server/helpers/paths');
 const { loadMetrics, saveMetrics } = require('./server/helpers/metrics');
 const { setupSocketIO } = require('./server/helpers/socket');
+const { initDb } = require('./server/helpers/db');
 
 // Middleware
 const { createAuthMiddleware } = require('./server/middleware/auth');
@@ -67,6 +68,16 @@ ensureDirectories();
 loadMetrics();
 setInterval(saveMetrics, 5 * 60 * 1000);
 
+// Database initialization (async, non-blocking)
+initDb().then(ok => {
+    if (ok) console.log('[STARTUP] Database ready');
+    else console.log('[STARTUP] Running without database (file-system fallback)');
+}).catch(err => {
+    console.error('[STARTUP] Database init error:', err.message);
+});
+
+const rankingRoutes = require('./server/routes/ranking');
+
 // ============================================================================
 // ROUTES
 // ============================================================================
@@ -79,6 +90,7 @@ app.use('/api', pipelineRoutes);
 app.use('/api', feedbackRoutes);
 app.use('/api', revisionsRoutes);
 app.use('/api', projectsRoutes);
+app.use('/api', rankingRoutes);
 
 // Shareable pipeline URLs (catch-all, must be after /api routes)
 app.use('/', projectsRoutes);
